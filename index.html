@@ -1,84 +1,72 @@
-import { useRouter } from 'next/router';
-import Button from '../components/Button';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salon Booking Platform</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+  body { 
+    min-height: 100vh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+  }
+  .overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+  }
+  .container {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    max-width: 450px;
+    width: 90%;
+  }
+  h1 {
+    font-size: 2rem;
+    color: #111;
+    margin-bottom: 1rem;
+  }
+  p {
+    margin-bottom: 2rem;
+    color: #333;
+  }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    margin: 0.8rem 0;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 600;
+  }
+  .btn-free { background-color: #2563eb; color: white; }
+  .btn-free:hover { background-color: #1e40af; }
 
-export default function Home() {
-  const router = useRouter();
+  .btn-new { background-color: #10b981; color: white; }
+  .btn-new:hover { background-color: #059669; }
 
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 text-white">
-      <h1 className="text-4xl font-bold mb-8">Rujex Booking</h1>
-      <p className="mb-12 text-center max-w-lg">
-        نظم مواعيد عملك بسهولة وابدأ بإدارة عملك اليوم!
-      </p>
-
-      <div className="flex flex-col gap-4">
-        <Button onClick={() => router.push('/signup-trial')}>جرب 7 أيام</Button>
-        <Button onClick={() => router.push('/signup-subscribe')}>الاشتراك $11 للشهر</Button>
-        <Button onClick={() => router.push('/login')}>مسجل / تسجيل الدخول</Button>
-      </div>
-    </div>
-  );
-}
-import { useState } from 'react';
-import { supabase } from '../lib/supabase';
-import Button from '../components/Button';
-
-export default function SignupTrial() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [business, setBusiness] = useState('');
-
-  const handleSignUp = async () => {
-    const { user, error } = await supabase.auth.signUp({ email, password });
-    if (error) return alert(error.message);
-
-    // إضافة اسم البزنس في جدول Users
-    await supabase.from('users').insert([{ id: user.id, name: email, business }]);
-
-    alert('تم التسجيل بنجاح! لديك 7 أيام تجريبية.');
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-2xl font-bold mb-4">تجربة 7 أيام</h1>
-      <input placeholder="البريد" value={email} onChange={e=>setEmail(e.target.value)} className="border p-2 mb-2 rounded w-80"/>
-      <input placeholder="كلمة المرور" type="password" value={password} onChange={e=>setPassword(e.target.value)} className="border p-2 mb-2 rounded w-80"/>
-      <input placeholder="اسم البزنس" value={business} onChange={e=>setBusiness(e.target.value)} className="border p-2 mb-4 rounded w-80"/>
-      <Button onClick={handleSignUp}>ابدأ التجربة</Button>
-    </div>
-  );
-}
-import { useState } from 'react';
-import { supabase } from '../lib/supabase';
-import Button from '../components/Button';
-import { loadStripe } from '@stripe/stripe-js';
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
-
-export default function SignupSubscribe() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [business, setBusiness] = useState('');
-
-  const handleSignUp = async () => {
-    const { user, error } = await supabase.auth.signUp({ email, password });
-    if (error) return alert(error.message);
-
-    await supabase.from('users').insert([{ id: user.id, name: email, business }]);
-
-    // الانتقال للدفع
-    const res = await fetch('/api/create-checkout-session', { method: 'POST' });
-    const data = await res.json();
-    const stripe = await stripePromise;
-    await stripe.redirectToCheckout({ sessionId: data.id });
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-2xl font-bold mb-4">الاشتراك الشهري $11</h1>
-      <input placeholder="البريد" value={email} onChange={e=>setEmail(e.target.value)} className="border p-2 mb-2 rounded w-80"/>
-      <input placeholder="كلمة المرور" type="password" value={password} onChange={e=>setPassword(e.target.value)} className="border p-2 mb-2 rounded w-80"/>
-      <input placeholder="اسم البزنس" value={business} onChange={e=>setBusiness(e.target.value)} className="border p-2 mb-4 rounded w-80"/>
-      <Button onClick={handleSignUp}>اشترك الآن</Button>
-    </div>
-  );
-}
+  .btn-login { background-color: #f59e0b; color: white; }
+  .btn-login:hover { background-color: #d97706; }
+</style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="container">
+    <h1>Grow Your Business</h1>
+    <p>Start managing your services and bookings easily.</p>
+    <button class="btn btn-free" onclick="alert('Start 7-day free trial')">7 Days Free Trial</button>
+    <button class="btn btn-new" onclick="alert('Go to New Owner Registration')">New Owner? Sign Up</button>
+    <button class="btn btn-login" onclick="alert('Go to Login')">Already Registered? Login</button>
+  </div>
+</body>
+</html>
