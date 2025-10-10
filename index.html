@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Business Platform</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+  <!-- NOTE: removed PayPal SDK; we use a local "PayPal-like" button to navigate directly to dashboard -->
   <style>
     *{box-sizing:border-box;font-family:"Poppins",sans-serif;}
     body{margin:0;padding:0;background:#f9fafb;}
@@ -23,6 +23,21 @@
     .link-box{display:flex;align-items:center;justify-content:space-between;background:#eef2ff;padding:.8rem 1rem;border-radius:8px;margin-top:1rem;border:1px solid #c7d2fe;}
     .link-box input{width:80%;border:none;background:transparent;font-size:.95rem;color:#1e3a8a;}
     .top-right{position:absolute;top:1rem;right:1rem;}
+    /* PayPal-like button style */
+    .paypal-like {
+      display:inline-flex;
+      align-items:center;
+      gap:.6rem;
+      background:#ffc439;
+      color:#111;
+      padding:.6rem 1rem;
+      border-radius:8px;
+      border:1px solid #f0c14b;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    .paypal-like img{height:20px;}
   </style>
 </head>
 <body>
@@ -44,7 +59,13 @@
       <input id="email" placeholder="Email" type="email">
       <input id="password" placeholder="Password" type="password">
       <input id="businessName" placeholder="Business Name">
-      <div id="paypal-button-container" style="margin-top:1rem;"></div>
+      <div id="paypal-button-container" style="margin-top:1rem;">
+        <!-- Fake PayPal button (no PayPal key required) -->
+        <button id="fake-paypal-btn" class="paypal-like" onclick="fakePaypalClick()">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='20'><text x='0' y='14' font-family='Poppins, sans-serif' font-size='14' fill='%23111'>PayPal</text></svg>" alt="PayPal">
+          Pay with PayPal
+        </button>
+      </div>
     </div>
   </section>
 
@@ -82,62 +103,108 @@
 
   <script>
     const SUPABASE_URL = "https://wpkaxnmbkhzmccrymzna.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa2F4bm1ia2h6bWNjcnltem5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4MTUwNDQsImV4cCI6MjA3NTM5MTA0NH0.HlWF2nyDlQ_bSrzCux3yeITDPXA2tL8iLeZ26-0TRZg";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // ضع_المفتاح_تاعك_هنا  -> إذا لم تحط مفتاح Supabase صحيح، التسجيل في قاعدة البيانات سيتخطى ويعمل محلياً.
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa2F4bm1ia2h6bWNjcnltem5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4MTUwNDQsImV4cCI6MjA3NTM5MTA0NH0.HlWF2nyDlQ_bSrzCux3yeITDPXA2tL8iLeZ26-0TRZg"; 
+    const useSupabase = SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa2F4bm1ia2h6bWNjcnltem5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4MTUwNDQsImV4cCI6MjA3NTM5MTA0NH0.HlWF2nyDlQ_bSrzCux3yeITDPXA2tL8iLeZ26-0TRZg");
+    const supabase = useSupabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
     function showSection(id){
       document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
       document.getElementById(id).classList.add("active");
     }
 
-    // ---------- SIGNUP + PAYPAL ----------
-    let userEmail, userPassword, businessName;
-    paypal.Buttons({
-      createOrder: (data, actions) => {
-        userEmail=document.getElementById("email").value;
-        userPassword=document.getElementById("password").value;
-        businessName=document.getElementById("businessName").value;
-        if(!userEmail||!userPassword||!businessName){
-          alert("Please fill all fields first");
-          return;
-        }
-        return actions.order.create({purchase_units:[{amount:{value:'11.00'}}]});
-      },
-      onApprove: async (data, actions) => {
-        const order = await actions.order.capture();
-        const { data: user, error } = await supabase
-          .from("users").insert([{ email:userEmail, password:userPassword }]).select().single();
-        if(error) return alert("Error creating user.");
+    // ---------- Helper ----------
+    function generateId() {
+      // simple UUID v4-ish for local user id (not cryptographically secure, but fine for local demo)
+      return 'id-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    }
 
-        await supabase.from("businesses").insert([{
-          owner_id:user.id,
-          business_name:businessName,
-          business_slug:businessName.toLowerCase().replace(/\s+/g,"-")
-        }]);
+    // ---------- FAKE PAYPAL: فور الضغط تنتقل للداشبورد مباشرة ----------
+    async function fakePaypalClick(){
+      const userEmail = document.getElementById("email").value.trim();
+      const userPassword = document.getElementById("password").value.trim();
+      const businessName = document.getElementById("businessName").value.trim();
 
-        localStorage.setItem("user_id",user.id);
-        alert("✅ Payment Success! Redirecting...");
-        showSection("dashboard");
-        loadDashboard();
+      if(!userEmail || !userPassword || !businessName){
+        alert("Please fill all fields first");
+        return;
       }
-    }).render('#paypal-button-container');
+
+      // فور الضغط: ننتقل للداشبورد ونُظهر الرابط الخاص مباشرة
+      const slug = businessName.toLowerCase().replace(/\s+/g,"-");
+      showSection("dashboard");
+      document.getElementById("shareLink").value = window.location.origin + "/?store=" + slug;
+
+      // نضع user_id محلياً الآن (حتى تبدو مسجل باللحظة)
+      // إذا عندك Supabase مفتاح صحيح، نحاول نسجل المستخدم والبزنس هناك أيضاً في الخلفية
+      if(useSupabase){
+        try {
+          // محاولة إدخال المستخدم
+          const { data: user, error: userErr } = await supabase
+            .from("users").insert([{ email: userEmail, password: userPassword }]).select().single();
+          if(userErr){
+            // لو الخطأ يقول إن المستخدم موجود مسبقاً، حاول نجيب بياناته بدل الإضافة
+            // هنا نجرب جلب المستخدم (بحكم أن شكل جدولك قد يختلف، هذا محاولة بسيطة)
+            const { data: existing } = await supabase.from("users").select("*").eq("email", userEmail).limit(1);
+            if(existing && existing.length) {
+              localStorage.setItem("user_id", existing[0].id);
+            } else {
+              // فشل حقيقي
+              console.warn("Supabase user insert error:", userErr);
+            }
+          } else {
+            localStorage.setItem("user_id", user.id);
+            // إدخال البزنس
+            await supabase.from("businesses").insert([{
+              owner_id: user.id,
+              business_name: businessName,
+              business_slug: slug
+            }]);
+          }
+        } catch(e) {
+          console.warn("Supabase error:", e);
+        }
+      } else {
+        // بدون Supabase: نخزن user_id محلياً ليخلي الواجهة تعمل كأن المستخدم مسجل
+        localStorage.setItem("user_id", generateId());
+      }
+
+      alert("انتقلت للداشبورد ✅ (هذا انتقال فوري بعد الضغط على الزر).");
+      // لاحقاً لو حاب تشوف أو تحمّل بيانات من Supabase استخدم زر loadDashboard أو عدّل الكود.
+      loadDashboardIfPossible();
+    }
 
     // ---------- DASHBOARD ----------
     async function loadDashboard(){
       const userId = localStorage.getItem("user_id");
       if(!userId) return alert("Please register first.");
 
-      const { data: business, error } = await supabase
-        .from("businesses").select("*").eq("owner_id",userId).single();
-      if(error||!business) return alert("Business not found.");
+      if(useSupabase){
+        const { data: business, error } = await supabase
+          .from("businesses").select("*").eq("owner_id",userId).single();
+        if(error||!business) return alert("Business not found in Supabase.");
 
-      const domain = window.location.origin;
-      const link = `${domain}/?store=${business.business_slug}`;
-      document.getElementById("shareLink").value = link;
+        const domain = window.location.origin;
+        const link = `${domain}/?store=${business.business_slug}`;
+        document.getElementById("shareLink").value = link;
 
-      const { data: bookings } = await supabase
-        .from("bookings").select("*").eq("owner_id",userId).order("appointment_date",{ascending:false});
+        const { data: bookings } = await supabase
+          .from("bookings").select("*").eq("owner_id",userId).order("appointment_date",{ascending:false});
 
+        renderBookings(bookings);
+      } else {
+        // Local demo: نملأ الجدول برسالة واحدة تفيد أنه لا توجد حجوزات
+        document.getElementById("bookingsTable").querySelector("tbody").innerHTML =
+          "<tr><td colspan='5'>No bookings yet (running in local/demo mode).</td></tr>";
+      }
+    }
+
+    function loadDashboardIfPossible(){
+      // نحاول نملأ الجدول لكن لا نقطع تجربة المستخدم لو ما وجدناش بيانات
+      try{ loadDashboard(); }catch(e){ console.warn(e); }
+    }
+
+    function renderBookings(bookings){
       const tbody = document.querySelector("#bookingsTable tbody");
       tbody.innerHTML="";
       if(!bookings||bookings.length===0){
@@ -161,19 +228,25 @@
       const store=params.get("store");
       if(!store){alert("Invalid store link.");return;}
 
-      const { data: business } = await supabase
-        .from("businesses").select("*").eq("business_slug",store).single();
-      if(!business){alert("Business not found.");return;}
+      if(useSupabase){
+        const { data: business } = await supabase
+          .from("businesses").select("*").eq("business_slug",store).single();
+        if(!business){alert("Business not found.");return;}
 
-      const name=document.getElementById("bName").value;
-      const email=document.getElementById("bEmail").value;
-      const phone=document.getElementById("bPhone").value;
-      const date=document.getElementById("bDate").value;
-      const note=document.getElementById("bNote").value;
+        const name=document.getElementById("bName").value;
+        const email=document.getElementById("bEmail").value;
+        const phone=document.getElementById("bPhone").value;
+        const date=document.getElementById("bDate").value;
+        const note=document.getElementById("bNote").value;
 
-      await supabase.from("bookings").insert([{owner_id:business.owner_id,name,email,phone,appointment_date:date,note}]);
-      alert("✅ Appointment booked!");
-      showSection("landing");
+        await supabase.from("bookings").insert([{owner_id:business.owner_id,name,email,phone,appointment_date:date,note}]);
+        alert("✅ Appointment booked!");
+        showSection("landing");
+      } else {
+        // Demo mode: فقط تأكيد الحجز محلياً
+        alert("✅ Appointment booked (demo mode).");
+        showSection("landing");
+      }
     }
 
     function logout(){
