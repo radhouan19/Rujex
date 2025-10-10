@@ -1,262 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Business Platform</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- NOTE: removed PayPal SDK; we use a local "PayPal-like" button to navigate directly to dashboard -->
-  <style>
-    *{box-sizing:border-box;font-family:"Poppins",sans-serif;}
-    body{margin:0;padding:0;background:#f9fafb;}
-    section{display:none;min-height:100vh;padding:2rem;}
-    .active{display:block;}
-    header{background:#2563eb;color:white;text-align:center;padding:1.5rem;font-size:1.5rem;}
-    .btn{background:#2563eb;color:white;padding:.8rem 1.5rem;border:none;border-radius:8px;cursor:pointer;transition:.3s;}
-    .btn:hover{background:#1e40af;}
-    input,textarea{width:100%;padding:.8rem;margin:.5rem 0;border:1px solid #ccc;border-radius:8px;}
-    .container{max-width:500px;margin:auto;background:white;padding:2rem;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
-    table{width:100%;border-collapse:collapse;margin-top:1rem;}
-    th,td{border:1px solid #ddd;padding:.8rem;text-align:left;}
-    th{background:#2563eb;color:white;}
-    tr:nth-child(even){background:#f3f4f6;}
-    .link-box{display:flex;align-items:center;justify-content:space-between;background:#eef2ff;padding:.8rem 1rem;border-radius:8px;margin-top:1rem;border:1px solid #c7d2fe;}
-    .link-box input{width:80%;border:none;background:transparent;font-size:.95rem;color:#1e3a8a;}
-    .top-right{position:absolute;top:1rem;right:1rem;}
-    /* PayPal-like button style */
-    .paypal-like {
-      display:inline-flex;
-      align-items:center;
-      gap:.6rem;
-      background:#ffc439;
-      color:#111;
-      padding:.6rem 1rem;
-      border-radius:8px;
-      border:1px solid #f0c14b;
-      font-weight:600;
-      cursor:pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    }
-    .paypal-like img{height:20px;}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salon Booking Platform</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;font-family:"Poppins",sans-serif;}
+body{margin:0;padding:0;background:#f9fafb;}
+section{display:none;min-height:100vh;padding:2rem;}
+.active{display:block;}
+header{background:#2563eb;color:white;text-align:center;padding:1.5rem;font-size:1.5rem;}
+.btn{background:#2563eb;color:white;padding:.8rem 1.5rem;border:none;border-radius:8px;cursor:pointer;transition:.3s;margin:.2rem;}
+.btn:hover{background:#1e40af;}
+input,textarea,select{width:100%;padding:.8rem;margin:.5rem 0;border:1px solid #ccc;border-radius:8px;}
+.container{max-width:600px;margin:auto;background:white;padding:2rem;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+table{width:100%;border-collapse:collapse;margin-top:1rem;}
+th,td{border:1px solid #ddd;padding:.8rem;text-align:left;}
+th{background:#2563eb;color:white;}
+tr:nth-child(even){background:#f3f4f6;}
+.link-box{display:flex;align-items:center;justify-content:space-between;background:#eef2ff;padding:.8rem 1rem;border-radius:8px;margin-top:1rem;border:1px solid #c7d2fe;}
+.link-box input{width:80%;border:none;background:transparent;font-size:.95rem;color:#1e3a8a;}
+.top-right{position:absolute;top:1rem;right:1rem;}
+.paypal-like{display:inline-flex;align-items:center;gap:.6rem;background:#ffc439;color:#111;padding:.6rem 1rem;border-radius:8px;border:1px solid #f0c14b;font-weight:600;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+</style>
 </head>
 <body>
-  <header>My Business Platform</header>
+<header>Salon Booking Platform</header>
 
-  <!-- Landing -->
-  <section id="landing" class="active">
-    <div class="container" style="text-align:center;">
-      <h1>Grow Your Business with Online Bookings</h1>
-      <p>7 days free, then $11/month. Get started below!</p>
-      <button class="btn" onclick="showSection('signup')">Start Free Trial</button>
+<!-- Landing -->
+<section id="landing" class="active">
+  <div class="container" style="text-align:center;">
+    <h1>Grow Your Hair Salon Business</h1>
+    <p>Select an option below:</p>
+    <button class="btn" onclick="showSection('newOwner')">New Owner? Sign Up & Pay</button>
+    <button class="btn" onclick="showSection('existingOwner')">Already Registered? Login</button>
+  </div>
+</section>
+
+<!-- New Owner Sign Up -->
+<section id="newOwner">
+  <div class="container">
+    <h2>Sign Up & Pay</h2>
+    <input id="newEmail" placeholder="Email" type="email">
+    <input id="newPassword" placeholder="Password" type="password">
+    <input id="newBusinessName" placeholder="Business Name">
+    <button class="btn paypal-like" onclick="registerNewOwner()">Pay & Go to Dashboard</button>
+    <button class="btn" onclick="showSection('landing')">Back</button>
+  </div>
+</section>
+
+<!-- Existing Owner Login -->
+<section id="existingOwner">
+  <div class="container">
+    <h2>Login</h2>
+    <input id="loginEmail" placeholder="Email" type="email">
+    <input id="loginPassword" placeholder="Password" type="password">
+    <button class="btn" onclick="loginExistingOwner()">Login</button>
+    <button class="btn" onclick="showSection('landing')">Back</button>
+  </div>
+</section>
+
+<!-- Dashboard -->
+<section id="dashboard">
+  <button class="btn top-right" onclick="logout()">Logout</button>
+  <div class="container">
+    <h2>Salon Dashboard</h2>
+    <p>Share your booking link 👇</p>
+    <div class="link-box">
+      <input id="shareLink" readonly>
+      <button class="btn" onclick="copyLink()">Copy</button>
     </div>
-  </section>
 
-  <!-- Signup -->
-  <section id="signup">
-    <div class="container">
-      <h2>Create Your Account</h2>
-      <input id="email" placeholder="Email" type="email">
-      <input id="password" placeholder="Password" type="password">
-      <input id="businessName" placeholder="Business Name">
-      <div id="paypal-button-container" style="margin-top:1rem;">
-        <!-- Fake PayPal button (no PayPal key required) -->
-        <button id="fake-paypal-btn" class="paypal-like" onclick="fakePaypalClick()">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='20'><text x='0' y='14' font-family='Poppins, sans-serif' font-size='14' fill='%23111'>PayPal</text></svg>" alt="PayPal">
-          Pay with PayPal
-        </button>
-      </div>
-    </div>
-  </section>
+    <h3 style="margin-top:2rem;">Your Services</h3>
+    <table id="servicesTable">
+      <thead><tr><th>Service</th><th>Price ($)</th><th>Actions</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn" onclick="showAddService()">Add New Service</button>
 
-  <!-- Dashboard -->
-  <section id="dashboard">
-    <button class="btn top-right" onclick="logout()">Logout</button>
-    <div class="container">
-      <h2>Your Dashboard</h2>
-      <p>Share your booking link 👇</p>
-      <div class="link-box">
-        <input id="shareLink" readonly>
-        <button class="btn" onclick="copyLink()">Copy</button>
-      </div>
+    <h3 style="margin-top:2rem;">Customer Appointments</h3>
+    <table id="bookingsTable">
+      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Date</th><th>Service</th><th>Price ($)</th><th>Note</th><th>Actions</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
 
-      <h3 style="margin-top:2rem;">Your Customer Bookings</h3>
-      <table id="bookingsTable">
-        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Date</th><th>Note</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
+<!-- Booking (Customers) -->
+<section id="booking">
+  <div class="container">
+    <h2>Book an Appointment</h2>
+    <input id="bName" placeholder="Your Name">
+    <input id="bEmail" placeholder="Your Email">
+    <input id="bPhone" placeholder="Phone Number">
+    <select id="bService"></select>
+    <input id="bDate" type="datetime-local">
+    <textarea id="bNote" placeholder="Additional notes"></textarea>
+    <button class="btn" onclick="submitBooking()">Submit</button>
+  </div>
+</section>
 
-  <!-- Booking -->
-  <section id="booking">
-    <div class="container">
-      <h2>Book an Appointment</h2>
-      <input id="bName" placeholder="Your Name">
-      <input id="bEmail" placeholder="Your Email">
-      <input id="bPhone" placeholder="Phone Number">
-      <input id="bDate" type="datetime-local">
-      <textarea id="bNote" placeholder="Additional notes"></textarea>
-      <button class="btn" onclick="submitBooking()">Submit</button>
-    </div>
-  </section>
+<script>
+const SUPABASE_URL = "https://wpkaxnmbkhzmccrymzna.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa2F4bm1ia2h6bWNjcnltem5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4MTUwNDQsImV4cCI6MjA3NTM5MTA0NH0.HlWF2nyDlQ_bSrzCux3yeITDPXA2tL8iLeZ26-0TRZg";
+const useSupabase = SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes("PLACEHOLDER_KEY");
+const supabase = useSupabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-  <script>
-    const SUPABASE_URL = "https://wpkaxnmbkhzmccrymzna.supabase.co";
-    // ضع_المفتاح_تاعك_هنا  -> إذا لم تحط مفتاح Supabase صحيح، التسجيل في قاعدة البيانات سيتخطى ويعمل محلياً.
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa2F4bm1ia2h6bWNjcnltem5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4MTUwNDQsImV4cCI6MjA3NTM5MTA0NH0.HlWF2nyDlQ_bSrzCux3yeITDPXA2tL8iLeZ26-0TRZg"; 
-    const useSupabase = SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa2F4bm1ia2h6bWNjcnltem5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4MTUwNDQsImV4cCI6MjA3NTM5MTA0NH0.HlWF2nyDlQ_bSrzCux3yeITDPXA2tL8iLeZ26-0TRZg");
-    const supabase = useSupabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+let currentServices=[];
+let bookingsList=[];
 
-    function showSection(id){
-      document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-    }
+function showSection(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 
-    // ---------- Helper ----------
-    function generateId() {
-      // simple UUID v4-ish for local user id (not cryptographically secure, but fine for local demo)
-      return 'id-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-    }
+// ---------- New Owner ----------
+async function registerNewOwner(){
+  const email=document.getElementById("newEmail").value.trim();
+  const password=document.getElementById("newPassword").value.trim();
+  const businessName=document.getElementById("newBusinessName").value.trim();
+  if(!email||!password||!businessName) return alert("Fill all fields");
 
-    // ---------- FAKE PAYPAL: فور الضغط تنتقل للداشبورد مباشرة ----------
-    async function fakePaypalClick(){
-      const userEmail = document.getElementById("email").value.trim();
-      const userPassword = document.getElementById("password").value.trim();
-      const businessName = document.getElementById("businessName").value.trim();
+  let userId;
+  if(useSupabase){
+    const { data:user, error } = await supabase.from("users").insert([{email,password}]).select().single();
+    if(error) return alert("Error creating user: "+error.message);
+    const slug = businessName.toLowerCase().replace(/\s+/g,"-");
+    await supabase.from("businesses").insert([{owner_id:user.id,business_name:businessName,business_slug:slug}]);
+    userId=user.id;
+  } else userId='local-'+Math.random().toString(36).slice(2);
 
-      if(!userEmail || !userPassword || !businessName){
-        alert("Please fill all fields first");
-        return;
-      }
+  localStorage.setItem("user_id",userId);
+  alert("✅ Payment simulated! Account created.");
+  showSection("dashboard");
+  setupDashboard(email,businessName);
+  loadDashboard();
+}
 
-      // فور الضغط: ننتقل للداشبورد ونُظهر الرابط الخاص مباشرة
-      const slug = businessName.toLowerCase().replace(/\s+/g,"-");
-      showSection("dashboard");
-      document.getElementById("shareLink").value = window.location.origin + "/?store=" + slug;
+// ---------- Existing Owner Login ----------
+async function loginExistingOwner(){
+  const email=document.getElementById("loginEmail").value.trim();
+  const password=document.getElementById("loginPassword").value.trim();
+  if(!email||!password) return alert("Fill all fields");
 
-      // نضع user_id محلياً الآن (حتى تبدو مسجل باللحظة)
-      // إذا عندك Supabase مفتاح صحيح، نحاول نسجل المستخدم والبزنس هناك أيضاً في الخلفية
-      if(useSupabase){
-        try {
-          // محاولة إدخال المستخدم
-          const { data: user, error: userErr } = await supabase
-            .from("users").insert([{ email: userEmail, password: userPassword }]).select().single();
-          if(userErr){
-            // لو الخطأ يقول إن المستخدم موجود مسبقاً، حاول نجيب بياناته بدل الإضافة
-            // هنا نجرب جلب المستخدم (بحكم أن شكل جدولك قد يختلف، هذا محاولة بسيطة)
-            const { data: existing } = await supabase.from("users").select("*").eq("email", userEmail).limit(1);
-            if(existing && existing.length) {
-              localStorage.setItem("user_id", existing[0].id);
-            } else {
-              // فشل حقيقي
-              console.warn("Supabase user insert error:", userErr);
-            }
-          } else {
-            localStorage.setItem("user_id", user.id);
-            // إدخال البزنس
-            await supabase.from("businesses").insert([{
-              owner_id: user.id,
-              business_name: businessName,
-              business_slug: slug
-            }]);
-          }
-        } catch(e) {
-          console.warn("Supabase error:", e);
-        }
-      } else {
-        // بدون Supabase: نخزن user_id محلياً ليخلي الواجهة تعمل كأن المستخدم مسجل
-        localStorage.setItem("user_id", generateId());
-      }
+  let businessName="Demo Salon", userId='local-'+Math.random().toString(36).slice(2);
+  if(useSupabase){
+    const { data:user, error } = await supabase.from("users").select("*").eq("email",email).eq("password",password).single();
+    if(error||!user) return alert("Invalid credentials");
+    userId=user.id;
+    const { data: business } = await supabase.from("businesses").select("*").eq("owner_id",user.id).single();
+    if(business) businessName=business.business_name;
+  }
 
-      alert("انتقلت للداشبورد ✅ (هذا انتقال فوري بعد الضغط على الزر).");
-      // لاحقاً لو حاب تشوف أو تحمّل بيانات من Supabase استخدم زر loadDashboard أو عدّل الكود.
-      loadDashboardIfPossible();
-    }
+  localStorage.setItem("user_id",userId);
+  showSection("dashboard");
+  setupDashboard(email,businessName);
+  loadDashboard();
+}
 
-    // ---------- DASHBOARD ----------
-    async function loadDashboard(){
-      const userId = localStorage.getItem("user_id");
-      if(!userId) return alert("Please register first.");
+// ---------- Dashboard ----------
+function setupDashboard(email,businessName){
+  const slug = businessName.toLowerCase().replace(/\s+/g,"-");
+  document.getElementById("shareLink").value = window.location.origin + "/?store=" + slug;
+  currentServices = [{name:"Haircut",price:25},{name:"Beard Trim",price:15}];
+  renderServices();
+}
 
-      if(useSupabase){
-        const { data: business, error } = await supabase
-          .from("businesses").select("*").eq("owner_id",userId).single();
-        if(error||!business) return alert("Business not found in Supabase.");
+function showAddService(){
+  const name = prompt("Enter new service name:");
+  if(!name) return;
+  const price = prompt("Enter price ($):");
+  if(!price||isNaN(price)) return alert("Invalid price");
+  currentServices.push({name,price:Number(price)});
+  renderServices();
+}
 
-        const domain = window.location.origin;
-        const link = `${domain}/?store=${business.business_slug}`;
-        document.getElementById("shareLink").value = link;
+function editService(index){
+  const s=currentServices[index];
+  const newName=prompt("Edit service name:",s.name);
+  if(!newName) return;
+  const newPrice=prompt("Edit price ($):",s.price);
+  if(!newPrice||isNaN(newPrice)) return alert("Invalid price");
+  currentServices[index]={name:newName,price:Number(newPrice)};
+  renderServices();
+}
 
-        const { data: bookings } = await supabase
-          .from("bookings").select("*").eq("owner_id",userId).order("appointment_date",{ascending:false});
+function deleteService(index){
+  if(!confirm("Delete this service?")) return;
+  currentServices.splice(index,1);
+  renderServices();
+}
 
-        renderBookings(bookings);
-      } else {
-        // Local demo: نملأ الجدول برسالة واحدة تفيد أنه لا توجد حجوزات
-        document.getElementById("bookingsTable").querySelector("tbody").innerHTML =
-          "<tr><td colspan='5'>No bookings yet (running in local/demo mode).</td></tr>";
-      }
-    }
+function renderServices(){
+  const tbody=document.querySelector("#servicesTable tbody");
+  tbody.innerHTML="";
+  currentServices.forEach((s,i)=>{
+    tbody.innerHTML+=`<tr><td>${s.name}</td><td>${s.price}</td><td>
+      <button class="btn" onclick="editService(${i})">Edit</button>
+      <button class="btn" onclick="deleteService(${i})">Delete</button></td></tr>`;
+  });
+  populateServiceDropdown();
+}
 
-    function loadDashboardIfPossible(){
-      // نحاول نملأ الجدول لكن لا نقطع تجربة المستخدم لو ما وجدناش بيانات
-      try{ loadDashboard(); }catch(e){ console.warn(e); }
-    }
+function populateServiceDropdown(){
+  const sel=document.getElementById("bService");
+  sel.innerHTML="";
+  currentServices.forEach(s=>{
+    const opt=document.createElement("option");
+    opt.value=s.name;
+    opt.textContent=s.name;
+    sel.appendChild(opt);
+  });
+}
 
-    function renderBookings(bookings){
-      const tbody = document.querySelector("#bookingsTable tbody");
-      tbody.innerHTML="";
-      if(!bookings||bookings.length===0){
-        tbody.innerHTML="<tr><td colspan='5'>No bookings yet.</td></tr>";
-      } else {
-        bookings.forEach(b=>{
-          tbody.innerHTML += `<tr><td>${b.name}</td><td>${b.email}</td><td>${b.phone||"-"}</td><td>${new Date(b.appointment_date).toLocaleString()}</td><td>${b.note||""}</td></tr>`;
-        });
-      }
-    }
+// ---------- Bookings ----------
+async function loadDashboard(){
+  const userId=localStorage.getItem("user_id");
+  if(!userId) return alert("Please register first.");
 
-    function copyLink(){
-      const input=document.getElementById("shareLink");
-      input.select(); document.execCommand("copy");
-      alert("🔗 Booking link copied!");
-    }
+  if(useSupabase){
+    const { data: bookings } = await supabase.from("bookings").select("*").eq("owner_id",userId).order("appointment_date",{ascending:false});
+    bookingsList=bookings;
+    renderBookings(bookings);
+  } else {
+    bookingsList=[];
+    document.querySelector("#bookingsTable tbody").innerHTML="<tr><td colspan='8'>No bookings yet (demo mode)</td></tr>";
+  }
+}
 
-    // ---------- BOOKING ----------
-    async function submitBooking(){
-      const params=new URLSearchParams(window.location.search);
-      const store=params.get("store");
-      if(!store){alert("Invalid store link.");return;}
+function renderBookings(bookings){
+  const tbody=document.querySelector("#bookingsTable tbody");
+  tbody.innerHTML="";
+  if(!bookings||bookings.length===0){
+    tbody.innerHTML="<tr><td colspan='8'>No bookings yet.</td></tr>";
+    return;
+  }
+  bookings.forEach((b,i)=>{
+    tbody.innerHTML+=`<tr>
+      <td>${b.name}</td><td>${b.email}</td><td>${b.phone||"-"}</td>
+      <td>${b.appointment_date?new Date(b.appointment_date).toLocaleString():"-"}</td>
+      <td>${b.service||"-"}</td><td>${b.price||"-"}</td>
+      <td>${b.note||""}</td>
+      <td><button class="btn" onclick="deleteBooking(${i})">Delete</button></td>
+    </tr>`;
+  });
+}
 
-      if(useSupabase){
-        const { data: business } = await supabase
-          .from("businesses").select("*").eq("business_slug",store).single();
-        if(!business){alert("Business not found.");return;}
+function deleteBooking(index){
+  if(!confirm("Delete this booking?")) return;
+  bookingsList.splice(index,1);
+  renderBookings(bookingsList);
+}
 
-        const name=document.getElementById("bName").value;
-        const email=document.getElementById("bEmail").value;
-        const phone=document.getElementById("bPhone").value;
-        const date=document.getElementById("bDate").value;
-        const note=document.getElementById("bNote").value;
+// ---------- Customer Booking ----------
+function submitBooking(){
+  const name=document.getElementById("bName").value.trim();
+  const email=document.getElementById("bEmail").value.trim();
+  const phone=document.getElementById("bPhone").value.trim();
+  const service=document.getElementById("bService").value;
+  const date=document.getElementById("bDate").value;
+  const note=document.getElementById("bNote").value.trim();
 
-        await supabase.from("bookings").insert([{owner_id:business.owner_id,name,email,phone,appointment_date:date,note}]);
-        alert("✅ Appointment booked!");
-        showSection("landing");
-      } else {
-        // Demo mode: فقط تأكيد الحجز محلياً
-        alert("✅ Appointment booked (demo mode).");
-        showSection("landing");
-      }
-    }
+  if(!name||!email||!service||!date) return alert("Fill all required fields");
 
-    function logout(){
-      localStorage.removeItem("user_id");
-      alert("Logged out successfully!");
-      showSection("landing");
-    }
+  const selectedService=currentServices.find(s=>s.name===service);
+  const price=selectedService?selectedService.price:0;
 
-    // auto detect if store link
-    if(window.location.search.includes("store=")){showSection("booking");}
-  </script>
-</body>
-</html>
+  bookingsList.push({name,email,phone,service,price,appointment_date:date,note});
+  alert("✅ Appointment booked (demo mode).");
+  showSection("landing");
+}
+
+// ---------- Misc ----------
+function copyLink(){
+  const input=document.getElementById("shareLink");
+  input.select(); document.execCommand("copy");
