@@ -1,284 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Booking Platform</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-*{box-sizing:border-box;font-family:"Poppins",sans-serif;}
-body{margin:0;padding:0;background:#f9fafb;}
-section{display:none;min-height:100vh;padding:2rem;}
-.active{display:block;}
-header{background:#2563eb;color:white;text-align:center;padding:1.5rem;font-size:1.5rem;}
-.btn{background:#2563eb;color:white;padding:.8rem 1.5rem;border:none;border-radius:8px;cursor:pointer;transition:.3s;margin:.2rem;}
-.btn:hover{background:#1e40af;}
-input,textarea,select{width:100%;padding:.8rem;margin:.5rem 0;border:1px solid #ccc;border-radius:8px;}
-.container{max-width:600px;margin:auto;background:white;padding:2rem;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
-table{width:100%;border-collapse:collapse;margin-top:1rem;}
-th,td{border:1px solid #ddd;padding:.8rem;text-align:left;}
-th{background:#2563eb;color:white;}
-tr:nth-child(even){background:#f3f4f6;}
-.link-box{display:flex;align-items:center;justify-content:space-between;background:#eef2ff;padding:.8rem 1rem;border-radius:8px;margin-top:1rem;border:1px solid #c7d2fe;}
-.link-box input{width:80%;border:none;background:transparent;font-size:.95rem;color:#1e3a8a;}
-.top-right{position:absolute;top:1rem;right:1rem;}
-.paypal-like{display:inline-flex;align-items:center;gap:.6rem;background:#ffc439;color:#111;padding:.6rem 1rem;border-radius:8px;border:1px solid #f0c14b;font-weight:600;cursor:pointer;box-shadow: 0 2px 6px rgba(0,0,0,0.08);}
-</style>
-</head>
-<body>
-<header>Booking Platform</header>
+import { useRouter } from 'next/router';
+import Button from '../components/Button';
 
-<!-- Landing -->
-<section id="landing" class="active">
-  <div class="container" style="text-align:center;">
-    <h1>Grow Your Business</h1>
-    <p>Select an option:</p>
-    <button class="btn" onclick="showSection('newOwner')">New Owner? Sign Up & Pay</button>
-    <button class="btn" onclick="showSection('existingOwner')">Already Registered? Login</button>
-  </div>
-</section>
+export default function Home() {
+  const router = useRouter();
 
-<!-- New Owner -->
-<section id="newOwner">
-  <div class="container">
-    <h2>Sign Up & Pay</h2>
-    <input id="newEmail" placeholder="Email" type="email">
-    <input id="newPassword" placeholder="Password" type="password">
-    <input id="newBusinessName" placeholder="Business Name">
-    <button class="btn paypal-like" onclick="registerNewOwner()">Pay & Go to Dashboard</button>
-    <button class="btn" onclick="showSection('landing')">Back</button>
-  </div>
-</section>
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 text-white">
+      <h1 className="text-4xl font-bold mb-8">Rujex Booking</h1>
+      <p className="mb-12 text-center max-w-lg">
+        نظم مواعيد عملك بسهولة وابدأ بإدارة عملك اليوم!
+      </p>
 
-<!-- Existing Owner -->
-<section id="existingOwner">
-  <div class="container">
-    <h2>Login</h2>
-    <input id="loginEmail" placeholder="Email" type="email">
-    <input id="loginPassword" placeholder="Password" type="password">
-    <button class="btn" onclick="loginExistingOwner()">Login</button>
-    <button class="btn" onclick="showSection('landing')">Back</button>
-  </div>
-</section>
-
-<!-- Owner Dashboard -->
-<section id="dashboard">
-  <button class="btn top-right" onclick="logout()">Logout</button>
-  <div class="container">
-    <h2>Dashboard</h2>
-    <p>Share your booking link 👇</p>
-    <div class="link-box">
-      <input id="shareLink" readonly>
-      <button class="btn" onclick="copyLink()">Copy</button>
+      <div className="flex flex-col gap-4">
+        <Button onClick={() => router.push('/signup-trial')}>جرب 7 أيام</Button>
+        <Button onClick={() => router.push('/signup-subscribe')}>الاشتراك $11 للشهر</Button>
+        <Button onClick={() => router.push('/login')}>مسجل / تسجيل الدخول</Button>
+      </div>
     </div>
-
-    <h3>Services</h3>
-    <table id="servicesTable">
-      <thead><tr><th>Service</th><th>Price ($)</th><th>Actions</th></tr></thead>
-      <tbody></tbody>
-    </table>
-    <button class="btn" onclick="showAddService()">Add Service</button>
-
-    <h3>Customer Bookings</h3>
-    <table id="bookingsTable">
-      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Date</th><th>Service</th><th>Price</th><th>Note</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </div>
-</section>
-
-<!-- Customer Booking Page -->
-<section id="bookingPage">
-  <div class="container">
-    <h2>Book a Service</h2>
-    <input id="bName" placeholder="Your Name">
-    <input id="bEmail" placeholder="Email">
-    <input id="bPhone" placeholder="Phone">
-    <select id="bService"></select>
-    <input id="bDate" type="datetime-local">
-    <textarea id="bNote" placeholder="Additional notes"></textarea>
-    <button class="btn" onclick="submitBooking()">Submit</button>
-  </div>
-</section>
-
-<script>
-const SUPABASE_URL = "https://xwkpqhuxzaphvyjycetq.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3a3BxaHV4emFwaHZ5anljZXRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwOTQ3ODEsImV4cCI6MjA3NTY3MDc4MX0.W0UueA_J9lWk9N5KIiYqcnPdXkTf-hlooVj2AqRkLFw";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-let currentServices = [];
-let ownerId = null;
-
-function showSection(id){
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+  );
 }
+import { useState } from 'react';
+import { supabase } from '../lib/supabase';
+import Button from '../components/Button';
 
-async function registerNewOwner(){
-  const email = document.getElementById("newEmail").value.trim();
-  const password = document.getElementById("newPassword").value.trim();
-  const businessName = document.getElementById("newBusinessName").value.trim();
-  if(!email||!password||!businessName) return alert("Fill all fields");
+export default function SignupTrial() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [business, setBusiness] = useState('');
 
-  try {
-    const { data: user } = await supabase.from("users").insert([{email,password}]).select().single();
-    const slug = businessName.toLowerCase().replace(/\s+/g,"-");
-    await supabase.from("businesses").insert([{owner_id:user.id,business_name:businessName,business_slug:slug}]);
-    ownerId = user.id;
-    localStorage.setItem("owner_id", ownerId);
-    alert("Account created. Payment simulated ✅");
-    setupDashboard(businessName);
-    showSection("dashboard");
-  } catch(e){
-    console.error(e);
-    alert("Error creating account");
-  }
+  const handleSignUp = async () => {
+    const { user, error } = await supabase.auth.signUp({ email, password });
+    if (error) return alert(error.message);
+
+    // إضافة اسم البزنس في جدول Users
+    await supabase.from('users').insert([{ id: user.id, name: email, business }]);
+
+    alert('تم التسجيل بنجاح! لديك 7 أيام تجريبية.');
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+      <h1 className="text-2xl font-bold mb-4">تجربة 7 أيام</h1>
+      <input placeholder="البريد" value={email} onChange={e=>setEmail(e.target.value)} className="border p-2 mb-2 rounded w-80"/>
+      <input placeholder="كلمة المرور" type="password" value={password} onChange={e=>setPassword(e.target.value)} className="border p-2 mb-2 rounded w-80"/>
+      <input placeholder="اسم البزنس" value={business} onChange={e=>setBusiness(e.target.value)} className="border p-2 mb-4 rounded w-80"/>
+      <Button onClick={handleSignUp}>ابدأ التجربة</Button>
+    </div>
+  );
 }
+import { useState } from 'react';
+import { supabase } from '../lib/supabase';
+import Button from '../components/Button';
+import { loadStripe } from '@stripe/stripe-js';
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-async function loginExistingOwner(){
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value.trim();
-  if(!email||!password) return alert("Fill all fields");
+export default function SignupSubscribe() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [business, setBusiness] = useState('');
 
-  try{
-    const { data: user } = await supabase.from("users").select("*").eq("email",email).eq("password",password).single();
-    if(!user) return alert("Invalid credentials");
-    ownerId = user.id;
-    localStorage.setItem("owner_id", ownerId);
-    const { data: business } = await supabase.from("businesses").select("*").eq("owner_id",ownerId).single();
-    setupDashboard(business.business_name);
-    showSection("dashboard");
-  } catch(e){
-    console.error(e);
-    alert("Login failed");
-  }
+  const handleSignUp = async () => {
+    const { user, error } = await supabase.auth.signUp({ email, password });
+    if (error) return alert(error.message);
+
+    await supabase.from('users').insert([{ id: user.id, name: email, business }]);
+
+    // الانتقال للدفع
+    const res = await fetch('/api/create-checkout-session', { method: 'POST' });
+    const data = await res.json();
+    const stripe = await stripePromise;
+    await stripe.redirectToCheckout({ sessionId: data.id });
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+      <h1 className="text-2xl font-bold mb-4">الاشتراك الشهري $11</h1>
+      <input placeholder="البريد" value={email} onChange={e=>setEmail(e.target.value)} className="border p-2 mb-2 rounded w-80"/>
+      <input placeholder="كلمة المرور" type="password" value={password} onChange={e=>setPassword(e.target.value)} className="border p-2 mb-2 rounded w-80"/>
+      <input placeholder="اسم البزنس" value={business} onChange={e=>setBusiness(e.target.value)} className="border p-2 mb-4 rounded w-80"/>
+      <Button onClick={handleSignUp}>اشترك الآن</Button>
+    </div>
+  );
 }
-
-async function setupDashboard(businessName){
-  const slug = businessName.toLowerCase().replace(/\s+/g,"-");
-  document.getElementById("shareLink").value = window.location.origin + "/?store=" + slug;
-  loadServices();
-  loadBookings();
-}
-
-async function loadServices(){
-  try{
-    const { data: services } = await supabase.from("services").select("*").eq("owner_id",ownerId);
-    currentServices = services || [];
-    renderServices();
-  } catch(e){console.error(e);}
-}
-
-function renderServices(){
-  const tbody = document.querySelector("#servicesTable tbody");
-  tbody.innerHTML = "";
-  currentServices.forEach((s,i)=>{
-    tbody.innerHTML += `<tr>
-      <td>${s.service_name}</td>
-      <td>${s.price}</td>
-      <td><button class="btn" onclick="editService(${i})">Edit</button> <button class="btn" onclick="deleteService(${i})">Delete</button></td>
-    </tr>`;
-  });
-}
-
-async function showAddService(){
-  const name = prompt("Service name:");
-  if(!name) return;
-  const price = prompt("Price ($):");
-  if(!price || isNaN(price)) return alert("Invalid price");
-  await supabase.from("services").insert([{owner_id:ownerId,service_name:name,price:Number(price)}]);
-  loadServices();
-}
-
-async function editService(i){
-  const s = currentServices[i];
-  const name = prompt("Edit name:", s.service_name);
-  if(!name) return;
-  const price = prompt("Edit price:", s.price);
-  if(!price || isNaN(price)) return alert("Invalid price");
-  await supabase.from("services").update({service_name:name, price:Number(price)}).eq("id",s.id);
-  loadServices();
-}
-
-async function deleteService(i){
-  const s = currentServices[i];
-  if(!confirm("Delete service?")) return;
-  await supabase.from("services").delete().eq("id",s.id);
-  loadServices();
-}
-
-async function loadBookings(){
-  const { data: bookings } = await supabase.from("bookings").select("*").eq("owner_id",ownerId);
-  const tbody = document.querySelector("#bookingsTable tbody");
-  tbody.innerHTML = "";
-  (bookings||[]).forEach(b=>{
-    tbody.innerHTML += `<tr>
-      <td>${b.name}</td><td>${b.email}</td><td>${b.phone}</td><td>${b.date}</td>
-      <td>${b.service_name}</td><td>${b.price}</td><td>${b.note}</td>
-    </tr>`;
-  });
-}
-
-function copyLink(){
-  const link = document.getElementById("shareLink");
-  link.select();
-  link.setSelectionRange(0,99999);
-  document.execCommand("copy");
-  alert("Copied ✅");
-}
-
-function logout(){
-  localStorage.removeItem("owner_id");
-  ownerId = null;
-  showSection("landing");
-}
-
-// ---------------- Customer ----------------
-async function submitBooking(){
-  const params = new URLSearchParams(window.location.search);
-  const slug = params.get("store");
-  if(!slug) return alert("Invalid store");
-
-  const name = document.getElementById("bName").value.trim();
-  const email = document.getElementById("bEmail").value.trim();
-  const phone = document.getElementById("bPhone").value.trim();
-  const service_name = document.getElementById("bService").value;
-  const date = document.getElementById("bDate").value;
-  const note = document.getElementById("bNote").value;
-  if(!name||!email||!phone||!service_name||!date) return alert("Fill all fields");
-
-  try{
-    const { data: business } = await supabase.from("businesses").select("*").eq("business_slug",slug).single();
-    const { data: service } = await supabase.from("services").select("*").eq("owner_id",business.owner_id).eq("service_name",service_name).single();
-    await supabase.from("bookings").insert([{owner_id:business.owner_id,name,email,phone,service_id:service.id,service_name,price:service.price,date,note}]);
-    alert("Booking submitted ✅");
-    document.getElementById("bName").value="";
-    document.getElementById("bEmail").value="";
-    document.getElementById("bPhone").value="";
-    document.getElementById("bNote").value="";
-  } catch(e){console.error(e);alert("Failed to submit");}
-}
-
-// On load, populate customer service dropdown if page has slug
-window.addEventListener("DOMContentLoaded", async ()=>{
-  const params = new URLSearchParams(window.location.search);
-  const slug = params.get("store");
-  if(slug){
-    showSection("bookingPage");
-    try{
-      const { data: business } = await supabase.from("businesses").select("*").eq("business_slug",slug).single();
-      const { data: services } = await supabase.from("services").select("*").eq("owner_id",business.owner_id);
-      const sel = document.getElementById("bService");
-      sel.innerHTML="";
-      (services||[]).forEach(s=>{
-        const opt = document.createElement("option");
-        opt.value = s.service_name;
-        opt.textContent = s.service_name + " ($"+s.price+")";
-        sel.appendChild(opt);
-      });
-    } catch(e){console.error(e);}
-  }
-});
-</script>
-</body>
-</html>
