@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Booking Platform</title>
+<title>Salon Booking Platform</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;font-family:"Poppins",sans-serif;}
@@ -26,12 +26,12 @@ tr:nth-child(even){background:#f3f4f6;}
 </style>
 </head>
 <body>
-<header>Booking Platform</header>
+<header>Salon Booking Platform</header>
 
 <section id="landing" class="active">
   <div class="container" style="text-align:center;">
-    <h1>Grow Your Business</h1>
-    <p>Select an option:</p>
+    <h1>Grow Your Salon Business</h1>
+    <p>Select an option below:</p>
     <button class="btn" onclick="showSection('newOwner')">New Owner? Sign Up & Pay</button>
     <button class="btn" onclick="showSection('existingOwner')">Already Registered? Login</button>
   </div>
@@ -99,158 +99,168 @@ tr:nth-child(even){background:#f3f4f6;}
 <script>
 const SUPABASE_URL = "https://xwkpqhuxzaphvyjycetq.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3a3BxaHV4emFwaHZ5anljZXRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwOTQ3ODEsImV4cCI6MjA3NTY3MDc4MX0.W0UueA_J9lWk9N5KIiYqcnPdXkTf-hlooVj2AqRkLFw";
-
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentUser = null;
+let currentBusiness = null;
 let currentServices = [];
+let bookingsList = [];
 
 function showSection(id){
   document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-// --------- Owner Registration ----------
+// Register New Owner
 async function registerNewOwner(){
   const email = document.getElementById("newEmail").value.trim();
   const password = document.getElementById("newPassword").value.trim();
   const businessName = document.getElementById("newBusinessName").value.trim();
   if(!email||!password||!businessName) return alert("Fill all fields");
 
-  const { data:user, error } = await supabase.auth.signUp({email,password});
-  if(error) return alert(error.message);
+  try{
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if(error) return alert(error.message);
+    currentUser = data.user;
 
-  // create business row
-  await supabase.from("businesses").insert([{owner_id:user.user.id,business_name:businessName,business_slug:businessName.toLowerCase().replace(/\s+/g,"-")}]);
-  currentUser = user.user;
-  alert("✅ Account created! You are logged in.");
-  showSection("dashboard");
-  setupDashboard();
-  loadDashboard();
+    const { data: business } = await supabase.from("businesses").insert([{
+      owner_id: currentUser.id,
+      business_name: businessName,
+      business_slug: businessName.toLowerCase().replace(/\s+/g,"-")
+    }]).select().single();
+    currentBusiness = business;
+
+    alert("✅ Account created! You are logged in.");
+    showSection("dashboard");
+    loadServices();
+    loadBookings();
+  } catch(e){
+    console.error(e);
+    alert("Registration error");
+  }
 }
 
-// --------- Owner Login ----------
+// Login Existing Owner
 async function loginExistingOwner(){
   const email = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
   if(!email||!password) return alert("Fill all fields");
 
-  const { data:user, error } = await supabase.auth.signInWithPassword({email,password});
-  if(error) return alert(error.message);
+  try{
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if(error) return alert(error.message);
+    currentUser = data.user;
 
-  currentUser = user.user;
-  showSection("dashboard");
-  setupDashboard();
-  loadDashboard();
+    const { data: business } = await supabase.from("businesses").select("*").eq("owner_id",currentUser.id).single();
+    currentBusiness = business;
+
+    alert("✅ Logged in!");
+    showSection("dashboard");
+    loadServices();
+    loadBookings();
+  } catch(e){
+    console.error(e);
+    alert("Login error");
+  }
 }
 
-// --------- Dashboard ----------
-async function setupDashboard(){
-  if(!currentUser) return;
-  const { data:business } = await supabase.from("businesses").select("*").eq("owner_id",currentUser.id).single();
-  document.getElementById("shareLink").value = window.location.origin + "/?store=" + business.business_slug;
-
-  const { data:services } = await supabase.from("services").select("*").eq("owner_id",currentUser.id);
-  currentServices = services;
+// Load Services
+async function loadServices(){
+  if(!currentBusiness) return;
+  const { data, error } = await supabase.from("services").select("*").eq("owner_id",currentUser.id);
+  if(error) return alert("Error loading services");
+  currentServices = data || [];
   renderServices();
+  populateServiceDropdown();
 }
 
 function renderServices(){
-  const tbody = document.querySelector("#servicesTable tbody");
+  const tbody=document.querySelector("#servicesTable tbody");
   tbody.innerHTML="";
   currentServices.forEach((s,i)=>{
     tbody.innerHTML+=`<tr><td>${s.service_name}</td><td>${s.price}</td><td>
       <button class="btn" onclick="editService(${i})">Edit</button>
       <button class="btn" onclick="deleteService(${i})">Delete</button></td></tr>`;
   });
-  populateServiceDropdown();
-}
-
-function showAddService(){
-  const name = prompt("Service Name:");
-  if(!name) return;
-  const price = prompt("Price:");
-  if(!price || isNaN(price)) return alert("Invalid price");
-  supabase.from("services").insert([{owner_id:currentUser.id,service_name:name,price:Number(price)}]).then(()=>loadDashboard());
-}
-
-function editService(index){
-  const s=currentServices[index];
-  const name = prompt("Edit Service Name:",s.service_name);
-  const price = prompt("Edit Price:",s.price);
-  if(!name||!price) return;
-  supabase.from("services").update({service_name:name,price:Number(price)}).eq("id",s.id).then(()=>loadDashboard());
-}
-
-function deleteService(index){
-  const s=currentServices[index];
-  supabase.from("services").delete().eq("id",s.id).then(()=>loadDashboard());
 }
 
 function populateServiceDropdown(){
-  const sel = document.getElementById("bService");
+  const sel=document.getElementById("bService");
   sel.innerHTML="";
   currentServices.forEach(s=>{
     const opt=document.createElement("option");
     opt.value=s.id;
-    opt.textContent=`${s.service_name} ($${s.price})`;
+    opt.textContent=s.service_name;
     sel.appendChild(opt);
   });
 }
 
-// --------- Load Bookings ----------
-async function loadDashboard(){
-  if(!currentUser) return;
-  const { data:bookings } = await supabase.from("bookings").select("*").eq("owner_id",currentUser.id).order("appointment_date",{ascending:false});
-  currentServices = await supabase.from("services").select("*").eq("owner_id",currentUser.id);
-  renderServices();
+// Add/Edit/Delete Services
+async function showAddService(){
+  const name = prompt("Enter service name:");
+  if(!name) return;
+  const price = prompt("Enter price ($):");
+  if(!price||isNaN(price)) return alert("Invalid price");
 
-  const tbody = document.querySelector("#bookingsTable tbody");
+  const { data, error } = await supabase.from("services").insert([{
+    owner_id: currentUser.id,
+    service_name: name,
+    price: Number(price)
+  }]).select().single();
+  if(error) return alert(error.message);
+
+  currentServices.push(data);
+  renderServices();
+  populateServiceDropdown();
+}
+
+// Customer Booking
+async function submitBooking(){
+  const name=document.getElementById("bName").value.trim();
+  const email=document.getElementById("bEmail").value.trim();
+  const phone=document.getElementById("bPhone").value.trim();
+  const serviceId=document.getElementById("bService").value;
+  const date=document.getElementById("bDate").value;
+  const note=document.getElementById("bNote").value;
+
+  if(!name||!email||!phone||!serviceId||!date) return alert("Fill all fields");
+
+  const service = currentServices.find(s=>s.id===serviceId);
+  if(!service) return alert("Service not found");
+
+  const { data, error } = await supabase.from("bookings").insert([{
+    service_id: service.id,
+    business_id: currentBusiness.id,
+    name,email,phone,date,price:service.price,note
+  }]).select().single();
+  if(error) return alert(error.message);
+
+  alert("Booking submitted!");
+  loadBookings();
+}
+
+// Load Bookings
+async function loadBookings(){
+  if(!currentBusiness) return;
+  const { data, error } = await supabase.from("bookings").select("*").eq("business_id",currentBusiness.id);
+  if(error) return alert("Error loading bookings");
+  bookingsList = data || [];
+  const tbody=document.querySelector("#bookingsTable tbody");
   tbody.innerHTML="";
-  bookings.forEach(b=>{
-    const s = currentServices.find(sv=>sv.id===b.service_id);
+  if(bookingsList.length===0){
+    tbody.innerHTML="<tr><td colspan='8'>No bookings yet</td></tr>";
+    return;
+  }
+  bookingsList.forEach(b=>{
     tbody.innerHTML+=`<tr>
-      <td>${b.name}</td>
-      <td>${b.email}</td>
-      <td>${b.phone}</td>
-      <td>${b.appointment_date}</td>
-      <td>${s? s.service_name:""}</td>
-      <td>${s? s.price:""}</td>
-      <td>${b.note}</td>
-    </tr>`;
+      <td>${b.name}</td><td>${b.email}</td><td>${b.phone}</td><td>${b.date}</td>
+      <td>${currentServices.find(s=>s.id===b.service_id)?.service_name||''}</td>
+      <td>${b.price}</td><td>${b.note}</td></tr>`;
   });
 }
 
-function copyLink(){
-  const link = document.getElementById("shareLink");
-  link.select();
-  link.setSelectionRange(0,99999);
-  document.execCommand("copy");
-  alert("Link copied!");
-}
-
-async function submitBooking(){
-  const name = document.getElementById("bName").value;
-  const email = document.getElementById("bEmail").value;
-  const phone = document.getElementById("bPhone").value;
-  const service_id = document.getElementById("bService").value;
-  const date = document.getElementById("bDate").value;
-  const note = document.getElementById("bNote").value;
-  if(!name||!email||!phone||!service_id||!date) return alert("Fill all fields");
-
-  const { data:service } = await supabase.from("services").select("*").eq("id",service_id).single();
-  const owner_id = service.owner_id;
-
-  await supabase.from("bookings").insert([{name,email,phone,service_id,appointment_date:date,note,owner_id}]);
-  alert("Booking submitted!");
-}
-
-function logout(){
-  supabase.auth.signOut();
-  currentUser=null;
-  showSection("landing");
-}
-
+function logout(){ currentUser=null; currentBusiness=null; showSection("landing"); }
+function copyLink(){ const link=document.getElementById("shareLink"); link.select(); link.setSelectionRange(0,99999); document.execCommand("copy"); alert("Link copied!"); }
 </script>
 </body>
 </html>
