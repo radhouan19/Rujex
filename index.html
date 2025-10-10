@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Business Platform</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+  <style>
+    *{box-sizing:border-box;font-family:"Poppins",sans-serif;}
+    body{margin:0;padding:0;background:#f9fafb;}
+    section{display:none;min-height:100vh;padding:2rem;}
+    .active{display:block;}
+    header{background:#2563eb;color:white;text-align:center;padding:1.5rem;font-size:1.5rem;}
+    .btn{background:#2563eb;color:white;padding:.8rem 1.5rem;border:none;border-radius:8px;cursor:pointer;transition:.3s;}
+    .btn:hover{background:#1e40af;}
+    input,textarea{width:100%;padding:.8rem;margin:.5rem 0;border:1px solid #ccc;border-radius:8px;}
+    .container{max-width:500px;margin:auto;background:white;padding:2rem;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+    table{width:100%;border-collapse:collapse;margin-top:1rem;}
+    th,td{border:1px solid #ddd;padding:.8rem;text-align:left;}
+    th{background:#2563eb;color:white;}
+    tr:nth-child(even){background:#f3f4f6;}
+    .link-box{display:flex;align-items:center;justify-content:space-between;background:#eef2ff;padding:.8rem 1rem;border-radius:8px;margin-top:1rem;border:1px solid #c7d2fe;}
+    .link-box input{width:80%;border:none;background:transparent;font-size:.95rem;color:#1e3a8a;}
+    .top-right{position:absolute;top:1rem;right:1rem;}
+  </style>
+</head>
+<body>
+  <header>My Business Platform</header>
+
+  <!-- Landing -->
+  <section id="landing" class="active">
+    <div class="container" style="text-align:center;">
+      <h1>Grow Your Business with Online Bookings</h1>
+      <p>7 days free, then $11/month. Get started below!</p>
+      <button class="btn" onclick="showSection('signup')">Start Free Trial</button>
+    </div>
+  </section>
+
+  <!-- Signup -->
+  <section id="signup">
+    <div class="container">
+      <h2>Create Your Account</h2>
+      <input id="email" placeholder="Email" type="email">
+      <input id="password" placeholder="Password" type="password">
+      <input id="businessName" placeholder="Business Name">
+      <div id="paypal-button-container" style="margin-top:1rem;"></div>
+    </div>
+  </section>
+
+  <!-- Dashboard -->
+  <section id="dashboard">
+    <button class="btn top-right" onclick="logout()">Logout</button>
+    <div class="container">
+      <h2>Your Dashboard</h2>
+      <p>Share your booking link 👇</p>
+      <div class="link-box">
+        <input id="shareLink" readonly>
+        <button class="btn" onclick="copyLink()">Copy</button>
+      </div>
+
+      <h3 style="margin-top:2rem;">Your Customer Bookings</h3>
+      <table id="bookingsTable">
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Date</th><th>Note</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Booking -->
+  <section id="booking">
+    <div class="container">
+      <h2>Book an Appointment</h2>
+      <input id="bName" placeholder="Your Name">
+      <input id="bEmail" placeholder="Your Email">
+      <input id="bPhone" placeholder="Phone Number">
+      <input id="bDate" type="datetime-local">
+      <textarea id="bNote" placeholder="Additional notes"></textarea>
+      <button class="btn" onclick="submitBooking()">Submit</button>
+    </div>
+  </section>
+
+  <script>
+    const SUPABASE_URL = "https://wpkaxnmbkhzmccrymzna.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa2F4bm1ia2h6bWNjcnltem5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4MTUwNDQsImV4cCI6MjA3NTM5MTA0NH0.HlWF2nyDlQ_bSrzCux3yeITDPXA2tL8iLeZ26-0TRZg";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    function showSection(id){
+      document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    // ---------- SIGNUP + PAYPAL ----------
+    let userEmail, userPassword, businessName;
+    paypal.Buttons({
+      createOrder: (data, actions) => {
+        userEmail=document.getElementById("email").value;
+        userPassword=document.getElementById("password").value;
+        businessName=document.getElementById("businessName").value;
+        if(!userEmail||!userPassword||!businessName){
+          alert("Please fill all fields first");
+          return;
+        }
+        return actions.order.create({purchase_units:[{amount:{value:'11.00'}}]});
+      },
+      onApprove: async (data, actions) => {
+        const order = await actions.order.capture();
+        const { data: user, error } = await supabase
+          .from("users").insert([{ email:userEmail, password:userPassword }]).select().single();
+        if(error) return alert("Error creating user.");
+
+        await supabase.from("businesses").insert([{
+          owner_id:user.id,
+          business_name:businessName,
+          business_slug:businessName.toLowerCase().replace(/\s+/g,"-")
+        }]);
+
+        localStorage.setItem("user_id",user.id);
+        alert("✅ Payment Success! Redirecting...");
+        showSection("dashboard");
+        loadDashboard();
+      }
+    }).render('#paypal-button-container');
+
+    // ---------- DASHBOARD ----------
+    async function loadDashboard(){
+      const userId = localStorage.getItem("user_id");
+      if(!userId) return alert("Please register first.");
+
+      const { data: business, error } = await supabase
+        .from("businesses").select("*").eq("owner_id",userId).single();
+      if(error||!business) return alert("Business not found.");
+
+      const domain = window.location.origin;
+      const link = `${domain}/?store=${business.business_slug}`;
+      document.getElementById("shareLink").value = link;
+
+      const { data: bookings } = await supabase
+        .from("bookings").select("*").eq("owner_id",userId).order("appointment_date",{ascending:false});
+
+      const tbody = document.querySelector("#bookingsTable tbody");
+      tbody.innerHTML="";
+      if(!bookings||bookings.length===0){
+        tbody.innerHTML="<tr><td colspan='5'>No bookings yet.</td></tr>";
+      } else {
+        bookings.forEach(b=>{
+          tbody.innerHTML += `<tr><td>${b.name}</td><td>${b.email}</td><td>${b.phone||"-"}</td><td>${new Date(b.appointment_date).toLocaleString()}</td><td>${b.note||""}</td></tr>`;
+        });
+      }
+    }
+
+    function copyLink(){
+      const input=document.getElementById("shareLink");
+      input.select(); document.execCommand("copy");
+      alert("🔗 Booking link copied!");
+    }
+
+    // ---------- BOOKING ----------
+    async function submitBooking(){
+      const params=new URLSearchParams(window.location.search);
+      const store=params.get("store");
+      if(!store){alert("Invalid store link.");return;}
+
+      const { data: business } = await supabase
+        .from("businesses").select("*").eq("business_slug",store).single();
+      if(!business){alert("Business not found.");return;}
+
+      const name=document.getElementById("bName").value;
+      const email=document.getElementById("bEmail").value;
+      const phone=document.getElementById("bPhone").value;
+      const date=document.getElementById("bDate").value;
+      const note=document.getElementById("bNote").value;
+
+      await supabase.from("bookings").insert([{owner_id:business.owner_id,name,email,phone,appointment_date:date,note}]);
+      alert("✅ Appointment booked!");
+      showSection("landing");
+    }
+
+    function logout(){
+      localStorage.removeItem("user_id");
+      alert("Logged out successfully!");
+      showSection("landing");
+    }
+
+    // auto detect if store link
+    if(window.location.search.includes("store=")){showSection("booking");}
+  </script>
+</body>
+</html>
