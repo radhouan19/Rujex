@@ -22,33 +22,32 @@ tr:nth-child(even){background:#f3f4f6;}
 .link-box{display:flex;align-items:center;justify-content:space-between;background:#eef2ff;padding:.8rem 1rem;border-radius:8px;margin-top:1rem;border:1px solid #c7d2fe;}
 .link-box input{width:80%;border:none;background:transparent;font-size:.95rem;color:#1e3a8a;}
 .top-right{position:absolute;top:1rem;right:1rem;}
+.paypal-like{display:inline-flex;align-items:center;gap:.6rem;background:#ffc439;color:#111;padding:.6rem 1rem;border-radius:8px;border:1px solid #f0c14b;font-weight:600;cursor:pointer;box-shadow: 0 2px 6px rgba(0,0,0,0.08);}
 </style>
 </head>
 <body>
 <header>Booking Platform</header>
 
-<!-- Landing -->
 <section id="landing" class="active">
   <div class="container" style="text-align:center;">
-    <h1>Welcome to Booking Platform</h1>
-    <button class="btn" onclick="showSection('newOwner')">New Owner? Sign Up</button>
-    <button class="btn" onclick="showSection('existingOwner')">Login</button>
+    <h1>Grow Your Business</h1>
+    <p>Select an option:</p>
+    <button class="btn" onclick="showSection('newOwner')">New Owner? Sign Up & Pay</button>
+    <button class="btn" onclick="showSection('existingOwner')">Already Registered? Login</button>
   </div>
 </section>
 
-<!-- New Owner -->
 <section id="newOwner">
   <div class="container">
-    <h2>Sign Up</h2>
+    <h2>Sign Up & Pay</h2>
     <input id="newEmail" placeholder="Email" type="email">
     <input id="newPassword" placeholder="Password" type="password">
     <input id="newBusinessName" placeholder="Business Name">
-    <button class="btn" onclick="registerNewOwner()">Register & Dashboard</button>
+    <button class="btn paypal-like" onclick="registerNewOwner()">Pay & Go to Dashboard</button>
     <button class="btn" onclick="showSection('landing')">Back</button>
   </div>
 </section>
 
-<!-- Existing Owner -->
 <section id="existingOwner">
   <div class="container">
     <h2>Login</h2>
@@ -59,199 +58,199 @@ tr:nth-child(even){background:#f3f4f6;}
   </div>
 </section>
 
-<!-- Owner Dashboard -->
 <section id="dashboard">
   <button class="btn top-right" onclick="logout()">Logout</button>
   <div class="container">
-    <h2>Owner Dashboard</h2>
-    <p>Share this booking link:</p>
+    <h2>Dashboard</h2>
+    <p>Share your booking link 👇</p>
     <div class="link-box">
       <input id="shareLink" readonly>
       <button class="btn" onclick="copyLink()">Copy</button>
     </div>
 
-    <h3>Services</h3>
+    <h3 style="margin-top:2rem;">Your Services</h3>
     <table id="servicesTable">
-      <thead><tr><th>Service</th><th>Price</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Service</th><th>Price ($)</th><th>Actions</th></tr></thead>
       <tbody></tbody>
     </table>
-    <button class="btn" onclick="addService()">Add Service</button>
+    <button class="btn" onclick="showAddService()">Add New Service</button>
 
-    <h3>Customer Bookings</h3>
+    <h3 style="margin-top:2rem;">Customer Appointments</h3>
     <table id="bookingsTable">
-      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th></tr></thead>
+      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Date</th><th>Service</th><th>Price ($)</th><th>Note</th></tr></thead>
       <tbody></tbody>
     </table>
   </div>
 </section>
 
-<!-- Customer Booking Page -->
-<section id="customerPage">
+<section id="booking">
   <div class="container">
-    <h2>Book a Service</h2>
-    <input id="cName" placeholder="Your Name">
-    <input id="cEmail" placeholder="Your Email">
-    <input id="cPhone" placeholder="Phone">
-    <select id="cService"></select>
-    <input id="cDate" type="datetime-local">
-    <button class="btn" onclick="submitCustomerBooking()">Book Now</button>
+    <h2>Book an Appointment</h2>
+    <input id="bName" placeholder="Your Name">
+    <input id="bEmail" placeholder="Your Email">
+    <input id="bPhone" placeholder="Phone Number">
+    <select id="bService"></select>
+    <input id="bDate" type="datetime-local">
+    <textarea id="bNote" placeholder="Additional notes"></textarea>
+    <button class="btn" onclick="submitBooking()">Submit</button>
   </div>
 </section>
 
 <script>
 const SUPABASE_URL = "https://xwkpqhuxzaphvyjycetq.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3a3BxaHV4emFwaHZ5anljZXRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwOTQ3ODEsImV4cCI6MjA3NTY3MDc4MX0.W0UueA_J9lWk9N5KIiYqcnPdXkTf-hlooVj2AqRkLFw";
+
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let servicesList = [];
+let currentUser = null;
+let currentServices = [];
 
 function showSection(id){
   document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
+// --------- Owner Registration ----------
 async function registerNewOwner(){
-  const email=document.getElementById("newEmail").value.trim();
-  const password=document.getElementById("newPassword").value.trim();
-  const business=document.getElementById("newBusinessName").value.trim();
-  if(!email||!password||!business) return alert("Fill all fields");
+  const email = document.getElementById("newEmail").value.trim();
+  const password = document.getElementById("newPassword").value.trim();
+  const businessName = document.getElementById("newBusinessName").value.trim();
+  if(!email||!password||!businessName) return alert("Fill all fields");
 
-  const { data:user,error } = await supabase.from("users").insert([{email,password}]).select().single();
-  if(error) return alert("Error: "+error.message);
+  const { data:user, error } = await supabase.auth.signUp({email,password});
+  if(error) return alert(error.message);
 
-  const slug=business.toLowerCase().replace(/\s+/g,"-");
-  await supabase.from("businesses").insert([{owner_id:user.id,business_name:business,business_slug:slug}]);
-
-  localStorage.setItem("owner_id",user.id);
-  setupDashboard(user.id,business,slug);
+  // create business row
+  await supabase.from("businesses").insert([{owner_id:user.user.id,business_name:businessName,business_slug:businessName.toLowerCase().replace(/\s+/g,"-")}]);
+  currentUser = user.user;
+  alert("✅ Account created! You are logged in.");
   showSection("dashboard");
+  setupDashboard();
+  loadDashboard();
 }
 
+// --------- Owner Login ----------
 async function loginExistingOwner(){
-  const email=document.getElementById("loginEmail").value.trim();
-  const password=document.getElementById("loginPassword").value.trim();
-  const { data:user,error } = await supabase.from("users").select("*").eq("email",email).eq("password",password).single();
-  if(error||!user) return alert("Invalid login");
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
+  if(!email||!password) return alert("Fill all fields");
 
-  const { data:business } = await supabase.from("businesses").select("*").eq("owner_id",user.id).single();
-  localStorage.setItem("owner_id",user.id);
-  setupDashboard(user.id,business.business_name,business.business_slug);
+  const { data:user, error } = await supabase.auth.signInWithPassword({email,password});
+  if(error) return alert(error.message);
+
+  currentUser = user.user;
   showSection("dashboard");
+  setupDashboard();
+  loadDashboard();
 }
 
-function logout(){
-  localStorage.removeItem("owner_id");
-  showSection("landing");
-}
+// --------- Dashboard ----------
+async function setupDashboard(){
+  if(!currentUser) return;
+  const { data:business } = await supabase.from("businesses").select("*").eq("owner_id",currentUser.id).single();
+  document.getElementById("shareLink").value = window.location.origin + "/?store=" + business.business_slug;
 
-function setupDashboard(owner_id,businessName,slug){
-  document.getElementById("shareLink").value=window.location.origin+"/?store="+slug;
-  loadServices(owner_id);
-  loadBookings(owner_id);
-}
-
-async function loadServices(owner_id){
-  const { data, error } = await supabase.from("services").select("*").eq("owner_id",owner_id);
-  servicesList = data || [];
+  const { data:services } = await supabase.from("services").select("*").eq("owner_id",currentUser.id);
+  currentServices = services;
   renderServices();
 }
 
 function renderServices(){
   const tbody = document.querySelector("#servicesTable tbody");
   tbody.innerHTML="";
-  servicesList.forEach((s,i)=>{
-    tbody.innerHTML+=`<tr>
-      <td>${s.service_name}</td><td>${s.price}</td>
-      <td>
-        <button class="btn" onclick="editService(${i})">Edit</button>
-        <button class="btn" onclick="deleteService(${i})">Delete</button>
-      </td>
-    </tr>`;
+  currentServices.forEach((s,i)=>{
+    tbody.innerHTML+=`<tr><td>${s.service_name}</td><td>${s.price}</td><td>
+      <button class="btn" onclick="editService(${i})">Edit</button>
+      <button class="btn" onclick="deleteService(${i})">Delete</button></td></tr>`;
+  });
+  populateServiceDropdown();
+}
+
+function showAddService(){
+  const name = prompt("Service Name:");
+  if(!name) return;
+  const price = prompt("Price:");
+  if(!price || isNaN(price)) return alert("Invalid price");
+  supabase.from("services").insert([{owner_id:currentUser.id,service_name:name,price:Number(price)}]).then(()=>loadDashboard());
+}
+
+function editService(index){
+  const s=currentServices[index];
+  const name = prompt("Edit Service Name:",s.service_name);
+  const price = prompt("Edit Price:",s.price);
+  if(!name||!price) return;
+  supabase.from("services").update({service_name:name,price:Number(price)}).eq("id",s.id).then(()=>loadDashboard());
+}
+
+function deleteService(index){
+  const s=currentServices[index];
+  supabase.from("services").delete().eq("id",s.id).then(()=>loadDashboard());
+}
+
+function populateServiceDropdown(){
+  const sel = document.getElementById("bService");
+  sel.innerHTML="";
+  currentServices.forEach(s=>{
+    const opt=document.createElement("option");
+    opt.value=s.id;
+    opt.textContent=`${s.service_name} ($${s.price})`;
+    sel.appendChild(opt);
   });
 }
 
-async function addService(){
-  const name=prompt("Service name");
-  const price=prompt("Price");
-  if(!name||isNaN(price)) return alert("Invalid");
-  const owner_id=localStorage.getItem("owner_id");
-  await supabase.from("services").insert([{owner_id,service_name:name,price:Number(price)}]);
-  loadServices(owner_id);
-}
+// --------- Load Bookings ----------
+async function loadDashboard(){
+  if(!currentUser) return;
+  const { data:bookings } = await supabase.from("bookings").select("*").eq("owner_id",currentUser.id).order("appointment_date",{ascending:false});
+  currentServices = await supabase.from("services").select("*").eq("owner_id",currentUser.id);
+  renderServices();
 
-async function editService(index){
-  const s=servicesList[index];
-  const name=prompt("Edit name",s.service_name);
-  const price=prompt("Edit price",s.price);
-  if(!name||isNaN(price)) return alert("Invalid");
-  await supabase.from("services").update({service_name:name,price:Number(price)}).eq("id",s.id);
-  loadServices(localStorage.getItem("owner_id"));
-}
-
-async function deleteService(index){
-  const s=servicesList[index];
-  await supabase.from("services").delete().eq("id",s.id);
-  loadServices(localStorage.getItem("owner_id"));
-}
-
-async function loadBookings(owner_id){
-  const { data } = await supabase.from("bookings").select("*").eq("owner_id",owner_id);
   const tbody = document.querySelector("#bookingsTable tbody");
   tbody.innerHTML="";
-  (data||[]).forEach(b=>{
+  bookings.forEach(b=>{
+    const s = currentServices.find(sv=>sv.id===b.service_id);
     tbody.innerHTML+=`<tr>
-      <td>${b.name}</td><td>${b.email}</td><td>${b.phone}</td><td>${b.service_name}</td><td>${b.appointment_date}</td>
+      <td>${b.name}</td>
+      <td>${b.email}</td>
+      <td>${b.phone}</td>
+      <td>${b.appointment_date}</td>
+      <td>${s? s.service_name:""}</td>
+      <td>${s? s.price:""}</td>
+      <td>${b.note}</td>
     </tr>`;
   });
-}
-
-// Customer Page
-function loadCustomerPage(){
-  const params = new URLSearchParams(window.location.search);
-  const store = params.get("store");
-  if(!store) return;
-  showSection("customerPage");
-  supabase.from("businesses").select("*").eq("business_slug",store).single().then(async ({data})=>{
-    const owner_id = data.id;
-    const { data:services } = await supabase.from("services").select("*").eq("owner_id",owner_id);
-    const sel = document.getElementById("cService");
-    sel.innerHTML="";
-    services.forEach(s=>{
-      const opt=document.createElement("option");
-      opt.value=s.id;
-      opt.textContent=`${s.service_name} ($${s.price})`;
-      sel.appendChild(opt);
-    });
-    sel.dataset.owner=owner_id;
-  });
-}
-
-async function submitCustomerBooking(){
-  const name=document.getElementById("cName").value.trim();
-  const email=document.getElementById("cEmail").value.trim();
-  const phone=document.getElementById("cPhone").value.trim();
-  const serviceId=document.getElementById("cService").value;
-  const date=document.getElementById("cDate").value;
-  const owner_id=document.getElementById("cService").dataset.owner;
-  if(!name||!email||!phone||!serviceId||!date) return alert("Fill all");
-
-  const { data:service } = await supabase.from("services").select("*").eq("id",serviceId).single();
-  await supabase.from("bookings").insert([{owner_id,name,email,phone,service_name:service.service_name,appointment_date:date}]);
-  alert("Booking submitted!");
-  showSection("landing");
 }
 
 function copyLink(){
   const link = document.getElementById("shareLink");
   link.select();
+  link.setSelectionRange(0,99999);
   document.execCommand("copy");
   alert("Link copied!");
 }
 
-// Load customer page if URL has store param
-if(window.location.search.includes("store=")){
-  loadCustomerPage();
+async function submitBooking(){
+  const name = document.getElementById("bName").value;
+  const email = document.getElementById("bEmail").value;
+  const phone = document.getElementById("bPhone").value;
+  const service_id = document.getElementById("bService").value;
+  const date = document.getElementById("bDate").value;
+  const note = document.getElementById("bNote").value;
+  if(!name||!email||!phone||!service_id||!date) return alert("Fill all fields");
+
+  const { data:service } = await supabase.from("services").select("*").eq("id",service_id).single();
+  const owner_id = service.owner_id;
+
+  await supabase.from("bookings").insert([{name,email,phone,service_id,appointment_date:date,note,owner_id}]);
+  alert("Booking submitted!");
 }
+
+function logout(){
+  supabase.auth.signOut();
+  currentUser=null;
+  showSection("landing");
+}
+
 </script>
 </body>
 </html>
