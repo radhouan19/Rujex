@@ -3,166 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Salon Booking - USA</title>
+<title>Salon Platform - USA</title>
 <style>
-body {
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  background: #f5f5f5;
-}
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-.carousel {
-  position: relative;
-  max-width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
+  * { box-sizing: border-box; margin:0; padding:0; font-family: 'Poppins', sans-serif; }
 
-.slide {
-  display: none;
-  width: 100%;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
+  body, html {
+    height: 100%;
+    width: 100%;
+  }
 
-.slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+  /* الخلفية: Collage صور صالونات */
+  body {
+    background-image: url('https://images.unsplash.com/photo-1593569589898-6db9bfa6f2c1?auto=format&fit=crop&w=1350&q=80');
+    /* مثال صورة خلفية كبيرة - يمكن تغييرها برابط صور أخرى أو دمج عدة صور */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-}
+  .overlay {
+    position: absolute;
+    top:0; left:0;
+    width:100%;
+    height:100%;
+    background-color: rgba(0,0,0,0.5); /* لتوضيح النص فوق الصور */
+    z-index:1;
+  }
 
-.overlay h1 {
-  color: #fff;
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  text-align: center;
-}
+  .container {
+    position: relative;
+    z-index:2;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+  }
 
-.btn {
-  margin: 0.5rem;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s;
-}
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
 
-.btn-primary { background: #2563eb; color: #fff; }
-.btn-primary:hover { background: #1e40af; }
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
 
-.btn-secondary { background: #10b981; color: #fff; }
-.btn-secondary:hover { background: #047857; }
+  .btn {
+    display: block;
+    width: 250px;
+    margin: 1rem auto;
+    padding: 1rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+    background-color: #2563eb;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
 
-.btn-tertiary { background: #f59e0b; color: #fff; }
-.btn-tertiary:hover { background: #b45309; }
+  .btn:hover {
+    background-color: #1e40af;
+  }
 
-/* Navigation dots */
-.dots {
-  position: absolute;
-  bottom: 20px;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  z-index: 2;
-}
-
-.dot {
-  height: 12px;
-  width: 12px;
-  margin: 0 6px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
-  transition: background-color 0.3s;
-}
-
-.active-dot {
-  background-color: #fff;
-}
 </style>
 </head>
 <body>
 
-<div class="carousel">
-  <div class="slide">
-    <img src="https://images.unsplash.com/photo-1590080875173-d87bba9a1f1d?auto=format&fit=crop&w=1920&q=80" alt="Salon 1">
-    <div class="overlay">
-      <h1>Grow Your Hair Salon Business in USA</h1>
-      <button class="btn btn-primary" onclick="showSection('trial')">7 Days Free Trial</button>
-      <button class="btn btn-secondary" onclick="showSection('signup')">New Owner? Sign Up</button>
-      <button class="btn btn-tertiary" onclick="showSection('login')">Already Registered? Login</button>
-    </div>
-  </div>
-  <div class="slide">
-    <img src="https://images.unsplash.com/photo-1583337130417-42e97b5a0f8a?auto=format&fit=crop&w=1920&q=80" alt="Salon 2">
-    <div class="overlay">
-      <h1>Grow Your Hair Salon Business in USA</h1>
-      <button class="btn btn-primary" onclick="showSection('trial')">7 Days Free Trial</button>
-      <button class="btn btn-secondary" onclick="showSection('signup')">New Owner? Sign Up</button>
-      <button class="btn btn-tertiary" onclick="showSection('login')">Already Registered? Login</button>
-    </div>
-  </div>
-  <div class="slide">
-    <img src="https://images.unsplash.com/photo-1605902711622-cfb43c4437ef?auto=format&fit=crop&w=1920&q=80" alt="Salon 3">
-    <div class="overlay">
-      <h1>Grow Your Hair Salon Business in USA</h1>
-      <button class="btn btn-primary" onclick="showSection('trial')">7 Days Free Trial</button>
-      <button class="btn btn-secondary" onclick="showSection('signup')">New Owner? Sign Up</button>
-      <button class="btn btn-tertiary" onclick="showSection('login')">Already Registered? Login</button>
-    </div>
-  </div>
+<div class="overlay"></div>
 
-  <div class="dots">
-    <span class="dot active-dot"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-  </div>
+<div class="container">
+  <h1>Grow Your Hair Salon in the USA</h1>
+  <p>Start your online booking system today and manage your customers easily!</p>
+
+  <button class="btn" onclick="alert('Start 7-day free trial')">7 Days Free Trial</button>
+  <button class="btn" onclick="alert('Go to Registration Page')">Sign Up</button>
+  <button class="btn" onclick="alert('Go to Login Page')">Already Registered?</button>
 </div>
-
-<script>
-let currentSlide = 0;
-const slides = document.querySelectorAll(".slide");
-const dots = document.querySelectorAll(".dot");
-
-function showSlide(index) {
-  slides.forEach((s,i)=>{ s.style.display = "none"; dots[i].classList.remove("active-dot"); });
-  slides[index].style.display = "block";
-  dots[index].classList.add("active-dot");
-}
-
-function nextSlide(){
-  currentSlide = (currentSlide + 1) % slides.length;
-  showSlide(currentSlide);
-}
-
-// Auto-slide every 5 seconds
-setInterval(nextSlide,5000);
-
-// Initialize
-showSlide(currentSlide);
-
-function showSection(sectionName){
-  alert("Here you can link to your "+sectionName+" section or page.");
-}
-</script>
 
 </body>
 </html>
