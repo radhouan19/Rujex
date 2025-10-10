@@ -81,7 +81,7 @@ tr:nth-child(even){background:#f3f4f6;}
 
     <h3 style="margin-top:2rem;">Customer Appointments</h3>
     <table id="bookingsTable">
-      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Date</th><th>Service</th><th>Price ($)</th><th>Note</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Date</th><th>Service</th><th>Price ($)</th><th>Note</th></tr></thead>
       <tbody></tbody>
     </table>
   </div>
@@ -103,7 +103,7 @@ tr:nth-child(even){background:#f3f4f6;}
 
 <script>
 const SUPABASE_URL = "https://wpkaxnmbkhzmccrymzna.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY"; // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa2F4bm1ia2h6bWNjcnltem5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4MTUwNDQsImV4cCI6MjA3NTM5MTA0NH0.HlWF2nyDlQ_bSrzCux3yeITDPXA2tL8iLeZ26-0TRZg
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 const useSupabase = SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes("YOUR_PLACEHOLDER_KEY");
 const supabase = useSupabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
@@ -215,6 +215,62 @@ function renderServices(){
 }
 
 function populateServiceDropdown(){
-  const sel = document.getElementById("bService");
+  const sel=document.getElementById("bService");
   sel.innerHTML="";
-  currentServices
+  currentServices.forEach(s=>{
+    const opt=document.createElement("option");
+    opt.value=s.name;
+    opt.textContent=s.name;
+    sel.appendChild(opt);
+  });
+}
+
+// ---------- Bookings ----------
+function submitBooking(){
+  const name=document.getElementById("bName").value.trim();
+  const email=document.getElementById("bEmail").value.trim();
+  const phone=document.getElementById("bPhone").value.trim();
+  const service=document.getElementById("bService").value;
+  const date=document.getElementById("bDate").value;
+  const note=document.getElementById("bNote").value;
+
+  if(!name||!email||!phone||!service||!date) return alert("Fill all required fields");
+
+  bookingsList.push({name,email,phone,service,price:currentServices.find(s=>s.name===service).price,date,note});
+  renderBookings(bookingsList);
+  alert("✅ Appointment booked!");
+  showSection("landing");
+}
+
+function renderBookings(bookings){
+  const tbody=document.querySelector("#bookingsTable tbody");
+  tbody.innerHTML="";
+  if(!bookings||bookings.length===0){
+    tbody.innerHTML="<tr><td colspan='8'>No bookings yet.</td></tr>";
+    return;
+  }
+  bookings.forEach(b=>{
+    tbody.innerHTML+=`<tr><td>${b.name}</td><td>${b.email}</td><td>${b.phone}</td>
+      <td>${new Date(b.date).toLocaleString()}</td><td>${b.service}</td><td>${b.price}</td><td>${b.note||""}</td><td>-</td></tr>`;
+  });
+}
+
+// ---------- Utilities ----------
+function copyLink(){
+  const input=document.getElementById("shareLink");
+  input.select();
+  document.execCommand("copy");
+  alert("🔗 Booking link copied!");
+}
+
+function logout(){
+  localStorage.removeItem("user_id");
+  alert("Logged out successfully!");
+  showSection("landing");
+}
+
+// Auto-detect store link for customers
+if(window.location.search.includes("store=")){showSection("booking");}
+</script>
+</body>
+</html>
