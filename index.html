@@ -3,69 +3,88 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Salon Booking USA</title>
+<title>Salon Owner Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;font-family:"Poppins",sans-serif;}
-body, html{margin:0;padding:0;height:100%;}
-
-/* الخلفية */
+*{box-sizing:border-box;font-family:'Poppins',sans-serif;margin:0;padding:0;}
 body{
-  background: url('https://images.unsplash.com/photo-1610107559655-7f95b3b6451e?crop=entropy&cs=tinysrgb&fit=max&w=1920&q=80') no-repeat center center fixed;
+  min-height:100vh;
+  background: url('https://images.unsplash.com/photo-1610107559655-7f95b3b6451e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
   background-size: cover;
   display:flex;
   justify-content:center;
   align-items:center;
 }
-
-/* الصندوق المركزي */
+.overlay{
+  position:absolute;
+  top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.5);
+  z-index:0;
+}
 .container{
-  background: rgba(255,255,255,0.85); /* شفاف مع قليل من الأبيض */
-  padding: 3rem;
-  border-radius: 20px;
+  position:relative;
+  z-index:1;
   text-align:center;
+  background: rgba(255,255,255,0.85);
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
   max-width: 400px;
   width: 90%;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
-
-/* العنوان */
 h1{
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  color:#1f2937;
+  font-size:2rem;
+  margin-bottom:2rem;
+  color:#1e3a8a;
 }
-
-/* الأزرار الكبيرة */
 .btn{
   display:block;
-  width: 100%;
-  padding: 1rem;
-  margin: 1rem 0;
-  font-size: 1.2rem;
-  font-weight: 600;
+  width:100%;
+  padding:1rem;
+  margin:1rem 0;
+  font-size:1.1rem;
+  font-weight:600;
   border:none;
-  border-radius: 12px;
+  border-radius:12px;
   cursor:pointer;
   transition:0.3s;
 }
-
-/* ألوان مختلفة للأزرار */
-.freeTrial{background:#2563eb;color:white;}
-.freeTrial:hover{background:#1e40af;}
-
-.signup{background:#10b981;color:white;}
-.signup:hover{background:#047857;}
-
-.login{background:#f59e0b;color:white;}
-.login:hover{background:#b45309;}
+.btn-primary{
+  background:#2563eb;
+  color:white;
+}
+.btn-primary:hover{
+  background:#1e40af;
+}
+.btn-secondary{
+  background:#10b981;
+  color:white;
+}
+.btn-secondary:hover{
+  background:#0f766e;
+}
+.btn-tertiary{
+  background:#f59e0b;
+  color:white;
+}
+.btn-tertiary:hover{
+  background:#b45309;
+}
 </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Grow Your Hair Salon Business in the USA</h1>
-    <button class="btn freeTrial" onclick="alert('Redirect to 7-day free trial signup')">7-Day Free Trial</button>
-    <button class="btn signup" onclick="alert('Redirect to New Owner Signup')">Sign Up as New Owner</button>
-    <button class="btn login" onclick="alert('Redirect to Login')">Already Registered? Login</button>
-  </div>
+<div class="overlay"></div>
+<div class="container">
+  <h1>Grow Your Hair Salon Business in the USA</h1>
+  <button class="btn btn-primary" onclick="showSection('freeTrial')">7 Days Free Trial</button>
+  <button class="btn btn-secondary" onclick="showSection('newOwner')">New Owner? Sign Up</button>
+  <button class="btn btn-tertiary" onclick="showSection('existingOwner')">Already Registered? Login</button>
+</div>
+
+<script>
+function showSection(name){
+  alert('This would navigate to: ' + name + ' section.');
+}
+</script>
 </body>
 </html>
