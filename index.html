@@ -1,16 +1,17 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Booking Platform</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif;}
+*{box-sizing:border-box;font-family:"Poppins",sans-serif;}
 body{margin:0;padding:0;background:#f9fafb;}
 section{display:none;min-height:100vh;padding:2rem;}
 .active{display:block;}
 header{background:#2563eb;color:white;text-align:center;padding:1.5rem;font-size:1.5rem;}
-.btn{background:#2563eb;color:white;padding:.8rem 1.5rem;border:none;border-radius:8px;cursor:pointer;transition:.3s;margin:.2rem;}
+.btn{background:#2563eb;color:white;padding:.8rem 1.5rem;border:none;border-radius:8px;cursor:pointer;margin:.2rem;}
 .btn:hover{background:#1e40af;}
 input,textarea,select{width:100%;padding:.8rem;margin:.5rem 0;border:1px solid #ccc;border-radius:8px;}
 .container{max-width:600px;margin:auto;background:white;padding:2rem;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
@@ -24,14 +25,18 @@ tr:nth-child(even){background:#f3f4f6;}
 </style>
 </head>
 <body>
-<header>Booking Platform</header><!-- Landing --><section id="landing" class="active">
+<header>Booking Platform</header>
+
+<section id="landing" class="active">
   <div class="container" style="text-align:center;">
     <h1>Grow Your Business</h1>
     <p>Select an option below:</p>
     <button class="btn" onclick="showSection('newOwner')">New Owner? Sign Up</button>
     <button class="btn" onclick="showSection('existingOwner')">Already Registered? Login</button>
   </div>
-</section><!-- New Owner --><section id="newOwner">
+</section>
+
+<section id="newOwner">
   <div class="container">
     <h2>Sign Up</h2>
     <input id="newEmail" placeholder="Email" type="email">
@@ -40,7 +45,9 @@ tr:nth-child(even){background:#f3f4f6;}
     <button class="btn" onclick="registerNewOwner()">Register & Go to Dashboard</button>
     <button class="btn" onclick="showSection('landing')">Back</button>
   </div>
-</section><!-- Existing Owner Login --><section id="existingOwner">
+</section>
+
+<section id="existingOwner">
   <div class="container">
     <h2>Login</h2>
     <input id="loginEmail" placeholder="Email" type="email">
@@ -48,7 +55,9 @@ tr:nth-child(even){background:#f3f4f6;}
     <button class="btn" onclick="loginExistingOwner()">Login</button>
     <button class="btn" onclick="showSection('landing')">Back</button>
   </div>
-</section><!-- Dashboard --><section id="dashboard">
+</section>
+
+<section id="dashboard">
   <button class="btn top-right" onclick="logout()">Logout</button>
   <div class="container">
     <h2>Dashboard</h2>
@@ -56,15 +65,24 @@ tr:nth-child(even){background:#f3f4f6;}
     <div class="link-box">
       <input id="shareLink" readonly>
       <button class="btn" onclick="copyLink()">Copy</button>
-    </div><h3>Services</h3>
-<table id="servicesTable"><thead><tr><th>Service</th><th>Price</th><th>Actions</th></tr></thead><tbody></tbody></table>
-<button class="btn" onclick="addServicePrompt()">Add Service</button>
+    </div>
 
-<h3>Customer Bookings</h3>
-<table id="bookingsTable"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th><th>Note</th></tr></thead><tbody></tbody></table>
+    <h3>Your Services</h3>
+    <table id="servicesTable">
+      <thead><tr><th>Service</th><th>Price</th><th>Actions</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn" onclick="showAddService()">Add New Service</button>
 
+    <h3>Customer Bookings</h3>
+    <table id="bookingsTable">
+      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Date</th><th>Service</th><th>Note</th></tr></thead>
+      <tbody></tbody>
+    </table>
   </div>
-</section><!-- Booking --><section id="booking">
+</section>
+
+<section id="booking">
   <div class="container">
     <h2>Book an Appointment</h2>
     <input id="bName" placeholder="Your Name">
@@ -75,72 +93,98 @@ tr:nth-child(even){background:#f3f4f6;}
     <textarea id="bNote" placeholder="Additional notes"></textarea>
     <button class="btn" onclick="submitBooking()">Submit</button>
   </div>
-</section><script>
+</section>
+
+<script>
 const SUPABASE_URL = "https://mghpawqdnsdowbxyrnah.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1naHBhd3FkbnNkb3dieHlybmFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3NTUxNDAsImV4cCI6MjA3NTMzMTE0MH0.wZaRb4rLPszhqZJ6Xw1L6hQMXFylXbaeEXkYwJUZp6s";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let ownerId;
-let services = [];
+let currentServices = [];
 
-function showSection(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showSection(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 
 async function registerNewOwner(){
-  const email=document.getElementById('newEmail').value.trim();
-  const password=document.getElementById('newPassword').value.trim();
-  const businessName=document.getElementById('newBusinessName').value.trim();
-  if(!email||!password||!businessName){alert('Fill all fields');return;}
-  const {data:user,error}=await supabase.from('users').insert([{email,password}]).select().single();
-  if(error){alert('Error: '+error.message);return;}
-  ownerId=user.id;
-  await supabase.from('businesses').insert([{owner_id:user.id,business_name:businessName,business_slug:businessName.toLowerCase().replace(/\s+/g,'-')}]);
-  localStorage.setItem('ownerId',ownerId);
-  alert('Account created');
-  showSection('dashboard');
-  setupDashboard();
+  const email = document.getElementById("newEmail").value.trim();
+  const password = document.getElementById("newPassword").value.trim();
+  const businessName = document.getElementById("newBusinessName").value.trim();
+  if(!email||!password||!businessName) return alert("Fill all fields");
+  try{
+    const { data: user } = await supabase.from("users").insert([{email,password}]).select().single();
+    await supabase.from("businesses").insert([{owner_id:user.id,business_name:businessName,business_slug:businessName.toLowerCase().replace(/\s+/g,"-")}]);
+    localStorage.setItem("user_id",user.id);
+    setupDashboard(email,businessName);
+    showSection("dashboard");
+  } catch(e){console.error(e); alert("Error creating account");}
 }
 
 async function loginExistingOwner(){
-  const email=document.getElementById('loginEmail').value.trim();
-  const password=document.getElementById('loginPassword').value.trim();
-  if(!email||!password){alert('Fill all fields');return;}
-  const {data:user,error}=await supabase.from('users').select('*').eq('email',email).eq('password',password).single();
-  if(error||!user){alert('Invalid credentials');return;}
-  ownerId=user.id;
-  localStorage.setItem('ownerId',ownerId);
-  showSection('dashboard');
-  setupDashboard();
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
+  if(!email||!password) return alert("Fill all fields");
+  try{
+    const { data: user } = await supabase.from("users").select("*").eq("email",email).eq("password",password).single();
+    if(!user) return alert("Invalid credentials");
+    const { data: business } = await supabase.from("businesses").select("*").eq("owner_id",user.id).single();
+    localStorage.setItem("user_id",user.id);
+    setupDashboard(email,business.business_name);
+    showSection("dashboard");
+  } catch(e){console.error(e); alert("Login failed");}
 }
 
-async function setupDashboard(){
-  const {data:servicesData}=await supabase.from('services').select('*').eq('owner_id',ownerId);
-  services=servicesData||[];
-  renderServices();
-  const slug=(await supabase.from('businesses').select('*').eq('owner_id',ownerId).single()).data.business_slug;
-  document.getElementById('shareLink').value=window.location.origin+'/?store='+slug;
+function setupDashboard(email,businessName){
+  const slug = businessName.toLowerCase().replace(/\s+/g,"-");
+  document.getElementById("shareLink").value = window.location.origin + "/?store=" + slug;
+  loadServices(slug);
+}
+
+async function loadServices(slug){
+  try{
+    const { data: services } = await supabase.from("services").select("*").eq("business_slug",slug);
+    currentServices = services || [];
+    renderServices();
+  } catch(e){console.error(e);}
+}
+
+function showAddService(){
+  const name = prompt("Service name");
+  const price = prompt("Price");
+  if(!name||!price) return;
+  const slug = document.getElementById("shareLink").value.split("store=")[1];
+  supabase.from("services").insert([{business_slug:slug,name,price:Number(price)}]);
+  loadServices(slug);
 }
 
 function renderServices(){
-  const tbody=document.querySelector('#servicesTable tbody');
-  tbody.innerHTML='';
-  services.forEach((s,i)=>{
-    tbody.innerHTML+=`<tr><td>${s.name}</td><td>${s.price}</td><td><button class='btn' onclick='editService(${i})'>Edit</button><button class='btn' onclick='deleteService(${i})'>Delete</button></td></tr>`;
-  });
-  const sel=document.getElementById('bService'); sel.innerHTML='';
-  services.forEach(s=>{const opt=document.createElement('option');opt.value=s.name;opt.textContent=s.name;sel.appendChild(opt);});
+  const tbody=document.querySelector("#servicesTable tbody");
+  tbody.innerHTML="";
+  currentServices.forEach(s=>{tbody.innerHTML+=`<tr><td>${s.name}</td><td>${s.price}</td><td></td></tr>`;});
+  const sel = document.getElementById("bService");
+  sel.innerHTML="";
+  currentServices.forEach(s=>{const o=document.createElement("option");o.value=s.name;o.textContent=s.name;sel.appendChild(o);});
 }
 
-async function addServicePrompt(){
-  const name=prompt('Service Name');
-  const price=prompt('Price');
-  if(!name||!price||isNaN(price))return;
-  const {data,error}=await supabase.from('services').insert([{owner_id:ownerId,name,price:Number(price)}]).select().single();
-  if(error){alert(error.message);return;}
-  services.push(data);
-  renderServices();
+async function submitBooking(){
+  const params = new URLSearchParams(window.location.search);
+  const store = params.get("store");
+  if(!store) return alert("Invalid store");
+  const name = document.getElementById("bName").value;
+  const email = document.getElementById("bEmail").value;
+  const phone = document.getElementById("bPhone").value;
+  const service = document.getElementById("bService").value;
+  const date = document.getElementById("bDate").value;
+  const note = document.getElementById("bNote").value;
+  await supabase.from("bookings").insert([{owner_id:store,name,email,phone,service,appointment_date:date,note}]);
+  alert("Booking submitted!");
+  showSection("landing");
 }
 
-async function editService(i){
-  const s=services[i];
-  const name=prompt('Edit name',s.name);
-  const price=prompt('Edit price',
+function logout(){localStorage.removeItem("user_id");showSection("landing");}
+function copyLink(){const input=document.getElementById("shareLink");input.select();document.execCommand("copy");alert("Copied!");}
+if(window.location.search.includes("store=")) showSection("booking");
+</script>
+</body>
+</html>
