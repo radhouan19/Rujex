@@ -22,13 +22,13 @@ tr:nth-child(even){background:#f3f4f6;}
 .link-box{display:flex;align-items:center;justify-content:space-between;background:#eef2ff;padding:.8rem 1rem;border-radius:8px;margin-top:1rem;border:1px solid #c7d2fe;}
 .link-box input{width:80%;border:none;background:transparent;font-size:.95rem;color:#1e3a8a;}
 .top-right{position:absolute;top:1rem;right:1rem;}
-.paypal-like{display:inline-flex;align-items:center;gap:.6rem;background:#ffc439;color:#111;padding:.6rem 1rem;border-radius:8px;border:1px solid #f0c14b;font-weight:600;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+.paypal-like{display:inline-flex;align-items:center;gap:.6rem;background:#ffc439;color:#111;padding:.6rem 1rem;border-radius:8px;border:1px solid #f0c14b;font-weight:600;cursor:pointer;box-shadow: 0 2px 6px rgba(0,0,0,0.08);}
 </style>
 </head>
 <body>
 <header>Salon Booking Platform</header>
 
-<!-- Landing -->
+<!-- Landing / Choose Option -->
 <section id="landing" class="active">
   <div class="container" style="text-align:center;">
     <h1>Grow Your Hair Salon Business</h1>
@@ -103,12 +103,12 @@ tr:nth-child(even){background:#f3f4f6;}
 
 <script>
 const SUPABASE_URL = "https://wpkaxnmbkhzmccrymzna.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa2F4bm1ia2h6bWNjcnltem5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4MTUwNDQsImV4cCI6MjA3NTM5MTA0NH0.HlWF2nyDlQ_bSrzCux3yeITDPXA2tL8iLeZ26-0TRZg";
-const useSupabase = SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes("PLACEHOLDER_KEY");
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY"; // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa2F4bm1ia2h6bWNjcnltem5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4MTUwNDQsImV4cCI6MjA3NTM5MTA0NH0.HlWF2nyDlQ_bSrzCux3yeITDPXA2tL8iLeZ26-0TRZg
+const useSupabase = SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes("YOUR_PLACEHOLDER_KEY");
 const supabase = useSupabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-let currentServices=[];
-let bookingsList=[];
+let currentServices = [];
+let bookingsList = [];
 
 function showSection(id){
   document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
@@ -117,21 +117,28 @@ function showSection(id){
 
 // ---------- New Owner ----------
 async function registerNewOwner(){
-  const email=document.getElementById("newEmail").value.trim();
-  const password=document.getElementById("newPassword").value.trim();
-  const businessName=document.getElementById("newBusinessName").value.trim();
+  const email = document.getElementById("newEmail").value.trim();
+  const password = document.getElementById("newPassword").value.trim();
+  const businessName = document.getElementById("newBusinessName").value.trim();
   if(!email||!password||!businessName) return alert("Fill all fields");
 
   let userId;
   if(useSupabase){
-    const { data:user, error } = await supabase.from("users").insert([{email,password}]).select().single();
-    if(error) return alert("Error creating user: "+error.message);
-    const slug = businessName.toLowerCase().replace(/\s+/g,"-");
-    await supabase.from("businesses").insert([{owner_id:user.id,business_name:businessName,business_slug:slug}]);
-    userId=user.id;
-  } else userId='local-'+Math.random().toString(36).slice(2);
-
-  localStorage.setItem("user_id",userId);
+    try {
+      const { data: user, error } = await supabase.from("users").insert([{email,password}]).select().single();
+      if(error) throw error;
+      const slug = businessName.toLowerCase().replace(/\s+/g,"-");
+      await supabase.from("businesses").insert([{owner_id:user.id,business_name:businessName,business_slug:slug}]);
+      userId = user.id;
+    } catch(e) {
+      console.error(e);
+      alert("Error creating user in Supabase, switching to Demo Mode");
+      userId = 'local-'+Math.random().toString(36).slice(2);
+    }
+  } else {
+    userId = 'local-'+Math.random().toString(36).slice(2);
+  }
+  localStorage.setItem("user_id", userId);
   alert("✅ Payment simulated! Account created.");
   showSection("dashboard");
   setupDashboard(email,businessName);
@@ -140,20 +147,24 @@ async function registerNewOwner(){
 
 // ---------- Existing Owner Login ----------
 async function loginExistingOwner(){
-  const email=document.getElementById("loginEmail").value.trim();
-  const password=document.getElementById("loginPassword").value.trim();
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
   if(!email||!password) return alert("Fill all fields");
 
   let businessName="Demo Salon", userId='local-'+Math.random().toString(36).slice(2);
   if(useSupabase){
-    const { data:user, error } = await supabase.from("users").select("*").eq("email",email).eq("password",password).single();
-    if(error||!user) return alert("Invalid credentials");
-    userId=user.id;
-    const { data: business } = await supabase.from("businesses").select("*").eq("owner_id",user.id).single();
-    if(business) businessName=business.business_name;
+    try{
+      const { data: user, error } = await supabase.from("users").select("*").eq("email",email).eq("password",password).single();
+      if(error||!user) return alert("Invalid credentials");
+      userId = user.id;
+      const { data: business } = await supabase.from("businesses").select("*").eq("owner_id",user.id).single();
+      businessName = business.business_name;
+    } catch(e){
+      console.error(e);
+      alert("Login error, switching to Demo Mode");
+    }
   }
-
-  localStorage.setItem("user_id",userId);
+  localStorage.setItem("user_id", userId);
   showSection("dashboard");
   setupDashboard(email,businessName);
   loadDashboard();
@@ -204,75 +215,6 @@ function renderServices(){
 }
 
 function populateServiceDropdown(){
-  const sel=document.getElementById("bService");
+  const sel = document.getElementById("bService");
   sel.innerHTML="";
-  currentServices.forEach(s=>{
-    const opt=document.createElement("option");
-    opt.value=s.name;
-    opt.textContent=s.name;
-    sel.appendChild(opt);
-  });
-}
-
-// ---------- Bookings ----------
-async function loadDashboard(){
-  const userId=localStorage.getItem("user_id");
-  if(!userId) return alert("Please register first.");
-
-  if(useSupabase){
-    const { data: bookings } = await supabase.from("bookings").select("*").eq("owner_id",userId).order("appointment_date",{ascending:false});
-    bookingsList=bookings;
-    renderBookings(bookings);
-  } else {
-    bookingsList=[];
-    document.querySelector("#bookingsTable tbody").innerHTML="<tr><td colspan='8'>No bookings yet (demo mode)</td></tr>";
-  }
-}
-
-function renderBookings(bookings){
-  const tbody=document.querySelector("#bookingsTable tbody");
-  tbody.innerHTML="";
-  if(!bookings||bookings.length===0){
-    tbody.innerHTML="<tr><td colspan='8'>No bookings yet.</td></tr>";
-    return;
-  }
-  bookings.forEach((b,i)=>{
-    tbody.innerHTML+=`<tr>
-      <td>${b.name}</td><td>${b.email}</td><td>${b.phone||"-"}</td>
-      <td>${b.appointment_date?new Date(b.appointment_date).toLocaleString():"-"}</td>
-      <td>${b.service||"-"}</td><td>${b.price||"-"}</td>
-      <td>${b.note||""}</td>
-      <td><button class="btn" onclick="deleteBooking(${i})">Delete</button></td>
-    </tr>`;
-  });
-}
-
-function deleteBooking(index){
-  if(!confirm("Delete this booking?")) return;
-  bookingsList.splice(index,1);
-  renderBookings(bookingsList);
-}
-
-// ---------- Customer Booking ----------
-function submitBooking(){
-  const name=document.getElementById("bName").value.trim();
-  const email=document.getElementById("bEmail").value.trim();
-  const phone=document.getElementById("bPhone").value.trim();
-  const service=document.getElementById("bService").value;
-  const date=document.getElementById("bDate").value;
-  const note=document.getElementById("bNote").value.trim();
-
-  if(!name||!email||!service||!date) return alert("Fill all required fields");
-
-  const selectedService=currentServices.find(s=>s.name===service);
-  const price=selectedService?selectedService.price:0;
-
-  bookingsList.push({name,email,phone,service,price,appointment_date:date,note});
-  alert("✅ Appointment booked (demo mode).");
-  showSection("landing");
-}
-
-// ---------- Misc ----------
-function copyLink(){
-  const input=document.getElementById("shareLink");
-  input.select(); document.execCommand("copy");
+  currentServices
