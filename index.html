@@ -150,5 +150,49 @@
       document.getElementById("bookServices").innerHTML = services.map(s => `<li>${s}</li>`).join("");
     }
   </script>
+<!-- Booking Page Simulation -->
+<script>
+  // Simulate visiting business link
+  function openBusinessLink() {
+    document.body.innerHTML = `
+      <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-100 to-gray-300 text-gray-800">
+        <h1 class="text-4xl font-bold mb-6">Welcome to My Business</h1>
+        <p class="text-lg mb-8">Book your appointment easily below.</p>
+        <button onclick="openBookingForm()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg transition text-lg">Book Now</button>
+      </div>
+    `;
+  }
+
+  // Booking form UI
+  function openBookingForm() {
+    document.body.innerHTML = `
+      <div class="min-h-screen flex items-center justify-center bg-gray-50">
+        <div class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-lg">
+          <h2 class="text-2xl font-bold mb-6 text-center">Book an Appointment</h2>
+          <form id="bookingForm" class="space-y-4">
+            <input type="text" placeholder="Full Name" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+            <input type="email" placeholder="Email" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+            <input type="tel" placeholder="Phone Number" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+            <select required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+              <option value="">Select a Service</option>
+              <option>Haircut</option>
+              <option>Beard Trim</option>
+              <option>Coloring</option>
+            </select>
+            <input type="date" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"/>
+            <button type="submit" class="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-lg transition">Book Appointment</button>
+          </form>
+        </div>
+      </div>
+    `;
+
+    // Handle form submit
+    document.getElementById("bookingForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("✅ Appointment booked successfully!");
+      location.reload(); // Return to main page
+    });
+  }
+</script>
 </body>
 </html>
