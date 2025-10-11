@@ -3,20 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Business Landing</title>
+<title>Booking Landing Page</title>
 <style>
   body, html {
     margin: 0;
     padding: 0;
     height: 100%;
     font-family: "Poppins", sans-serif;
-  }
-
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
     overflow: hidden;
   }
 
@@ -39,6 +32,7 @@
   }
 
   .buttons {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -52,33 +46,42 @@
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    background-color: rgba(255,255,255,0.8);
-    color: #111;
     font-weight: bold;
     transition: 0.3s;
+    color: white;
+  }
+
+  .btn-free {
+    background-color: #1d4ed8; /* Blue */
+  }
+  .btn-signup {
+    background-color: #16a34a; /* Green */
+  }
+  .btn-login {
+    background-color: #dc2626; /* Red */
   }
 
   .btn:hover {
-    background-color: rgba(255,255,255,1);
+    opacity: 0.9;
   }
 </style>
 </head>
 <body>
   <!-- شبكة الصور الخلفية -->
   <div class="background-images">
-    <img src="https://images.unsplash.com/photo-1571771680335-3569d5987d9f?auto=format&fit=crop&w=600&q=80" alt="">
-    <img src="https://images.unsplash.com/photo-1542831371-d531d36971e6?auto=format&fit=crop&w=600&q=80" alt="">
-    <img src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=600&q=80" alt="">
-    <img src="https://images.unsplash.com/photo-1506459225024-1428097a7e18?auto=format&fit=crop&w=600&q=80" alt="">
-    <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=600&q=80" alt="">
-    <img src="https://images.unsplash.com/photo-1556742400-b5b9b0f4f9b2?auto=format&fit=crop&w=600&q=80" alt="">
+    <img src="https://images.unsplash.com/photo-1605902711622-cfb43c443eb2?auto=format&fit=crop&w=600&q=80" alt="Booking">
+    <img src="https://images.unsplash.com/photo-1581091870627-3f9489ff2ca4?auto=format&fit=crop&w=600&q=80" alt="Appointment">
+    <img src="https://images.unsplash.com/photo-1573164574394-7d24e7a2f47a?auto=format&fit=crop&w=600&q=80" alt="Scheduler">
+    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80" alt="Calendar">
+    <img src="https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=600&q=80" alt="Booking Desk">
+    <img src="https://images.unsplash.com/photo-1581091870627-3f9489ff2ca4?auto=format&fit=crop&w=600&q=80" alt="Appointments">
   </div>
 
   <!-- الأزرار -->
   <div class="buttons">
-    <button class="btn">تسجيل مجاني 7 أيام</button>
-    <button class="btn">تسجيل جديد</button>
-    <button class="btn">مسجل</button>
+    <button class="btn btn-free">Free 7-Day Trial</button>
+    <button class="btn btn-signup">Sign Up</button>
+    <button class="btn btn-login">Login</button>
   </div>
 </body>
 </html>
