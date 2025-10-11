@@ -1,65 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Booking Platform</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mousa — Booking Platform</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<style>
-.modal-backdrop { background: rgba(0,0,0,0.45); }
-</style>
+<style>.modal-backdrop{background:rgba(0,0,0,0.45);}</style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
 <div id="app" class="min-h-screen flex items-center justify-center p-6"
      style="background-image: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80'); background-size:cover;">
   <div id="homeCard" class="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center max-w-xl w-full">
-    <div id="brandRow" class="flex items-center justify-center gap-4 mb-4">
-      <img id="logoPreview" src="" alt="" class="h-12 w-12 object-contain hidden"/>
-      <h1 id="mainTitle" class="text-3xl font-bold text-gray-900">Grow Your Business with Online Bookings</h1>
-    </div>
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">Grow Your Business with Online Bookings</h1>
     <p class="text-gray-600 mb-6">Free demo — manage your services, share your booking link and get real bookings (stored locally).</p>
-
     <div class="flex flex-col gap-4">
       <button onclick="goTo('trial')" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Free 7-Day Trial</button>
       <button onclick="renderSignup()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Sign Up</button>
       <button onclick="renderLogin()" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Login</button>
     </div>
-
     <div class="mt-6 text-sm text-gray-500">
       <button onclick="quickDemo()" class="underline">Quick demo: prefill sample data</button>
     </div>
   </div>
 </div>
 
-<div id="mousa_modal_container"></div>
-
 <script>
 /* ---------- Helpers ---------- */
 function slugify(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
 function qs(sel){ return document.querySelector(sel); }
 function qsa(sel){ return Array.from(document.querySelectorAll(sel)); }
-function uid(prefix='id'){ return prefix + '_' + Math.random().toString(36).slice(2,10); }
-function csvEncode(rows){ if(!rows||rows.length===0) return ''; const keys=Object.keys(rows[0]); const escape=v=>'"'+String(v||'').replace(/"/g,'""')+'"'; const lines=[keys.map(escape).join(',')]; for(const r of rows) lines.push(keys.map(k=>escape(r[k]).join(','))); return lines.join('\n'); }
-function downloadFile(filename, content, mime='text/csv;charset=utf-8;'){ const blob=new Blob([content],{type:mime}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+function uid(prefix='id'){ return prefix+'_'+Math.random().toString(36).slice(2,10); }
 
-/* ---------- LocalStorage Data ---------- */
+/* ---------- localStorage ---------- */
 function getUser(){ return JSON.parse(localStorage.getItem('mousa_user')||'null'); }
 function setUser(u){ localStorage.setItem('mousa_user', JSON.stringify(u)); }
 function getServices(slug){ return JSON.parse(localStorage.getItem('mousa_services_'+slug)||'[]'); }
-function setServices(slug, arr){ localStorage.setItem('mousa_services_'+slug, JSON.stringify(arr)); }
+function setServices(slug,arr){ localStorage.setItem('mousa_services_'+slug, JSON.stringify(arr)); }
 function getBookings(slug){ return JSON.parse(localStorage.getItem('mousa_bookings_'+slug)||'[]'); }
-function setBookings(slug, arr){ localStorage.setItem('mousa_bookings_'+slug, JSON.stringify(arr)); }
-function getNotifications(slug){ return Number(localStorage.getItem('mousa_notifications_'+slug)||0); }
-function setNotifications(slug, n){ localStorage.setItem('mousa_notifications_'+slug, String(n)); }
+function setBookings(slug,arr){ localStorage.setItem('mousa_bookings_'+slug, JSON.stringify(arr)); }
 
-/* ---------- UI ---------- */
-function goTo(page){ if(page==='trial'){ const business='Demo Salon'; startTrial(business); } }
+/* ---------- Home / Signup / Login / Trial ---------- */
+function goTo(page){ if(page==='trial'){ startTrial('Demo Salon'); } }
 
-/* Signup */
 function renderSignup(){
-  qs('#app').innerHTML=`
-  <div class="min-h-screen flex items-center justify-center w-full">
+  const container = qs('#app');
+  container.innerHTML = `<div class="min-h-screen flex items-center justify-center w-full">
     <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
       <h2 class="text-2xl font-bold mb-4">Create Account</h2>
       <input id="inp_business" placeholder="Business name" class="w-full border rounded p-3 mb-3" />
@@ -72,18 +58,21 @@ function renderSignup(){
     </div>
   </div>`;
 }
+
 function submitSignup(){
-  const name=qs('#inp_business').value.trim(), email=qs('#inp_email').value.trim(), pass=qs('#inp_password').value.trim();
+  const name=qs('#inp_business').value.trim();
+  const email=qs('#inp_email').value.trim();
+  const pass=qs('#inp_password').value.trim();
   if(!name||!email||!pass) return alert('Please fill fields');
   const slug=slugify(name);
-  const user={business:name,email, password:pass, slug, color:'#2563eb', logo:''};
-  setUser(user); setServices(slug,[]); setBookings(slug,[]); setNotifications(slug,0); renderDashboard(user);
+  const user={business:name,email,password:pass,slug,color:'#2563eb',logo:''};
+  setUser(user); setServices(slug,[]); setBookings(slug,[]);
+  renderDashboard(user);
 }
 
-/* Login */
 function renderLogin(){
-  qs('#app').innerHTML=`
-  <div class="min-h-screen flex items-center justify-center w-full">
+  const container = qs('#app');
+  container.innerHTML = `<div class="min-h-screen flex items-center justify-center w-full">
     <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
       <h2 class="text-2xl font-bold mb-4">Login</h2>
       <input id="login_email" placeholder="Email" class="w-full border rounded p-3 mb-3" />
@@ -95,59 +84,45 @@ function renderLogin(){
     </div>
   </div>`;
 }
+
 function submitLogin(){
-  const email=qs('#login_email').value.trim(), pass=qs('#login_password').value.trim();
+  const email=qs('#login_email').value.trim();
+  const pass=qs('#login_password').value.trim();
   const user=getUser();
   if(!user) return alert('No account found — please sign up');
-  if(user.email===email && user.password===pass){ renderDashboard(user); } else alert('Invalid credentials');
+  if(user.email===email&&user.password===pass) renderDashboard(user);
+  else alert('Invalid credentials');
 }
 
-/* Start trial */
 function startTrial(businessName){
   let user=getUser();
   if(!user){
     const slug=slugify(businessName);
-    user={business:businessName,email:'trial@local',password:'',slug, color:'#2563eb',logo:''};
-    setUser(user);
-    setServices(slug,[{id:uid('svc'),name:'Haircut',price:25},{id:uid('svc'),name:'Beard Trim',price:15}]);
-    setBookings(slug,[]); setNotifications(slug,0);
+    user={business:businessName,email:'trial@local',password:'',slug,color:'#2563eb',logo:''};
+    setUser(user); setServices(slug,[{id:uid(),name:'Haircut',price:25},{id:uid(),name:'Beard Trim',price:15}]);
+    setBookings(slug,[]);
   }
   renderDashboard(user);
 }
 
-/* Quick demo */
 function quickDemo(){
-  const name='Demo Salon', slug=slugify(name);
+  const name='Demo Salon',slug=slugify(name);
   const user={business:name,email:'demo@salon',password:'demo',slug,color:'#0ea5a4',logo:''};
-  setUser(user);
-  setServices(slug,[
-    {id:uid('svc'),name:'Haircut',price:25},
-    {id:uid('svc'),name:'Beard Trim',price:15},
-    {id:uid('svc'),name:'Shave',price:10},
-    {id:uid('svc'),name:'Coloring',price:40}
-  ]);
-  setBookings(slug,[]); setNotifications(slug,0);
+  setUser(user); setServices(slug,[{id:uid(),name:'Haircut',price:25},{id:uid(),name:'Beard Trim',price:15},{id:uid(),name:'Shave',price:10},{id:uid(),name:'Coloring',price:40}]);
+  setBookings(slug,[]);
   renderDashboard(user);
 }
 
+function renderHome(){ location.href=location.pathname; }
+
 /* ---------- Dashboard ---------- */
 function renderDashboard(user){
-  const slug=user.slug, primary=user.color||'#2563eb', logoHTML=user.logo?`<img src="${user.logo}" class="h-10 w-10 mr-3">`:'';
-  const notifCount=getNotifications(slug);
-  qs('#app').innerHTML=`
+  const slug=user.slug,primary=user.color||'#2563eb',logoHTML=user.logo?`<img src="${user.logo}" alt="logo" class="h-10 w-10 object-contain mr-3">`:'';
+  document.getElementById('app').innerHTML=`
   <div class="w-full min-h-screen flex flex-col">
     <header class="flex items-center justify-between p-4" style="background:${primary}; color:white;">
-      <div class="flex items-center">
-        ${logoHTML}
-        <div><div class="text-xl font-bold">${user.business}</div><div class="text-sm opacity-90">${user.email}</div></div>
-      </div>
+      <div class="flex items-center">${logoHTML}<div><div class="text-xl font-bold">${user.business}</div><div class="text-sm opacity-90">${user.email}</div></div></div>
       <div class="flex items-center gap-3">
-        <button onclick="exportAllBookings()" class="bg-white text-${primary} px-3 py-2 rounded">Export CSV</button>
-        <button onclick="resetPlatform()" class="bg-red-600 text-white px-3 py-2 rounded">Reset Platform</button>
-        <div class="relative">
-          <button onclick="showNotifications()" class="bg-white text-${primary} px-3 py-2 rounded">Notifications</button>
-          ${notifCount>0?`<span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">${notifCount}</span>`:''}
-        </div>
         <button onclick="logout()" class="bg-white text-${primary} px-3 py-2 rounded">Logout</button>
       </div>
     </header>
@@ -159,7 +134,7 @@ function renderDashboard(user){
             <li><button onclick="showTab('bookings')" id="tab_bookings" class="w-full text-left px-3 py-2 rounded">Bookings</button></li>
             <li><button onclick="showTab('stats')" id="tab_stats" class="w-full text-left px-3 py-2 rounded">Stats</button></li>
             <li><button onclick="showTab('settings')" id="tab_settings" class="w-full text-left px-3 py-2 rounded">Settings</button></li>
-            <li><button onclick="showLicenseLink()" class="w-full text-left px-3 py-2 rounded">Booking Link</button></li>
+            <li><button onclick="showTab('public')" id="tab_public" class="w-full text-left px-3 py-2 rounded">Public Booking Link</button></li>
           </ul>
         </nav>
         <section class="flex-1">
@@ -173,19 +148,12 @@ function renderDashboard(user){
             <div id="servicesContainer" class="space-y-2"></div>
           </div>
           <div id="panel_bookings" class="panel hidden bg-white rounded-xl p-6 shadow">
-            <h3 class="text-xl font-semibold mb-3">Customer Bookings</h3
-<div class="overflow-x-auto">
+            <h3 class="text-xl font-semibold mb-3">Customer Bookings</h3>
+            <div class="overflow-x-auto">
               <table class="min-w-full text-left">
-                <thead class="bg-gray-100">
-                  <tr>
-                    <th class="px-3 py-2">Name</th>
-                    <th class="px-3 py-2">Email</th>
-                    <th class="px-3 py-2">Phone</th>
-                    <th class="px-3 py-2">Service</th>
-                    <th class="px-3 py-2">Date</th>
-                    <th class="px-3 py-2">Action</th>
-                  </tr>
-                </thead>
+                <thead class="bg-gray-100"><tr>
+                  <th class="px-3 py-2">Name</th><th class="px-3 py-2">Email</th><th class="px-3 py-2">Phone</th><th class="px-3 py-2">Service</th><th class="px-3 py-2">Date</th>
+                </tr></thead>
                 <tbody id="bookingsTableBody"></tbody>
               </table>
             </div>
@@ -195,144 +163,93 @@ function renderDashboard(user){
             <div id="statsContent" class="grid grid-cols-2 gap-4">
               <div class="p-4 bg-gray-50 rounded"><div class="text-sm text-gray-500">Total Services</div><div id="stat_services" class="text-2xl font-bold">0</div></div>
               <div class="p-4 bg-gray-50 rounded"><div class="text-sm text-gray-500">Total Bookings</div><div id="stat_bookings" class="text-2xl font-bold">0</div></div>
-              <div class="p-4 bg-gray-50 rounded col-span-2"><div class="text-sm text-gray-500">Most Booked Service</div><div id="stat_top" class="text-xl font-semibold">—</div></div>
             </div>
           </div>
           <div id="panel_settings" class="panel hidden bg-white rounded-xl p-6 shadow">
             <h3 class="text-xl font-semibold mb-3">Settings</h3>
             <div class="space-y-3">
-              <div>
-                <label class="text-sm block mb-1">Business name</label>
-                <input id="setting_business" class="border rounded p-2 w-full" />
-              </div>
-              <div>
-                <label class="text-sm block mb-1">Primary color (hex)</label>
-                <input id="setting_color" class="border rounded p-2 w-40" />
-              </div>
-              <div>
-                <label class="text-sm block mb-1">Logo URL</label>
-                <input id="setting_logo" class="border rounded p-2 w-full" />
-              </div>
-              <div class="flex gap-2">
-                <button onclick="saveSettings()" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
-                <button onclick="restoreDefaults()" class="bg-gray-200 px-4 py-2 rounded">Restore Defaults</button>
-              </div>
+              <div><label class="text-sm block mb-1">Business name</label><input id="setting_business" class="border rounded p-2 w-full" /></div>
+              <div><label class="text-sm block mb-1">Primary color (hex)</label><input id="setting_color" class="border rounded p-2 w-40" /></div>
+              <div><label class="text-sm block mb-1">Logo URL</label><input id="setting_logo" class="border rounded p-2 w-full" /></div>
+              <div class="flex gap-2"><button onclick="saveSettings()" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button></div>
             </div>
           </div>
-          <div id="panel_license" class="panel hidden bg-white rounded-xl p-6 shadow">
-            <h3 class="text-xl font-semibold mb-3">Your Booking Link</h3>
-            <div class="flex gap-2 items-center">
-              <input type="text" id="license_link" class="border rounded p-2 flex-1" readonly />
-              <button onclick="copyLicenseLink()" class="bg-green-600 text-white px-4 py-2 rounded">Copy</button>
+          <div id="panel_public" class="panel hidden bg-white rounded-xl p-6 shadow">
+            <h3 class="text-xl font-semibold mb-3">Public Booking Page</h3>
+            <p class="text-sm text-gray-500 mb-3">Share this link for customers to book directly:</p>
+            <input class="w-full border p-2 rounded mb-4" value="${location.origin+location.pathname+'?business='+slug}" readonly onclick="this.select()"/>
+            <h4 class="text-lg font-medium mb-2">Simulate public booking:</h4>
+            <div class="flex flex-col gap-2 max-w-md">
+              <input id="pub_name" placeholder="Your Name" class="border rounded p-2" />
+              <input id="pub_email" placeholder="Your Email" class="border rounded p-2" />
+              <input id="pub_phone" placeholder="Phone" class="border rounded p-2" />
+              <select id="pub_service" class="border rounded p-2"></select>
+              <input type="date" id="pub_date" class="border rounded p-2" />
+              <button onclick="addPublicBooking()" class="bg-green-600 text-white py-2 rounded">Book Now</button>
             </div>
           </div>
         </section>
       </div>
     </main>
-  </div>
-  `;
-  showTab('services'); populateServicesUI(slug); populateBookingsUI(slug); populateStats(slug); populateSettings(user);
+  </div>`;
+  showTab('services'); populateServicesUI(slug); populateBookingsUI(slug); populateSettings(user); populatePublicServices(slug);
 }
 
-/* Tab handling */
-function showTab(tab){
-  qsa('.panel').forEach(el=>el.classList.add('hidden'));
-  qs('#panel_'+tab).classList.remove('hidden');
-  ['services','bookings','stats','settings','license'].forEach(t=>qs('#tab_'+t)?.classList.remove('bg-gray-100'));
-  qs('#tab_'+tab)?.classList.add('bg-gray-100');
+/* ---------- Tabs ---------- */
+function showTab(tab){ qsa('.panel').forEach(el=>el.classList.add('hidden')); qs('#panel_'+tab).classList.remove('hidden'); ['services','bookings','stats','settings','public'].forEach(t=>qs('#tab_'+t).classList.remove('bg-gray-100')); qs('#tab_'+tab).classList.add('bg-gray-100'); }
+
+/* ---------- Services ---------- */
+function addServiceFromDashboard(){ const name=qs('#newServiceName').value.trim(); const price=Number(qs('#newServicePrice').value); if(!name)return alert('Enter service name'); const user=getUser(),slug=user.slug,arr=getServices(slug); arr.push({id:uid(),name,price:isNaN(price)?0:price}); setServices(slug,arr); qs('#newServiceName').value=''; qs('#newServicePrice').value=''; populateServicesUI(slug); populatePublicServices(slug); updateStats(slug); }
+function populateServicesUI(slug){ const cont=qs('#servicesContainer'); const services=getServices(slug); cont.innerHTML=services.length===0?'<div class="text-sm text-gray-500">No services yet.</div>':services.map(s=>`<div class="flex items-center justify-between p-3 bg-gray-50 rounded"><div><div class="font-medium">${s.name}</div><div class="text-sm text-gray-500">$${s.price}</div></div><div class="flex gap-2"><button onclick="editService('${slug}','${s.id}')" class="text-sm px-3 py-1 bg-yellow-300 rounded">Edit</button><button onclick="deleteService('${slug}','${s.id}')" class="text-sm px-3 py-1 bg-red-500 text-white rounded">Delete</button></div></div>`).join(''); }
+function editService(slug,id){ const services=getServices(slug); const s=services.find(x=>x.id===id); if(!s)return; const newName=prompt('Service name',s.name); if(newName===null)return; const newPrice=prompt('Price ($)',s.price); if(newPrice===null)return; s.name=newName.trim()||s.name; s.price=Number(newPrice)||s.price; setServices(slug,services); populateServicesUI(slug); populatePublicServices(slug); updateStats(slug); }
+function deleteService(slug,id){ if(!confirm('Delete this service?')) return; let services=getServices(slug); services=services.filter(s=>s.id!==id); setServices(slug,services); populateServicesUI(slug); populatePublicServices(slug); updateStats(slug); }
+
+/* ---------- Bookings ---------- */
+function populateBookingsUI(slug){ const table=qs('#bookingsTableBody'); const bookings=getBookings(slug); table.innerHTML=bookings.length===0?'<tr><td colspan="5" class="text-sm text-gray-500 p-2">No bookings yet.</td></tr>':bookings.map(b=>`<tr><td class="px-3 py-1">${b.name}</td><td class="px-3 py-1">${b.email}</td><td class="px-3 py-1">${b.phone}</td><td class="px-3 py-1">${b.service}</td><td class="px-3 py-1">${b.date}</td></tr>`).join(''); updateStats(slug); }
+
+/* ---------- Stats ---------- */
+function updateStats(slug){ qs('#stat_services').innerText=getServices(slug).length; qs('#stat_bookings').innerText=getBookings(slug).length; }
+
+/* ---------- Settings ---------- */
+function populateSettings(user){ qs('#setting_business').value=user.business; qs('#setting_color').value=user.color; qs('#setting_logo').value=user.logo; }
+function saveSettings(){ const user=getUser(); user.business=qs('#setting_business').value; user.color=qs('#setting_color').value; user.logo=qs('#setting_logo').value; setUser(user); alert('Settings saved'); renderDashboard(user); }
+
+/* ---------- Logout ---------- */
+function logout(){ localStorage
+                  .removeItem('mousa_user'); renderHome(); }
+
+/* ---------- Public Booking ---------- */
+function populatePublicServices(slug){
+  const sel=qs('#pub_service'); sel.innerHTML=''; getServices(slug).forEach(s=>{ const opt=document.createElement('option'); opt.value=s.name; opt.innerText=`${s.name} ($${s.price})`; sel.appendChild(opt); });
 }
 
-/* Services */
-function addServiceFromDashboard(){
-  const name=qs('#newServiceName').value.trim();
-  const price=Number(qs('#newServicePrice').value);
-  if(!name) return alert('Enter service name');
-  const user=getUser(), slug=user.slug;
-  const arr=getServices(slug);
-  arr.push({id:uid('svc'),name,price:isNaN(price)?0:price});
-  setServices(slug,arr); qs('#newServiceName').value=''; qs('#newServicePrice').value='';
-  populateServicesUI(slug); populateStats(slug);
+function addPublicBooking(){
+  const user=getUser(); if(!user) return alert('No business loaded');
+  const slug=user.slug;
+  const name=qs('#pub_name').value.trim();
+  const email=qs('#pub_email').value.trim();
+  const phone=qs('#pub_phone').value.trim();
+  const service=qs('#pub_service').value;
+  const date=qs('#pub_date').value;
+  if(!name||!email||!service||!date) return alert('Please fill all fields');
+  const bookings=getBookings(slug);
+  bookings.push({id:uid(),name,email,phone,service,date});
+  setBookings(slug,bookings);
+  populateBookingsUI(slug);
+  alert('Booking added successfully!');
+  qs('#pub_name').value=''; qs('#pub_email').value=''; qs('#pub_phone').value=''; qs('#pub_date').value='';
 }
-function populateServicesUI(slug){
-  const cont=qs('#servicesContainer'); const services=getServices(slug);
-  if(!cont) return;
-  cont.innerHTML=services.length===0?'<div class="text-sm text-gray-500">No services yet.</div>':
-    services.map(s=>`<div class="flex items-center justify-between p-3 bg-gray-50 rounded"><div><div class="font-medium">${s.name}</div><div class="text-sm text-gray-500">$${s.price}</div></div><div class="flex gap-2"><button onclick="editService('${slug}','${s.id}')" class="text-sm px-3 py-1 bg-yellow-300 rounded">Edit</button><button onclick="deleteService('${slug}','${s.id}')" class="text-sm px-3 py-1 bg-red-500 text-white rounded">Delete</button></div></div>`).join('');
-}
-function editService(slug,id){ const arr=getServices(slug), s=arr.find(x=>x.id===id); if(!s) return; const n=prompt('Service name',s.name); if(n===null) return; const p=prompt('Price',s.price); if(p===null) return; s.name=n.trim()||s.name; s.price=Number(p)||s.price; setServices(slug,arr); populateServicesUI(slug); populateStats(slug);}
-function deleteService(slug,id){ if(!confirm('Delete this service?')) return; let arr=getServices(slug); arr=arr.filter(s=>s.id!==id); setServices(slug,arr); populateServicesUI(slug); populateStats(slug);}
 
-/* Bookings */
-function populateBookingsUI(slug){
-  const rows=qs('#bookingsTableBody'); const bookings=getBookings(slug);
-  if(!rows) return;
-  rows.innerHTML=bookings.length===0?`<tr><td class="px-3 py-2" colspan="6">No bookings yet.</td></tr>`:
-    bookings.map((b,i)=>`<tr class="border-t"><td class="px-3 py-2">${b.name}</td><td class="px-3 py-2">${b.email||'-'}</td><td class="px-3 py-2">${b.phone||'-'}</td><td class="px-3 py-2">${b.service}</td><td class="px-3 py-2">${b.date}</td><td class="px-3 py-2 text-center"><button onclick="deleteBookingUI('${slug}',${i})" class="bg-red-500 text-white px-3 py-1 rounded">Delete</button></td></tr>`).join('');
-}
-function deleteBookingUI(slug,index){ if(!confirm('Delete this booking?')) return; const arr=getBookings(slug); arr.splice(index,1); setBookings(slug,arr); populateBookingsUI(slug); populateStats(slug); }
-
-/* Stats */
-function populateStats(slug){ const services=getServices(slug), bookings=getBookings(slug); qs('#stat_services').innerText=services.length; qs('#stat_bookings').innerText=bookings.length; const counts={}; for(const b of bookings) counts[b.service]=(counts[b.service]||0)+1; qs('#stat_top').innerText=Object.keys(counts).sort((a,b)=>counts[b]-counts[a])[0]||'—'; }
-
-/* Settings */
-function populateSettings(user){ qs('#setting_business').value=user.business||''; qs('#setting_color').value=user.color||'#2563eb'; qs('#setting_logo').value=user.logo||''; }
-function saveSettings(){ const user=getUser(); if(!user) return; user.business=qs('#setting_business').value.trim()||user.business; user.color=qs('#setting_color').value.trim()||user.color; user.logo=qs('#setting_logo').value.trim()||user.logo; setUser(user); alert('Settings saved'); renderDashboard(user); }
-function restoreDefaults(){ if(!confirm('Restore defaults?')) return; const user=getUser(); if(!user) return; user.color='#2563eb'; user.logo=''; setUser(user); renderDashboard(user); }
-
-/* License link */
-function showLicenseLink(){ const user=getUser(); if(!user) return; qs('#license_link').value=window.location.origin+window.location.pathname+'?business='+user.slug; showTab('license'); }
-function copyLicenseLink(){ const inp=qs('#license_link'); inp.select(); document.execCommand('copy'); alert('Copied to clipboard'); }
-
-/* Notifications, export, reset, logout */
-function showNotifications(){ const user=getUser(); if(!user) return; const n=getNotifications(user.slug); alert(n>0?`You have ${n} new booking(s).`:'No new notifications.'); setNotifications(user.slug,0); renderDashboard(user);}
-function exportAllBookings(){ const user=getUser(); if(!user) return; const bookings=getBookings(user.slug); if(!bookings.length) return alert('No bookings'); const csv=csvEncode(bookings.map(b=>({name:b.name,email:b.email,phone:b.phone,service:b.service,date:b.date,created_at:b.created_at||''}))); downloadFile(user.slug+'-bookings.csv',csv); }
-function resetPlatform(){ if(!confirm('Clear all demo data?')) return; const user=getUser(); if(user){ const slug=user.slug; ['mousa_user','mousa_services_'+slug,'mousa_bookings_'+slug,'mousa_notifications_'+slug].forEach(k=>localStorage.removeItem(k)); } alert('Platform reset'); location.href=location.pathname; }
-function logout(){ localStorage.removeItem('mousa_user'); location.href=location.pathname; }
-
-/* ---------- Home ---------- */
-function renderHome(){ location.href=location.pathname; }
-
-/* ---------- Init ---------- */
+/* ---------- Initialize from URL params for public booking ---------- */
 (function(){
-  const params=new URLSearchParams(window.location.search);
-  const biz=params.get('business');
-  if(biz){ renderPublicBookingPage(biz); return; }
-  const user=getUser();
-  if(user && user.logo){ qs('#logoPreview').src=user.logo; qs('#logoPreview').classList.remove('hidden'); qs('#mainTitle').classList.add('hidden'); }
+  const params=new URLSearchParams(location.search);
+  const biz=params.get('business'); 
+  if(biz){
+    const user=getUser();
+    if(user&&user.slug===biz) renderDashboard(user);
+    else renderHome();
+  }
 })();
-
-/* ---------- Public booking page ---------- */
-function renderPublicBookingPage(slug){
-  const config=getUser(); const services=getServices(slug); const color=(config && config.slug===slug)?config.color:'#2563eb'; const logo=(config && config.slug===slug)?config.logo:'';
-  document.body.innerHTML=`
-  <div class="min-h-screen flex items-center justify-center p-6 bg-gray-100">
-    <div class="max-w-3xl w-full bg-white rounded-xl shadow p-6">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-3">${logo?`<img src="${logo}" class="h-12 w-12 object-contain">`:""}<div><h1 class="text-2xl font-bold">${(config&&config.slug===slug)?config.business:slug.replace(/-/g,' ')}</h1><div class="text-sm text-gray-500">Book your appointment</div></div></div>
-        <div><button onclick="window.location.href='${location.pathname}'" class="text-sm text-gray-600">Home</button></div>
-      </div>
-      <div><div class="grid md:grid-cols-2 gap-4">${services.length===0?'<div class="text-gray-500 p-4">No services available.</div>':services.map(s=>`<
-<div class="p-4 border rounded bg-gray-50 cursor-pointer hover:bg-gray-100" onclick="bookService('${slug}','${s.name}')">
-  <div class="font-semibold">${s.name}</div>
-  <div class="text-sm text-gray-500">$${s.price}</div>
-</div>`).join('')}</div></div>
-</div>
-<script>
-function bookService(slug,service){
-  const name=prompt('Your name:'); if(!name) return;
-  const email=prompt('Email (optional):')||'';
-  const phone=prompt('Phone (optional):')||'';
-  const date=prompt('Appointment date (e.g., 2025-10-15):'); if(!date) return;
-  const bookings=JSON.parse(localStorage.getItem('mousa_bookings_'+slug)||'[]');
-  bookings.push({name,email,phone,service,date,created_at:new Date().toISOString()});
-  localStorage.setItem('mousa_bookings_'+slug,JSON.stringify(bookings));
-  const notif=Number(localStorage.getItem('mousa_notifications_'+slug)||0)+1;
-  localStorage.setItem('mousa_notifications_'+slug,notif);
-  alert('Booking saved! You can close this page.');
-}
-</script>
-  `;
-}
 </script>
 
 </body>
