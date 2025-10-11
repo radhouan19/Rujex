@@ -1,69 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Online Booking Platform</title>
-<style>
-  * { box-sizing: border-box; margin:0; padding:0; font-family: "Poppins", sans-serif; }
-  html, body { height: 100%; }
-  body {
-    background: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1500&q=80') no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: #fff;
-  }
-  .overlay {
-    position: absolute;
-    top:0; left:0; right:0; bottom:0;
-    background-color: rgba(0,0,0,0.4);
-    z-index: 1;
-  }
-  .content {
-    position: relative;
-    z-index: 2;
-    max-width: 600px;
-    padding: 2rem;
-  }
-  h1 { font-size: 2.8rem; margin-bottom: 1rem; }
-  p { font-size: 1.5rem; margin-bottom: 2rem; }
-  .btn {
-    display: block;
-    width: 90%;
-    padding: 2rem;
-    margin: 1rem auto;
-    border: none;
-    border-radius: 16px;
-    cursor: pointer;
-    font-size: 1.4rem;
-    font-weight: 700;
-    transition: 0.3s;
-    background-color: rgba(255,255,255,0.15); /* نصف شفافية */
-    color: white;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4); /* ظل خلفي */
-    backdrop-filter: blur(5px); /* ضبابية خلفية */
-  }
-  .btn-free { background-color: rgba(37,99,235,0.85); }
-  .btn-signup { background-color: rgba(16,185,129,0.85); }
-  .btn-login { background-color: rgba(245,158,11,0.85); }
-  .btn:hover { opacity: 0.95; transform: scale(1.05); }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Business Platform</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    button {
+      padding: 18px 40px;
+      font-size: 1.3rem;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-free {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-signup {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .btn-login {
+      background-color: #FF9800;
+      color: white;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+  </style>
 </head>
 <body>
+  <div class="content">
+    <h1>Grow Your Business with Online Bookings</h1>
+    <p>7 days free, then $11/month. Get started below!</p>
 
-<div class="overlay"></div>
-
-<div class="content">
-  <h1>Manage Your Appointments Easily</h1>
-  <p>Schedule, track, and manage bookings seamlessly. Perfect for any service business!</p>
-
-  <button class="btn btn-free" onclick="alert('Start 7-day free trial!')">Start 7-Day Free Trial</button>
-  <button class="btn btn-signup" onclick="alert('Sign Up for New Account')">Sign Up</button>
-  <button class="btn btn-login" onclick="alert('Login to Existing Account')">Already Registered? Login</button>
-</div>
-
+    <div class="buttons">
+      <button class="btn-free" onclick="window.location.href='dashboard.html'">7 Days Free</button>
+      <button class="btn-signup" onclick="window.location.href='signup.html'">New Owner? Sign Up & Pay</button>
+      <button class="btn-login" onclick="window.location.href='login.html'">Already Registered? Login</button>
+    </div>
+  </div>
 </body>
 </html>
