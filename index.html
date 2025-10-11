@@ -3,84 +3,152 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Business Platform</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      height: 100vh;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 2.8rem;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-    }
-
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 40px;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
-    }
-
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    button {
-      padding: 18px 40px;
-      font-size: 1.3rem;
-      border: none;
-      border-radius: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 600;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .btn-free {
-      background-color: #4CAF50;
-      color: white;
-    }
-
-    .btn-signup {
-      background-color: #2196F3;
-      color: white;
-    }
-
-    .btn-login {
-      background-color: #FF9800;
-      color: white;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    }
-  </style>
+  <title>My Booking Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="content">
-    <h1>Grow Your Business with Online Bookings</h1>
-    <p>7 days free, then $11/month. Get started below!</p>
-
-    <div class="buttons">
-      <button class="btn-free" onclick="window.location.href='dashboard.html'">7 Days Free</button>
-      <button class="btn-signup" onclick="window.location.href='signup.html'">New Owner? Sign Up & Pay</button>
-      <button class="btn-login" onclick="window.location.href='login.html'">Already Registered? Login</button>
+<body class="bg-gray-50 text-gray-800">
+  <div id="app" class="min-h-screen flex flex-col items-center justify-center bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1600&q=80');">
+    <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center max-w-md">
+      <h1 class="text-3xl font-bold mb-4 text-gray-900">Grow Your Business with Online Bookings</h1>
+      <p class="text-gray-600 mb-8">Start your free 7-day trial and manage all your appointments easily.</p>
+      <div class="flex flex-col gap-4">
+        <button onclick="goTo('trial')" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Free 7-Day Trial</button>
+        <button onclick="goTo('signup')" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Sign Up</button>
+        <button onclick="goTo('login')" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Login</button>
+      </div>
     </div>
   </div>
+
+  <script>
+    const app = document.getElementById("app");
+
+    function goTo(page) {
+      if (page === "trial") showDashboard("Trial Business");
+      else if (page === "signup") renderSignup();
+      else if (page === "login") renderLogin();
+    }
+
+    function renderSignup() {
+      app.innerHTML = `
+        <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+          <div class="bg-white shadow-lg rounded-2xl p-8 w-96">
+            <h2 class="text-2xl font-bold mb-4 text-center">Create Account</h2>
+            <input id="businessName" placeholder="Business Name" class="w-full border rounded-lg p-3 mb-3" />
+            <input id="email" type="email" placeholder="Email" class="w-full border rounded-lg p-3 mb-3" />
+            <input id="password" type="password" placeholder="Password" class="w-full border rounded-lg p-3 mb-3" />
+            <button onclick="signup()" class="bg-blue-500 hover:bg-blue-600 text-white w-full py-3 rounded-lg font-semibold">Sign Up</button>
+            <button onclick="goHome()" class="text-gray-500 mt-4 w-full">← Back</button>
+          </div>
+        </div>`;
+    }
+
+    function signup() {
+      const business = document.getElementById("businessName").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (!business || !email || !password) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      localStorage.setItem("user", JSON.stringify({ business, email }));
+      showDashboard(business);
+    }
+
+    function renderLogin() {
+      app.innerHTML = `
+        <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+          <div class="bg-white shadow-lg rounded-2xl p-8 w-96">
+            <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+            <input id="emailLogin" type="email" placeholder="Email" class="w-full border rounded-lg p-3 mb-3" />
+            <input id="passwordLogin" type="password" placeholder="Password" class="w-full border rounded-lg p-3 mb-3" />
+            <button onclick="login()" class="bg-purple-500 hover:bg-purple-600 text-white w-full py-3 rounded-lg font-semibold">Login</button>
+            <button onclick="goHome()" class="text-gray-500 mt-4 w-full">← Back</button>
+          </div>
+        </div>`;
+    }
+
+    function login() {
+      const email = document.getElementById("emailLogin").value;
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+      if (user.email === email) showDashboard(user.business);
+      else alert("User not found. Try signing up.");
+    }
+
+    function showDashboard(business) {
+      const bookingLink = `${window.location.origin}?business=${encodeURIComponent(business)}`;
+      app.innerHTML = `
+        <div class="min-h-screen flex flex-col bg-gray-50">
+          <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
+            <h1 class="text-xl font-semibold">${business} Dashboard</h1>
+            <button onclick="goHome()" class="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold">Logout</button>
+          </header>
+
+          <main class="flex-1 p-6">
+            <h2 class="text-2xl font-bold mb-4">Share your booking link:</h2>
+            <div class="flex items-center gap-2 mb-8">
+              <input id="link" readonly value="${bookingLink}" class="flex-1 border rounded-lg p-3" />
+              <button onclick="copyLink()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">Copy</button>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Your Services</h3>
+              <input id="serviceInput" placeholder="Add new service..." class="border rounded-lg p-2 w-1/2 mr-2" />
+              <button onclick="addService()" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg">Add</button>
+              <ul id="servicesList" class="mt-4 list-disc pl-6"></ul>
+            </div>
+          </main>
+        </div>`;
+
+      renderServices();
+    }
+
+    function addService() {
+      const input = document.getElementById("serviceInput");
+      const service = input.value.trim();
+      if (!service) return;
+      const services = JSON.parse(localStorage.getItem("services") || "[]");
+      services.push(service);
+      localStorage.setItem("services", JSON.stringify(services));
+      input.value = "";
+      renderServices();
+    }
+
+    function renderServices() {
+      const list = document.getElementById("servicesList");
+      const services = JSON.parse(localStorage.getItem("services") || "[]");
+      list.innerHTML = services.map(s => `<li>${s}</li>`).join("");
+    }
+
+    function copyLink() {
+      const link = document.getElementById("link");
+      link.select();
+      document.execCommand("copy");
+      alert("Link copied!");
+    }
+
+    function goHome() {
+      window.location.reload();
+    }
+
+    // If visitor opened a booking link (?business=...)
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("business")) {
+      const biz = params.get("business");
+      app.innerHTML = `
+        <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+          <div class="bg-white shadow-lg rounded-2xl p-8 w-96 text-center">
+            <h2 class="text-2xl font-bold mb-4">${biz} Booking</h2>
+            <p class="text-gray-600 mb-4">Select a service:</p>
+            <ul class="list-disc pl-6 text-left mb-4" id="bookServices"></ul>
+            <button onclick="goHome()" class="text-gray-500 w-full">← Back</button>
+          </div>
+        </div>`;
+      const services = JSON.parse(localStorage.getItem("services") || "[]");
+      document.getElementById("bookServices").innerHTML = services.map(s => `<li>${s}</li>`).join("");
+    }
+  </script>
 </body>
 </html>
