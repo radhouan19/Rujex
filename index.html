@@ -1,189 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Nono Booking Platform</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>نونو — Booking Platform</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-.modal-backdrop{background:rgba(0,0,0,0.45);}
+.modal-backdrop { background: rgba(0,0,0,0.45); }
 </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-<div id="app" class="min-h-screen flex items-center justify-center p-6" style="background-image: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80'); background-size:cover;">
+<div id="app" class="min-h-screen flex items-center justify-center p-6">
   <div id="homeCard" class="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center max-w-xl w-full">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">Grow Your Business with Online Bookings</h1>
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">Grow Your Business with Online Bookings</h1>
+    <p class="text-gray-600 mb-6">Free trial for 7 days. Manage services, share your booking link, and get bookings.</p>
     <div class="flex flex-col gap-4">
-      <button onclick="goTrial()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">7-Day Trial</button>
-      <button onclick="renderSignup()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Subscribe ($11/month)</button>
+      <button onclick="startTrialPrompt()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Free 7-Day Trial</button>
+      <button onclick="renderSignup()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Subscribe $11/month</button>
       <button onclick="renderLogin()" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Login</button>
     </div>
   </div>
 </div>
 
+<div id="modalContainer"></div>
+
 <script>
-/* ---------- Helpers ---------- */
-function slugify(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');}
-function uid(p='id'){return p+'_'+Math.random().toString(36).slice(2,10);}
-function getUser(){return JSON.parse(localStorage.getItem('nono_user')||'null');}
-function setUser(u){localStorage.setItem('nono_user',JSON.stringify(u));}
-function getServices(slug){return JSON.parse(localStorage.getItem('nono_services_'+slug)||'[]');}
-function setServices(slug,arr){localStorage.setItem('nono_services_'+slug,JSON.stringify(arr));}
-function getBookings(slug){return JSON.parse(localStorage.getItem('nono_bookings_'+slug)||'[]');}
-function setBookings(slug,arr){localStorage.setItem('nono_bookings_'+slug,JSON.stringify(arr));}
-function downloadFile(name,content){const blob=new Blob([content],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}
+// ---------- Helpers ----------
+function uid(p='id'){ return p+'_'+Math.random().toString(36).slice(2,10); }
+function qs(s){ return document.querySelector(s); }
+function qsa(s){ return Array.from(document.querySelectorAll(s)); }
 
-/* ---------- Home Actions ---------- */
-function goTrial(){
-  const email=prompt('Enter Email for Trial');
-  const pass=prompt('Enter Password');
-  const business=prompt('Business Name');
-  if(!email||!pass||!business)return;
-  const slug=slugify(business);
-  const expires=new Date();expires.setDate(expires.getDate()+7);
-  const user={email,pass,business,slug,trial:true,expires:expires.toISOString()};
-  setUser(user);
-  setServices(slug,[]);
-  setBookings(slug,[]);
+// ---------- LocalStorage ----------
+function getUsers(){ return JSON.parse(localStorage.getItem('nono_users')||'[]'); }
+function setUsers(u){ localStorage.setItem('nono_users', JSON.stringify(u)); }
+function getUserByEmail(email){ return getUsers().find(u=>u.email===email) || null; }
+function saveUser(user){
+  let users = getUsers();
+  const idx = users.findIndex(u=>u.email===user.email);
+  if(idx>=0){ users[idx]=user; } else { users.push(user); }
+  setUsers(users);
+}
+function getServices(slug){ return JSON.parse(localStorage.getItem('nono_services_'+slug)||'[]'); }
+function setServices(slug, arr){ localStorage.setItem('nono_services_'+slug, JSON.stringify(arr)); }
+function getBookings(slug){ return JSON.parse(localStorage.getItem('nono_bookings_'+slug)||'[]'); }
+function setBookings(slug, arr){ localStorage.setItem('nono_bookings_'+slug, JSON.stringify(arr)); }
+
+// ---------- Home / Trial ----------
+function startTrialPrompt(){
+  const name = prompt('Business name for trial:');
+  if(!name) return;
+  const email = prompt('Email:');
+  if(!email) return;
+  const pass = prompt('Password:');
+  if(!pass) return;
+  const slug = name.toLowerCase().replace(/\s+/g,'-');
+  const user = { business:name, email, password:pass, slug, trial:true, trialStart:Date.now(), services:[], bookings:[] };
+  saveUser(user);
   renderDashboard(user);
 }
 
+// ---------- Signup (Paid) ----------
 function renderSignup(){
-  const email=prompt('Enter Email');if(!email)return;
-  const pass=prompt('Password');if(!pass)return;
-  const business=prompt('Business Name');if(!business)return;
-  const slug=slugify(business);
-  const now=new Date();now.setMonth(now.getMonth()+1);
-  const user={email,pass,business,slug,trial:false,expires:now.toISOString()};
-  setUser(user);setServices(slug,[]);setBookings(slug,[]);
-  renderDashboard(user);
-}
-
-function renderLogin(){
-  const email=prompt('Email');const pass=prompt('Password');
-  const user=getUser();
-  if(!user)return alert('No account');if(user.email!==email||user.pass!==pass)return alert('Invalid');
-  const exp=new Date(user.expires);if(new Date()>exp)return alert('Access expired. Please subscribe');
-  renderDashboard(user);
-}
-
-/* ---------- Dashboard ---------- */
-function renderDashboard(user){
-  const slug=user.slug;
-  const now=new Date();
-  const expires=new Date(user.expires);
-  const diff=Math.max(0,Math.ceil((expires-now)/(1000*60*60*24)));
-  document.body.innerHTML=`
-  <div class="min-h-screen p-6 bg-gray-100">
-    <header class="flex justify-between items-center mb-6">
-      <div>
-        <h2 class="text-xl font-bold">${user.business}</h2>
-        <div class="text-sm text-gray-500">Email: ${user.email}</div>
-        <div class="text-sm text-gray-500">Days left: ${diff}</div>
-        <div class="text-sm text-gray-500 mt-1">Share Link: ${location.pathname}?business=${slug}</div>
-      </div>
-      <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded">Logout</button>
-    </header>
-    <main class="grid grid-cols-2 gap-6">
-      <div>
-        <h3 class="font-semibold mb-2">Services</h3>
-        <div id="svcContainer" class="space-y-2 mb-4"></div>
-        <input id="newSvcName" placeholder="Service Name" class="border rounded p-2 w-full mb-2"/>
-        <input id="newSvcPrice" placeholder="Price" type="number" class="border rounded p-2 w-full mb-2"/>
-        <button onclick="addService()" class="bg-green-600 text-white px-4 py-2 rounded">Add Service</button>
-      </div>
-      <div>
-        <h3 class="font-semibold mb-2">Bookings</h3>
-        <div class="overflow-x-auto bg-white p-2 rounded shadow">
-          <table class="min-w-full text-left border">
-            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th></tr></thead>
-            <tbody id="bookingBody"></tbody>
-          </table>
+  const container = qs('#app');
+  container.innerHTML = `
+    <div class="min-h-screen flex items-center justify-center w-full">
+      <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-4">Subscribe $11/month</h2>
+        <input id="signup_name" placeholder="Business name" class="w-full border rounded p-3 mb-3"/>
+        <input id="signup_email" placeholder="Email" class="w-full border rounded p-3 mb-3"/>
+        <input id="signup_pass" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3"/>
+        <div class="flex gap-3">
+          <button onclick="submitSignup()" class="flex-1 bg-blue-600 text-white py-3 rounded">Subscribe</button>
+          <button onclick="renderHome()" class="flex-1 border py-3 rounded">Cancel</button>
         </div>
-        <button onclick="exportBookings()" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded">Export CSV</button>
       </div>
-    </main>
-  </div>`;
-  populateServices();populateBookings();
+    </div>`;
 }
 
-/* ---------- Service Functions ---------- */
-function populateServices(){
-  const user=getUser();if(!user)return;
-  const svc=getServices(user.slug);const cont=document.getElementById('svcContainer');
-  cont.innerHTML=svc.map(s=>`<div class="flex justify-between bg-gray-50 p-2 rounded">
-    <div>${s.name} ($${s.price})</div>
-    <div>
-      <button onclick="editService('${s.id}')" class="bg-yellow-300 px-2 rounded">Edit</button>
-      <button onclick="delService('${s.id}')" class="bg-red-500 text-white px-2 rounded">Del</button>
+function submitSignup(){
+  const name = qs('#signup_name').value.trim();
+  const email = qs('#signup_email').value.trim();
+  const pass = qs('#signup_pass').value.trim();
+  if(!name||!email||!pass) return alert('Fill all fields');
+  const slug = name.toLowerCase().replace(/\s+/g,'-');
+  const now = Date.now();
+  const user = { business:name,email,password:pass,slug,trial:false,subscribe:true,subscribeStart:now,services:[],bookings:[] };
+  saveUser(user);
+  alert('Subscribed! You can now access your dashboard.');
+  renderDashboard(user);
+}
+
+// ---------- Login ----------
+function renderLogin(){
+  const container = qs('#app');
+  container.innerHTML = `
+  <div class="min-h-screen flex items-center justify-center w-full">
+    <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-4">Login</h2>
+      <input id="login_email" placeholder="Email" class="w-full border rounded p-3 mb-3"/>
+      <input id="login_pass" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3"/>
+      <div class="flex gap-3">
+        <button onclick="submitLogin()" class="flex-1 bg-purple-600 text-white py-3 rounded">Login</button>
+        <button onclick="renderHome()" class="flex-1 border py-3 rounded">Back</button>
+      </div>
     </div>
-  </div>`).join('');
+  </div>`;
 }
 
-function addService(){
-  const user=getUser();if(!user)return;
-  const name=document.getElementById('newSvcName').value.trim();
-  const price=Number(document.getElementById('newSvcPrice').value);
-  if(!name)return alert('Name required');const arr=getServices(user.slug);
-  arr.push({id:uid(),name,price});setServices(user.slug,arr);populateServices();
-  document.getElementById('newSvcName').value='';document.getElementById('newSvcPrice').value='';
-}
-function editService(id){
-  const user=getUser();if(!user)return;
-  const arr=getServices(user.slug);const s=arr.find(x=>x.id===id);if(!s)return;
-  const name=prompt('Service Name',s.name);if(!name)return;
-  const price=Number(prompt('Price',$`${s.price}`));s.name=name;s.price=price;setServices(user.slug,arr);populateServices();
-}
-function delService(id){const user=getUser();if(!user)return;
-  let arr=getServices(user.slug);arr=arr.filter(x=>x.id!==id);setServices(user.slug,arr);populateServices();
+function submitLogin(){
+  const email = qs('#login_email').value.trim();
+  const pass = qs('#login_pass').value.trim();
+  const user = getUserByEmail(email);
+  if(!user) return alert('User not found');
+  if(user.password!==pass) return alert('Wrong password');
+  const now = Date.now();
+  if(user.trial){
+    if(now-user.trialStart>7*24*60*60*1000){ return alert('Trial expired. Subscribe to continue'); }
+  } else if(user.subscribe){
+    if(now-user.subscribeStart>30*24*60*60*1000){ return alert('Subscription expired. Renew to continue'); }
+  }
+  renderDashboard(user);
 }
 
-/* ---------- Booking Table ---------- */
-function populateBookings(){const user=getUser();if(!user)return;
-const arr=getBookings(user.slug);const body=document.getElementById('bookingBody');
-body.innerHTML=arr.map(b=>`<tr><td>${b.name}</td><td>${b.email}</td><td>${b.phone}</td><td>${b.service}</td><td>${b.date}</td></tr>`).join('');}
-function exportBookings(){const user=getUser();if(!user)return;
-const arr=getBookings(user.slug);if(!arr.length)return alert('No bookings');
-const csv=[['Name','Email','Phone','Service','Date'],...arr.map(b=>[b.name,b.email,b.phone,b.service,b.date])].map(r=>r.join(',')).join('\n');
-downloadFile(user.slug+'-bookings.csv',csv);
+// ---------- Dashboard ----------
+function renderDashboard(user){
+  const container = qs('#app');
+  const now = Date.now();
+  let remaining='';
+  if(user.trial){ 
+    remaining = Math.max(0,7*24*60*60*1000-(now-user.trialStart));
+  } else if(user.subscribe){
+    remaining = Math.max(0,30*24*60*60*1000-(now-user.subscribeStart));
+  }
+  const days = Math.ceil(remaining/(24*60*60*1000));
+  container.innerHTML = `
+  <div class="w-full min-h-screen p-6">
+    <h2 class="text-2xl font-bold mb-2">${user.business} Dashboard</h2>
+    <div class="mb-4">Your link to share with customers: <input class="border px-2 py-1 w-72" readonly value="?business=${user.slug}" /></div>
+    <div class="mb-2 font-semibold">Days remaining: ${days}</div>
+    <div class="flex gap-2 mb-4">
+      <input id="svc_name" placeholder="Service name" class="border p-2 flex-1"/>
+      <input id="svc_price" type="number" placeholder="Price" class="border p-2 w-24"/>
+      <button onclick="addService('${user.email}')" class="bg-green-600 text-white px-4 py-2 rounded">Add</button>
+    </div>
+    <div id="servicesList" class="mb-4"></div>
+    <h3 class="text-xl font-semibold mb-2">Bookings</h3>
+    <table class="min-w-full text-left border">
+      <thead class="bg-gray-100"><tr><th class="px-2 py-1">Name</th><th class="px-2 py-1">Email</th><th class="px-2 py-1">Phone</th><th class="px-2 py-1">Service</th><th class="px-2 py-1">Date</th></tr></thead>
+      <tbody id="bookingsList"></tbody>
+    </table>
+    <button onclick="logout()" class="mt-4 bg-red-600 text-white px-4 py-2 rounded">Logout</button>
+  </div>`;
+  renderServices(user);
+  renderBookings(user);
 }
 
-/* ---------- Logout ---------- */
-function logout(){localStorage.removeItem('nono_user');location.reload();}
+// ---------- Services ----------
+function addService(email){
+  const user = getUserByEmail(email);
+  const name = qs('#svc_name').value.trim();
+  const price = Number(qs('#svc_price').value);
+  if(!name) return alert('Service name required');
+  user.services.push({id:uid(),name,price});
+  saveUser(user);
+  qs('#svc_name').value=''; qs('#svc_price').value='';
+  renderServices(user);
+}
+function renderServices(user){
+  const cont = qs('#servicesList');
+  if(!user.services || user.services.length===0){ cont.innerHTML='<div>No services yet</div>'; return; }
+  cont.innerHTML = user.services.map(s=>`
+    <div class="flex justify-between p-2 bg-gray-50 mb-1 rounded">
+      <div>${s.name} - $${s.price}</div>
+      <div>
+        <button onclick="editService('${user.email}','${s.id}')" class="px-2 py-1 bg-yellow-300 rounded">Edit</button>
+        <button onclick="deleteService('${user.email}','${s.id}')" class="px-2 py-1 bg-red-500 text-white rounded">Del</button>
+      </div>
+    </div>`).join('');
+}
+function editService(email,id){
+  const user = getUserByEmail(email);
+  const svc = user.services.find(s=>s.id===id);
+  const name = prompt('Service name', svc.name); if(!name) return;
+  const price = Number(prompt('Price',svc.price)); if(isNaN(price)) return;
+  svc.name=name; svc.price=price;
+  saveUser(user); renderServices(user);
+}
+function deleteService(email,id){
+  const user = getUserByEmail(email);
+  user.services = user.services.filter(s=>s.id!==id);
+  saveUser(user); renderServices(user);
+}
 
-/* ---------- Public Booking ---------- */
+// ---------- Bookings (Public) ----------
 function renderPublicBooking(slug){
-  const svc=getServices(slug);if(!svc.length)return alert('No services');
-  document.body.innerHTML=`
-  <div class="min-h-screen flex items-center justify-center p-6 bg-gray-100">
-    <div class="bg-white p-6 rounded-xl shadow max-w-lg w-full">
-      <h2 class="text-xl font-bold mb-4">${slug.replace(/-/g,' ')}</h2>
-      <input id="bk_name" placeholder="Name" class="border rounded p-2 w-full mb-2"/>
-      <input id="bk_email" placeholder="Email" class="border rounded p-2 w-full mb-2"/>
-      <input id="bk_phone" placeholder="Phone" class="border rounded p-2 w-full mb-2"/>
-      <select id="bk_service" class="border rounded p-2 w-full mb-2">${svc.map(s=>`<option value="${s.name}">${s.name} ($${s.price})</option>`).join('')}</select>
-      <input type="date" id="bk_date" class="border rounded p-2 w-full mb-2"/>
-      <button onclick="submitBooking('${slug}')" class="w-full bg-green-600 text-white py-2 rounded">Book</button>
+  const users = getUsers();
+  const user = users.find(u=>u.slug===slug);
+  if(!user){ document.body.innerHTML='<div>Business not found</div>'; return; }
+  const services = user.services||[];
+  document.body.innerHTML = `
+    <div class="min-h-screen flex flex-col items-center p-6">
+      <h1 class="text-2xl font-bold mb-4">${user.business}</h1>
+      ${services.length===0 ? '<div>No services</div>' :
+      services.map(s=>`<div class="border p-4 mb-2 w-full max-w-md"><div class="font-medium">${s.name}</div><div class="text-sm mb-2">$${s.price}</div>
+      <button onclick="bookService('${slug}','${s.id}')" class="bg-green-600 text-white px-3 py-1 rounded">Book</button></div>`).join('')}
+      <button onclick="window.location.href=window.location.pathname" class="mt-4 text-sm text-gray-600">Home</button>
     </div>
-  </div>`;
+    <div id="modalContainer"></div>`;
+}
+function bookService(slug,sid){
+  const user = getUsers().find(u=>u.slug===slug);
+  const svc = user.services.find(s=>s.id===sid);
+  const modal = qs('#modalContainer');
+  modal.innerHTML = `
+    <div class="fixed inset-0 flex items-center justify-center modal-backdrop z-50">
+      <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
+        <h3 class="text-lg font-semibold mb-2">Book: ${svc.name}</h3>
+        <input id="bk_name" placeholder="Full name" class="border w-full p-2 mb-2"/>
+        <input id="bk_email" placeholder="Email" class="border w-full p-2 mb-2"/>
+        <input id="bk_phone" placeholder="Phone" class="border w-full p-2 mb-2"/>
+        <input id="bk_date" type="date" class="border w-full p-2 mb-2"/>
+        <div class="flex gap-2">
+          <button onclick="confirmBooking('${slug}','${sid}')" class="flex-1 bg-green-600 text-white py-2 rounded">Confirm</button>
+          <button onclick="closeModal()" class="flex-1 border py-2 rounded">Cancel</button>
+        </div>
+      </div>
+    </div>`;
+}
+function confirmBooking(slug,sid){
+  const user = getUsers().find(u=>u.slug===slug);
+  const svc = user.services.find(s=>s.id===sid);
+  const name = qs('#bk_name').value.trim();
+  const email = qs('#bk_email').value.trim();
+  const phone = qs('#bk_phone').value.trim();
+  const date = qs('#bk_date').value;
+  if(!name || !email || !phone || !date) return alert('Fill all fields');
+  const bookings = getBookings(slug);
+  bookings.push({id:uid(), name, email, phone, service:svc.name, date});
+  setBookings(slug, bookings);
+  alert('Booking confirmed!');
+  closeModal();
+}
+function closeModal(){ qs('#modalContainer').innerHTML=''; }
+
+// ---------- Render Bookings in Dashboard ----------
+function renderBookings(user){
+  const tbody = qs('#bookingsList');
+  const bookings = getBookings(user.slug);
+  if(bookings.length===0){ tbody.innerHTML='<tr><td colspan="5">No bookings yet</td></tr>'; return; }
+  tbody.innerHTML = bookings.map(b=>`
+    <tr class="border-b"><td class="px-2 py-1">${b.name}</td><td class="px-2 py-1">${b.email}</td><td class="px-2 py-1">${b.phone}</td><td class="px-2 py-1">${b.service}</td><td class="px-2 py-1">${b.date}</td></tr>
+  `).join('');
 }
 
-function submitBooking(slug){
-  const name=document.getElementById('bk_name').value.trim();
-  const email=document.getElementById('bk_email').value.trim();
-  const phone=document.getElementById('bk_phone').value.trim();
-  const service=document.getElementById('bk_service').value;
-  const date=document.getElementById('bk_date').value;if(!name||!email||!phone||!service||!date)return alert('Fill all fields');
-  const arr=getBookings(slug);arr.push({name,email,phone,service,date});setBookings(slug,arr);
-  alert('Booking successful');renderPublicBooking(slug);
-}
+// ---------- Logout ----------
+function logout(){ renderHome(); }
 
-/* ---------- On Load ---------- */
-window.addEventListener('load',()=>{
-  const params=new URLSearchParams(location.search);
-  const biz=params.get('business');if(biz) renderPublicBooking(biz);
-});
+// ---------- Render Home ----------
+function renderHome(){ location.reload(); }
+
+// ---------- Public Booking Route ----------
+const urlParams = new URLSearchParams(window.location.search);
+const businessSlug = urlParams.get('business');
+if(businessSlug){ renderPublicBooking(businessSlug); }
 </script>
+
 </body>
 </html>
