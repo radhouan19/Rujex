@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>نونو — Booking Platform</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
@@ -12,249 +12,248 @@
 <body class="bg-gray-50 text-gray-800">
 
 <div id="app" class="min-h-screen flex items-center justify-center p-6"
-     style="background-image: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80'); background-size:cover;">
+style="background-image: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80'); background-size:cover;">
   <div id="homeCard" class="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center max-w-xl w-full">
-    <div class="flex items-center justify-center gap-4 mb-4">
-      <h1 class="text-3xl font-bold text-gray-900">Grow Your Business with Online Bookings</h1>
-    </div>
-    <p class="text-gray-600 mb-6">Free demo 7 days or subscribe for $11/month — manage services and bookings.</p>
-
+    <h1 class="text-3xl font-bold mb-6">Grow Your Business with Online Bookings</h1>
     <div class="flex flex-col gap-4">
-      <button onclick="renderTrialSignup()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Start 7-Day Trial</button>
-      <button onclick="renderSubscriptionSignup()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Subscribe $11/month</button>
+      <button onclick="startTrialPrompt()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">7-Day Free Trial</button>
+      <button onclick="renderSignup()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Subscribe (11$/month)</button>
       <button onclick="renderLogin()" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Login</button>
     </div>
   </div>
 </div>
 
-<div id="mousa_modal_container"></div>
+<div id="modalContainer"></div>
 
 <script>
 /* ---------- Helpers ---------- */
-function uid(prefix='id'){ return prefix+'_'+Math.random().toString(36).slice(2,10); }
 function slugify(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
-function qs(sel){ return document.querySelector(sel); }
-function qsa(sel){ return Array.from(document.querySelectorAll(sel)); }
-
-/* ---------- LocalStorage Data ---------- */
-function getUser(){ return JSON.parse(localStorage.getItem('nuno_user')||'null'); }
-function setUser(u){ localStorage.setItem('nuno_user', JSON.stringify(u)); }
-function getServices(slug){ return JSON.parse(localStorage.getItem('nuno_services_'+slug)||'[]'); }
-function setServices(slug, arr){ localStorage.setItem('nuno_services_'+slug, JSON.stringify(arr)); }
-function getBookings(slug){ return JSON.parse(localStorage.getItem('nuno_bookings_'+slug)||'[]'); }
-function setBookings(slug, arr){ localStorage.setItem('nuno_bookings_'+slug, JSON.stringify(arr)); }
-
-/* ---------- Trial / Subscription ---------- */
-function renderTrialSignup(){
-  const c = document.getElementById('app');
-  c.innerHTML = `<div class="min-h-screen flex items-center justify-center w-full">
-  <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
-    <h2 class="text-2xl font-bold mb-4">Start 7-Day Trial</h2>
-    <input id="trial_name" placeholder="Business Name" class="w-full border rounded p-3 mb-3"/>
-    <input id="trial_email" placeholder="Email" class="w-full border rounded p-3 mb-3"/>
-    <input id="trial_pass" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3"/>
-    <div class="flex gap-3">
-      <button onclick="submitTrial()" class="flex-1 bg-green-600 text-white py-3 rounded">Start Trial</button>
-      <button onclick="renderHome()" class="flex-1 border rounded py-3">Cancel</button>
-    </div>
-  </div></div>`;
+function qs(s){ return document.querySelector(s); }
+function qsa(s){ return Array.from(document.querySelectorAll(s)); }
+function uid(p='id'){ return p+'_'+Math.random().toString(36).slice(2,10); }
+function downloadCSV(name, data){
+  const blob = new Blob([data],{type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 }
 
-function submitTrial(){
-  const name=qs('#trial_name').value.trim(),email=qs('#trial_email').value.trim(),pass=qs('#trial_pass').value.trim();
-  if(!name||!email||!pass){alert('Fill all fields');return;}
-  const slug=slugify(name);
-  const expiry=new Date(); expiry.setDate(expiry.getDate()+7);
-  const user={business:name,email,pass,slug,plan:'trial',expiry:expiry.toISOString(),color:'#2563eb',logo:''};
-  setUser(user); setServices(slug,[]); setBookings(slug,[]);
+/* ---------- Storage ---------- */
+function getUsers(){ return JSON.parse(localStorage.getItem('nono_users')||'[]'); }
+function setUsers(arr){ localStorage.setItem('nono_users', JSON.stringify(arr)); }
+function getServices(slug){ return JSON.parse(localStorage.getItem('nono_services_'+slug)||'[]'); }
+function setServices(slug, arr){ localStorage.setItem('nono_services_'+slug, JSON.stringify(arr)); }
+function getBookings(slug){ return JSON.parse(localStorage.getItem('nono_bookings_'+slug)||'[]'); }
+function setBookings(slug, arr){ localStorage.setItem('nono_bookings_'+slug, JSON.stringify(arr)); }
+
+/* ---------- User Handling ---------- */
+function findUser(email){ return getUsers().find(u=>u.email===email); }
+function saveUser(u){
+  const arr=getUsers().filter(x=>x.email!==u.email); arr.push(u); setUsers(arr);
+}
+
+/* ---------- Trial ---------- */
+function startTrialPrompt(){
+  const name = prompt("Business name for 7-day trial");
+  if(!name) return;
+  const email = prompt("Email for trial login");
+  if(!email) return;
+  const password = prompt("Password for trial login");
+  if(!password) return;
+  const slug = slugify(name);
+  const start = Date.now();
+  const user = {email,password,name,slug,type:'trial',start};
+  saveUser(user);
+  alert("Trial created! You can login now.");
   renderDashboard(user);
 }
 
-function renderSubscriptionSignup(){
-  const c = document.getElementById('app');
-  c.innerHTML = `<div class="min-h-screen flex items-center justify-center w-full">
-  <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
-    <h2 class="text-2xl font-bold mb-4">Subscribe $11/month</h2>
-    <input id="sub_name" placeholder="Business Name" class="w-full border rounded p-3 mb-3"/>
-    <input id="sub_email" placeholder="Email" class="w-full border rounded p-3 mb-3"/>
-    <input id="sub_pass" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3"/>
-    <div class="flex gap-3">
-      <button onclick="submitSubscription()" class="flex-1 bg-blue-600 text-white py-3 rounded">Subscribe</button>
-      <button onclick="renderHome()" class="flex-1 border rounded py-3">Cancel</button>
-    </div>
-  </div></div>`;
+/* ---------- Signup ---------- */
+function renderSignup(){
+  const container=document.getElementById('app');
+  container.innerHTML = `
+    <div class="min-h-screen flex items-center justify-center w-full">
+      <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-4">Subscribe (11$/month)</h2>
+        <input id="signup_name" placeholder="Business Name" class="w-full border rounded p-3 mb-3" />
+        <input id="signup_email" placeholder="Email" class="w-full border rounded p-3 mb-3" />
+        <input id="signup_password" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3" />
+        <button onclick="submitSignup()" class="w-full bg-blue-600 text-white py-3 rounded">Subscribe</button>
+        <button onclick="renderHome()" class="w-full mt-2 border py-3 rounded">Cancel</button>
+      </div>
+    </div>`;
 }
 
-function submitSubscription(){
-  const name=qs('#sub_name').value.trim(),email=qs('#sub_email').value.trim(),pass=qs('#sub_pass').value.trim();
-  if(!name||!email||!pass){alert('Fill all fields');return;}
-  const slug=slugify(name);
-  const expiry=new Date(); expiry.setMonth(expiry.getMonth()+1);
-  const user={business:name,email,pass,slug,plan:'monthly',expiry:expiry.toISOString(),color:'#2563eb',logo:''};
-  setUser(user); setServices(slug,[]); setBookings(slug,[]);
-  renderDashboard(user);
+function submitSignup(){
+  const name = qs('#signup_name').value.trim();
+  const email = qs('#signup_email').value.trim();
+  const password = qs('#signup_password').value.trim();
+  if(!name||!email||!password) return alert("Fill all fields");
+  const slug = slugify(name);
+  const start = Date.now();
+  const user = {email,password,name,slug,type:'subscribed',start};
+  saveUser(user); setServices(slug,[]); setBookings(slug,[]);
+  alert("Subscribed! Access your dashboard now."); renderDashboard(user);
 }
 
 /* ---------- Login ---------- */
 function renderLogin(){
-  const c = document.getElementById('app');
-  c.innerHTML = `<div class="min-h-screen flex items-center justify-center w-full">
-  <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
-    <h2 class="text-2xl font-bold mb-4">Login</h2>
-    <input id="login_email" placeholder="Email" class="w-full border rounded p-3 mb-3"/>
-    <input id="login_pass" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3"/>
-    <div class="flex gap-3">
-      <button onclick="submitLogin()" class="flex-1 bg-purple-600 text-white py-3 rounded">Login</button>
-      <button onclick="renderHome()" class="flex-1 border rounded py-3">Cancel</button>
-    </div>
-  </div></div>`;
+  const container=document.getElementById('app');
+  container.innerHTML = `
+    <div class="min-h-screen flex items-center justify-center w-full">
+      <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-4">Login</h2>
+        <input id="login_email" placeholder="Email" class="w-full border rounded p-3 mb-3" />
+        <input id="login_password" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3" />
+        <button onclick="submitLogin()" class="w-full bg-purple-600 text-white py-3 rounded">Login</button>
+        <button onclick="renderHome()" class="w-full mt-2 border py-3 rounded">Cancel</button>
+      </div>
+    </div>`;
 }
 
 function submitLogin(){
-  const email=qs('#login_email').value.trim(),pass=qs('#login_pass').value.trim();
-  const user=getUser(); if(!user){alert('No account');return;}
-  if(user.email===email&&user.pass===pass){
-    renderDashboard(user);
-  }else alert('Invalid credentials');
-}
-
-/* ---------- Check expiry ---------- */
-function checkExpiry(user){
-  const now=new Date(); const expiry=new Date(user.expiry);
-  const diff=Math.ceil((expiry-now)/(1000*60*60*24));
-  if(diff>0){
-    qs('#daysRemaining')?.innerText=diff+' day(s) remaining';
-    if(diff<=2) alert(`⚠️ Your ${user.plan==='trial'?'trial':'subscription'} ends in ${diff} day(s).`);
-    return true;
-  }else{ alert(`⛔ Your ${user.plan==='trial'?'trial':'subscription'} has expired.`); logout(); return false;}
+  const email=qs('#login_email').value.trim();
+  const password=qs('#login_password').value.trim();
+  const user=findUser(email);
+  if(!user) return alert("No account found");
+  if(user.password!==password) return alert("Wrong password");
+  // check expiry
+  const now=Date.now();
+  if(user.type==='trial' && now-user.start>7*24*60*60*1000){ return alert("Trial expired"); }
+  if(user.type==='subscribed' && now-user.start>30*24*60*60*1000){ return alert("Subscription expired"); }
+  renderDashboard(user);
 }
 
 /* ---------- Dashboard ---------- */
 function renderDashboard(user){
-  if(!checkExpiry(user)) return;
-  const slug=user.slug; const primary=user.color||'#2563eb';
-  const services=getServices(slug);
-  const bookings=getBookings(slug);
-
-  document.getElementById('app').innerHTML=`<div class="w-full min-h-screen flex flex-col">
-  <header class="flex items-center justify-between p-4" style="background:${primary}; color:white;">
-    <div class="flex items-center gap-3">
-      <div class="text-xl font-bold">${user.business}</div>
-      <div class="text-sm">${user.email}</div>
-      <div id="daysRemaining" class="text-sm font-semibold mt-1"></div>
-    </div>
-    <div class="flex gap-3">
-      <button onclick="logout()" class="bg-white text-${primary} px-3 py-2 rounded">Logout</button>
-      <button onclick="renderPublicLink()" class="bg-white text-${primary} px-3 py-2 rounded">Share Link</button>
-    </div>
-  </header>
-  <main class="p-6 flex-1 max-w-6xl mx-auto">
-    <section class="mb-6">
-      <h2 class="text-xl font-bold mb-3">Manage Services</h2>
-      <div class="flex gap-2 mb-2">
-        <input id="newServiceName" placeholder="Service Name" class="border rounded p-2 flex-1"/>
-        <input id="newServicePrice" placeholder="Price" type="number" class="border rounded p-2 w-24"/>
-        <button onclick="addService()" class="bg-green-600 text-white px-3 py-2 rounded">Add</button>
-      </div>
-      <ul id="serviceList" class="space-y-2">${services.map(s=>`<li class="flex justify-between border p-2 rounded">
-        <span>${s.name} - $${s.price}</span>
-        <button onclick="removeService('${s.id}')" class="bg-red-500 text-white px-2 rounded">Delete</button>
-      </li>`).join('')}</ul>
-    </section>
-    <section>
-      <h2 class="text-xl font-bold mb-3">Bookings</h2>
-      <table class="w-full border-collapse border">
-        <thead><tr class="bg-gray-200"><th class="border p-2">Name</th><th class="border p-2">Email</th><th class="border p-2">Phone</th><th class="border p-2">Service</th><th class="border p-2">Date</th></tr></thead>
-        <tbody id="bookingList">${bookings.map(b=>`<tr><td class="border p-2">${b.name}</td><td class="border p-2">${b.email}</td><td class="border p-2">${b.phone}</td><td class="border p-2">${b.service}</td><td class="border p-2">${b.date}</td></tr>`).join('')}</tbody>
-      </table>
-    </section>
-  </main></div>`;
-}
-
-/* ---------- Service Actions ---------- */
-function addService(){
-  const name=qs('#newServiceName').value.trim();
-  const price=qs('#newServicePrice').value.trim();
-  if(!name||!price){alert('Fill fields'); return;}
-  const user=getUser(); const slug=user.slug;
-  const services=getServices(slug);
-  services.push({id:uid(), name, price});
-  setServices(slug, services);
-  renderDashboard(user);
-}
-function removeService(id){
-  const user=getUser(); const slug=user.slug;
-  const services=getServices(slug).filter(s=>s.id!==id);
-  setServices(slug, services);
-  renderDashboard(user);
-}
-
-/* ---------- Public Link ---------- */
-function renderPublicLink(){
-  const user=getUser(); if(!user)return;
   const slug=user.slug;
-  const url=window.location.origin+window.location.pathname+'?business='+slug;
-  prompt('Share this link with customers:',url);
-}
-
-/* ---------- Public Booking Page ---------- */
-function renderPublicBookingPage(slug){
-  const services=getServices(slug); 
-  document.body.innerHTML=`<div class="min-h-screen flex items-center justify-center p-6 bg-gray-100">
-    <div class="max-w-3xl w-full bg-white rounded-xl shadow p-6">
-      <h1 class="text-2xl font-bold mb-4">Book Appointment</h1>
-      <div class="grid md:grid-cols-2 gap-4 mb-4">
-      ${services.length===0?'<div>No services available</div>':services.map(s=>`<div class="p-4 border rounded">
-        <div class="font-medium">${s.name}</div>
-        <div class="text-sm text-gray-500 mb-2">$${s.price}</div>
-        <button onclick="openBookingModal('${slug}','${s.id}')" class="bg-blue-600 text-white px-3 py-2 rounded">Book Now</button>
-      </div>`).join('')}
+  const expiry=(user.type==='trial'?7*24*60*60*1000:30*24*60*60*1000);
+  const remaining=Math.max(0, expiry-(Date.now()-user.start));
+  const days=Math.floor(remaining/(1000*60*60*24));
+  const hours=Math.floor((remaining%(1000*60*60*24))/(1000*60*60));
+  const minutes=Math.floor((remaining%(1000*60*60))/(1000*60));
+  document.getElementById('app').innerHTML=`
+  <div class="w-full min-h-screen flex flex-col">
+    <header class="flex justify-between items-center p-4 bg-blue-600 text-white">
+      <div>
+        <div class="text-xl font-bold">${user.name}</div>
+        <div class="text-sm">${user.email}</div>
       </div>
-    </div></div><div id="mousa_modal_container"></div>`;
-}
-
-/* ---------- Booking Modal ---------- */
-function openBookingModal(slug,serviceId){
-  const services=getServices(slug); const s=services.find(x=>x.id===serviceId);
-  if(!s) return;
-  const modal=`<div class="fixed inset-0 flex items-center justify-center modal-backdrop z-50">
-    <div class="bg-white rounded-xl p-6 w-full max-w-md relative">
-      <h2 class="text-xl font-bold mb-4">Book: ${s.name}</h2>
-      <input id="book_name" placeholder="Your Name" class="w-full border rounded p-2 mb-2"/>
-      <input id="book_email" placeholder="Your Email" class="w-full border rounded p-2 mb-2"/>
-      <input id="book_phone" placeholder="Phone" class="w-full border rounded p-2 mb-2"/>
-      <input id="book_date" type="date" class="w-full border rounded p-2 mb-4"/>
-      <div class="flex gap-3">
-        <button onclick="submitBooking('${slug}','${serviceId}')" class="bg-green-600 text-white px-4 py-2 rounded">Confirm</button>
-        <button onclick="closeModal()" class="bg-red-500 text-white px-4 py-2 rounded">Cancel</button>
+      <div class="flex gap-2 items-center">
+        <div>Time left: ${days}d ${hours}h ${minutes}m</div>
+        <button onclick="logout()" class="bg-white text-blue-600 px-3 py-1 rounded">Logout</button>
       </div>
-    </div>
+    </header>
+    <main class="p-6 flex-1 max-w-6xl mx-auto">
+      <div class="mb-4">Share your booking link: <input readonly class="border px-2 py-1 w-64" value="${location.origin+location.pathname}?business=${slug}"></div>
+      <div class="flex gap-4">
+        <div class="w-64 bg-white rounded-xl p-4 shadow">
+          <h3 class="font-semibold mb-2">Services</h3>
+          <div class="flex gap-2 mb-2">
+            <input id="svc_name" placeholder="Service" class="border p-1 flex-1" />
+            <input id="svc_price" type="number" placeholder="Price" class="border p-1 w-20" />
+            <button onclick="addService()" class="bg-green-600 text-white px-2 rounded">Add</button>
+          </div>
+          <div id="svc_list" class="space-y-1"></div>
+        </div>
+        <div class="flex-1 bg-white rounded-xl p-4 shadow">
+          <h3 class="font-semibold mb-2">Bookings</h3>
+          <table class="min-w-full text-left border">
+            <thead class="bg-gray-100"><tr><th>Name</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th><th>Action</th></tr></thead>
+            <tbody id="booking_list"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
   </div>`;
-  document.getElementById('mousa_modal_container').innerHTML=modal;
-}
-function closeModal(){ document.getElementById('mousa_modal_container').innerHTML=''; }
-function submitBooking(slug,serviceId){
-  const name=qs('#book_name').value.trim();
-  const email=qs('#book_email').value.trim();
-  const phone=qs('#book_phone').value.trim();
-  const date=qs('#book_date').value;
-  if(!name||!email||!phone||!date){alert('Fill all fields'); return;}
-  const services=getServices(slug);
-  const service=services.find(x=>x.id===serviceId);
-  const bookings=getBookings(slug);
-  bookings.push({name,email,phone,service:service.name,date});
-  setBookings(slug,bookings);
-  closeModal(); alert('Booking confirmed!');
+  populateServices();
+  populateBookings();
 }
 
-/* ---------- On load ---------- */
-(function init(){
-  const params=new URLSearchParams(window.location.search);
-  const biz=params.get('business');
-  if(biz){ renderPublicBookingPage(biz); return; }
-})();
+/* ---------- Services ---------- */
+function addService(){
+  const name=qs('#svc_name').value.trim();
+  const price=Number(qs('#svc_price').value);
+  if(!name) return alert("Enter service name");
+  const user=JSON.parse(localStorage.getItem('nono_users')).find(u=>location.search.includes(u.slug));
+  const slug=user.slug;
+  const arr=getServices(slug);
+  arr.push({id:uid('s'),name,price});
+  setServices(slug,arr);
+  qs('#svc_name').value=''; qs('#svc_price').value='';
+  populateServices();
+}
+function populateServices(){
+  const user=JSON.parse(localStorage.getItem('nono_users')).find(u=>location.search.includes(u.slug));
+  const slug=user.slug; const cont=qs('#svc_list');
+  const arr=getServices(slug);
+  cont.innerHTML=arr.map(s=>`<div class="flex justify-between items-center"><div>${s.name} ($${s.price})</div>
+    <div class="flex gap-1"><button onclick="editService('${slug}','${s.id}')" class="text-yellow-500">Edit</button>
+    <button onclick="deleteService('${slug}','${s.id}')" class="text-red-500">Del</button></div></div>`).join('');
+}
+function editService(slug,id){
+  const arr=getServices(slug); const s=arr.find(x=>x.id===id); if(!s) return;
+  const n=prompt("Service name",s.name); if(!n) return; const p=prompt("Price",$?s.price:0); s.name=n; s.price=Number(p)||0; setServices(slug,arr); populateServices();
+}
+function deleteService(slug,id){ const arr=getServices(slug).filter(x=>x.id!==id); setServices(slug,arr); populateServices(); }
+
+/* ---------- Bookings ---------- */
+function populateBookings(){
+  const user=JSON.parse(localStorage.getItem('nono_users')).find(u=>location.search.includes(u.slug));
+  const slug=user.slug; const arr=getBookings(slug);
+  const cont=qs('#booking_list');
+  cont.innerHTML=arr.length===0?'<tr><td colspan="6">No bookings</td></tr>':arr.map((b,i)=>`<tr class="border-t"><td>${b.name}</td><td>${b.email}</td><td>${b.phone}</td><td>${b.service}</td><td>${b.date}</td><td><button onclick="deleteBooking('${slug}',${i})" class="text-red-500">Del</button></td></tr>`).join('');
+}
+function deleteBooking(slug,index){ const arr=getBookings(slug); arr.splice(index,1); setBookings(slug,arr); populateBookings(); }
+
+/* ---------- Logout ---------- */
+function logout(){ location.href=location.pathname; }
+
+/* ---------- Home ---------- */
 function renderHome(){ location.href=location.pathname; }
-function logout(){ localStorage.removeItem('nuno_user'); location.href=location.pathname; }
+
+</script>
+/* ---------- Public Booking Page ---------- */
+function renderPublicBooking(slug){
+  const user=getUsers().find(u=>u.slug===slug);
+  if(!user){ alert("Business not found"); return; }
+  const services=getServices(slug);
+  document.getElementById('app').innerHTML=`
+    <div class="min-h-screen flex items-center justify-center p-6 bg-gray-100">
+      <div class="bg-white rounded-2xl shadow-xl p-6 max-w-lg w-full">
+        <h2 class="text-2xl font-bold mb-4 text-center">${user.name} — Book a Service</h2>
+        <div class="mb-3">
+          <input id="bk_name" placeholder="Your Name" class="w-full border rounded p-2 mb-2" />
+          <input id="bk_email" placeholder="Your Email" class="w-full border rounded p-2 mb-2" />
+          <input id="bk_phone" placeholder="Phone" class="w-full border rounded p-2 mb-2" />
+          <select id="bk_service" class="w-full border rounded p-2 mb-2">
+            ${services.map(s=>`<option value="${s.name}">${s.name} ($${s.price})</option>`).join('')}
+          </select>
+          <input type="date" id="bk_date" class="w-full border rounded p-2 mb-2"/>
+          <button onclick="submitBooking('${slug}')" class="w-full bg-green-600 text-white py-2 rounded">Book</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function submitBooking(slug){
+  const name=qs('#bk_name').value.trim();
+  const email=qs('#bk_email').value.trim();
+  const phone=qs('#bk_phone').value.trim();
+  const service=qs('#bk_service').value;
+  const date=qs('#bk_date').value;
+  if(!name||!email||!phone||!service||!date) return alert("Fill all fields");
+  const arr=getBookings(slug); arr.push({name,email,phone,service,date}); setBookings(slug,arr);
+  alert("Booking successful!");
+  renderPublicBooking(slug);
+}
+
+/* ---------- Auto-Check URL for public booking ---------- */
+window.addEventListener('load', ()=>{
+  const params=new URLSearchParams(location.search);
+  const business=params.get('business');
+  if(business) renderPublicBooking(business);
+});
 </script>
 </body>
 </html>
