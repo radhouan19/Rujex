@@ -1,315 +1,112 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>نونو — Simplified Booking (Copy Link)</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>.modal-backdrop{background:rgba(0,0,0,0.45);}</style>
-</head>
-<body class="bg-gray-50 text-gray-800">
-
-<div id="app" class="min-h-screen flex items-center justify-center p-6">
-  <div id="homeCard" class="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center max-w-xl w-full">
-    <h1 class="text-3xl font-bold mb-4">Grow Your Business with Online Bookings</h1>
-    <p class="text-gray-600 mb-6">Free trial 7 days — add services, share your booking link and get bookings.</p>
-    <div class="flex flex-col gap-4">
-      <button onclick="startTrialPrompt()" class="bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl">Start Free 7-Day Trial</button>
-      <button onclick="renderSignup()" class="bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl">Subscribe $11/month</button>
-      <button onclick="renderLogin()" class="bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-xl">Login</button>
-    </div>
-  </div>
-</div>
-
-<div id="modalContainer"></div>
-
-<script>
-/* ---------- Helpers & storage ---------- */
-function uid(p='id'){ return p+'_'+Math.random().toString(36).slice(2,10); }
-function qs(s){ return document.querySelector(s); }
-function qsa(s){ return Array.from(document.querySelectorAll(s)); }
-
-function getUsers(){ return JSON.parse(localStorage.getItem('nono_users') || '[]'); }
-function setUsers(arr){ localStorage.setItem('nono_users', JSON.stringify(arr)); }
-function getUserByEmail(email){ return getUsers().find(u=>u.email===email) || null; }
-function saveUser(user){
-  const arr = getUsers();
-  const i = arr.findIndex(x=>x.email===user.email);
-  if(i>=0) arr[i]=user; else arr.push(user);
-  setUsers(arr);
-}
-function getServices(slug){ return JSON.parse(localStorage.getItem('nono_services_'+slug) || '[]'); }
-function setServices(slug, arr){ localStorage.setItem('nono_services_'+slug, JSON.stringify(arr)); }
-function getBookings(slug){ return JSON.parse(localStorage.getItem('nono_bookings_'+slug) || '[]'); }
-function setBookings(slug, arr){ localStorage.setItem('nono_bookings_'+slug, JSON.stringify(arr)); }
-
-/* ---------- Home / Trial / Signup / Login ---------- */
-function startTrialPrompt(){
-  const name = prompt('Business name for trial:');
-  if(!name) return;
-  const email = prompt('Email (for login):');
-  if(!email) return;
-  const pass = prompt('Password:');
-  if(!pass) return;
-  const slug = name.toLowerCase().trim().replace(/\s+/g,'-');
-  const now = Date.now();
-  const user = { business:name, email, password:pass, slug, type:'trial', start: now };
-  saveUser(user);
-  setServices(slug, []);
-  setBookings(slug, []);
-  renderDashboard(user);
-}
-
-function renderSignup(){
-  const app = qs('#app');
-  app.innerHTML = `
-    <div class="min-h-screen flex items-center justify-center w-full">
-      <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-4">Subscribe $11/month</h2>
-        <input id="su_name" placeholder="Business name" class="w-full border rounded p-3 mb-3"/>
-        <input id="su_email" placeholder="Email" class="w-full border rounded p-3 mb-3"/>
-        <input id="su_pass" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3"/>
-        <div class="flex gap-3">
-          <button onclick="submitSignup()" class="flex-1 bg-blue-600 text-white py-3 rounded">Subscribe</button>
-          <button onclick="renderHome()" class="flex-1 border py-3 rounded">Cancel</button>
-        </div>
-      </div>
-    </div>`;
-}
-
-function submitSignup(){
-  const name = qs('#su_name').value.trim();
-  const email = qs('#su_email').value.trim();
-  const pass = qs('#su_pass').value.trim();
-  if(!name||!email||!pass) return alert('Fill all fields');
-  const slug = name.toLowerCase().replace(/\s+/g,'-');
-  const now = Date.now();
-  const user = { business:name, email, password:pass, slug, type:'subscribed', start: now };
-  saveUser(user);
-  setServices(slug, []);
-  setBookings(slug, []);
-  alert('Subscribed (simulated). Dashboard opened.');
-  renderDashboard(user);
-}
-
-function renderLogin(){
-  const app = qs('#app');
-  app.innerHTML = `
-    <div class="min-h-screen flex items-center justify-center w-full">
-      <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-4">Login</h2>
-        <input id="li_email" placeholder="Email" class="w-full border rounded p-3 mb-3"/>
-        <input id="li_pass" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3"/>
-        <div class="flex gap-3">
-          <button onclick="submitLogin()" class="flex-1 bg-purple-600 text-white py-3 rounded">Login</button>
-          <button onclick="renderHome()" class="flex-1 border py-3 rounded">Back</button>
-        </div>
-      </div>
-    </div>`;
-}
-
-function submitLogin(){
-  const email = qs('#li_email').value.trim();
-  const pass = qs('#li_pass').value.trim();
-  const user = getUserByEmail(email);
-  if(!user) return alert('User not found');
-  if(user.password !== pass) return alert('Wrong password');
-  const now = Date.now();
-  if(user.type === 'trial'){
-    if(now - user.start > 7*24*60*60*1000) return alert('Trial expired — subscribe to continue');
-  } else if(user.type === 'subscribed'){
-    if(now - user.start > 30*24*60*60*1000) return alert('Subscription expired — renew to continue');
-  }
-  renderDashboard(user);
-}
-
-function renderHome(){ location.href = location.pathname; }
-
-/* ---------- Dashboard (with copy link) ---------- */
-function renderDashboard(user){
-  const now = Date.now();
-  let remainingDays = 0;
-  if(user.type === 'trial'){
-    remainingDays = Math.max(0, 7 - Math.floor((now - user.start)/(24*60*60*1000)));
-  } else if(user.type === 'subscribed'){
-    remainingDays = Math.max(0, 30 - Math.floor((now - user.start)/(24*60*60*1000)));
-  }
-  const linkFull = location.origin + location.pathname + '?business=' + user.slug;
-
-  qs('#app').innerHTML = `
-    <div class="w-full min-h-screen p-6">
-      <header class="flex justify-between items-center mb-4">
-        <div>
-          <div class="text-xl font-bold">${user.business}</div>
-          <div class="text-sm text-gray-600">${user.email}</div>
-          <div class="text-sm text-yellow-600">${user.type==='trial' ? 'Trial: ' + remainingDays + ' days left' : 'Subscribed: ' + remainingDays + ' days left'}</div>
-        </div>
-        <div class="flex items-center gap-3">
-          <input id="shareLink" readonly class="border p-2 w-80" value="${linkFull}" />
-          <button onclick="copyLink()" class="bg-blue-600 text-white px-3 py-2 rounded">Copy</button>
-          <button onclick="renderHome()" class="bg-red-500 text-white px-3 py-2 rounded">Logout</button>
-        </div>
-      </header>
-
-      <section class="grid md:grid-cols-2 gap-6">
-        <div class="bg-white p-4 rounded shadow">
-          <h3 class="font-semibold mb-2">Services</h3>
-          <div class="flex gap-2 mb-3">
-            <input id="svc_name" placeholder="Service name" class="border p-2 flex-1"/>
-            <input id="svc_price" placeholder="Price" type="number" class="border p-2 w-24"/>
-            <button onclick="addService('${user.email}')" class="bg-green-600 text-white px-3 py-2 rounded">Add</button>
-          </div>
-          <div id="servicesList" class="space-y-2"></div>
-        </div>
-
-        <div class="bg-white p-4 rounded shadow">
-          <h3 class="font-semibold mb-2">Bookings</h3>
-          <div class="overflow-x-auto">
-            <table class="min-w-full text-left">
-              <thead class="bg-gray-100"><tr><th class="px-2 py-1">Name</th><th class="px-2 py-1">Email</th><th class="px-2 py-1">Phone</th><th class="px-2 py-1">Service</th><th class="px-2 py-1">Date</th></tr></thead>
-              <tbody id="bookingsList"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-    </div>
-  `;
-
-  renderServicesUI(user);
-  renderBookingsUI(user);
-}
-
-/* ---------- Copy Link ---------- */
-function copyLink(){
-  const inp = qs('#shareLink');
-  // use clipboard API if available
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(inp.value).then(()=> alert('Link copied to clipboard')).catch(()=> {
-      inp.select(); document.execCommand('copy'); alert('Link copied (fallback)');
-    });
-  } else {
-    inp.select(); document.execCommand('copy'); alert('Link copied');
-  }
-}
-
-/* ---------- Services CRUD ---------- */
-function addService(email){
-  const user = getUserByEmail(email);
-  if(!user) return alert('User not found');
-  const name = qs('#svc_name').value.trim();
-  const price = Number(qs('#svc_price').value);
-  if(!name) return alert('Enter service name');
-  const services = getServices(user.slug);
-  services.push({ id: uid('svc'), name, price: isNaN(price)?0:price });
-  setServices(user.slug, services);
-  qs('#svc_name').value=''; qs('#svc_price').value='';
-  renderServicesUI(user);
-}
-
-function renderServicesUI(user){
-  const cont = qs('#servicesList');
-  const services = getServices(user.slug);
-  if(!services || services.length===0){ cont.innerHTML = '<div class="text-gray-500">No services yet.</div>'; return; }
-  cont.innerHTML = services.map(s=>`
-    <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-      <div>${s.name} — $${s.price}</div>
-      <div class="flex gap-2">
-        <button onclick="editService('${user.slug}','${s.id}')" class="px-2 py-1 bg-yellow-300 rounded">Edit</button>
-        <button onclick="deleteService('${user.slug}','${s.id}')" class="px-2 py-1 bg-red-500 text-white rounded">Del</button>
-      </div>
-    </div>`).join('');
-}
-
-function editService(slug,id){
-  const services = getServices(slug);
-  const s = services.find(x=>x.id===id);
-  if(!s) return;
-  const newName = prompt('Service name', s.name); if(newName===null) return;
-  const newPrice = prompt('Price', s.price); if(newPrice===null) return;
-  s.name = newName.trim() || s.name;
-  s.price = Number(newPrice) || s.price;
-  setServices(slug, services);
-  // re-render current dashboard user if present
-  const emailFieldUser = getUsers().find(u=>u.slug===slug);
-  if(emailFieldUser) renderServicesUI(emailFieldUser);
-}
-
-function deleteService(slug,id){
-  if(!confirm('Delete this service?')) return;
-  let arr = getServices(slug);
-  arr = arr.filter(s=>s.id!==id);
-  setServices(slug, arr);
-  const emailFieldUser = getUsers().find(u=>u.slug===slug);
-  if(emailFieldUser) renderServicesUI(emailFieldUser);
-}
-/* ---------- Public booking page (when ?business=slug present) ---------- */
-<!DOCTYPE html>
-<html lang="ar">
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>حجز — زندهاي</title>
+  <title>منصة حجز زندهاي</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-gray-50 min-h-screen flex flex-col items-center justify-start p-6">
 
-  <header class="bg-blue-600 text-white p-4 flex justify-center items-center">
-    <h1 class="text-2xl font-bold">زندهاي</h1>
-  </header>
+  <h1 class="text-3xl font-bold mb-6 text-center">منصة حجز زندهاي</h1>
 
-  <main class="max-w-md mx-auto mt-10 p-6 bg-white shadow rounded">
-    <h2 class="text-xl font-bold mb-4 text-center">حجز موعد جديد</h2>
-    <form id="bookingForm">
-      <input type="text" id="name" placeholder="الاسم" class="w-full mb-3 p-2 border rounded" required>
-      <input type="email" id="email" placeholder="الإيميل" class="w-full mb-3 p-2 border rounded" required>
-      <input type="text" id="service" placeholder="الخدمة المطلوبة" class="w-full mb-3 p-2 border rounded" required>
-      <input type="date" id="date" class="w-full mb-3 p-2 border rounded" required>
-      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">حجز</button>
+  <!-- نموذج الحجز -->
+  <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md mb-8">
+    <h2 class="text-2xl font-semibold mb-4 text-center">احجز خدمتك الآن</h2>
+    <form id="bookingForm" class="space-y-3">
+      <input type="text" id="name" placeholder="الاسم الكامل" class="w-full p-3 border rounded">
+      <input type="tel" id="phone" placeholder="رقم الهاتف" class="w-full p-3 border rounded">
+      <select id="service" class="w-full p-3 border rounded">
+        <option value="">اختر الخدمة</option>
+        <option value="قص الشعر">قص الشعر</option>
+        <option value="تصفيف الشعر">تصفيف الشعر</option>
+        <option value="صبغ الشعر">صبغ الشعر</option>
+      </select>
+      <input type="date" id="date" class="w-full p-3 border rounded">
+      <input type="time" id="time" class="w-full p-3 border rounded">
+      <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition">إرسال الحجز</button>
     </form>
-    
-    <!-- إشعار تم الحجز -->
-    <div id="successMsg" class="mt-4 hidden p-3 bg-green-100 text-green-700 rounded flex items-center space-x-2">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-      </svg>
-      <span>تم الحجز بنجاح!</span>
-    </div>
-  </main>
+    <p id="successMessage" class="mt-4 text-green-600 hidden text-center">تم إرسال الحجز بنجاح!</p>
+  </div>
+
+  <!-- داشبورد صاحب العمل -->
+  <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-4xl">
+    <h2 class="text-2xl font-semibold mb-4 text-center">الحجوزات</h2>
+    <table class="w-full bg-white rounded overflow-hidden">
+      <thead class="bg-blue-500 text-white">
+        <tr>
+          <th class="p-2">الاسم</th>
+          <th class="p-2">الهاتف</th>
+          <th class="p-2">الخدمة</th>
+          <th class="p-2">التاريخ</th>
+          <th class="p-2">الوقت</th>
+          <th class="p-2">حذف</th>
+        </tr>
+      </thead>
+      <tbody id="bookingTable" class="text-center"></tbody>
+    </table>
+  </div>
 
   <script>
-    document.getElementById("bookingForm").addEventListener("submit", function(e){
-      e.preventDefault(); // منع إعادة تحميل الصفحة
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const service = document.getElementById("service").value;
-      const date = document.getElementById("date").value;
+    // جلب الحجوزات من localStorage
+    function getBookings() {
+      return JSON.parse(localStorage.getItem('bookings') || '[]');
+    }
 
-      // تخزين البيانات في localStorage
-      let bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
-      bookings.push({name, email, service, date});
-      localStorage.setItem("bookings", JSON.stringify(bookings));
+    // حفظ حجز جديد
+    function saveBooking(booking) {
+      const bookings = getBookings();
+      bookings.push(booking);
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+    }
 
-      // عرض إشعار نجاح
-      const msg = document.getElementById("successMsg");
-      msg.classList.remove("hidden");
+    // حذف حجز
+    function deleteBooking(index) {
+      const bookings = getBookings();
+      bookings.splice(index, 1);
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+      displayBookings();
+    }
 
-      // إعادة تعيين النموذج
-      document.getElementById("bookingForm").reset();
+    // عرض الحجوزات في الجدول
+    function displayBookings() {
+      const table = document.getElementById('bookingTable');
+      const bookings = getBookings();
+      table.innerHTML = bookings.map((b, i) => `
+        <tr class="border-b">
+          <td class="p-2">${b.name}</td>
+          <td class="p-2">${b.phone}</td>
+          <td class="p-2">${b.service}</td>
+          <td class="p-2">${b.date}</td>
+          <td class="p-2">${b.time}</td>
+          <td class="p-2">
+            <button onclick="deleteBooking(${i})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">حذف</button>
+          </td>
+        </tr>
+      `).join('');
+    }
 
-      // اختفاء الرسالة بعد 3 ثواني
-      setTimeout(() => msg.classList.add("hidden"), 3000);
+    // تفعيل إرسال الحجز
+    const bookingForm = document.getElementById('bookingForm');
+    bookingForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const booking = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        service: document.getElementById('service').value,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value
+      };
+      saveBooking(booking);
+      bookingForm.reset();
+      document.getElementById('successMessage').classList.remove('hidden');
+      setTimeout(()=> document.getElementById('successMessage').classList.add('hidden'), 3000);
+      displayBookings();
     });
-  </script>
 
-</body>
-</html>
-/* ---------- Init: public route ---------- */
-(function(){
-  const params = new URLSearchParams(window.location.search);
-  const biz = params.get('business');
-  if(biz){ renderPublicBooking(biz); }
-})();
-</script>
+    // عرض الحجوزات عند تحميل الصفحة
+    displayBookings();
+  </script>
 
 </body>
 </html>
