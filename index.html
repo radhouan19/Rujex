@@ -1,256 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mousa — Booking Platform</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>.modal-backdrop{background:rgba(0,0,0,0.45);}</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nono Booking Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .modal-backdrop { background: rgba(0,0,0,0.45); }
+  </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
 <div id="app" class="min-h-screen flex items-center justify-center p-6"
      style="background-image: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80'); background-size:cover;">
   <div id="homeCard" class="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center max-w-xl w-full">
-    <h1 class="text-3xl font-bold text-gray-900 mb-4">Grow Your Business with Online Bookings</h1>
-    <p class="text-gray-600 mb-6">Free demo — manage your services, share your booking link and get real bookings (stored locally).</p>
     <div class="flex flex-col gap-4">
-      <button onclick="goTo('trial')" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Free 7-Day Trial</button>
-      <button onclick="renderSignup()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Sign Up</button>
+      <button onclick="startTrialFlow()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">7-Day Trial</button>
+      <button onclick="renderPaidSignup()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Subscribe $11/month</button>
       <button onclick="renderLogin()" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Login</button>
-    </div>
-    <div class="mt-6 text-sm text-gray-500">
-      <button onclick="quickDemo()" class="underline">Quick demo: prefill sample data</button>
     </div>
   </div>
 </div>
 
+<div id="modalContainer"></div>
+
 <script>
-/* ---------- Helpers ---------- */
-function slugify(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
+function uid(prefix='id'){ return prefix + '_' + Math.random().toString(36).slice(2,10); }
 function qs(sel){ return document.querySelector(sel); }
 function qsa(sel){ return Array.from(document.querySelectorAll(sel)); }
-function uid(prefix='id'){ return prefix+'_'+Math.random().toString(36).slice(2,10); }
+function slugify(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
 
-/* ---------- localStorage ---------- */
-function getUser(){ return JSON.parse(localStorage.getItem('mousa_user')||'null'); }
-function setUser(u){ localStorage.setItem('mousa_user', JSON.stringify(u)); }
-function getServices(slug){ return JSON.parse(localStorage.getItem('mousa_services_'+slug)||'[]'); }
-function setServices(slug,arr){ localStorage.setItem('mousa_services_'+slug, JSON.stringify(arr)); }
-function getBookings(slug){ return JSON.parse(localStorage.getItem('mousa_bookings_'+slug)||'[]'); }
-function setBookings(slug,arr){ localStorage.setItem('mousa_bookings_'+slug, JSON.stringify(arr)); }
+// ---------- localStorage helpers ----------
+function getUser(){ return JSON.parse(localStorage.getItem('nono_user') || 'null'); }
+function setUser(u){ localStorage.setItem('nono_user', JSON.stringify(u)); }
+function getServices(slug){ return JSON.parse(localStorage.getItem('nono_services_' + slug) || '[]'); }
+function setServices(slug, arr){ localStorage.setItem('nono_services_' + slug, JSON.stringify(arr)); }
+function getBookings(slug){ return JSON.parse(localStorage.getItem('nono_bookings_' + slug) || '[]'); }
+function setBookings(slug, arr){ localStorage.setItem('nono_bookings_' + slug, JSON.stringify(arr)); }
 
-/* ---------- Home / Signup / Login / Trial ---------- */
-function goTo(page){ if(page==='trial'){ startTrial('Demo Salon'); } }
+// ---------- Trial Flow ----------
+function startTrialFlow(){
+  const name = prompt('Enter your business name for 7-day trial:');
+  if(!name) return;
+  const email = prompt('Enter email:');
+  if(!email) return;
+  const password = prompt('Enter password:');
+  if(!password) return;
 
-function renderSignup(){
-  const container = qs('#app');
-  container.innerHTML = `<div class="min-h-screen flex items-center justify-center w-full">
-    <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Create Account</h2>
-      <input id="inp_business" placeholder="Business name" class="w-full border rounded p-3 mb-3" />
-      <input id="inp_email" placeholder="Email" class="w-full border rounded p-3 mb-3" />
-      <input id="inp_password" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3" />
-      <div class="flex gap-3">
-        <button onclick="submitSignup()" class="flex-1 bg-blue-600 text-white py-3 rounded">Sign Up</button>
-        <button onclick="renderHome()" class="flex-1 border rounded py-3">Cancel</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-function submitSignup(){
-  const name=qs('#inp_business').value.trim();
-  const email=qs('#inp_email').value.trim();
-  const pass=qs('#inp_password').value.trim();
-  if(!name||!email||!pass) return alert('Please fill fields');
-  const slug=slugify(name);
-  const user={business:name,email,password:pass,slug,color:'#2563eb',logo:''};
-  setUser(user); setServices(slug,[]); setBookings(slug,[]);
+  const slug = slugify(name);
+  const now = Date.now();
+  const expiry = now + 7*24*60*60*1000; // 7 days trial in ms
+  const user = { business:name, email, password, slug, type:'trial', trial_expiry:expiry, subscribed:false };
+  setUser(user);
+  setServices(slug, []);
+  setBookings(slug, []);
   renderDashboard(user);
 }
 
+// ---------- Paid Signup ----------
+function renderPaidSignup(){
+  const name = prompt('Business name:');
+  if(!name) return;
+  const email = prompt('Email:');
+  if(!email) return;
+  const password = prompt('Password:');
+  if(!password) return;
+
+  const slug = slugify(name);
+  const now = Date.now();
+  const user = { business:name, email, password, slug, type:'paid', subscribed:true, subscription_start:now };
+  setUser(user);
+  setServices(slug, []);
+  setBookings(slug, []);
+  renderDashboard(user);
+}
+
+// ---------- Login ----------
 function renderLogin(){
-  const container = qs('#app');
-  container.innerHTML = `<div class="min-h-screen flex items-center justify-center w-full">
-    <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Login</h2>
-      <input id="login_email" placeholder="Email" class="w-full border rounded p-3 mb-3" />
-      <input id="login_password" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3" />
-      <div class="flex gap-3">
-        <button onclick="submitLogin()" class="flex-1 bg-purple-600 text-white py-3 rounded">Login</button>
-        <button onclick="renderHome()" class="flex-1 border rounded py-3">Back</button>
+  const email = prompt('Email:');
+  if(!email) return;
+  const password = prompt('Password:');
+  if(!password) return;
+
+  const user = getUser();
+  if(!user) return alert('No account found');
+
+  if(user.email===email && user.password===password){
+    const now = Date.now();
+    if(user.type==='trial' && now>user.trial_expiry){
+      return alert('Trial expired. Please subscribe.');
+    }
+    if(user.type==='paid'){
+      const monthMs = 30*24*60*60*1000;
+      if(now - user.subscription_start > monthMs){
+        return alert('Subscription expired. Please renew.');
+      }
+    }
+    renderDashboard(user);
+  } else alert('Invalid credentials');
+}
+
+// ---------- Dashboard ----------
+function renderDashboard(user){
+  const slug = user.slug;
+  document.body.innerHTML = `
+  <div class="min-h-screen p-6 bg-gray-100">
+    <header class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-2xl font-bold">${user.business}</h1>
+        <div class="text-sm text-gray-600">Email: ${user.email}</div>
+        <div class="text-sm text-gray-600">Your link: <input type="text" value="?business=${slug}" readonly class="border px-2 rounded w-48"/></div>
+      </div>
+      <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded">Logout</button>
+    </header>
+
+    <div class="grid md:grid-cols-2 gap-6 mb-6">
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Services</h2>
+        <div class="flex gap-2 mb-2">
+          <input id="newServiceName" placeholder="Service" class="border p-2 flex-1 rounded"/>
+          <input id="newServicePrice" placeholder="Price" type="number" class="border p-2 w-24 rounded"/>
+          <button onclick="addService('${slug}')" class="bg-green-600 text-white px-3 py-2 rounded">Add</button>
+        </div>
+        <div id="servicesContainer"></div>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Bookings</h2>
+        <table class="min-w-full text-left border">
+          <thead class="bg-gray-200">
+            <tr><th class="px-2 py-1">Name</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th></tr>
+          </thead>
+          <tbody id="bookingsTable"></tbody>
+        </table>
       </div>
     </div>
-  </div>`;
+  </div>
+  `;
+  populateServices(slug);
+  populateBookings(slug);
 }
 
-function submitLogin(){
-  const email=qs('#login_email').value.trim();
-  const pass=qs('#login_password').value.trim();
-  const user=getUser();
-  if(!user) return alert('No account found — please sign up');
-  if(user.email===email&&user.password===pass) renderDashboard(user);
-  else alert('Invalid credentials');
+function addService(slug){
+  const name = qs('#newServiceName').value.trim();
+  const price = Number(qs('#newServicePrice').value);
+  if(!name) return alert('Enter name');
+  const arr = getServices(slug);
+  arr.push({ id: uid('svc'), name, price });
+  setServices(slug, arr);
+  qs('#newServiceName').value='';
+  qs('#newServicePrice').value='';
+  populateServices(slug);
 }
 
-function startTrial(businessName){
-  let user=getUser();
-  if(!user){
-    const slug=slugify(businessName);
-    user={business:businessName,email:'trial@local',password:'',slug,color:'#2563eb',logo:''};
-    setUser(user); setServices(slug,[{id:uid(),name:'Haircut',price:25},{id:uid(),name:'Beard Trim',price:15}]);
-    setBookings(slug,[]);
-  }
-  renderDashboard(user);
+function populateServices(slug){
+  const cont = qs('#servicesContainer');
+  const services = getServices(slug);
+  cont.innerHTML = services.map(s=>`<div>${s.name} - $${s.price}</div>`).join('') || '<div>No services yet</div>';
 }
 
-function quickDemo(){
-  const name='Demo Salon',slug=slugify(name);
-  const user={business:name,email:'demo@salon',password:'demo',slug,color:'#0ea5a4',logo:''};
-  setUser(user); setServices(slug,[{id:uid(),name:'Haircut',price:25},{id:uid(),name:'Beard Trim',price:15},{id:uid(),name:'Shave',price:10},{id:uid(),name:'Coloring',price:40}]);
-  setBookings(slug,[]);
-  renderDashboard(user);
+function populateBookings(slug){
+  const tbody = qs('#bookingsTable');
+  const bookings = getBookings(slug);
+  tbody.innerHTML = bookings.map(b=>`<tr><td>${b.name}</td><td>${b.email}</td><td>${b.phone}</td><td>${b.service}</td><td>${b.date}</td></tr>`).join('') || '<tr><td colspan="5">No bookings yet</td></tr>';
 }
 
-function renderHome(){ location.href=location.pathname; }
+function logout(){ location.reload(); }
 
-/* ---------- Dashboard ---------- */
-function renderDashboard(user){
-  const slug=user.slug,primary=user.color||'#2563eb',logoHTML=user.logo?`<img src="${user.logo}" alt="logo" class="h-10 w-10 object-contain mr-3">`:'';
-  document.getElementById('app').innerHTML=`
-  <div class="w-full min-h-screen flex flex-col">
-    <header class="flex items-center justify-between p-4" style="background:${primary}; color:white;">
-      <div class="flex items-center">${logoHTML}<div><div class="text-xl font-bold">${user.business}</div><div class="text-sm opacity-90">${user.email}</div></div></div>
-      <div class="flex items-center gap-3">
-        <button onclick="logout()" class="bg-white text-${primary} px-3 py-2 rounded">Logout</button>
+// ---------- Public booking ----------
+(function initPublicBooking(){
+  const params = new URLSearchParams(window.location.search);
+  const biz = params.get('business');
+  if(!biz) return;
+  const services = getServices(biz);
+  document.body.innerHTML = `
+  <div class="min-h-screen flex items-center justify-center p-6 bg-gray-100">
+    <div class="max-w-md w-full bg-white p-6 rounded-xl shadow">
+      <h1 class="text-xl font-bold mb-4">Book for ${biz.replace(/-/g,' ')}</h1>
+      <div id="servicesBooking">
+        ${services.map(s=>`
+          <div class="border p-2 rounded mb-2">
+            <div>${s.name} - $${s.price}</div>
+            <button onclick="bookService('${biz}','${s.id}')" class="bg-green-600 text-white px-2 py-1 rounded mt-1">Book Now</button>
+          </div>`).join('') || '<div>No services available</div>'}
       </div>
-    </header>
-    <main class="p-6 flex-1 max-w-6xl mx-auto">
-      <div class="flex gap-6">
-        <nav class="w-64 bg-white rounded-xl p-4 shadow">
-          <ul class="space-y-2">
-            <li><button onclick="showTab('services')" id="tab_services" class="w-full text-left px-3 py-2 rounded bg-gray-100">Services</button></li>
-            <li><button onclick="showTab('bookings')" id="tab_bookings" class="w-full text-left px-3 py-2 rounded">Bookings</button></li>
-            <li><button onclick="showTab('stats')" id="tab_stats" class="w-full text-left px-3 py-2 rounded">Stats</button></li>
-            <li><button onclick="showTab('settings')" id="tab_settings" class="w-full text-left px-3 py-2 rounded">Settings</button></li>
-            <li><button onclick="showTab('public')" id="tab_public" class="w-full text-left px-3 py-2 rounded">Public Booking Link</button></li>
-          </ul>
-        </nav>
-        <section class="flex-1">
-          <div id="panel_services" class="panel bg-white rounded-xl p-6 shadow">
-            <h3 class="text-xl font-semibold mb-3">Your Services</h3>
-            <div class="flex gap-2 mb-4">
-              <input id="newServiceName" placeholder="Service name" class="border rounded p-2 flex-1" />
-              <input id="newServicePrice" placeholder="Price" type="number" class="border rounded p-2 w-24" />
-              <button onclick="addServiceFromDashboard()" class="bg-green-600 text-white px-4 py-2 rounded">Add</button>
-            </div>
-            <div id="servicesContainer" class="space-y-2"></div>
-          </div>
-          <div id="panel_bookings" class="panel hidden bg-white rounded-xl p-6 shadow">
-            <h3 class="text-xl font-semibold mb-3">Customer Bookings</h3>
-            <div class="overflow-x-auto">
-              <table class="min-w-full text-left">
-                <thead class="bg-gray-100"><tr>
-                  <th class="px-3 py-2">Name</th><th class="px-3 py-2">Email</th><th class="px-3 py-2">Phone</th><th class="px-3 py-2">Service</th><th class="px-3 py-2">Date</th>
-                </tr></thead>
-                <tbody id="bookingsTableBody"></tbody>
-              </table>
-            </div>
-          </div>
-          <div id="panel_stats" class="panel hidden bg-white rounded-xl p-6 shadow">
-            <h3 class="text-xl font-semibold mb-3">Stats</h3>
-            <div id="statsContent" class="grid grid-cols-2 gap-4">
-              <div class="p-4 bg-gray-50 rounded"><div class="text-sm text-gray-500">Total Services</div><div id="stat_services" class="text-2xl font-bold">0</div></div>
-              <div class="p-4 bg-gray-50 rounded"><div class="text-sm text-gray-500">Total Bookings</div><div id="stat_bookings" class="text-2xl font-bold">0</div></div>
-            </div>
-          </div>
-          <div id="panel_settings" class="panel hidden bg-white rounded-xl p-6 shadow">
-            <h3 class="text-xl font-semibold mb-3">Settings</h3>
-            <div class="space-y-3">
-              <div><label class="text-sm block mb-1">Business name</label><input id="setting_business" class="border rounded p-2 w-full" /></div>
-              <div><label class="text-sm block mb-1">Primary color (hex)</label><input id="setting_color" class="border rounded p-2 w-40" /></div>
-              <div><label class="text-sm block mb-1">Logo URL</label><input id="setting_logo" class="border rounded p-2 w-full" /></div>
-              <div class="flex gap-2"><button onclick="saveSettings()" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button></div>
-            </div>
-          </div>
-          <div id="panel_public" class="panel hidden bg-white rounded-xl p-6 shadow">
-            <h3 class="text-xl font-semibold mb-3">Public Booking Page</h3>
-            <p class="text-sm text-gray-500 mb-3">Share this link for customers to book directly:</p>
-            <input class="w-full border p-2 rounded mb-4" value="${location.origin+location.pathname+'?business='+slug}" readonly onclick="this.select()"/>
-            <h4 class="text-lg font-medium mb-2">Simulate public booking:</h4>
-            <div class="flex flex-col gap-2 max-w-md">
-              <input id="pub_name" placeholder="Your Name" class="border rounded p-2" />
-              <input id="pub_email" placeholder="Your Email" class="border rounded p-2" />
-              <input id="pub_phone" placeholder="Phone" class="border rounded p-2" />
-              <select id="pub_service" class="border rounded p-2"></select>
-              <input type="date" id="pub_date" class="border rounded p-2" />
-              <button onclick="addPublicBooking()" class="bg-green-600 text-white py-2 rounded">Book Now</button>
-            </div>
-          </div>
-        </section>
-      </div>
-    </main>
-  </div>`;
-  showTab('services'); populateServicesUI(slug); populateBookingsUI(slug); populateSettings(user); populatePublicServices(slug);
-}
-
-/* ---------- Tabs ---------- */
-function showTab(tab){ qsa('.panel').forEach(el=>el.classList.add('hidden')); qs('#panel_'+tab).classList.remove('hidden'); ['services','bookings','stats','settings','public'].forEach(t=>qs('#tab_'+t).classList.remove('bg-gray-100')); qs('#tab_'+tab).classList.add('bg-gray-100'); }
-
-/* ---------- Services ---------- */
-function addServiceFromDashboard(){ const name=qs('#newServiceName').value.trim(); const price=Number(qs('#newServicePrice').value); if(!name)return alert('Enter service name'); const user=getUser(),slug=user.slug,arr=getServices(slug); arr.push({id:uid(),name,price:isNaN(price)?0:price}); setServices(slug,arr); qs('#newServiceName').value=''; qs('#newServicePrice').value=''; populateServicesUI(slug); populatePublicServices(slug); updateStats(slug); }
-function populateServicesUI(slug){ const cont=qs('#servicesContainer'); const services=getServices(slug); cont.innerHTML=services.length===0?'<div class="text-sm text-gray-500">No services yet.</div>':services.map(s=>`<div class="flex items-center justify-between p-3 bg-gray-50 rounded"><div><div class="font-medium">${s.name}</div><div class="text-sm text-gray-500">$${s.price}</div></div><div class="flex gap-2"><button onclick="editService('${slug}','${s.id}')" class="text-sm px-3 py-1 bg-yellow-300 rounded">Edit</button><button onclick="deleteService('${slug}','${s.id}')" class="text-sm px-3 py-1 bg-red-500 text-white rounded">Delete</button></div></div>`).join(''); }
-function editService(slug,id){ const services=getServices(slug); const s=services.find(x=>x.id===id); if(!s)return; const newName=prompt('Service name',s.name); if(newName===null)return; const newPrice=prompt('Price ($)',s.price); if(newPrice===null)return; s.name=newName.trim()||s.name; s.price=Number(newPrice)||s.price; setServices(slug,services); populateServicesUI(slug); populatePublicServices(slug); updateStats(slug); }
-function deleteService(slug,id){ if(!confirm('Delete this service?')) return; let services=getServices(slug); services=services.filter(s=>s.id!==id); setServices(slug,services); populateServicesUI(slug); populatePublicServices(slug); updateStats(slug); }
-
-/* ---------- Bookings ---------- */
-function populateBookingsUI(slug){ const table=qs('#bookingsTableBody'); const bookings=getBookings(slug); table.innerHTML=bookings.length===0?'<tr><td colspan="5" class="text-sm text-gray-500 p-2">No bookings yet.</td></tr>':bookings.map(b=>`<tr><td class="px-3 py-1">${b.name}</td><td class="px-3 py-1">${b.email}</td><td class="px-3 py-1">${b.phone}</td><td class="px-3 py-1">${b.service}</td><td class="px-3 py-1">${b.date}</td></tr>`).join(''); updateStats(slug); }
-
-/* ---------- Stats ---------- */
-function updateStats(slug){ qs('#stat_services').innerText=getServices(slug).length; qs('#stat_bookings').innerText=getBookings(slug).length; }
-
-/* ---------- Settings ---------- */
-function populateSettings(user){ qs('#setting_business').value=user.business; qs('#setting_color').value=user.color; qs('#setting_logo').value=user.logo; }
-function saveSettings(){ const user=getUser(); user.business=qs('#setting_business').value; user.color=qs('#setting_color').value; user.logo=qs('#setting_logo').value; setUser(user); alert('Settings saved'); renderDashboard(user); }
-
-/* ---------- Logout ---------- */
-function logout(){ localStorage
-                  .removeItem('mousa_user'); renderHome(); }
-
-/* ---------- Public Booking ---------- */
-function populatePublicServices(slug){
-  const sel=qs('#pub_service'); sel.innerHTML=''; getServices(slug).forEach(s=>{ const opt=document.createElement('option'); opt.value=s.name; opt.innerText=`${s.name} ($${s.price})`; sel.appendChild(opt); });
-}
-
-function addPublicBooking(){
-  const user=getUser(); if(!user) return alert('No business loaded');
-  const slug=user.slug;
-  const name=qs('#pub_name').value.trim();
-  const email=qs('#pub_email').value.trim();
-  const phone=qs('#pub_phone').value.trim();
-  const service=qs('#pub_service').value;
-  const date=qs('#pub_date').value;
-  if(!name||!email||!service||!date) return alert('Please fill all fields');
-  const bookings=getBookings(slug);
-  bookings.push({id:uid(),name,email,phone,service,date});
-  setBookings(slug,bookings);
-  populateBookingsUI(slug);
-  alert('Booking added successfully!');
-  qs('#pub_name').value=''; qs('#pub_email').value=''; qs('#pub_phone').value=''; qs('#pub_date').value='';
-}
-
-/* ---------- Initialize from URL params for public booking ---------- */
-(function(){
-  const params=new URLSearchParams(location.search);
-  const biz=params.get('business'); 
-  if(biz){
-    const user=getUser();
-    if(user&&user.slug===biz) renderDashboard(user);
-    else renderHome();
-  }
+    </div>
+  </div>
+  <div id="modalContainer"></div>
+  `;
 })();
-</script>
 
+function bookService(biz, id){
+  const services = getServices(biz);
+  const svc = services.find(s=>s.id===id);
+  const modal = qs('#modalContainer');
+  modal.innerHTML = `
+    <div class="fixed inset-0 flex items-center justify-center modal-backdrop z-50">
+      <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
+        <h3 class="text-lg font-semibold mb-2">Book: ${svc.name}</h3>
+        <input id="book_name" placeholder="Name" class="w-full border p-2 mb-2 rounded"/>
+        <input id="book_email" placeholder="Email" class="w-full border p-2 mb-2 rounded"/>
+        <input id="book_phone" placeholder="Phone" class="w-full border p-2 mb-2 rounded"/>
+        <input id="book_date" type="date" class="w-full border p-2 mb-2 rounded"/>
+        <div class="flex gap-2">
+          <button onclick="confirmBooking('${biz}','${svc.name}')" class="flex-1 bg-green-600 text-white py-2 rounded">Confirm</button>
+          <button onclick="closeModal()" class="flex-1 border py-2 rounded">Cancel</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function confirmBooking(biz, service){
+  const name = qs('#book_name').value.trim();
+  const email = qs('#book_email').value.trim();
+  const phone = qs('#book_phone').value.trim();
+  const date = qs('#book_date').value;
+  if(!name||!email||!phone||!date) return alert('Fill all fields');
+  const arr = getBookings(biz);
+  arr.push({ id: uid('b'), name, email, phone, service, date });
+  setBookings(biz, arr);
+  alert('Booking confirmed!');
+  closeModal();
+}
+
+function closeModal(){ qs('#modalContainer').innerHTML=''; }
+
+</script>
 </body>
 </html>
