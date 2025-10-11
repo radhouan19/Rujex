@@ -242,74 +242,49 @@ function deleteService(slug,id){
   const emailFieldUser = getUsers().find(u=>u.slug===slug);
   if(emailFieldUser) renderServicesUI(emailFieldUser);
 }
+/* ---------- Public booking page (when ?business=slug present) ---------- */
+function renderPublicBookingPage(bizSlug){
+  const userConfig = JSON.parse(localStorage.getItem('mousa_user') || 'null');
+  const config = (userConfig && userConfig.slug === bizSlug) ? userConfig : null;
+  const services = getServices(bizSlug);
+  const color = (config && config.color) ? config.color : '#2563eb';
+  const logo = (config && config.logo) ? config.logo : '';
 
-/* ---------- Bookings (public) ---------- */
-function renderPublicBooking(slug){
-  const user = getUsers().find(u=>u.slug===slug);
-  if(!user){ document.body.innerHTML = `<div class="p-6">Business not found</div>`; return; }
-  const services = getServices(slug);
   document.body.innerHTML = `
-    <div class="min-h-screen flex flex-col items-center p-6 bg-gray-100">
-      <div class="bg-white p-6 rounded-xl shadow max-w-2xl w-full">
-        <div class="flex justify-between items-center mb-4">
-          <h1 class="text-2xl font-bold">${user.business}</h1>
-          <button onclick="window.location.href=window.location.pathname" class="text-sm text-gray-600">Home</button>
+  <div class="min-h-screen flex items-center justify-center p-6 bg-gray-100">
+    <div class="max-w-3xl w-full bg-white rounded-xl shadow p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          ${logo ? `<img src="${logo}" class="h-12 w-12 object-contain">` : ''}
+          <div>
+            <h1 class="text-2xl font-bold">${config?config.business: bizSlug.replace(/-/g,' ')}</h1>
+            <div class="text-sm text-gray-500">Book your appointment</div>
+          </div>
         </div>
-        ${services.length===0 ? '<div class="text-gray-500">No services available</div>' :
-          services.map(s=>`
-            <div class="border rounded p-4 mb-3 flex justify-between items-center">
-              <div>
+        <div>
+          <!-- زر Home معدل -->
+          <button onclick="window.location.href='${location.pathname}?business=${bizSlug}'" class="text-sm text-gray-600">Home</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="grid md:grid-cols-2 gap-4">
+          ${services.length===0 ? `<div class="text-gray-500 p-4">No services available.</div>` :
+            services.map(s => `
+              <div class="p-4 border rounded">
                 <div class="font-medium">${s.name}</div>
-                <div class="text-sm text-gray-500">$${s.price}</div>
-              </div>
-              <button onclick="openBookingModal('${slug}','${s.id}')" class="bg-green-600 text-white px-3 py-2 rounded">Book</button>
-            </div>`).join('')}
-      </div>
-    </div>
-    <div id="modalContainer"></div>
-  `;
-}
-
-function openBookingModal(slug,sid){
-  const user = getUsers().find(u=>u.slug===slug);
-  const svc = getServices(slug).find(s=>s.id===sid);
-  const modal = qs('#modalContainer') || document.body.appendChild(document.createElement('div'));
-  modal.innerHTML = `
-    <div class="fixed inset-0 flex items-center justify-center modal-backdrop z-50">
-      <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
-        <div class="flex justify-between items-center mb-3">
-          <h3 class="text-lg font-semibold">Book: ${svc.name}</h3>
-          <button onclick="closeModal()" class="text-gray-500">&times;</button>
-        </div>
-        <input id="bk_name" placeholder="Full name" class="w-full border rounded p-2 mb-2"/>
-        <input id="bk_email" placeholder="Email" class="w-full border rounded p-2 mb-2"/>
-        <input id="bk_phone" placeholder="Phone" class="w-full border rounded p-2 mb-2"/>
-        <input id="bk_date" type="date" class="w-full border rounded p-2 mb-2"/>
-        <div class="flex gap-2">
-          <button onclick="confirmBooking('${slug}','${sid}')" class="flex-1 bg-green-600 text-white py-2 rounded">Confirm</button>
-          <button onclick="closeModal()" class="flex-1 border py-2 rounded">Cancel</button>
+                <div class="text-sm text-gray-500 mb-2">$${s.price}</div>
+                <button onclick="openBookingModal('${bizSlug}','${s.id}')" style="background:${color}" class="text-white px-3 py-2 rounded">Book Now</button>
+              </div>`).join('')}
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Modal placeholder -->
+  <div id="mousa_modal_container"></div>
   `;
 }
-
-function confirmBooking(slug,sid){
-  const name = qs('#bk_name').value.trim();
-  const email = qs('#bk_email').value.trim();
-  const phone = qs('#bk_phone').value.trim();
-  const date = qs('#bk_date').value;
-  if(!name||!email||!phone||!date) return alert('Fill all fields');
-  const svc = getServices(slug).find(s=>s.id===sid);
-  const arr = getBookings(slug);
-  arr.push({ id: uid('b'), name, email, phone, service: svc.name, date });
-  setBookings(slug, arr);
-  alert('Booking confirmed!');
-  closeModal();
-}
-
-function closeModal(){ const m = qs('#modalContainer'); if(m) m.innerHTML=''; }
-
 /* ---------- Dashboard bookings render ---------- */
 function renderBookingsUI(user){
   const tbody = qs('#bookingsList');
