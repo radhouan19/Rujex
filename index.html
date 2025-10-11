@@ -3,35 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>منصة حجز زندهاي</title>
+  <title>منصة حجز زندهاي - تجربة الحسابات</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col items-center justify-start p-6">
 
   <h1 class="text-3xl font-bold mb-6 text-center">منصة حجز زندهاي</h1>
 
+  <!-- تسجيل / تسجيل دخول -->
+  <div id="authContainer" class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md mb-8">
+    <h2 class="text-2xl font-semibold mb-4 text-center" id="authTitle">تسجيل الدخول</h2>
+    <form id="authForm" class="space-y-3">
+      <input type="email" id="email" placeholder="البريد الإلكتروني" class="w-full p-3 border rounded" required>
+      <input type="password" id="password" placeholder="كلمة السر" class="w-full p-3 border rounded" required>
+      <input type="text" id="username" placeholder="اسم المستخدم" class="w-full p-3 border rounded hidden" required>
+      <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition" id="authButton">دخول</button>
+    </form>
+    <p class="mt-3 text-center text-gray-600">
+      <span id="toggleAuth" class="text-blue-500 cursor-pointer">ليس لديك حساب؟ سجل الآن</span>
+    </p>
+    <p id="authMessage" class="mt-3 text-center text-green-600 hidden"></p>
+  </div>
+
   <!-- نموذج الحجز -->
-  <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md mb-8">
+  <div id="bookingContainer" class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md mb-8 hidden">
     <h2 class="text-2xl font-semibold mb-4 text-center">احجز خدمتك الآن</h2>
     <form id="bookingForm" class="space-y-3">
-      <input type="text" id="name" placeholder="الاسم الكامل" class="w-full p-3 border rounded">
-      <input type="tel" id="phone" placeholder="رقم الهاتف" class="w-full p-3 border rounded">
-      <select id="service" class="w-full p-3 border rounded">
+      <input type="text" id="bName" placeholder="الاسم الكامل" class="w-full p-3 border rounded">
+      <input type="tel" id="bPhone" placeholder="رقم الهاتف" class="w-full p-3 border rounded">
+      <select id="bService" class="w-full p-3 border rounded">
         <option value="">اختر الخدمة</option>
         <option value="قص الشعر">قص الشعر</option>
         <option value="تصفيف الشعر">تصفيف الشعر</option>
         <option value="صبغ الشعر">صبغ الشعر</option>
       </select>
-      <input type="date" id="date" class="w-full p-3 border rounded">
-      <input type="time" id="time" class="w-full p-3 border rounded">
+      <input type="date" id="bDate" class="w-full p-3 border rounded">
+      <input type="time" id="bTime" class="w-full p-3 border rounded">
       <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition">إرسال الحجز</button>
     </form>
     <p id="successMessage" class="mt-4 text-green-600 hidden text-center">تم إرسال الحجز بنجاح!</p>
   </div>
 
   <!-- داشبورد صاحب العمل -->
-  <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-4xl">
-    <h2 class="text-2xl font-semibold mb-4 text-center">الحجوزات</h2>
+  <div id="dashboardContainer" class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-4xl hidden">
+    <h2 class="text-2xl font-semibold mb-4 text-center">الحجوزات الخاصة بك</h2>
     <table class="w-full bg-white rounded overflow-hidden">
       <thead class="bg-blue-500 text-white">
         <tr>
@@ -45,34 +60,109 @@
       </thead>
       <tbody id="bookingTable" class="text-center"></tbody>
     </table>
+    <button id="logoutButton" class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">تسجيل الخروج</button>
   </div>
 
   <script>
-    // جلب الحجوزات من localStorage
-    function getBookings() {
-      return JSON.parse(localStorage.getItem('bookings') || '[]');
+    // ======= نظام الحسابات =======
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('users') || '[]');
     }
 
-    // حفظ حجز جديد
-    function saveBooking(booking) {
-      const bookings = getBookings();
-      bookings.push(booking);
-      localStorage.setItem('bookings', JSON.stringify(bookings));
+    function saveUsers(users) {
+      localStorage.setItem('users', JSON.stringify(users));
     }
 
-    // حذف حجز
-    function deleteBooking(index) {
-      const bookings = getBookings();
-      bookings.splice(index, 1);
-      localStorage.setItem('bookings', JSON.stringify(bookings));
+    let currentUser = null;
+
+    const authForm = document.getElementById('authForm');
+    const authTitle = document.getElementById('authTitle');
+    const authButton = document.getElementById('authButton');
+    const toggleAuth = document.getElementById('toggleAuth');
+    const usernameInput = document.getElementById('username');
+    const authMessage = document.getElementById('authMessage');
+
+    let isSignup = false;
+    toggleAuth.addEventListener('click', () => {
+      isSignup = !isSignup;
+      usernameInput.classList.toggle('hidden', !isSignup);
+      authTitle.textContent = isSignup ? 'إنشاء حساب جديد' : 'تسجيل الدخول';
+      authButton.textContent = isSignup ? 'تسجيل' : 'دخول';
+      toggleAuth.textContent = isSignup ? 'لديك حساب؟ سجل الدخول' : 'ليس لديك حساب؟ سجل الآن';
+    });
+
+    authForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const username = document.getElementById('username').value;
+
+      const users = getUsers();
+
+      if (isSignup) {
+        if(users.some(u=>u.email===email)) {
+          alert('البريد مسجل مسبقاً!');
+          return;
+        }
+        const newUser = {email,password,username,bookings:[]};
+        users.push(newUser);
+        saveUsers(users);
+        authMessage.textContent = 'تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول.';
+        authMessage.classList.remove('hidden');
+        authForm.reset();
+      } else {
+        const user = users.find(u => u.email===email && u.password===password);
+        if(!user) { alert('بيانات الدخول غير صحيحة'); return; }
+        currentUser = user;
+        showDashboard();
+      }
+    });
+
+    function showDashboard() {
+      document.getElementById('authContainer').classList.add('hidden');
+      document.getElementById('dashboardContainer').classList.remove('hidden');
+      document.getElementById('bookingContainer').classList.remove('hidden');
       displayBookings();
     }
 
-    // عرض الحجوزات في الجدول
+    document.getElementById('logoutButton').addEventListener('click', () => {
+      currentUser = null;
+      document.getElementById('authContainer').classList.remove('hidden');
+      document.getElementById('dashboardContainer').classList.add('hidden');
+      document.getElementById('bookingContainer').classList.add('hidden');
+    });
+
+    // ======= الحجوزات =======
+    const bookingForm = document.getElementById('bookingForm');
+    bookingForm.addEventListener('submit', e => {
+      e.preventDefault();
+      if(!currentUser) { alert('يجب تسجيل الدخول أولاً'); return; }
+
+      const booking = {
+        name: document.getElementById('bName').value,
+        phone: document.getElementById('bPhone').value,
+        service: document.getElementById('bService').value,
+        date: document.getElementById('bDate').value,
+        time: document.getElementById('bTime').value
+      };
+
+      currentUser.bookings.push(booking);
+
+      const users = getUsers();
+      const idx = users.findIndex(u => u.email===currentUser.email);
+      users[idx] = currentUser;
+      saveUsers(users);
+
+      bookingForm.reset();
+      document.getElementById('successMessage').classList.remove('hidden');
+      setTimeout(()=> document.getElementById('successMessage').classList.add('hidden'), 3000);
+      displayBookings();
+    });
+
     function displayBookings() {
       const table = document.getElementById('bookingTable');
-      const bookings = getBookings();
-      table.innerHTML = bookings.map((b, i) => `
+      if(!currentUser) return;
+      table.innerHTML = currentUser.bookings.map((b,i)=>`
         <tr class="border-b">
           <td class="p-2">${b.name}</td>
           <td class="p-2">${b.phone}</td>
@@ -86,26 +176,15 @@
       `).join('');
     }
 
-    // تفعيل إرسال الحجز
-    const bookingForm = document.getElementById('bookingForm');
-    bookingForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const booking = {
-        name: document.getElementById('name').value,
-        phone: document.getElementById('phone').value,
-        service: document.getElementById('service').value,
-        date: document.getElementById('date').value,
-        time: document.getElementById('time').value
-      };
-      saveBooking(booking);
-      bookingForm.reset();
-      document.getElementById('successMessage').classList.remove('hidden');
-      setTimeout(()=> document.getElementById('successMessage').classList.add('hidden'), 3000);
+    function deleteBooking(index) {
+      if(!currentUser) return;
+      currentUser.bookings.splice(index,1);
+      const users = getUsers();
+      const idx = users.findIndex(u => u.email===currentUser.email);
+      users[idx] = currentUser;
+      saveUsers(users);
       displayBookings();
-    });
-
-    // عرض الحجوزات عند تحميل الصفحة
-    displayBookings();
+    }
   </script>
 
 </body>
