@@ -3,90 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Salon Platform - USA</title>
+<title>Business Landing</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-  * { box-sizing: border-box; margin:0; padding:0; font-family: 'Poppins', sans-serif; }
-
   body, html {
+    margin: 0;
+    padding: 0;
     height: 100%;
-    width: 100%;
+    font-family: "Poppins", sans-serif;
   }
 
-  /* الخلفية: Collage صور صالونات */
   body {
-    background-image: url('https://images.unsplash.com/photo-1593569589898-6db9bfa6f2c1?auto=format&fit=crop&w=1350&q=80');
-    /* مثال صورة خلفية كبيرة - يمكن تغييرها برابط صور أخرى أو دمج عدة صور */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
+    overflow: hidden;
   }
 
-  .overlay {
+  .background-images {
     position: absolute;
-    top:0; left:0;
-    width:100%;
-    height:100%;
-    background-color: rgba(0,0,0,0.5); /* لتوضيح النص فوق الصور */
-    z-index:1;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    z-index: -1;
   }
 
-  .container {
-    position: relative;
-    z-index:2;
+  .background-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6);
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 1;
     text-align: center;
-    color: white;
-    padding: 2rem;
-    border-radius: 12px;
-  }
-
-  h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
   }
 
   .btn {
-    display: block;
-    width: 250px;
-    margin: 1rem auto;
-    padding: 1rem 0;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: white;
-    background-color: #2563eb;
+    padding: 1.2rem 2rem;
+    font-size: 1.4rem;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    background-color: rgba(255,255,255,0.8);
+    color: #111;
+    font-weight: bold;
     transition: 0.3s;
   }
 
   .btn:hover {
-    background-color: #1e40af;
+    background-color: rgba(255,255,255,1);
   }
-
 </style>
 </head>
 <body>
+  <!-- شبكة الصور الخلفية -->
+  <div class="background-images">
+    <img src="https://images.unsplash.com/photo-1571771680335-3569d5987d9f?auto=format&fit=crop&w=600&q=80" alt="">
+    <img src="https://images.unsplash.com/photo-1542831371-d531d36971e6?auto=format&fit=crop&w=600&q=80" alt="">
+    <img src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=600&q=80" alt="">
+    <img src="https://images.unsplash.com/photo-1506459225024-1428097a7e18?auto=format&fit=crop&w=600&q=80" alt="">
+    <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=600&q=80" alt="">
+    <img src="https://images.unsplash.com/photo-1556742400-b5b9b0f4f9b2?auto=format&fit=crop&w=600&q=80" alt="">
+  </div>
 
-<div class="overlay"></div>
-
-<div class="container">
-  <h1>Grow Your Hair Salon in the USA</h1>
-  <p>Start your online booking system today and manage your customers easily!</p>
-
-  <button class="btn" onclick="alert('Start 7-day free trial')">7 Days Free Trial</button>
-  <button class="btn" onclick="alert('Go to Registration Page')">Sign Up</button>
-  <button class="btn" onclick="alert('Go to Login Page')">Already Registered?</button>
-</div>
-
+  <!-- الأزرار -->
+  <div class="buttons">
+    <button class="btn">تسجيل مجاني 7 أيام</button>
+    <button class="btn">تسجيل جديد</button>
+    <button class="btn">مسجل</button>
+  </div>
 </body>
 </html>
