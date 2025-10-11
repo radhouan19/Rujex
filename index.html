@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>نونو — Booking Platform</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-.modal-backdrop { background: rgba(0,0,0,0.45); }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>نونو — Simplified Booking (Copy Link)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>.modal-backdrop{background:rgba(0,0,0,0.45);}</style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
 <div id="app" class="min-h-screen flex items-center justify-center p-6">
   <div id="homeCard" class="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center max-w-xl w-full">
-    <h1 class="text-3xl font-bold text-gray-900 mb-4">Grow Your Business with Online Bookings</h1>
-    <p class="text-gray-600 mb-6">Free trial for 7 days. Manage services, share your booking link, and get bookings.</p>
+    <h1 class="text-3xl font-bold mb-4">Grow Your Business with Online Bookings</h1>
+    <p class="text-gray-600 mb-6">Free trial 7 days — add services, share your booking link and get bookings.</p>
     <div class="flex flex-col gap-4">
-      <button onclick="startTrialPrompt()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Free 7-Day Trial</button>
-      <button onclick="renderSignup()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Subscribe $11/month</button>
-      <button onclick="renderLogin()" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 rounded-xl shadow-lg transition">Login</button>
+      <button onclick="startTrialPrompt()" class="bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl">Start Free 7-Day Trial</button>
+      <button onclick="renderSignup()" class="bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl">Subscribe $11/month</button>
+      <button onclick="renderLogin()" class="bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-xl">Login</button>
     </div>
   </div>
 </div>
@@ -26,50 +24,51 @@
 <div id="modalContainer"></div>
 
 <script>
-// ---------- Helpers ----------
+/* ---------- Helpers & storage ---------- */
 function uid(p='id'){ return p+'_'+Math.random().toString(36).slice(2,10); }
 function qs(s){ return document.querySelector(s); }
 function qsa(s){ return Array.from(document.querySelectorAll(s)); }
 
-// ---------- LocalStorage ----------
-function getUsers(){ return JSON.parse(localStorage.getItem('nono_users')||'[]'); }
-function setUsers(u){ localStorage.setItem('nono_users', JSON.stringify(u)); }
+function getUsers(){ return JSON.parse(localStorage.getItem('nono_users') || '[]'); }
+function setUsers(arr){ localStorage.setItem('nono_users', JSON.stringify(arr)); }
 function getUserByEmail(email){ return getUsers().find(u=>u.email===email) || null; }
 function saveUser(user){
-  let users = getUsers();
-  const idx = users.findIndex(u=>u.email===user.email);
-  if(idx>=0){ users[idx]=user; } else { users.push(user); }
-  setUsers(users);
+  const arr = getUsers();
+  const i = arr.findIndex(x=>x.email===user.email);
+  if(i>=0) arr[i]=user; else arr.push(user);
+  setUsers(arr);
 }
-function getServices(slug){ return JSON.parse(localStorage.getItem('nono_services_'+slug)||'[]'); }
+function getServices(slug){ return JSON.parse(localStorage.getItem('nono_services_'+slug) || '[]'); }
 function setServices(slug, arr){ localStorage.setItem('nono_services_'+slug, JSON.stringify(arr)); }
-function getBookings(slug){ return JSON.parse(localStorage.getItem('nono_bookings_'+slug)||'[]'); }
+function getBookings(slug){ return JSON.parse(localStorage.getItem('nono_bookings_'+slug) || '[]'); }
 function setBookings(slug, arr){ localStorage.setItem('nono_bookings_'+slug, JSON.stringify(arr)); }
 
-// ---------- Home / Trial ----------
+/* ---------- Home / Trial / Signup / Login ---------- */
 function startTrialPrompt(){
   const name = prompt('Business name for trial:');
   if(!name) return;
-  const email = prompt('Email:');
+  const email = prompt('Email (for login):');
   if(!email) return;
   const pass = prompt('Password:');
   if(!pass) return;
-  const slug = name.toLowerCase().replace(/\s+/g,'-');
-  const user = { business:name, email, password:pass, slug, trial:true, trialStart:Date.now(), services:[], bookings:[] };
+  const slug = name.toLowerCase().trim().replace(/\s+/g,'-');
+  const now = Date.now();
+  const user = { business:name, email, password:pass, slug, type:'trial', start: now };
   saveUser(user);
+  setServices(slug, []);
+  setBookings(slug, []);
   renderDashboard(user);
 }
 
-// ---------- Signup (Paid) ----------
 function renderSignup(){
-  const container = qs('#app');
-  container.innerHTML = `
+  const app = qs('#app');
+  app.innerHTML = `
     <div class="min-h-screen flex items-center justify-center w-full">
       <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
         <h2 class="text-2xl font-bold mb-4">Subscribe $11/month</h2>
-        <input id="signup_name" placeholder="Business name" class="w-full border rounded p-3 mb-3"/>
-        <input id="signup_email" placeholder="Email" class="w-full border rounded p-3 mb-3"/>
-        <input id="signup_pass" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3"/>
+        <input id="su_name" placeholder="Business name" class="w-full border rounded p-3 mb-3"/>
+        <input id="su_email" placeholder="Email" class="w-full border rounded p-3 mb-3"/>
+        <input id="su_pass" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3"/>
         <div class="flex gap-3">
           <button onclick="submitSignup()" class="flex-1 bg-blue-600 text-white py-3 rounded">Subscribe</button>
           <button onclick="renderHome()" class="flex-1 border py-3 rounded">Cancel</button>
@@ -79,191 +78,253 @@ function renderSignup(){
 }
 
 function submitSignup(){
-  const name = qs('#signup_name').value.trim();
-  const email = qs('#signup_email').value.trim();
-  const pass = qs('#signup_pass').value.trim();
+  const name = qs('#su_name').value.trim();
+  const email = qs('#su_email').value.trim();
+  const pass = qs('#su_pass').value.trim();
   if(!name||!email||!pass) return alert('Fill all fields');
   const slug = name.toLowerCase().replace(/\s+/g,'-');
   const now = Date.now();
-  const user = { business:name,email,password:pass,slug,trial:false,subscribe:true,subscribeStart:now,services:[],bookings:[] };
+  const user = { business:name, email, password:pass, slug, type:'subscribed', start: now };
   saveUser(user);
-  alert('Subscribed! You can now access your dashboard.');
+  setServices(slug, []);
+  setBookings(slug, []);
+  alert('Subscribed (simulated). Dashboard opened.');
   renderDashboard(user);
 }
 
-// ---------- Login ----------
 function renderLogin(){
-  const container = qs('#app');
-  container.innerHTML = `
-  <div class="min-h-screen flex items-center justify-center w-full">
-    <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Login</h2>
-      <input id="login_email" placeholder="Email" class="w-full border rounded p-3 mb-3"/>
-      <input id="login_pass" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3"/>
-      <div class="flex gap-3">
-        <button onclick="submitLogin()" class="flex-1 bg-purple-600 text-white py-3 rounded">Login</button>
-        <button onclick="renderHome()" class="flex-1 border py-3 rounded">Back</button>
+  const app = qs('#app');
+  app.innerHTML = `
+    <div class="min-h-screen flex items-center justify-center w-full">
+      <div class="bg-white rounded-2xl shadow p-6 w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-4">Login</h2>
+        <input id="li_email" placeholder="Email" class="w-full border rounded p-3 mb-3"/>
+        <input id="li_pass" placeholder="Password" type="password" class="w-full border rounded p-3 mb-3"/>
+        <div class="flex gap-3">
+          <button onclick="submitLogin()" class="flex-1 bg-purple-600 text-white py-3 rounded">Login</button>
+          <button onclick="renderHome()" class="flex-1 border py-3 rounded">Back</button>
+        </div>
       </div>
-    </div>
-  </div>`;
+    </div>`;
 }
 
 function submitLogin(){
-  const email = qs('#login_email').value.trim();
-  const pass = qs('#login_pass').value.trim();
+  const email = qs('#li_email').value.trim();
+  const pass = qs('#li_pass').value.trim();
   const user = getUserByEmail(email);
   if(!user) return alert('User not found');
-  if(user.password!==pass) return alert('Wrong password');
+  if(user.password !== pass) return alert('Wrong password');
   const now = Date.now();
-  if(user.trial){
-    if(now-user.trialStart>7*24*60*60*1000){ return alert('Trial expired. Subscribe to continue'); }
-  } else if(user.subscribe){
-    if(now-user.subscribeStart>30*24*60*60*1000){ return alert('Subscription expired. Renew to continue'); }
+  if(user.type === 'trial'){
+    if(now - user.start > 7*24*60*60*1000) return alert('Trial expired — subscribe to continue');
+  } else if(user.type === 'subscribed'){
+    if(now - user.start > 30*24*60*60*1000) return alert('Subscription expired — renew to continue');
   }
   renderDashboard(user);
 }
 
-// ---------- Dashboard ----------
+function renderHome(){ location.href = location.pathname; }
+
+/* ---------- Dashboard (with copy link) ---------- */
 function renderDashboard(user){
-  const container = qs('#app');
   const now = Date.now();
-  let remaining='';
-  if(user.trial){ 
-    remaining = Math.max(0,7*24*60*60*1000-(now-user.trialStart));
-  } else if(user.subscribe){
-    remaining = Math.max(0,30*24*60*60*1000-(now-user.subscribeStart));
+  let remainingDays = 0;
+  if(user.type === 'trial'){
+    remainingDays = Math.max(0, 7 - Math.floor((now - user.start)/(24*60*60*1000)));
+  } else if(user.type === 'subscribed'){
+    remainingDays = Math.max(0, 30 - Math.floor((now - user.start)/(24*60*60*1000)));
   }
-  const days = Math.ceil(remaining/(24*60*60*1000));
-  container.innerHTML = `
-  <div class="w-full min-h-screen p-6">
-    <h2 class="text-2xl font-bold mb-2">${user.business} Dashboard</h2>
-    <div class="mb-4">Your link to share with customers: <input class="border px-2 py-1 w-72" readonly value="?business=${user.slug}" /></div>
-    <div class="mb-2 font-semibold">Days remaining: ${days}</div>
-    <div class="flex gap-2 mb-4">
-      <input id="svc_name" placeholder="Service name" class="border p-2 flex-1"/>
-      <input id="svc_price" type="number" placeholder="Price" class="border p-2 w-24"/>
-      <button onclick="addService('${user.email}')" class="bg-green-600 text-white px-4 py-2 rounded">Add</button>
+  const linkFull = location.origin + location.pathname + '?business=' + user.slug;
+
+  qs('#app').innerHTML = `
+    <div class="w-full min-h-screen p-6">
+      <header class="flex justify-between items-center mb-4">
+        <div>
+          <div class="text-xl font-bold">${user.business}</div>
+          <div class="text-sm text-gray-600">${user.email}</div>
+          <div class="text-sm text-yellow-600">${user.type==='trial' ? 'Trial: ' + remainingDays + ' days left' : 'Subscribed: ' + remainingDays + ' days left'}</div>
+        </div>
+        <div class="flex items-center gap-3">
+          <input id="shareLink" readonly class="border p-2 w-80" value="${linkFull}" />
+          <button onclick="copyLink()" class="bg-blue-600 text-white px-3 py-2 rounded">Copy</button>
+          <button onclick="renderHome()" class="bg-red-500 text-white px-3 py-2 rounded">Logout</button>
+        </div>
+      </header>
+
+      <section class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white p-4 rounded shadow">
+          <h3 class="font-semibold mb-2">Services</h3>
+          <div class="flex gap-2 mb-3">
+            <input id="svc_name" placeholder="Service name" class="border p-2 flex-1"/>
+            <input id="svc_price" placeholder="Price" type="number" class="border p-2 w-24"/>
+            <button onclick="addService('${user.email}')" class="bg-green-600 text-white px-3 py-2 rounded">Add</button>
+          </div>
+          <div id="servicesList" class="space-y-2"></div>
+        </div>
+
+        <div class="bg-white p-4 rounded shadow">
+          <h3 class="font-semibold mb-2">Bookings</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-left">
+              <thead class="bg-gray-100"><tr><th class="px-2 py-1">Name</th><th class="px-2 py-1">Email</th><th class="px-2 py-1">Phone</th><th class="px-2 py-1">Service</th><th class="px-2 py-1">Date</th></tr></thead>
+              <tbody id="bookingsList"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </div>
-    <div id="servicesList" class="mb-4"></div>
-    <h3 class="text-xl font-semibold mb-2">Bookings</h3>
-    <table class="min-w-full text-left border">
-      <thead class="bg-gray-100"><tr><th class="px-2 py-1">Name</th><th class="px-2 py-1">Email</th><th class="px-2 py-1">Phone</th><th class="px-2 py-1">Service</th><th class="px-2 py-1">Date</th></tr></thead>
-      <tbody id="bookingsList"></tbody>
-    </table>
-    <button onclick="logout()" class="mt-4 bg-red-600 text-white px-4 py-2 rounded">Logout</button>
-  </div>`;
-  renderServices(user);
-  renderBookings(user);
+  `;
+
+  renderServicesUI(user);
+  renderBookingsUI(user);
 }
 
-// ---------- Services ----------
+/* ---------- Copy Link ---------- */
+function copyLink(){
+  const inp = qs('#shareLink');
+  // use clipboard API if available
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(inp.value).then(()=> alert('Link copied to clipboard')).catch(()=> {
+      inp.select(); document.execCommand('copy'); alert('Link copied (fallback)');
+    });
+  } else {
+    inp.select(); document.execCommand('copy'); alert('Link copied');
+  }
+}
+
+/* ---------- Services CRUD ---------- */
 function addService(email){
   const user = getUserByEmail(email);
+  if(!user) return alert('User not found');
   const name = qs('#svc_name').value.trim();
   const price = Number(qs('#svc_price').value);
-  if(!name) return alert('Service name required');
-  user.services.push({id:uid(),name,price});
-  saveUser(user);
+  if(!name) return alert('Enter service name');
+  const services = getServices(user.slug);
+  services.push({ id: uid('svc'), name, price: isNaN(price)?0:price });
+  setServices(user.slug, services);
   qs('#svc_name').value=''; qs('#svc_price').value='';
-  renderServices(user);
+  renderServicesUI(user);
 }
-function renderServices(user){
+
+function renderServicesUI(user){
   const cont = qs('#servicesList');
-  if(!user.services || user.services.length===0){ cont.innerHTML='<div>No services yet</div>'; return; }
-  cont.innerHTML = user.services.map(s=>`
-    <div class="flex justify-between p-2 bg-gray-50 mb-1 rounded">
-      <div>${s.name} - $${s.price}</div>
-      <div>
-        <button onclick="editService('${user.email}','${s.id}')" class="px-2 py-1 bg-yellow-300 rounded">Edit</button>
-        <button onclick="deleteService('${user.email}','${s.id}')" class="px-2 py-1 bg-red-500 text-white rounded">Del</button>
+  const services = getServices(user.slug);
+  if(!services || services.length===0){ cont.innerHTML = '<div class="text-gray-500">No services yet.</div>'; return; }
+  cont.innerHTML = services.map(s=>`
+    <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+      <div>${s.name} — $${s.price}</div>
+      <div class="flex gap-2">
+        <button onclick="editService('${user.slug}','${s.id}')" class="px-2 py-1 bg-yellow-300 rounded">Edit</button>
+        <button onclick="deleteService('${user.slug}','${s.id}')" class="px-2 py-1 bg-red-500 text-white rounded">Del</button>
       </div>
     </div>`).join('');
 }
-function editService(email,id){
-  const user = getUserByEmail(email);
-  const svc = user.services.find(s=>s.id===id);
-  const name = prompt('Service name', svc.name); if(!name) return;
-  const price = Number(prompt('Price',svc.price)); if(isNaN(price)) return;
-  svc.name=name; svc.price=price;
-  saveUser(user); renderServices(user);
-}
-function deleteService(email,id){
-  const user = getUserByEmail(email);
-  user.services = user.services.filter(s=>s.id!==id);
-  saveUser(user); renderServices(user);
+
+function editService(slug,id){
+  const services = getServices(slug);
+  const s = services.find(x=>x.id===id);
+  if(!s) return;
+  const newName = prompt('Service name', s.name); if(newName===null) return;
+  const newPrice = prompt('Price', s.price); if(newPrice===null) return;
+  s.name = newName.trim() || s.name;
+  s.price = Number(newPrice) || s.price;
+  setServices(slug, services);
+  // re-render current dashboard user if present
+  const emailFieldUser = getUsers().find(u=>u.slug===slug);
+  if(emailFieldUser) renderServicesUI(emailFieldUser);
 }
 
-// ---------- Bookings (Public) ----------
-function renderPublicBooking(slug){
-  const users = getUsers();
-  const user = users.find(u=>u.slug===slug);
-  if(!user){ document.body.innerHTML='<div>Business not found</div>'; return; }
-  const services = user.services||[];
-  document.body.innerHTML = `
-    <div class="min-h-screen flex flex-col items-center p-6">
-      <h1 class="text-2xl font-bold mb-4">${user.business}</h1>
-      ${services.length===0 ? '<div>No services</div>' :
-      services.map(s=>`<div class="border p-4 mb-2 w-full max-w-md"><div class="font-medium">${s.name}</div><div class="text-sm mb-2">$${s.price}</div>
-      <button onclick="bookService('${slug}','${s.id}')" class="bg-green-600 text-white px-3 py-1 rounded">Book</button></div>`).join('')}
-      <button onclick="window.location.href=window.location.pathname" class="mt-4 text-sm text-gray-600">Home</button>
-    </div>
-    <div id="modalContainer"></div>`;
+function deleteService(slug,id){
+  if(!confirm('Delete this service?')) return;
+  let arr = getServices(slug);
+  arr = arr.filter(s=>s.id!==id);
+  setServices(slug, arr);
+  const emailFieldUser = getUsers().find(u=>u.slug===slug);
+  if(emailFieldUser) renderServicesUI(emailFieldUser);
 }
-function bookService(slug,sid){
+
+/* ---------- Bookings (public) ---------- */
+function renderPublicBooking(slug){
   const user = getUsers().find(u=>u.slug===slug);
-  const svc = user.services.find(s=>s.id===sid);
-  const modal = qs('#modalContainer');
+  if(!user){ document.body.innerHTML = `<div class="p-6">Business not found</div>`; return; }
+  const services = getServices(slug);
+  document.body.innerHTML = `
+    <div class="min-h-screen flex flex-col items-center p-6 bg-gray-100">
+      <div class="bg-white p-6 rounded-xl shadow max-w-2xl w-full">
+        <div class="flex justify-between items-center mb-4">
+          <h1 class="text-2xl font-bold">${user.business}</h1>
+          <button onclick="window.location.href=window.location.pathname" class="text-sm text-gray-600">Home</button>
+        </div>
+        ${services.length===0 ? '<div class="text-gray-500">No services available</div>' :
+          services.map(s=>`
+            <div class="border rounded p-4 mb-3 flex justify-between items-center">
+              <div>
+                <div class="font-medium">${s.name}</div>
+                <div class="text-sm text-gray-500">$${s.price}</div>
+              </div>
+              <button onclick="openBookingModal('${slug}','${s.id}')" class="bg-green-600 text-white px-3 py-2 rounded">Book</button>
+            </div>`).join('')}
+      </div>
+    </div>
+    <div id="modalContainer"></div>
+  `;
+}
+
+function openBookingModal(slug,sid){
+  const user = getUsers().find(u=>u.slug===slug);
+  const svc = getServices(slug).find(s=>s.id===sid);
+  const modal = qs('#modalContainer') || document.body.appendChild(document.createElement('div'));
   modal.innerHTML = `
     <div class="fixed inset-0 flex items-center justify-center modal-backdrop z-50">
       <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
-        <h3 class="text-lg font-semibold mb-2">Book: ${svc.name}</h3>
-        <input id="bk_name" placeholder="Full name" class="border w-full p-2 mb-2"/>
-        <input id="bk_email" placeholder="Email" class="border w-full p-2 mb-2"/>
-        <input id="bk_phone" placeholder="Phone" class="border w-full p-2 mb-2"/>
-        <input id="bk_date" type="date" class="border w-full p-2 mb-2"/>
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-lg font-semibold">Book: ${svc.name}</h3>
+          <button onclick="closeModal()" class="text-gray-500">&times;</button>
+        </div>
+        <input id="bk_name" placeholder="Full name" class="w-full border rounded p-2 mb-2"/>
+        <input id="bk_email" placeholder="Email" class="w-full border rounded p-2 mb-2"/>
+        <input id="bk_phone" placeholder="Phone" class="w-full border rounded p-2 mb-2"/>
+        <input id="bk_date" type="date" class="w-full border rounded p-2 mb-2"/>
         <div class="flex gap-2">
           <button onclick="confirmBooking('${slug}','${sid}')" class="flex-1 bg-green-600 text-white py-2 rounded">Confirm</button>
           <button onclick="closeModal()" class="flex-1 border py-2 rounded">Cancel</button>
         </div>
       </div>
-    </div>`;
+    </div>
+  `;
 }
+
 function confirmBooking(slug,sid){
-  const user = getUsers().find(u=>u.slug===slug);
-  const svc = user.services.find(s=>s.id===sid);
   const name = qs('#bk_name').value.trim();
   const email = qs('#bk_email').value.trim();
   const phone = qs('#bk_phone').value.trim();
   const date = qs('#bk_date').value;
-  if(!name || !email || !phone || !date) return alert('Fill all fields');
-  const bookings = getBookings(slug);
-  bookings.push({id:uid(), name, email, phone, service:svc.name, date});
-  setBookings(slug, bookings);
+  if(!name||!email||!phone||!date) return alert('Fill all fields');
+  const svc = getServices(slug).find(s=>s.id===sid);
+  const arr = getBookings(slug);
+  arr.push({ id: uid('b'), name, email, phone, service: svc.name, date });
+  setBookings(slug, arr);
   alert('Booking confirmed!');
   closeModal();
 }
-function closeModal(){ qs('#modalContainer').innerHTML=''; }
 
-// ---------- Render Bookings in Dashboard ----------
-function renderBookings(user){
+function closeModal(){ const m = qs('#modalContainer'); if(m) m.innerHTML=''; }
+
+/* ---------- Dashboard bookings render ---------- */
+function renderBookingsUI(user){
   const tbody = qs('#bookingsList');
-  const bookings = getBookings(user.slug);
-  if(bookings.length===0){ tbody.innerHTML='<tr><td colspan="5">No bookings yet</td></tr>'; return; }
-  tbody.innerHTML = bookings.map(b=>`
-    <tr class="border-b"><td class="px-2 py-1">${b.name}</td><td class="px-2 py-1">${b.email}</td><td class="px-2 py-1">${b.phone}</td><td class="px-2 py-1">${b.service}</td><td class="px-2 py-1">${b.date}</td></tr>
-  `).join('');
+  if(!tbody) return;
+  const arr = getBookings(user.slug);
+  if(!arr || arr.length===0){ tbody.innerHTML = '<tr><td colspan="5" class="px-2 py-1">No bookings yet</td></tr>'; return; }
+  tbody.innerHTML = arr.map(b=>`<tr class="border-b"><td class="px-2 py-1">${b.name}</td><td class="px-2 py-1">${b.email}</td><td class="px-2 py-1">${b.phone}</td><td class="px-2 py-1">${b.service}</td><td class="px-2 py-1">${b.date}</td></tr>`).join('');
 }
 
-// ---------- Logout ----------
-function logout(){ renderHome(); }
-
-// ---------- Render Home ----------
-function renderHome(){ location.reload(); }
-
-// ---------- Public Booking Route ----------
-const urlParams = new URLSearchParams(window.location.search);
-const businessSlug = urlParams.get('business');
-if(businessSlug){ renderPublicBooking(businessSlug); }
+/* ---------- Init: public route ---------- */
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const biz = params.get('business');
+  if(biz){ renderPublicBooking(biz); }
+})();
 </script>
 
 </body>
