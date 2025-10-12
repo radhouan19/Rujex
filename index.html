@@ -1,509 +1,456 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Rujex — Small Business Scheduler (Dark)</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* small tweaks for dark theme */
-    :root {
-      --bg: #0b1220;
-      --card: #0f1724;
-      --muted: #9aa4b2;
-      --accent: #7c3aed;
-      --accent-2: #06b6d4;
-    }
-    body { background: linear-gradient(180deg,var(--bg), #071021); color: #e6eef6; }
-    .card { background: linear-gradient(180deg,var(--card), #0b1420); }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Rujex - Salon Manager (Supabase)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Supabase JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+<style>
+  :root{
+    --bg:#071021; --card:#0f1724; --muted:#9aa4b2; --accent:#7c3aed;
+  }
+  body{background:linear-gradient(180deg,var(--bg),#020617); color:#e6eef6;}
+  .card{background:linear-gradient(180deg,var(--card),#071021);}
+</style>
 </head>
 <body class="min-h-screen font-sans">
 
-  <div class="max-w-6xl mx-auto p-6">
-    <header class="flex items-center justify-between mb-6">
-      <div class="flex items-center space-x-3">
-        <div class="w-12 h-12 rounded-lg" style="background: linear-gradient(135deg,var(--accent),var(--accent-2));"></div>
-        <div>
-          <h1 class="text-2xl font-bold">Rujex</h1>
-          <p class="text-sm text-[--muted]">Smart appointments & reminders for small shops — dark</p>
+<div class="max-w-6xl mx-auto p-6">
+  <header class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-lg" style="background:linear-gradient(135deg,var(--accent),#06b6d4)"></div>
+      <div>
+        <h1 class="text-2xl font-bold">Rujex</h1>
+        <p class="text-sm text-[--muted]">Appointments, reminders & simple subscriptions</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="btnShowLogin" class="px-4 py-2 rounded bg-[--accent]">Login / Sign up</button>
+      <a id="homeLink" class="px-3 py-2 rounded border border-white/10 cursor-pointer">Home</a>
+    </div>
+  </header>
+
+  <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- LEFT: Auth / Dashboard -->
+    <section class="lg:col-span-2 space-y-6">
+
+      <!-- AUTH CARD -->
+      <div id="authCard" class="card p-6 rounded-2xl shadow">
+        <h2 id="authTitle" class="text-xl font-semibold mb-3">Sign in</h2>
+        <form id="authForm" class="space-y-3">
+          <input id="email" type="email" placeholder="Email" class="w-full p-3 rounded bg-transparent border border-white/10" required />
+          <input id="password" type="password" placeholder="Password" class="w-full p-3 rounded bg-transparent border border-white/10" required />
+          <input id="businessName" type="text" placeholder="Business name (for signup)" class="w-full p-3 rounded bg-transparent border border-white/10 hidden" />
+          <input id="businessSlug" type="text" placeholder="Business slug (e.g. mybarber)" class="w-full p-3 rounded bg-transparent border border-white/10 hidden" />
+          <div class="flex items-center gap-3">
+            <button id="authBtn" class="px-4 py-2 rounded bg-[--accent]">Sign in</button>
+            <button id="toggleSign" type="button" class="px-3 py-2 rounded border border-white/10">Create account</button>
+            <button id="demoBtn" type="button" class="ml-auto px-3 py-2 rounded bg-white/5">Demo fill</button>
+          </div>
+          <p id="authMsg" class="text-sm text-[--muted] mt-2"></p>
+        </form>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div id="dashboardCard" class="card p-6 rounded-2xl shadow hidden">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 id="bizTitle" class="text-xl font-semibold">Business</h2>
+            <p id="bizSub" class="text-sm text-[--muted]">Manage appointments & revenue</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <a id="publicLink" target="_blank" class="px-3 py-2 rounded bg-white/5">Public booking</a>
+            <button id="logoutBtn" class="px-3 py-2 rounded border border-white/10">Logout</button>
+          </div>
         </div>
-      </div>
 
-      <div id="topActions" class="flex items-center space-x-3">
-        <button id="openSignupBtn" class="px-3 py-2 rounded bg-[--accent] hover:brightness-105">Sign up</button>
-        <button id="openLoginBtn" class="px-3 py-2 rounded border border-white/10">Log in</button>
-        <a id="homeLink" class="px-3 py-2 rounded border border-white/10 cursor-pointer">Home</a>
-      </div>
-    </header>
+        <!-- stats -->
+        <div class="grid grid-cols-3 gap-4 mb-4">
+          <div class="p-4 rounded bg-white/3 text-center">
+            <div class="text-sm text-[--muted]">Clients</div>
+            <div id="statClients" class="text-xl font-bold">0</div>
+          </div>
+          <div class="p-4 rounded bg-white/3 text-center">
+            <div class="text-sm text-[--muted]">Upcoming</div>
+            <div id="statUpcoming" class="text-xl font-bold">0</div>
+          </div>
+          <div class="p-4 rounded bg-white/3 text-center">
+            <div class="text-sm text-[--muted]">Revenue</div>
+            <div id="statRevenue" class="text-xl font-bold">$0</div>
+          </div>
+        </div>
 
-    <!-- MAIN LAYOUT: left = admin/login/signup/dashboard; right = preview / public-booking -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-      <!-- LEFT: Admin panels -->
-      <div class="lg:col-span-2 space-y-6">
-
-        <!-- AUTH (signup/login) -->
-        <div id="authCard" class="card p-6 rounded-2xl shadow">
-          <h2 id="authTitle" class="text-xl font-semibold mb-3">Business Login</h2>
-
-          <form id="authForm" class="space-y-3">
-            <input id="bizEmail" type="email" placeholder="Business email" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-            <input id="bizPassword" type="password" placeholder="Password" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-            <input id="bizSlug" type="text" placeholder="Business slug (for public link) — e.g. mybarber" class="w-full p-3 rounded bg-transparent border border-white/10 hidden" required>
-            <input id="bizName" type="text" placeholder="Business display name" class="w-full p-3 rounded bg-transparent border border-white/10 hidden" required>
-            <div class="flex items-center gap-3">
-              <button id="authSubmit" class="px-4 py-2 rounded bg-[--accent]">Log in</button>
-              <button id="toggleAuthMode" type="button" class="px-3 py-2 rounded border border-white/10">Create account</button>
-              <button id="demoFill" type="button" class="ml-auto px-3 py-2 rounded bg-white/5">Demo fill</button>
+        <!-- subscribe -->
+        <div class="mb-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold">Subscription</h3>
+              <p class="text-sm text-[--muted]">Simulated $5/month subscription (click to simulate payment)</p>
             </div>
-            <p id="authMsg" class="text-sm text-[--muted] mt-2"></p>
+            <div>
+              <span id="subStatus" class="text-sm text-[--muted]">Not subscribed</span>
+              <button id="subBtn" class="ml-3 px-3 py-2 rounded bg-[--accent]">Pay $5 (simulate)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- add appointment -->
+        <div class="mb-4">
+          <h3 class="font-semibold mb-2">Add appointment</h3>
+          <form id="addApptForm" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <input id="apClient" placeholder="Client name" class="p-3 rounded bg-transparent border border-white/10" required />
+            <input id="apEmail" placeholder="Client email (optional)" class="p-3 rounded bg-transparent border border-white/10" />
+            <input id="apService" placeholder="Service" class="p-3 rounded bg-transparent border border-white/10" required />
+            <input id="apDatetime" type="datetime-local" class="p-3 rounded bg-transparent border border-white/10 md:col-span-2" required />
+            <input id="apPrice" type="number" placeholder="Price (USD)" class="p-3 rounded bg-transparent border border-white/10" />
+            <button class="px-4 py-2 rounded bg-[--accent] md:col-span-1" type="submit">Save</button>
           </form>
         </div>
 
-        <!-- DASHBOARD (hidden until login) -->
-        <div id="dashboardCard" class="card p-6 rounded-2xl shadow hidden">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h2 id="dashTitle" class="text-xl font-semibold"></h2>
-              <p id="dashSubtitle" class="text-sm text-[--muted]">Manage appointments, clients and revenue</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <a id="publicLink" href="#" target="_blank" class="text-sm px-3 py-2 bg-white/5 rounded">Open public booking</a>
-              <button id="logoutBtn" class="px-3 py-2 rounded border border-white/10">Log out</button>
-            </div>
+        <!-- appointments table -->
+        <div>
+          <h3 class="font-semibold mb-2">Appointments</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="text-[--muted] text-left">
+                <tr><th class="pb-2">Client</th><th class="pb-2">Service</th><th class="pb-2">When</th><th class="pb-2">Price</th><th class="pb-2">Status</th><th class="pb-2">Actions</th></tr>
+              </thead>
+              <tbody id="apptsTbody" class="align-top"></tbody>
+            </table>
           </div>
-
-          <!-- quick stats -->
-          <div class="grid grid-cols-3 gap-4 mb-4">
-            <div class="p-4 rounded bg-white/2 text-center">
-              <div class="text-sm text-[--muted]">Clients</div>
-              <div id="statClients" class="text-xl font-bold mt-1">0</div>
-            </div>
-            <div class="p-4 rounded bg-white/2 text-center">
-              <div class="text-sm text-[--muted]">Upcoming</div>
-              <div id="statUpcoming" class="text-xl font-bold mt-1">0</div>
-            </div>
-            <div class="p-4 rounded bg-white/2 text-center">
-              <div class="text-sm text-[--muted]">Revenue</div>
-              <div id="statRevenue" class="text-xl font-bold mt-1">$0</div>
-            </div>
-          </div>
-
-          <!-- appointment form -->
-          <div class="mb-4">
-            <h3 class="font-semibold mb-2">Add appointment</h3>
-            <form id="addApptForm" class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <input id="aClient" placeholder="Client name" class="p-3 rounded bg-transparent border border-white/10" required>
-              <input id="aEmail" placeholder="Client email (optional)" class="p-3 rounded bg-transparent border border-white/10">
-              <input id="aService" placeholder="Service (e.g. Haircut)" class="p-3 rounded bg-transparent border border-white/10" required>
-              <input id="aDatetime" type="datetime-local" class="p-3 rounded bg-transparent border border-white/10 md:col-span-2" required>
-              <input id="aPrice" type="number" placeholder="Price (USD)" class="p-3 rounded bg-transparent border border-white/10" >
-              <button class="px-4 py-2 rounded bg-[--accent] md:col-span-1" type="submit">Save</button>
-            </form>
-          </div>
-
-          <!-- appointments table -->
-          <div>
-            <h3 class="font-semibold mb-2">Appointments</h3>
-            <div class="overflow-x-auto">
-              <table class="w-full text-sm">
-                <thead class="text-[--muted] text-left">
-                  <tr>
-                    <th class="pb-2">Client</th>
-                    <th class="pb-2">Service</th>
-                    <th class="pb-2">When</th>
-                    <th class="pb-2">Price</th>
-                    <th class="pb-2">Status</th>
-                    <th class="pb-2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="apptTableBody" class="align-top"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- RIGHT: Preview / Public Booking -->
-      <div class="space-y-6">
-        <!-- Public booking preview (or if ?biz=slug is present we show public booking form) -->
-        <div id="publicCard" class="card p-6 rounded-2xl shadow">
-          <h2 id="publicTitle" class="text-xl font-semibold mb-3">Public booking preview</h2>
-
-          <div id="publicInfo" class="text-sm text-[--muted] mb-4">
-            Open a business link with `?biz=your-slug` to see public booking, or use the business public link after signup.
-          </div>
-
-          <div id="publicBookingFormWrap" class="hidden">
-            <form id="publicBookingForm" class="space-y-3">
-              <input id="pbClient" placeholder="Your name" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-              <input id="pbEmail" type="email" placeholder="Your email" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-              <input id="pbService" placeholder="Service" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-              <input id="pbDatetime" type="datetime-local" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-              <button class="w-full px-4 py-2 rounded bg-[--accent]">Request appointment</button>
-            </form>
-            <p id="publicMsg" class="mt-3 text-sm text-[--muted]"></p>
-          </div>
-
-          <div id="publicNotice" class="text-sm text-[--muted]">No public business selected yet (use `?biz=slug` or sign in as a business).</div>
-        </div>
-
-        <!-- Quick guide / CTA -->
-        <div class="card p-6 rounded-2xl shadow text-sm text-[--muted]">
-          <strong>Next steps</strong>
-          <ul class="mt-2 list-disc ml-5">
-            <li>Create a business (Sign up) — pick a short slug like <code>mybarber</code>.</li>
-            <li>Copy your public link and send to customers: <code>https://yourhost/index.html?biz=mybarber</code>.</li>
-            <li>Customers book — appointments stay in your dashboard (localStorage).</li>
-            <li>Later we can add Stripe, server storage, and email/SMS sending.</li>
-          </ul>
         </div>
       </div>
 
-    </div>
-  </div>
+    </section>
+
+    <!-- RIGHT: Public booking preview -->
+    <aside class="space-y-6">
+      <div class="card p-6 rounded-2xl shadow">
+        <h3 class="text-xl font-semibold mb-3">Public booking</h3>
+        <p class="text-sm text-[--muted] mb-3">Open the public link: <span id="examplePublic" class="font-mono text-xs"></span></p>
+        <div id="publicFormWrap" class="hidden">
+          <form id="publicForm" class="space-y-3">
+            <input id="pubName" placeholder="Your name" class="w-full p-3 rounded bg-transparent border border-white/10" required />
+            <input id="pubEmail" type="email" placeholder="Your email" class="w-full p-3 rounded bg-transparent border border-white/10" required />
+            <input id="pubService" placeholder="Service" class="w-full p-3 rounded bg-transparent border border-white/10" required />
+            <input id="pubDatetime" type="datetime-local" class="w-full p-3 rounded bg-transparent border border-white/10" required />
+            <button class="w-full px-4 py-2 rounded bg-[--accent]">Request appointment</button>
+          </form>
+          <p id="publicMsg" class="mt-2 text-sm text-[--muted]"></p>
+        </div>
+        <div id="noPublic" class="text-sm text-[--muted]">No public business selected — use <code>?biz=your-slug</code></div>
+      </div>
+
+      <div class="card p-6 rounded-2xl shadow text-sm text-[--muted]">
+        <strong>How to launch</strong>
+        <ol class="list-decimal ml-5 mt-2">
+          <li>Set SUPABASE_URL &amp; SUPABASE_ANON_KEY in the script below.</li>
+          <li>Run the SQL in Supabase SQL Editor (tables + policies).</li>
+          <li>Deploy this file to Vercel/Netlify or open locally (Auth may require proper origin).</li>
+        </ol>
+      </div>
+    </aside>
+
+  </main>
+</div>
 
 <script>
-/* ---------------------------
-  Rujex (single-file) logic
-  - Stores businesses in localStorage key 'rujex_biz'
-  - Stores appointments array per business under key 'rujex_appts_<slug>'
-  - Public booking via ?biz=slug
-  - Local notifications: 15 minutes before + at time (if permission)
----------------------------- */
+/* ======================
+  PUT YOUR SUPABASE CREDENTIALS HERE
+  Replace the strings below with values from Supabase > Settings > API
+  SUPABASE_URL example: https://abcd1234.supabase.co
+  SUPABASE_ANON_KEY is the "anon public" key
+====================== */
+const SUPABASE_URL = "https://dulosxwinpzkuiidgalf.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR1bG9zeHdpbnB6a3VpaWRnYWxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAyMjAyMTEsImV4cCI6MjA3NTc5NjIxMX0.KiVvgqUUcgC65hD3hG3bfxkIUk4gyz6KA8MtJuvqXUs";
 
-const LS_BIZ = 'rujex_biz';
-const LS_APPT_PREFIX = 'rujex_appts_';
+/* ===== Init supabase client ===== */
+const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-function loadBizList() {
-  return JSON.parse(localStorage.getItem(LS_BIZ) || '[]');
-}
-function saveBizList(list) {
-  localStorage.setItem(LS_BIZ, JSON.stringify(list));
-}
-function getApptsKey(slug){ return LS_APPT_PREFIX + slug; }
-function loadAppts(slug) {
-  return JSON.parse(localStorage.getItem(getApptsKey(slug)) || '[]');
-}
-function saveAppts(slug, arr) {
-  localStorage.setItem(getApptsKey(slug), JSON.stringify(arr));
-}
-
-/* UI refs */
+/* ===== UI refs ===== */
 const authCard = document.getElementById('authCard');
 const authForm = document.getElementById('authForm');
 const authTitle = document.getElementById('authTitle');
-const BizEmail = document.getElementById('bizEmail');
-const BizPassword = document.getElementById('bizPassword');
-const BizSlug = document.getElementById('bizSlug');
-const BizName = document.getElementById('bizName');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const businessName = document.getElementById('businessName');
+const businessSlug = document.getElementById('businessSlug');
+const toggleSign = document.getElementById('toggleSign');
+const authBtn = document.getElementById('authBtn');
 const authMsg = document.getElementById('authMsg');
-const toggleAuthMode = document.getElementById('toggleAuthMode');
-const authSubmit = document.getElementById('authSubmit');
-const demoFill = document.getElementById('demoFill');
+const demoBtn = document.getElementById('demoBtn');
 
 const dashboardCard = document.getElementById('dashboardCard');
-const dashTitle = document.getElementById('dashTitle');
-const dashSubtitle = document.getElementById('dashSubtitle');
+const bizTitle = document.getElementById('bizTitle');
+const bizSub = document.getElementById('bizSub');
 const publicLink = document.getElementById('publicLink');
-const logoutBtn = document.getElementById('logoutBtn');
 
 const statClients = document.getElementById('statClients');
 const statUpcoming = document.getElementById('statUpcoming');
 const statRevenue = document.getElementById('statRevenue');
 
+const subStatus = document.getElementById('subStatus');
+const subBtn = document.getElementById('subBtn');
+
 const addApptForm = document.getElementById('addApptForm');
-const aClient = document.getElementById('aClient');
-const aEmail = document.getElementById('aEmail');
-const aService = document.getElementById('aService');
-const aDatetime = document.getElementById('aDatetime');
-const aPrice = document.getElementById('aPrice');
-const apptTableBody = document.getElementById('apptTableBody');
+const apClient = document.getElementById('apClient');
+const apEmail = document.getElementById('apEmail');
+const apService = document.getElementById('apService');
+const apDatetime = document.getElementById('apDatetime');
+const apPrice = document.getElementById('apPrice');
+const apptsTbody = document.getElementById('apptsTbody');
 
-const publicCard = document.getElementById('publicCard');
-const publicBookingFormWrap = document.getElementById('publicBookingFormWrap');
-const publicBookingForm = document.getElementById('publicBookingForm');
+const publicFormWrap = document.getElementById('publicFormWrap');
+const publicForm = document.getElementById('publicForm');
 const publicMsg = document.getElementById('publicMsg');
-const publicNotice = document.getElementById('publicNotice');
+const noPublic = document.getElementById('noPublic');
+const examplePublic = document.getElementById('examplePublic');
 
-let authModeCreate = false;
-let currentBiz = null; // {slug,name,email,password}
+let createMode = false;
+let currentSalon = null; // object from salons table
 
-function setAuthModeCreate(on) {
-  authModeCreate = !!on;
-  BizSlug.classList.toggle('hidden', !on);
-  BizName.classList.toggle('hidden', !on);
-  authTitle.textContent = on ? 'Create business account' : 'Business login';
-  authSubmit.textContent = on ? 'Create account' : 'Log in';
-  toggleAuthMode.textContent = on ? 'Have an account? Log in' : 'Create account';
+/* Toggle create / login */
+toggleSign.addEventListener('click', ()=> setCreateMode(!createMode));
+document.getElementById('btnShowLogin').addEventListener('click', ()=> { setCreateMode(false); window.scrollTo({top:0, behavior:'smooth'}) });
+
+demoBtn.addEventListener('click', ()=> {
+  emailInput.value = 'owner@rujex.test';
+  passwordInput.value = 'password';
+  businessName.value = 'My Barber Shop';
+  businessSlug.value = 'mybarber';
+});
+
+function setCreateMode(on){
+  createMode = !!on;
+  businessName.classList.toggle('hidden', !on);
+  businessSlug.classList.toggle('hidden', !on);
+  authTitle.textContent = on ? 'Create business account' : 'Sign in';
+  authBtn.textContent = on ? 'Create account' : 'Sign in';
   authMsg.textContent = '';
 }
 
-toggleAuthMode.addEventListener('click', ()=> setAuthModeCreate(!authModeCreate));
-document.getElementById('openSignupBtn').addEventListener('click', ()=> { setAuthModeCreate(true); window.scrollTo({top:0,behavior:'smooth'}); });
-document.getElementById('openLoginBtn').addEventListener('click', ()=> { setAuthModeCreate(false); window.scrollTo({top:0,behavior:'smooth'}); });
-document.getElementById('homeLink').addEventListener('click', ()=> { window.location.href = window.location.pathname; });
-
-demoFill.addEventListener('click', ()=>{
-  BizEmail.value = 'owner@rujex.test';
-  BizPassword.value = 'password';
-  BizSlug.value = 'mybarber';
-  BizName.value = 'My Barber Shop';
-});
-
-authForm.addEventListener('submit', (e)=>{
+/* ===== AUTH (sign up / sign in using Supabase Auth and profile table) ===== */
+authForm.addEventListener('submit', async (e)=>{
   e.preventDefault();
-  const email = BizEmail.value.trim().toLowerCase();
-  const password = BizPassword.value;
-  const slug = BizSlug.value.trim().toLowerCase();
-  const name = BizName.value.trim();
+  const email = emailInput.value.trim().toLowerCase();
+  const password = passwordInput.value;
+  const name = businessName.value.trim();
+  const slug = businessSlug.value.trim().toLowerCase();
 
-  const list = loadBizList();
-  if(authModeCreate) {
-    if(!email || !password || !slug || !name) { authMsg.textContent = 'Please fill all fields.'; return; }
-    if(list.some(b=>b.slug === slug)) { authMsg.textContent = 'Slug already taken.'; return; }
-    list.push({email, password, slug, name});
-    saveBizList(list);
-    // create empty appt store for slug
-    saveAppts(slug, []);
-    authMsg.textContent = `Created. Public link: ?biz=${slug}`;
-    setAuthModeCreate(false);
-    authForm.reset();
+  if(createMode){
+    if(!email || !password || !name || !slug){ authMsg.textContent = 'Please fill all fields'; return; }
+    // create supabase auth user then create salon profile row
+    const { data: signData, error: signErr } = await supabase.auth.signUp({ email, password });
+    if(signErr){ authMsg.textContent = 'Sign up error: '+signErr.message; return; }
+    // wait a bit for user creation (or handle via onAuthStateChange)
+    // create profile in 'salons' table with owner = auth.uid()
+    // get user session to obtain uid
+    const { data: session } = await supabase.auth.getSession();
+    const uid = session?.data?.session?.user?.id;
+    if(!uid){
+      authMsg.textContent = 'Sign up created. Please confirm email then login.';
+      // still create row with null owner? safer to create after user confirm - but for MVP create without owner
+      await supabase.from('salons').insert([{ email, name, slug }]);
+      return;
+    }
+    // insert salon row with owner = uid
+    const { data: salonRow, error: salonErr } = await supabase.from('salons').insert([{ owner: uid, email, name, slug }]).select().limit(1).single();
+    if(salonErr){ authMsg.textContent = 'Profile create error: '+salonErr.message; return; }
+    authMsg.textContent = 'Account created & profile saved. You are signed in.';
+    emailInput.value=''; passwordInput.value=''; businessName.value=''; businessSlug.value='';
+    currentSalon = salonRow;
+    showDashboard();
     return;
   } else {
-    // login
-    const biz = list.find(b => b.email === email && b.password === password);
-    if(!biz) { authMsg.textContent = 'Invalid login'; return; }
-    currentBiz = biz;
+    // sign in
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if(error){ authMsg.textContent = 'Sign in error: '+error.message; return; }
+    // fetch salon profile for this user
+    const uid = data?.user?.id;
+    const { data: salons, error: salonErr } = await supabase.from('salons').select('*').eq('owner', uid).limit(1).maybeSingle();
+    if(salonErr){ authMsg.textContent = 'Profile fetch error: '+salonErr.message; return; }
+    if(!salons) { authMsg.textContent = 'No salon profile found for this account.'; return; }
+    currentSalon = salons;
     showDashboard();
   }
 });
 
-/* SHOW DASHBOARD */
-function showDashboard() {
+/* show dashboard */
+function showDashboard(){
   authCard.classList.add('hidden');
   dashboardCard.classList.remove('hidden');
-  dashTitle.textContent = currentBiz.name || currentBiz.slug;
-  publicLink.href = window.location.origin + window.location.pathname + '?biz=' + currentBiz.slug;
-  publicLink.textContent = 'Public page → ' + currentBiz.slug;
-  refreshStatsAndTable();
-  window.scrollTo({top:0,behavior:'smooth'});
+  bizTitle.textContent = currentSalon.name;
+  publicLink.href = window.location.origin + window.location.pathname + '?biz=' + currentSalon.slug;
+  publicLink.textContent = 'Public → ' + currentSalon.slug;
+  examplePublic.textContent = window.location.origin + window.location.pathname + '?biz=your-slug';
+  refreshData();
 }
 
-/* LOGOUT */
-logoutBtn.addEventListener('click', ()=>{
-  currentBiz = null;
+/* logout */
+document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+  await supabase.auth.signOut();
+  currentSalon = null;
   dashboardCard.classList.add('hidden');
   authCard.classList.remove('hidden');
 });
 
-/* ADD APPOINTMENT from dashboard */
-addApptForm.addEventListener('submit', (e)=>{
-  e.preventDefault();
-  if(!currentBiz) return;
-  const client = aClient.value.trim();
-  const email = aEmail.value.trim();
-  const service = aService.value.trim();
-  const dt = aDatetime.value;
-  const price = parseFloat(aPrice.value) || 0;
-  if(!client || !service || !dt) return alert('Please fill client, service and date/time');
-
-  const appts = loadAppts(currentBiz.slug);
-  appts.push({id: Date.now().toString(36), client, email, service, datetime: dt, price, notified:false, preNotified:false, createdAt:new Date().toISOString()});
-  saveAppts(currentBiz.slug, appts);
-  refreshStatsAndTable();
-  addApptForm.reset();
-});
-
-/* RENDER APPOINTMENTS */
-function refreshStatsAndTable(){
-  if(!currentBiz) return;
-  const appts = loadAppts(currentBiz.slug);
-  // compute clients map
-  const clientMap = {};
-  let upcoming = 0;
-  let revenue = 0;
-  appts.forEach(a=>{
-    clientMap[a.client] = (clientMap[a.client]||0) + 1;
-    revenue += parseFloat(a.price) || 0;
-    if(new Date(a.datetime) > new Date()) upcoming++;
-  });
-  statClients.textContent = Object.keys(clientMap).length;
+/* refresh stats and table */
+async function refreshData(){
+  if(!currentSalon) return;
+  // fetch appointments
+  const { data: appts, error } = await supabase.from('appointments').select('*').eq('salon_id', currentSalon.id);
+  if(error){ console.error('fetch appts err', error); return; }
+  // compute stats
+  const clients = [...new Set(appts.map(a=>a.client_name))].length;
+  const upcoming = appts.filter(a=> new Date(a.appointment_time) > new Date()).length;
+  const revenue = appts.reduce((s,a)=> s + parseFloat(a.price || 0), 0);
+  statClients.textContent = clients;
   statUpcoming.textContent = upcoming;
   statRevenue.textContent = '$' + revenue.toFixed(2);
 
-  // table
-  apptTableBody.innerHTML = appts.sort((x,y)=> new Date(x.datetime)-new Date(y.datetime)).map(a=>{
-    const when = new Date(a.datetime);
-    const status = a.notified ? 'Notified' : (a.preNotified ? 'Reminder pending' : '');
+  // render table
+  appts.sort((x,y)=> new Date(x.appointment_time) - new Date(y.appointment_time));
+  apptsTbody.innerHTML = appts.map(a => {
+    const when = new Date(a.appointment_time).toLocaleString();
+    const status = a.notified ? 'Notified' : (a.pre_notified ? 'Reminder pending' : '');
     return `<tr class="border-b">
-      <td class="py-2">${escapeHtml(a.client)}<div class="text-[--muted] text-xs">${escapeHtml(a.email||'')}</div></td>
+      <td class="py-2">${escapeHtml(a.client_name)}<div class="text-xs text-[--muted]">${escapeHtml(a.client_email || '')}</div></td>
       <td class="py-2">${escapeHtml(a.service)}</td>
-      <td class="py-2">${when.toLocaleString()}</td>
+      <td class="py-2">${when}</td>
       <td class="py-2">$${(a.price||0).toFixed(2)}</td>
       <td class="py-2">${status}</td>
       <td class="py-2">
-        <button data-id="${a.id}" class="editBtn px-2 py-1 mr-2 rounded bg-white/5">Edit</button>
         <button data-id="${a.id}" class="delBtn px-2 py-1 rounded bg-red-600">Delete</button>
       </td>
     </tr>`;
   }).join('');
-
-  // hook actions
+  // hook delete buttons
   document.querySelectorAll('.delBtn').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{
+    btn.addEventListener('click', async (e)=>{
       const id = e.currentTarget.dataset.id;
       if(!confirm('Delete appointment?')) return;
-      let appts = loadAppts(currentBiz.slug);
-      appts = appts.filter(x=>x.id !== id);
-      saveAppts(currentBiz.slug, appts);
-      refreshStatsAndTable();
+      await supabase.from('appointments').delete().eq('id', id);
+      refreshData();
     });
   });
-  document.querySelectorAll('.editBtn').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{
-      const id = e.currentTarget.dataset.id;
-      const appts = loadAppts(currentBiz.slug);
-      const a = appts.find(x=>x.id===id);
-      if(!a) return;
-      // populate add form for quick edit (simple)
-      aClient.value = a.client;
-      aEmail.value = a.email || '';
-      aService.value = a.service;
-      aDatetime.value = a.datetime;
-      aPrice.value = a.price;
-      // remove original entry
-      const remaining = appts.filter(x=>x.id !== id);
-      saveAppts(currentBiz.slug, remaining);
-      refreshStatsAndTable();
-    });
-  });
-}
 
-/* PUBLIC BOOKING via ?biz=slug */
-function initPublicBooking() {
-  const params = new URLSearchParams(window.location.search);
-  const bizSlug = params.get('biz');
-  if(!bizSlug) {
-    publicBookingFormWrap.classList.add('hidden');
-    publicNotice.classList.remove('hidden');
-    return;
-  }
-  const bizList = loadBizList();
-  const biz = bizList.find(b => b.slug === bizSlug);
-  if(!biz) {
-    publicBookingFormWrap.classList.add('hidden');
-    publicNotice.textContent = 'Business not found for slug: ' + bizSlug;
-    publicNotice.classList.remove('hidden');
-    return;
-  }
-  // show public booking form
-  publicNotice.classList.add('hidden');
-  publicBookingFormWrap.classList.remove('hidden');
-  publicCard.querySelector('#publicTitle').textContent = `${biz.name} — Book online`;
-
-  // handle public booking submission
-  publicBookingForm.addEventListener('submit', (e)=>{
-    e.preventDefault();
-    const client = document.getElementById('pbClient').value.trim();
-    const email = document.getElementById('pbEmail').value.trim();
-    const service = document.getElementById('pbService').value.trim();
-    const dt = document.getElementById('pbDatetime').value;
-    if(!client || !service || !dt) {
-      publicMsg.textContent = 'Please fill name, email and date/time';
-      return;
-    }
-    const appts = loadAppts(bizSlug);
-    appts.push({id: Date.now().toString(36), client, email, service, datetime: dt, price: 0, notified:false, preNotified:false, createdAt:new Date().toISOString()});
-    saveAppts(bizSlug, appts);
-    publicMsg.textContent = 'Appointment requested — it will appear in the business dashboard.';
-    publicBookingForm.reset();
-  });
-}
-
-/* Escape HTML helper */
-function escapeHtml(s='') {
-  return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-}
-
-/* NOTIFICATIONS: check all businesses' appointments (so a logged-in owner will get local notification) */
-/* We only notify for the currently loaded business dashboard (local model). For public deployments we'd add a server job. */
-if('Notification' in window && Notification.permission !== 'granted') {
-  Notification.requestPermission();
-}
-
-/* Check reminders every 30s */
-setInterval(()=>{
-  // for dashboard: currentBiz
-  if(currentBiz) {
-    let appts = loadAppts(currentBiz.slug);
-    const now = new Date();
-    let changed = false;
-    appts.forEach((a, idx) => {
-      const when = new Date(a.datetime);
-      const delta = when - now;
-      // pre-notify at 15 minutes
-      if(!a.preNotified && delta <= 15*60*1000 && delta > 0) {
-        sendLocalReminder(currentBiz, a, 'Upcoming in 15 min');
-        a.preNotified = true;
-        changed = true;
-      }
-      // at time notify
-      if(!a.notified && delta <= 0) {
-        sendLocalReminder(currentBiz, a, 'Appointment now');
-        a.notified = true;
-        changed = true;
-      }
-    });
-    if(changed) { saveAppts(currentBiz.slug, appts); refreshStatsAndTable(); }
+  // subscription status
+  const { data: subs } = await supabase.from('subscriptions').select('*').eq('salon_id', currentSalon.id).order('started_at', {ascending:false}).limit(1).maybeSingle();
+  if(subs && subs.status === 'active' && new Date(subs.expires_at) > new Date()){
+    subStatus.textContent = 'Subscribed until ' + new Date(subs.expires_at).toLocaleDateString();
   } else {
-    // If not logged in, still check if URL has biz (public booking) — we don't send owner notifications in that case
-    // No action
+    subStatus.textContent = 'Not subscribed';
   }
+}
+
+/* add appointment via dashboard */
+addApptForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  if(!currentSalon){ alert('Not signed in'); return; }
+  const client_name = apClient.value.trim();
+  const client_email = apEmail.value.trim();
+  const service = apService.value.trim();
+  const appointment_time = apDatetime.value;
+  const price = parseFloat(apPrice.value) || 0;
+  if(!client_name || !service || !appointment_time) return alert('Fill fields');
+
+  const { data, error } = await supabase.from('appointments').insert([{ salon_id: currentSalon.id, client_name, client_email, service, appointment_time, price }]);
+  if(error){ alert('Save error: '+error.message); return; }
+  apClient.value=''; apEmail.value=''; apService.value=''; apDatetime.value=''; apPrice.value='';
+  refreshData();
+});
+
+/* PUBLIC booking via ?biz=slug */
+function initPublic(){
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('biz');
+  if(!slug){ publicFormWrap.classList.add('hidden'); noPublic.classList.remove('hidden'); return; }
+  // find salon by slug (public select allowed)
+  publicFormWrap.classList.remove('hidden'); noPublic.classList.add('hidden');
+  // set title
+  publicForm.querySelectorAll('input,button').forEach(i=> i.disabled = false);
+  publicForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const client_name = document.getElementById('pubName').value.trim();
+    const client_email = document.getElementById('pubEmail').value.trim();
+    const service = document.getElementById('pubService').value.trim();
+    const appointment_time = document.getElementById('pubDatetime').value;
+    if(!client_name || !client_email || !service || !appointment_time) { publicMsg.textContent = 'Please fill all fields'; return; }
+    // locate salon row by slug
+    const { data: salon } = await supabase.from('salons').select('*').eq('slug', slug).maybeSingle();
+    if(!salon){ publicMsg.textContent = 'Business not found'; return; }
+    const { error } = await supabase.from('appointments').insert([{ salon_id: salon.id, client_name, client_email, service, appointment_time }]);
+    if(error){ publicMsg.textContent = 'Save error: '+error.message; return; }
+    publicMsg.textContent = 'Appointment requested — the business will see it in dashboard.';
+    publicForm.reset();
+  });
+}
+
+/* simulate payment: Insert subscription with expires_at = now + 30 days, status active */
+subBtn.addEventListener('click', async ()=>{
+  if(!currentSalon) return alert('Login first');
+  const now = new Date();
+  const expires = new Date(now.getTime() + 30*24*60*60*1000); // 30 days
+  const { data, error } = await supabase.from('subscriptions').insert([{ salon_id: currentSalon.id, plan:'basic', status:'active', started_at: now.toISOString(), expires_at: expires.toISOString() }]);
+  if(error){ alert('Subscription error: '+error.message); return; }
+  alert('Simulated payment complete. Subscribed until ' + expires.toLocaleDateString());
+  refreshData();
+});
+
+/* local notifications: check upcoming appointments for the signed-in owner and notify (pre-notify 15 min) */
+setInterval(async ()=>{
+  if(!currentSalon) return;
+  // fetch upcoming not-yet-notified appts due within 15 minutes or past due and not notified
+  const now = new Date().toISOString();
+  const in15 = new Date(Date.now() + 15*60*1000).toISOString();
+  const { data: appts } = await supabase.from('appointments')
+    .select('*')
+    .eq('salon_id', currentSalon.id)
+    .or(`and(pre_notified.eq.false,appointment_time.lte.${in15}),and(notified.eq.false,appointment_time.lte.${now})`);
+  if(!appts || appts.length===0) return;
+  for(const a of appts){
+    const when = new Date(a.appointment_time);
+    const delta = when - new Date();
+    if(!a.pre_notified && delta > 0 && delta <= 15*60*1000){
+      // pre notify
+      notifyLocal(currentSalon.name, `${a.client_name} in 15 min — ${a.service} at ${when.toLocaleString()}`);
+      // set pre_notified true
+      await supabase.from('appointments').update({ pre_notified:true }).eq('id', a.id);
+    } else if(!a.notified && delta <= 0){
+      notifyLocal(currentSalon.name, `${a.client_name} appointment now — ${a.service}`);
+      await supabase.from('appointments').update({ notified:true }).eq('id', a.id);
+    }
+  }
+  refreshData();
 }, 30000);
 
-/* send local notification and open mailto to simulate email reminder */
-function sendLocalReminder(biz, appt, titleSuffix) {
-  const when = new Date(appt.datetime);
-  const title = `${biz.name} — ${titleSuffix}`;
-  const body = `${appt.client} — ${appt.service}\n${when.toLocaleString()}`;
-  if(Notification.permission === 'granted') {
-    try {
-      new Notification(title, { body });
-    } catch(e){ console.log('Notification err', e); }
+/* simple notification helper */
+function notifyLocal(title, text){
+  if('Notification' in window && Notification.permission === 'granted'){
+    try { new Notification(title, { body: text }); } catch(e){ console.log(e); }
+  } else {
+    Notification.requestPermission();
   }
-  // Open mailto to simulate an email to owner (owner's email is biz.email)
-  // This opens user's mail client with prefilled message — it's a simulation to let owner send or see reminder.
-  const subj = encodeURIComponent(`Reminder: ${appt.client} - ${appt.service}`);
-  const bodyText = encodeURIComponent(`Hello ${biz.name},\n\nThis is a reminder for appointment:\n\nClient: ${appt.client}\nService: ${appt.service}\nWhen: ${when.toLocaleString()}\n\n- Rujex`);
-  // Open mailto in a new tab/window to not interrupt the app
-  setTimeout(()=> {
-    window.open(`mailto:${biz.email}?subject=${subj}&body=${bodyText}`, '_blank');
-  }, 400);
 }
 
-/* on load: if ?biz param present show public booking form */
-initPublicBooking();
+/* helper: escape html */
+function escapeHtml(s=''){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
-/* If page loaded with biz param and matches a created business, show notice and let owner open dashboard */
-(function autoOpenIfBizInUrl(){
-  const params = new URLSearchParams(window.location.search);
-  const biz = params.get('biz');
-  if(biz) {
-    // show public form only; owner can login to manage
-    // nothing more automatically
+/* init public booking if ?biz provided */
+initPublic();
+
+/* on load, if user already logged in, fetch profile */
+(async function checkSession(){
+  const { data } = await supabase.auth.getSession();
+  const user = data?.session?.user;
+  if(user){
+    const { data: salon } = await supabase.from('salons').select('*').eq('owner', user.id).maybeSingle();
+    if(salon){ currentSalon = salon; showDashboard(); }
   }
 })();
-
-/* Small UX: copy public link to clipboard when clicking publicLink */
-publicLink.addEventListener('click', (e)=>{
-  e.preventDefault();
-  const url = publicLink.href;
-  navigator.clipboard?.writeText(url);
-  alert('Public link copied: ' + url);
-});
 </script>
 
 </body>
