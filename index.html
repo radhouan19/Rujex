@@ -1,473 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Rujex — Salon Manager (Supabase)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rujex — Premium Salon Experience</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
   <style>
-    :root{
-      --bg:#071021; --card:#0f1724; --muted:#9aa4b2; --accent:#7c3aed; --accent2:#06b6d4;
+    * {
+      font-family: 'Poppins', sans-serif;
     }
-    body{background:linear-gradient(180deg,var(--bg),#020617); color:#e6eef6; font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;}
-    .card{background:linear-gradient(180deg,var(--card),#071021);}
-    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;}
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      color: white;
+      background-color: #0a0a0a;
+    }
+    video.bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(0.35);
+    }
+    header {
+      backdrop-filter: blur(10px);
+      background-color: rgba(20, 20, 20, 0.5);
+    }
+    .btn {
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+    }
   </style>
 </head>
-<body class="min-h-screen">
+<body class="flex flex-col min-h-screen">
 
-  <div class="max-w-6xl mx-auto p-6">
-    <header class="flex items-center justify-between mb-6">
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-lg" style="background:linear-gradient(135deg,var(--accent),var(--accent2))"></div>
-        <div>
-          <h1 class="text-2xl font-bold">Rujex</h1>
-          <p class="text-sm text-[--muted]">Simple booking & subscriptions for barbers — powered by Supabase</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-3">
-        <button id="openAuth" class="px-3 py-2 rounded bg-[--accent]">Sign up / Login</button>
-        <a id="home" class="cursor-pointer px-3 py-2 rounded border border-white/10">Home</a>
-      </div>
-    </header>
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline class="bg-video">
+    <source src="https://videos.pexels.com/video-files/3195390/3195390-uhd_2560_1440_25fps.mp4" type="video/mp4">
+  </video>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <!-- Navigation -->
+  <header class="w-full fixed top-0 left-0 z-50">
+    <nav class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-pink-400">Rujex</h1>
+      <ul class="hidden md:flex space-x-8 text-gray-200">
+        <li><a href="#" class="hover:text-pink-400">Home</a></li>
+        <li><a href="#" class="hover:text-pink-400">Services</a></li>
+        <li><a href="#" class="hover:text-pink-400">Pricing</a></li>
+        <li><a href="#" class="hover:text-pink-400">Contact</a></li>
+      </ul>
+      <button class="md:hidden text-gray-300 text-2xl">&#9776;</button>
+    </nav>
+  </header>
 
-      <!-- LEFT: Auth / Dashboard -->
-      <div class="lg:col-span-2 space-y-6">
-
-        <!-- Auth card -->
-        <div id="authCard" class="card p-6 rounded-2xl shadow">
-          <h2 id="authTitle" class="text-xl font-semibold mb-3">Sign in</h2>
-          <form id="authForm" class="space-y-3">
-            <input id="inputEmail" type="email" placeholder="Email" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-            <input id="inputPassword" type="password" placeholder="Password" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-            <input id="inputBizName" type="text" placeholder="Business name (for signup)" class="w-full p-3 rounded bg-transparent border border-white/10 hidden">
-            <input id="inputSlug" type="text" placeholder="Public slug (e.g. mybarber)" class="w-full p-3 rounded bg-transparent border border-white/10 hidden">
-            <div class="flex items-center gap-3">
-              <button id="authSubmit" class="px-4 py-2 rounded bg-[--accent]">Sign in</button>
-              <button id="toggleCreate" type="button" class="px-3 py-2 rounded border border-white/10">Create account</button>
-              <button id="demoFill" type="button" class="ml-auto px-3 py-2 rounded bg-white/5">Demo</button>
-            </div>
-            <p id="authMsg" class="text-sm text-[--muted] mt-2"></p>
-          </form>
-        </div>
-
-        <!-- Dashboard (hidden until login) -->
-        <div id="dashboardCard" class="card p-6 rounded-2xl shadow hidden">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h2 id="bizTitle" class="text-xl font-semibold"></h2>
-              <p id="bizSubtitle" class="text-sm text-[--muted]">Manage appointments, clients & revenue</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <a id="publicLink" class="px-3 py-2 rounded bg-white/5 mono" target="_blank">Public page</a>
-              <button id="logoutBtn" class="px-3 py-2 rounded border border-white/10">Log out</button>
-            </div>
-          </div>
-
-          <!-- stats -->
-          <div class="grid grid-cols-3 gap-4 mb-4">
-            <div class="p-4 rounded bg-white/3 text-center">
-              <div class="text-sm text-[--muted]">Clients</div>
-              <div id="statClients" class="text-xl font-bold">0</div>
-            </div>
-            <div class="p-4 rounded bg-white/3 text-center">
-              <div class="text-sm text-[--muted]">Upcoming</div>
-              <div id="statUpcoming" class="text-xl font-bold">0</div>
-            </div>
-            <div class="p-4 rounded bg-white/3 text-center">
-              <div class="text-sm text-[--muted]">Revenue</div>
-              <div id="statRevenue" class="text-xl font-bold">$0</div>
-            </div>
-          </div>
-
-          <!-- subscription -->
-          <div class="mb-4">
-            <div class="flex items-center justify-between">
-              <div>
-                <h3 class="font-semibold">Subscription</h3>
-                <p class="text-sm text-[--muted]">Simulated $5/month (demo)</p>
-              </div>
-              <div>
-                <span id="subStatus" class="text-sm text-[--muted]">Not subscribed</span>
-                <button id="subBtn" class="ml-3 px-3 py-2 rounded bg-[--accent]">Pay $5 (simulate)</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- add appointment -->
-          <div class="mb-4">
-            <h3 class="font-semibold mb-2">Add appointment</h3>
-            <form id="addApptForm" class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <input id="aClient" placeholder="Client name" class="p-3 rounded bg-transparent border border-white/10" required>
-              <input id="aEmail" placeholder="Client email (optional)" class="p-3 rounded bg-transparent border border-white/10">
-              <input id="aService" placeholder="Service (e.g. Haircut)" class="p-3 rounded bg-transparent border border-white/10" required>
-              <input id="aDatetime" type="datetime-local" class="p-3 rounded bg-transparent border border-white/10 md:col-span-2" required>
-              <input id="aPrice" type="number" placeholder="Price (USD)" class="p-3 rounded bg-transparent border border-white/10">
-              <button class="px-4 py-2 rounded bg-[--accent] md:col-span-1" type="submit">Save</button>
-            </form>
-          </div>
-
-          <!-- table -->
-          <div>
-            <h3 class="font-semibold mb-2">Appointments</h3>
-            <div class="overflow-x-auto">
-              <table class="w-full text-sm">
-                <thead class="text-[--muted] text-left">
-                  <tr><th class="pb-2">Client</th><th class="pb-2">Service</th><th class="pb-2">When</th><th class="pb-2">Price</th><th class="pb-2">Status</th><th class="pb-2">Actions</th></tr>
-                </thead>
-                <tbody id="apptsBody" class="align-top"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- RIGHT: Public booking / info -->
-      <div class="space-y-6">
-        <div class="card p-6 rounded-2xl shadow">
-          <h3 class="text-xl font-semibold mb-3">Public booking</h3>
-          <p class="text-sm text-[--muted] mb-3">Open the public link <span id="exampleLink" class="mono"></span></p>
-          <div id="publicWrap" class="hidden">
-            <form id="publicForm" class="space-y-3">
-              <input id="pbName" placeholder="Your name" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-              <input id="pbEmail" type="email" placeholder="Your email" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-              <input id="pbService" placeholder="Service" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-              <input id="pbDatetime" type="datetime-local" class="w-full p-3 rounded bg-transparent border border-white/10" required>
-              <button class="w-full px-4 py-2 rounded bg-[--accent]">Request appointment</button>
-            </form>
-            <p id="publicMsg" class="mt-2 text-sm text-[--muted]"></p>
-          </div>
-          <div id="noPublic" class="text-sm text-[--muted]">No business selected. Open page with <code class="mono">?biz=your-slug</code></div>
-        </div>
-
-        <div class="card p-6 rounded-2xl shadow text-sm text-[--muted]">
-          <strong>Quick start</strong>
-          <ul class="list-disc ml-5 mt-2">
-            <li>Create account → choose name & slug → sign in.</li>
-            <li>Use public link to accept bookings: <span id="publicExample" class="mono"></span>.</li>
-            <li>Simulate payment to activate subscription (demo).</li>
-          </ul>
-        </div>
-      </div>
-
+  <!-- Hero Section -->
+  <section class="flex-1 flex flex-col justify-center items-center text-center px-6 pt-32">
+    <h2 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+      Empower Your <span class="text-pink-400">Salon Brand</span><br>
+      With Digital Elegance
+    </h2>
+    <p class="text-gray-200 mb-8 max-w-xl">
+      Rujex gives beauty salons a modern online identity — easy appointments, client tracking, and growth that feels effortless.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4">
+      <a href="#" class="btn bg-pink-500 hover:bg-pink-600 text-white font-semibold px-8 py-3 rounded-2xl">
+        Start Free Trial
+      </a>
+      <a href="#" class="btn border border-pink-400 text-pink-400 hover:bg-pink-400 hover:text-black font-semibold px-8 py-3 rounded-2xl">
+        Watch Demo
+      </a>
     </div>
-  </div>
+  </section>
 
-<script>
-/* ==========================
-  Rujex single-file app
-  Supabase credentials embedded as requested
-========================== */
-
-/* ============== ضع القيم هذه (قدّمتها لي) ============== */
-const SUPABASE_URL = "https://dulosxwinpzkuiidgalf.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR1bG9zeHdpbnB6a3VpaWRnYWxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAyMjAyMTEsImV4cCI6MjA3NTc5NjIxMX0.KiVvgqUUcgC65hD3hG3bfxkIUk4gyz6KA8MtJuvqXUs";
-/* ===================================================== */
-
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-/* UI refs */
-const authCard = document.getElementById('authCard');
-const authForm = document.getElementById('authForm');
-const authTitle = document.getElementById('authTitle');
-const inputEmail = document.getElementById('inputEmail');
-const inputPassword = document.getElementById('inputPassword');
-const inputBizName = document.getElementById('inputBizName');
-const inputSlug = document.getElementById('inputSlug');
-const toggleCreate = document.getElementById('toggleCreate');
-const authSubmit = document.getElementById('authSubmit');
-const authMsg = document.getElementById('authMsg');
-const demoFill = document.getElementById('demoFill');
-
-const dashboardCard = document.getElementById('dashboardCard');
-const bizTitle = document.getElementById('bizTitle');
-const publicLink = document.getElementById('publicLink');
-const logoutBtn = document.getElementById('logoutBtn');
-
-const statClients = document.getElementById('statClients');
-const statUpcoming = document.getElementById('statUpcoming');
-const statRevenue = document.getElementById('statRevenue');
-
-const subStatus = document.getElementById('subStatus');
-const subBtn = document.getElementById('subBtn');
-
-const addApptForm = document.getElementById('addApptForm');
-const aClient = document.getElementById('aClient');
-const aEmail = document.getElementById('aEmail');
-const aService = document.getElementById('aService');
-const aDatetime = document.getElementById('aDatetime');
-const aPrice = document.getElementById('aPrice');
-const apptsBody = document.getElementById('apptsBody');
-
-const publicWrap = document.getElementById('publicWrap');
-const publicForm = document.getElementById('publicForm');
-const publicMsg = document.getElementById('publicMsg');
-const noPublic = document.getElementById('noPublic');
-const exampleLink = document.getElementById('exampleLink');
-const publicExample = document.getElementById('publicExample');
-
-let creating = false;
-let currentSalon = null; // object from salons table
-
-/* Toggle create/login */
-toggleCreate.addEventListener('click', ()=> setCreate(!creating));
-demoFill.addEventListener('click', ()=>{
-  inputEmail.value = 'owner@rujex.test';
-  inputPassword.value = 'password';
-  inputBizName.value = 'My Barber Shop';
-  inputSlug.value = 'mybarber';
-  setCreate(true);
-});
-
-/* set create mode UI */
-function setCreate(on){
-  creating = !!on;
-  inputBizName.classList.toggle('hidden', !on);
-  inputSlug.classList.toggle('hidden', !on);
-  authTitle.textContent = on ? 'Create account' : 'Sign in';
-  authSubmit.textContent = on ? 'Create account' : 'Sign in';
-  authMsg.textContent = '';
-}
-
-/* Auth form submit */
-authForm.addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const email = inputEmail.value.trim();
-  const password = inputPassword.value;
-  const bizName = inputBizName.value.trim();
-  const slug = inputSlug.value.trim().toLowerCase();
-
-  if(creating){
-    if(!email||!password||!bizName||!slug){ authMsg.textContent='Please fill all fields'; return; }
-    // sign up
-    const { data: signData, error: signErr } = await supabase.auth.signUp({ email, password });
-    if(signErr){ authMsg.textContent = 'Sign up error: '+signErr.message; return; }
-    // try to get session (if auto-confirm off, user must confirm email then login)
-    const { data: sessionData } = await supabase.auth.getSession();
-    const user = sessionData?.session?.user;
-    if(user && user.id){
-      // create salon profile linked to owner
-      const { data: salonRow, error: salonErr } = await supabase.from('salons').insert([{ owner: user.id, email, name: bizName, slug }]).select().maybeSingle();
-      if(salonErr){ authMsg.textContent = 'Profile create error: '+salonErr.message; return; }
-      currentSalon = salonRow;
-      authMsg.textContent = 'Account created and profile saved. You are signed in.';
-      showDashboard();
-      return;
-    } else {
-      // no active session (email confirm maybe required)
-      authMsg.innerHTML = 'Account created. Please confirm your email (if required), then <strong>sign in</strong>.';
-      // still attempt to create salon row without owner to ease testing (optional)
-      try {
-        await supabase.from('salons').insert([{ owner: null, email, name: bizName, slug }]);
-      } catch(e){ /* ignore */ }
-      return;
-    }
-  } else {
-    // sign in
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if(error){ authMsg.textContent = 'Sign in error: '+error.message; return; }
-    // get salon profile for this user
-    const uid = data?.user?.id;
-    const { data: salon, error: salonErr } = await supabase.from('salons').select('*').eq('owner', uid).maybeSingle();
-    if(salonErr){ authMsg.textContent = 'Profile fetch error: '+salonErr.message; return; }
-    if(!salon){
-      authMsg.textContent = 'Signed in but no salon profile found. Click "Create profile" to make one.';
-      // present create profile quick option
-      inputBizName.classList.remove('hidden');
-      inputSlug.classList.remove('hidden');
-      creating = true;
-      return;
-    }
-    currentSalon = salon;
-    authMsg.textContent = 'Signed in. Redirecting to dashboard...';
-    showDashboard();
-  }
-});
-
-/* Create profile if signed in and no salon exists */
-async function createProfileForCurrentUser(name, slug){
-  const { data: sessionData } = await supabase.auth.getSession();
-  const user = sessionData?.data?.session?.user;
-  if(!user) return alert('Please sign in first.');
-  const email = user.email;
-  const { data: salonRow, error: salonErr } = await supabase.from('salons').insert([{ owner: user.id, email, name, slug }]).select().maybeSingle();
-  if(salonErr) return alert('Profile create error: ' + salonErr.message);
-  currentSalon = salonRow;
-  showDashboard();
-}
-
-/* show dashboard UI */
-function showDashboard(){
-  authCard.classList.add('hidden');
-  dashboardCard.classList.remove('hidden');
-  bizTitle.textContent = currentSalon.name || currentSalon.slug || 'Your Salon';
-  publicLink.href = window.location.origin + window.location.pathname + '?biz=' + currentSalon.slug;
-  publicLink.textContent = window.location.origin + window.location.pathname + '?biz=' + currentSalon.slug;
-  exampleLink.textContent = window.location.origin + window.location.pathname + '?biz=your-slug';
-  publicExample.textContent = window.location.origin + window.location.pathname + '?biz=your-slug';
-  refreshData();
-}
-
-/* logout */
-logoutBtn.addEventListener('click', async ()=>{
-  await supabase.auth.signOut();
-  currentSalon = null;
-  dashboardCard.classList.add('hidden');
-  authCard.classList.remove('hidden');
-});
-
-/* refresh data: appointments + stats + subscription */
-async function refreshData(){
-  if(!currentSalon) return;
-  // appointments
-  const { data: appts, error } = await supabase.from('appointments').select('*').eq('salon_id', currentSalon.id);
-  if(error){ console.error('appts fetch err', error); return; }
-  // stats
-  const clients = [...new Set(appts.map(a=>a.client_name))].length;
-  const upcoming = appts.filter(a=> new Date(a.appointment_time) > new Date()).length;
-  const revenue = appts.reduce((s,a)=> s + parseFloat(a.price || 0), 0);
-  statClients.textContent = clients;
-  statUpcoming.textContent = upcoming;
-  statRevenue.textContent = '$' + revenue.toFixed(2);
-  // render table
-  appts.sort((x,y)=> new Date(x.appointment_time) - new Date(y.appointment_time));
-  apptsBody.innerHTML = appts.map(a=>{
-    const when = new Date(a.appointment_time).toLocaleString();
-    const status = a.notified ? 'Notified' : (a.pre_notified ? 'Reminder pending' : '');
-    return `<tr class="border-b"><td class="py-2">${escapeHtml(a.client_name)}<div class="text-xs text-[--muted]">${escapeHtml(a.client_email||'')}</div></td><td class="py-2">${escapeHtml(a.service)}</td><td class="py-2">${when}</td><td class="py-2">$${(a.price||0).toFixed(2)}</td><td class="py-2">${status}</td><td class="py-2"><button data-id="${a.id}" class="delBtn px-2 py-1 rounded bg-red-600">Delete</button></td></tr>`;
-  }).join('');
-  // hook deletes
-  document.querySelectorAll('.delBtn').forEach(btn=> btn.addEventListener('click', async (e)=>{
-    const id = e.currentTarget.dataset.id;
-    if(!confirm('Delete appointment?')) return;
-    await supabase.from('appointments').delete().eq('id', id);
-    refreshData();
-  }));
-  // subscription
-  const { data: subs } = await supabase.from('subscriptions').select('*').eq('salon_id', currentSalon.id).order('started_at',{ascending:false}).limit(1).maybeSingle();
-  if(subs && subs.status === 'active' && new Date(subs.expires_at) > new Date()){
-    subStatus.textContent = 'Subscribed until ' + new Date(subs.expires_at).toLocaleDateString();
-  } else subStatus.textContent = 'Not subscribed';
-}
-
-/* add appointment (dashboard) */
-addApptForm.addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  if(!currentSalon){ alert('Sign in first'); return; }
-  const client_name = aClient.value.trim();
-  const client_email = aEmail.value.trim();
-  const service = aService.value.trim();
-  const appointment_time = aDatetime.value;
-  const price = parseFloat(aPrice.value) || 0;
-  if(!client_name || !service || !appointment_time) return alert('Fill client, service and date/time');
-  const { error } = await supabase.from('appointments').insert([{ salon_id: currentSalon.id, client_name, client_email, service, appointment_time, price }]);
-  if(error) return alert('Save error: '+error.message);
-  aClient.value=''; aEmail.value=''; aService.value=''; aDatetime.value=''; aPrice.value='';
-  refreshData();
-});
-
-/* PUBLIC booking via ?biz=slug */
-async function initPublic(){
-  const params = new URLSearchParams(window.location.search);
-  const slug = params.get('biz');
-  if(!slug){ publicWrap.classList.add('hidden'); noPublic.classList.remove('hidden'); return; }
-  // find salon by slug (public select allowed by policy)
-  const { data: salon } = await supabase.from('salons').select('*').eq('slug', slug).maybeSingle();
-  if(!salon){ noPublic.textContent = 'Business not found for slug: '+slug; publicWrap.classList.add('hidden'); return; }
-  noPublic.classList.add('hidden'); publicWrap.classList.remove('hidden');
-  // set title/info
-  document.getElementById('publicForm').querySelectorAll('input,button').forEach(el=> el.disabled = false);
-  document.getElementById('publicForm').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const client_name = document.getElementById('pbName').value.trim();
-    const client_email = document.getElementById('pbEmail').value.trim();
-    const service = document.getElementById('pbService').value.trim();
-    const appointment_time = document.getElementById('pbDatetime').value;
-    if(!client_name || !client_email || !service || !appointment_time) return publicMsg.textContent = 'Please fill all fields';
-    const { error } = await supabase.from('appointments').insert([{ salon_id: salon.id, client_name, client_email, service, appointment_time }]);
-    if(error){ publicMsg.textContent = 'Save error: ' + error.message; return; }
-    publicMsg.textContent = 'Appointment requested — the business will see it in the dashboard.';
-    publicForm.reset();
-  });
-}
-
-/* simulate subscription: insert active for 30 days */
-subBtn.addEventListener('click', async ()=>{
-  if(!currentSalon) return alert('Sign in first');
-  const now = new Date();
-  const expires = new Date(now.getTime() + 30*24*60*60*1000);
-  const { error } = await supabase.from('subscriptions').insert([{ salon_id: currentSalon.id, plan: 'basic', status: 'active', started_at: now.toISOString(), expires_at: expires.toISOString(), metadata: { price: 5, currency: 'USD' } }]);
-  if(error) return alert('Subscription error: ' + error.message);
-  alert('Simulated payment: subscribed until ' + expires.toLocaleDateString());
-  refreshData();
-});
-
-/* notifications: check every 30s for pre-notify and notify (for signed-in owner) */
-setInterval(async ()=>{
-  if(!currentSalon) return;
-  const now = new Date();
-  const in15 = new Date(now.getTime() + 15*60*1000).toISOString();
-  const nowIso = now.toISOString();
-  // find appts needing pre-notify or notify (RLS policies allow owner)
-  const { data: appts } = await supabase.from('appointments')
-    .select('*')
-    .eq('salon_id', currentSalon.id)
-    .or(`and(pre_notified.eq.false,appointment_time.lte.${in15}),and(notified.eq.false,appointment_time.lte.${nowIso})`);
-  if(!appts || appts.length === 0) return;
-  for(const a of appts){
-    const when = new Date(a.appointment_time);
-    const delta = when - new Date();
-    if(!a.pre_notified && delta > 0 && delta <= 15*60*1000){
-      notifyLocal(currentSalon.name, `${a.client_name} in 15 min — ${a.service} at ${when.toLocaleString()}`);
-      await supabase.from('appointments').update({ pre_notified: true }).eq('id', a.id);
-    } else if(!a.notified && delta <= 0){
-      notifyLocal(currentSalon.name, `${a.client_name} appointment now — ${a.service}`);
-      await supabase.from('appointments').update({ notified: true }).eq('id', a.id);
-    }
-  }
-  refreshData();
-}, 30000);
-
-/* local notification helper */
-function notifyLocal(title, text){
-  if('Notification' in window && Notification.permission === 'granted'){
-    try { new Notification(title, { body: text }); } catch(e){ console.log(e); }
-  } else {
-    Notification.requestPermission();
-  }
-}
-
-/* small helper */
-function escapeHtml(s=''){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-
-/* init public booking if ?biz present */
-initPublic();
-
-/* on load: check session and auto-login if possible */
-(async function initOnLoad(){
-  // request notification permission
-  if('Notification' in window){ Notification.requestPermission().catch(()=>{}); }
-  const { data } = await supabase.auth.getSession();
-  const user = data?.session?.user;
-  if(user){
-    // try fetch salon with owner = user.id
-    const { data: salon } = await supabase.from('salons').select('*').eq('owner', user.id).maybeSingle();
-    if(salon){
-      currentSalon = salon;
-      showDashboard();
-    } else {
-      // no salon row yet — prompt to create quickly
-      authCard.classList.remove('hidden');
-      authMsg.textContent = 'Signed in but no salon profile. Fill Business name & slug and click "Create account" to create profile.';
-      setCreate(true);
-    }
-  }
-})();
-</script>
+  <!-- Footer -->
+  <footer class="text-center py-6 text-gray-400 text-sm">
+    © 2025 Rujex — Crafted for Modern Beauty Salons.
+  </footer>
 
 </body>
 </html>
