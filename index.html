@@ -3,15 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rujex — Modern Hair Salon Platform</title>
+  <title>Rujex — Beauty Salon Platform</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
+    * {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.9)), 
-                  url('https://images.unsplash.com/photo-1590152837356-6b3a73dcf4e1?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+    }
+    body {
+      background: url('https://images.unsplash.com/photo-1604654894613-9b85ad6b4a3e?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+      background-attachment: fixed;
       color: white;
+      overflow-x: hidden;
+    }
+    .overlay {
+      background: rgba(0, 0, 0, 0.65);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    header {
+      backdrop-filter: blur(12px);
+      background-color: rgba(20, 20, 20, 0.5);
     }
     .btn {
       transition: all 0.3s ease;
@@ -20,18 +36,18 @@
       transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
     }
-    header {
-      backdrop-filter: blur(10px);
-      background-color: rgba(20, 20, 20, 0.6);
-    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="flex flex-col min-h-screen">
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
   <!-- Navigation -->
   <header class="w-full fixed top-0 left-0 z-50">
     <nav class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <h1 class="text-2xl font-bold text-pink-400">Rujex</h1>
-      <ul class="hidden md:flex space-x-8 text-gray-300">
+      <ul class="hidden md:flex space-x-8 text-gray-200">
         <li><a href="#" class="hover:text-pink-400">Home</a></li>
         <li><a href="#" class="hover:text-pink-400">Services</a></li>
         <li><a href="#" class="hover:text-pink-400">Pricing</a></li>
@@ -44,12 +60,11 @@
   <!-- Hero Section -->
   <section class="flex-1 flex flex-col justify-center items-center text-center px-6 pt-32">
     <h2 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-      Elevate Your <span class="text-pink-400">Salon Business</span><br>
-      With Modern Online Bookings
+      Empower Your <span class="text-pink-400">Salon</span><br>
+      With a Modern Digital Touch
     </h2>
-    <p class="text-gray-300 mb-8 max-w-xl">
-      Rujex helps beauty salons streamline appointments, track clients, and grow effortlessly.  
-      Start your salon’s digital journey today.
+    <p class="text-gray-200 mb-8 max-w-xl">
+      Rujex helps beauty salons shine online — easy bookings, smart reminders, and elegant design that speaks luxury.
     </p>
     <div class="flex flex-col sm:flex-row gap-4">
       <a href="#" class="btn bg-pink-500 hover:bg-pink-600 text-white font-semibold px-8 py-3 rounded-2xl">
@@ -62,8 +77,9 @@
   </section>
 
   <!-- Footer -->
-  <footer class="text-center py-6 text-gray-500 text-sm">
-    © 2025 Rujex — All rights reserved.
+  <footer class="text-center py-6 text-gray-400 text-sm">
+    © 2025 Rujex — Crafted for Modern Beauty Salons.
   </footer>
+
 </body>
 </html>
