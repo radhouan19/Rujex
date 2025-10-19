@@ -1,116 +1,205 @@
-<!DOCTYPE html>
+<!--
+WhatsApp Booking Page — Template (English)
+File: whatsapp-booking-template.html
+Version: 1.0
+Author: ChatGPT (template for sale)
+
+INSTRUCTIONS (quick):
+1) Open this file in a text editor.
+2) Replace PHONE_NUMBER with your WhatsApp phone in international format (no +, no spaces). Example: 15551234567
+3) Change BUSINESS_NAME, SERVICES, PRICES, and COLORS as needed.
+4) Upload the file to any static host (GitHub Pages, Netlify) or attach it to your Gumroad/Payhip product.
+
+CONTENTS:
+- Single-file HTML using Tailwind CDN.
+- Pre-filled WhatsApp message generated from booking form.
+- Optional date/time picker and service selector.
+- README & customization guide included below.
+
+LICENSE: You may sell the template as-is. Attribution not required.
+--><!doctype html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rujex — Elegant Women's Beauty Salon</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Book with WhatsApp — [BUSINESS_NAME]</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <meta name="description" content="Simple booking page that opens WhatsApp with a prefilled message. Easy to customize — perfect for salons, freelancers & small businesses.">
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #0b0b0b;
-      scroll-behavior: smooth;
-      font-family: 'Inter', sans-serif;
-    }
-    .hero-bg {
-      background-image: url('https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg?auto=compress&cs=tinysrgb&w=1600');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-    .logo-text {
-      font-family: 'Playfair Display', serif;
-      letter-spacing: 1px;
-    }
+    /* small extra styles */
+    .glass { background: rgba(255,255,255,0.6); backdrop-filter: blur(6px); }
   </style>
 </head>
-<body class="text-white">
-
-  <!-- Navbar -->
-  <nav class="absolute top-0 left-0 w-full flex items-center justify-between px-8 py-5 bg-black/40 backdrop-blur-md z-20">
-    <div class="flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#fbbf24" class="w-7 h-7">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 7.5l15 9m0-9l-15 9M9 12l1.5 1.5M15 12l-1.5 1.5" />
-      </svg>
-      <h1 class="text-2xl font-bold logo-text text-white">Rujex</h1>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
+  <header class="max-w-4xl mx-auto p-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold">B</div>
+        <div>
+          <h1 class="text-2xl font-extrabold">[BUSINESS_NAME]</h1>
+          <p class="text-sm text-gray-600">Book appointments via WhatsApp — fast & human.</p>
+        </div>
+      </div>
+      <a href="#book" class="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700">Book via WhatsApp</a>
     </div>
-    <ul class="hidden md:flex gap-8 text-lg text-gray-300">
-      <li><a href="#home" class="hover:text-pink-500 transition">Home</a></li>
-      <li><a href="#about" class="hover:text-pink-500 transition">About</a></li>
-      <li><a href="#services" class="hover:text-pink-500 transition">Services</a></li>
-      <li><a href="#contact" class="hover:text-pink-500 transition">Contact</a></li>
+  </header>  <main class="max-w-4xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <section class="md:col-span-2 glass p-6 rounded-2xl shadow">
+      <h2 class="text-xl font-bold mb-3">How it works</h2>
+      <ol class="list-decimal list-inside space-y-2 text-gray-700">
+        <li>Select a service and preferred date/time.</li>
+        <li>Click the WhatsApp button — a message will open in WhatsApp.</li>
+        <li>The business confirms the booking on WhatsApp.</li>
+      </ol><div class="mt-6">
+    <h3 class="font-semibold">Available Services</h3>
+    <div id="servicesList" class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <!-- Edit services below in the JS or directly in HTML -->
+      <div class="p-3 border rounded-lg">
+        <div class="font-semibold">Haircut</div>
+        <div class="text-sm text-gray-600">30 min — $25</div>
+      </div>
+      <div class="p-3 border rounded-lg">
+        <div class="font-semibold">Beard Trim</div>
+        <div class="text-sm text-gray-600">20 min — $15</div>
+      </div>
+      <div class="p-3 border rounded-lg">
+        <div class="font-semibold">Coloring</div>
+        <div class="text-sm text-gray-600">60 min — $60</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6">
+    <h3 class="font-semibold">Why customers love it</h3>
+    <ul class="list-disc list-inside text-gray-700 mt-2">
+      <li>No sign-ups — just WhatsApp.</li>
+      <li>Works on mobile & desktop (WhatsApp Web).</li>
+      <li>Lightning-fast booking flow.</li>
     </ul>
-    <a href="#booking" class="bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white px-5 py-2 rounded-full shadow-lg transition font-semibold">
-      Book Now
-    </a>
-  </nav>
+  </div>
+</section>
 
-  <!-- Hero Section -->
-  <section id="home" class="relative hero-bg h-screen flex items-center justify-center text-center text-white">
-    <div class="absolute inset-0 bg-black/60"></div>
-    <div class="relative z-10 px-6">
-      <h1 class="text-5xl md:text-6xl font-extrabold mb-4 text-pink-100 drop-shadow-lg">
-        Redefining Beauty with Style & Grace
-      </h1>
-      <p class="text-lg md:text-xl mb-6 max-w-2xl mx-auto text-gray-200">
-        Step into a world where elegance meets confidence — Rujex, the art of modern beauty.
-      </p>
-      <a href="#booking" class="bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition">
-        Book Appointment
-      </a>
+<aside id="book" class="glass p-6 rounded-2xl shadow">
+  <h3 class="text-lg font-bold mb-3">Book now</h3>
+  <form id="bookingForm" class="space-y-3">
+    <label class="block text-sm">Your name (optional)
+      <input type="text" id="customerName" placeholder="e.g. John" class="mt-1 w-full rounded-md border-gray-200 shadow-sm p-2" />
+    </label>
+
+    <label class="block text-sm">Service
+      <select id="service" class="mt-1 w-full rounded-md border-gray-200 p-2">
+        <option value="Haircut — 30 min — $25">Haircut — 30 min — $25</option>
+        <option value="Beard Trim — 20 min — $15">Beard Trim — 20 min — $15</option>
+        <option value="Coloring — 60 min — $60">Coloring — 60 min — $60</option>
+      </select>
+    </label>
+
+    <label class="block text-sm">Preferred date
+      <input type="date" id="date" class="mt-1 w-full rounded-md border-gray-200 p-2" />
+    </label>
+
+    <label class="block text-sm">Preferred time
+      <input type="time" id="time" class="mt-1 w-full rounded-md border-gray-200 p-2" />
+    </label>
+
+    <label class="block text-sm">Extra notes (optional)
+      <textarea id="notes" rows="2" class="mt-1 w-full rounded-md border-gray-200 p-2" placeholder="Anything the business should know..."></textarea>
+    </label>
+
+    <div class="flex gap-2">
+      <button type="button" id="whatsappBtn" class="flex-1 inline-flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700">Open WhatsApp</button>
+      <a id="directWa" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border">Open chat</a>
     </div>
-  </section>
 
-  <!-- About Section -->
-  <section id="about" class="bg-[#111] py-20 px-6 text-center">
-    <h2 class="text-4xl font-bold mb-6 text-pink-400">About Rujex</h2>
-    <p class="max-w-2xl mx-auto text-gray-300 leading-relaxed">
-      At Rujex, we redefine salon luxury. Our expert stylists and beauticians specialize in creating an experience 
-      that enhances your natural beauty while providing relaxation and confidence in every session.
-    </p>
-  </section>
+    <p class="text-xs text-gray-500 mt-2">After clicking, WhatsApp will open with a ready message. The business will confirm your booking there.</p>
+  </form>
 
-  <!-- Services Section -->
-  <section id="services" class="bg-[#0d0d0d] py-20 px-6 text-center">
-    <h2 class="text-4xl font-bold mb-10 text-pink-400">Our Services</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-      <div class="bg-[#1a1a1a] p-8 rounded-2xl shadow-lg hover:-translate-y-1 transition">
-        <h3 class="text-2xl font-semibold mb-3 text-pink-300">Hair Styling</h3>
-        <p class="text-gray-400">Professional cuts, colors, and designs tailored to your unique style.</p>
-      </div>
-      <div class="bg-[#1a1a1a] p-8 rounded-2xl shadow-lg hover:-translate-y-1 transition">
-        <h3 class="text-2xl font-semibold mb-3 text-pink-300">Makeup & Glam</h3>
-        <p class="text-gray-400">Elegant and lasting looks for every occasion, crafted by our experts.</p>
-      </div>
-      <div class="bg-[#1a1a1a] p-8 rounded-2xl shadow-lg hover:-translate-y-1 transition">
-        <h3 class="text-2xl font-semibold mb-3 text-pink-300">Spa & Treatment</h3>
-        <p class="text-gray-400">Rejuvenating spa experiences to refresh your body, mind, and soul.</p>
-      </div>
-    </div>
-  </section>
+  <div class="mt-4 text-sm text-gray-600">
+    <strong>Ready to sell this template?</strong>
+    <p>Change <code>PHONE_NUMBER</code> in the script below to your number and upload the file.</p>
+  </div>
+</aside>
 
-  <!-- Contact Section -->
-  <section id="contact" class="bg-[#111] py-20 px-6 text-center">
-    <h2 class="text-4xl font-bold mb-8 text-pink-400">Get in Touch</h2>
-    <p class="text-gray-300 mb-10 max-w-2xl mx-auto">
-      Have questions or want to book a special service? Fill out the form below and we’ll reach out soon.
-    </p>
-    <form class="max-w-xl mx-auto bg-[#1a1a1a] p-8 rounded-2xl shadow-lg space-y-5">
-      <input type="text" placeholder="Your Name" class="w-full p-3 rounded-lg bg-[#222] text-white focus:outline-none focus:ring-2 focus:ring-pink-500">
-      <input type="email" placeholder="Your Email" class="w-full p-3 rounded-lg bg-[#222] text-white focus:outline-none focus:ring-2 focus:ring-pink-500">
-      <textarea placeholder="Your Message" rows="4" class="w-full p-3 rounded-lg bg-[#222] text-white focus:outline-none focus:ring-2 focus:ring-pink-500"></textarea>
-      <button type="submit" class="bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 w-full py-3 rounded-lg font-semibold text-white transition">
-        Send Message
-      </button>
-    </form>
-  </section>
+  </main>  <footer class="max-w-4xl mx-auto p-6 text-center text-gray-600 text-sm">
+    © <span id="year"></span> [BUSINESS_NAME] — WhatsApp Booking Template
+  </footer>  <script>
+    // ===== CUSTOMIZE THESE =====
+    const PHONE_NUMBER = 'PHONE_NUMBER'; // <- replace with international number, no +. Example: 15551234567
+    const BUSINESS_NAME = '[BUSINESS_NAME]';
+    // ===========================
 
-  <!-- Footer -->
-  <footer class="bg-black text-gray-400 text-center py-8">
-    <p>© 2025 Rujex Salon. All rights reserved.</p>
-  </footer>
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-</body>
+    const whatsappBtn = document.getElementById('whatsappBtn');
+    const directWa = document.getElementById('directWa');
+
+    function buildMessage() {
+      const name = document.getElementById('customerName').value.trim();
+      const service = document.getElementById('service').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const notes = document.getElementById('notes').value.trim();
+
+      let lines = [];
+      lines.push('Hello, I would like to book an appointment');
+      lines.push('Service: ' + service);
+      if (date) lines.push('Date: ' + date);
+      if (time) lines.push('Time: ' + time);
+      if (name) lines.push('Name: ' + name);
+      if (notes) lines.push('Notes: ' + notes);
+      lines.push('\nPlease confirm availability and price. Thank you!');
+
+      return encodeURIComponent(lines.join('\n'));
+    }
+
+    function makeWhatsAppURL(prefilledMessage) {
+      // wa.me/<number>?text=<message>
+      return 'https://wa.me/' + PHONE_NUMBER + '?text=' + prefilledMessage;
+    }
+
+    whatsappBtn.addEventListener('click', function() {
+      const msg = buildMessage();
+      const url = makeWhatsAppURL(msg);
+      window.open(url, '_blank');
+    });
+
+    // Direct open with no prefill (for preview link)
+    directWa.href = 'https://wa.me/' + PHONE_NUMBER;
+
+    // Small: if PHONE_NUMBER not replaced, show notice
+    if (PHONE_NUMBER === 'PHONE_NUMBER') {
+      whatsappBtn.textContent = 'Replace PHONE_NUMBER to enable WhatsApp';
+      whatsappBtn.classList.remove('bg-green-600');
+      whatsappBtn.classList.add('bg-gray-300');
+      whatsappBtn.disabled = true;
+    }
+  </script>  <!--
+  README / Customization Guide
+
+  1) Replace phone number:
+     - Open the file in a text editor.
+     - Find const PHONE_NUMBER = 'PHONE_NUMBER'; and replace with e.g. '15551234567' (country code + number, no plus or spaces).
+
+  2) Change business name:
+     - Replace [BUSINESS_NAME] in the HTML head and visible places.
+
+  3) Edit services & prices:
+     - Edit the Services section in HTML or update the <select id="service"> options.
+
+  4) Host or sell:
+     - For sale on Gumroad/Payhip: zip the HTML file and include a screenshot (phone mockup) + README.
+     - For direct hosting: upload to GitHub Pages or Netlify and share the URL.
+
+  5) Optional improvements (premium version ideas):
+     - Add Google Calendar integration (requires backend)
+     - Add SMS confirmation (3rd party)
+     - Add calendar availability to prevent double-booking
+
+  6) What to include in your Gumroad product files:
+     - whatsapp-booking-template.html
+     - README.txt (short customization steps)
+     - preview-1.png (mobile screenshot), preview-2.png (desktop screenshot)
+
+  7) Suggested license text for buyers: "You may use and modify this template for personal or commercial projects. Reselling the unmodified template is allowed."
+  --></body>
 </html>
