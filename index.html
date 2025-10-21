@@ -1,205 +1,142 @@
-<!--
-WhatsApp Booking Page — Template (English)
-File: whatsapp-booking-template.html
-Version: 1.0
-Author: ChatGPT (template for sale)
-
-INSTRUCTIONS (quick):
-1) Open this file in a text editor.
-2) Replace PHONE_NUMBER with your WhatsApp phone in international format (no +, no spaces). Example: 15551234567
-3) Change BUSINESS_NAME, SERVICES, PRICES, and COLORS as needed.
-4) Upload the file to any static host (GitHub Pages, Netlify) or attach it to your Gumroad/Payhip product.
-
-CONTENTS:
-- Single-file HTML using Tailwind CDN.
-- Pre-filled WhatsApp message generated from booking form.
-- Optional date/time picker and service selector.
-- README & customization guide included below.
-
-LICENSE: You may sell the template as-is. Attribution not required.
---><!doctype html>
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Book with WhatsApp — [BUSINESS_NAME]</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="description" content="Simple booking page that opens WhatsApp with a prefilled message. Easy to customize — perfect for salons, freelancers & small businesses.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Booking Page</title>
+
   <style>
-    /* small extra styles */
-    .glass { background: rgba(255,255,255,0.6); backdrop-filter: blur(6px); }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .booking-card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .desc {
+      color: #555;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    .btn {
+      background: #25d366;
+      color: #fff;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 600;
+    }
+
+    .btn:hover {
+      background: #1ebd5a;
+      box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+      transform: translateY(-1px);
+    }
+
+    footer {
+      text-align: center;
+      color: #eee;
+      font-size: 13px;
+      position: absolute;
+      bottom: 10px;
+    }
   </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
-  <header class="max-w-4xl mx-auto p-6">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold">B</div>
-        <div>
-          <h1 class="text-2xl font-extrabold">[BUSINESS_NAME]</h1>
-          <p class="text-sm text-gray-600">Book appointments via WhatsApp — fast & human.</p>
-        </div>
-      </div>
-      <a href="#book" class="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700">Book via WhatsApp</a>
+<body>
+
+  <section class="container">
+    <div class="booking-card">
+      <h1>Book Your Appointment</h1>
+      <p class="desc">Quick and easy booking directly via WhatsApp!</p>
+
+      <form id="bookingForm">
+        <label>Name</label>
+        <input type="text" id="name" placeholder="Enter your name" required>
+
+        <label>Service</label>
+        <select id="service" required>
+          <option value="">Select a service</option>
+          <option>Haircut</option>
+          <option>Beard Trim</option>
+          <option>Coloring</option>
+        </select>
+
+        <label>Date</label>
+        <input type="date" id="date" required>
+
+        <label>Time</label>
+        <input type="time" id="time" required>
+
+        <button type="submit" class="btn">Book via WhatsApp</button>
+      </form>
     </div>
-  </header>  <main class="max-w-4xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-    <section class="md:col-span-2 glass p-6 rounded-2xl shadow">
-      <h2 class="text-xl font-bold mb-3">How it works</h2>
-      <ol class="list-decimal list-inside space-y-2 text-gray-700">
-        <li>Select a service and preferred date/time.</li>
-        <li>Click the WhatsApp button — a message will open in WhatsApp.</li>
-        <li>The business confirms the booking on WhatsApp.</li>
-      </ol><div class="mt-6">
-    <h3 class="font-semibold">Available Services</h3>
-    <div id="servicesList" class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
-      <!-- Edit services below in the JS or directly in HTML -->
-      <div class="p-3 border rounded-lg">
-        <div class="font-semibold">Haircut</div>
-        <div class="text-sm text-gray-600">30 min — $25</div>
-      </div>
-      <div class="p-3 border rounded-lg">
-        <div class="font-semibold">Beard Trim</div>
-        <div class="text-sm text-gray-600">20 min — $15</div>
-      </div>
-      <div class="p-3 border rounded-lg">
-        <div class="font-semibold">Coloring</div>
-        <div class="text-sm text-gray-600">60 min — $60</div>
-      </div>
-    </div>
-  </div>
+  </section>
 
-  <div class="mt-6">
-    <h3 class="font-semibold">Why customers love it</h3>
-    <ul class="list-disc list-inside text-gray-700 mt-2">
-      <li>No sign-ups — just WhatsApp.</li>
-      <li>Works on mobile & desktop (WhatsApp Web).</li>
-      <li>Lightning-fast booking flow.</li>
-    </ul>
-  </div>
-</section>
+  <footer>© 2025 WhatsApp Booking Template</footer>
 
-<aside id="book" class="glass p-6 rounded-2xl shadow">
-  <h3 class="text-lg font-bold mb-3">Book now</h3>
-  <form id="bookingForm" class="space-y-3">
-    <label class="block text-sm">Your name (optional)
-      <input type="text" id="customerName" placeholder="e.g. John" class="mt-1 w-full rounded-md border-gray-200 shadow-sm p-2" />
-    </label>
+  <script>
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
 
-    <label class="block text-sm">Service
-      <select id="service" class="mt-1 w-full rounded-md border-gray-200 p-2">
-        <option value="Haircut — 30 min — $25">Haircut — 30 min — $25</option>
-        <option value="Beard Trim — 20 min — $15">Beard Trim — 20 min — $15</option>
-        <option value="Coloring — 60 min — $60">Coloring — 60 min — $60</option>
-      </select>
-    </label>
-
-    <label class="block text-sm">Preferred date
-      <input type="date" id="date" class="mt-1 w-full rounded-md border-gray-200 p-2" />
-    </label>
-
-    <label class="block text-sm">Preferred time
-      <input type="time" id="time" class="mt-1 w-full rounded-md border-gray-200 p-2" />
-    </label>
-
-    <label class="block text-sm">Extra notes (optional)
-      <textarea id="notes" rows="2" class="mt-1 w-full rounded-md border-gray-200 p-2" placeholder="Anything the business should know..."></textarea>
-    </label>
-
-    <div class="flex gap-2">
-      <button type="button" id="whatsappBtn" class="flex-1 inline-flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700">Open WhatsApp</button>
-      <a id="directWa" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border">Open chat</a>
-    </div>
-
-    <p class="text-xs text-gray-500 mt-2">After clicking, WhatsApp will open with a ready message. The business will confirm your booking there.</p>
-  </form>
-
-  <div class="mt-4 text-sm text-gray-600">
-    <strong>Ready to sell this template?</strong>
-    <p>Change <code>PHONE_NUMBER</code> in the script below to your number and upload the file.</p>
-  </div>
-</aside>
-
-  </main>  <footer class="max-w-4xl mx-auto p-6 text-center text-gray-600 text-sm">
-    © <span id="year"></span> [BUSINESS_NAME] — WhatsApp Booking Template
-  </footer>  <script>
-    // ===== CUSTOMIZE THESE =====
-    const PHONE_NUMBER = 'PHONE_NUMBER'; // <- replace with international number, no +. Example: 15551234567
-    const BUSINESS_NAME = '[BUSINESS_NAME]';
-    // ===========================
-
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    const whatsappBtn = document.getElementById('whatsappBtn');
-    const directWa = document.getElementById('directWa');
-
-    function buildMessage() {
-      const name = document.getElementById('customerName').value.trim();
+      const name = document.getElementById('name').value;
       const service = document.getElementById('service').value;
       const date = document.getElementById('date').value;
       const time = document.getElementById('time').value;
-      const notes = document.getElementById('notes').value.trim();
 
-      let lines = [];
-      lines.push('Hello, I would like to book an appointment');
-      lines.push('Service: ' + service);
-      if (date) lines.push('Date: ' + date);
-      if (time) lines.push('Time: ' + time);
-      if (name) lines.push('Name: ' + name);
-      if (notes) lines.push('Notes: ' + notes);
-      lines.push('\nPlease confirm availability and price. Thank you!');
-
-      return encodeURIComponent(lines.join('\n'));
-    }
-
-    function makeWhatsAppURL(prefilledMessage) {
-      // wa.me/<number>?text=<message>
-      return 'https://wa.me/' + PHONE_NUMBER + '?text=' + prefilledMessage;
-    }
-
-    whatsappBtn.addEventListener('click', function() {
-      const msg = buildMessage();
-      const url = makeWhatsAppURL(msg);
-      window.open(url, '_blank');
+      const message = `Hello! My name is ${name}. I would like to book a ${service} on ${date} at ${time}.`;
+      const whatsapp = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(whatsapp, '_blank');
     });
+  </script>
 
-    // Direct open with no prefill (for preview link)
-    directWa.href = 'https://wa.me/' + PHONE_NUMBER;
-
-    // Small: if PHONE_NUMBER not replaced, show notice
-    if (PHONE_NUMBER === 'PHONE_NUMBER') {
-      whatsappBtn.textContent = 'Replace PHONE_NUMBER to enable WhatsApp';
-      whatsappBtn.classList.remove('bg-green-600');
-      whatsappBtn.classList.add('bg-gray-300');
-      whatsappBtn.disabled = true;
-    }
-  </script>  <!--
-  README / Customization Guide
-
-  1) Replace phone number:
-     - Open the file in a text editor.
-     - Find const PHONE_NUMBER = 'PHONE_NUMBER'; and replace with e.g. '15551234567' (country code + number, no plus or spaces).
-
-  2) Change business name:
-     - Replace [BUSINESS_NAME] in the HTML head and visible places.
-
-  3) Edit services & prices:
-     - Edit the Services section in HTML or update the <select id="service"> options.
-
-  4) Host or sell:
-     - For sale on Gumroad/Payhip: zip the HTML file and include a screenshot (phone mockup) + README.
-     - For direct hosting: upload to GitHub Pages or Netlify and share the URL.
-
-  5) Optional improvements (premium version ideas):
-     - Add Google Calendar integration (requires backend)
-     - Add SMS confirmation (3rd party)
-     - Add calendar availability to prevent double-booking
-
-  6) What to include in your Gumroad product files:
-     - whatsapp-booking-template.html
-     - README.txt (short customization steps)
-     - preview-1.png (mobile screenshot), preview-2.png (desktop screenshot)
-
-  7) Suggested license text for buyers: "You may use and modify this template for personal or commercial projects. Reselling the unmodified template is allowed."
-  --></body>
+</body>
 </html>
