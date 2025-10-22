@@ -1,107 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rujex — Free Online Age Calculator</title>
-  <meta name="description" content="Calculate your exact age in years, months, and days instantly with the free Rujex Age Calculator. Simple, accurate, and mobile friendly." />
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1041/1041883.png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rujex — Age Calculator Online</title>
+
+  <!-- Meta Tags SEO -->
+  <meta name="description" content="Calculate your exact age instantly with Rujex Age Calculator. Free online tool to know your age in years, months, and days.">
+  <meta name="keywords" content="age calculator, calculate age online, free age calculator, Rujex, online tools">
+  <meta name="author" content="Radhouan">
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:title" content="Rujex — Age Calculator Online">
+  <meta property="og:description" content="Calculate your exact age instantly with Rujex Age Calculator. Free online tool to know your age in years, months, and days.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rujex.com">
+  <meta property="og:image" content="https://rujex.com/thumbnail.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rujex — Age Calculator Online">
+  <meta name="twitter:description" content="Calculate your exact age instantly with Rujex Age Calculator. Free online tool to know your age in years, months, and days.">
+  <meta name="twitter:image" content="https://rujex.com/thumbnail.png">
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 text-gray-800">
-  <!-- ✅ Header -->
-  <header class="bg-white shadow-md fixed w-full top-0 left-0 z-50">
-    <nav class="container mx-auto flex justify-between items-center p-4">
-      <h1 class="text-2xl font-bold text-blue-600">Rujex</h1>
-      <ul class="flex gap-6">
-        <li><a href="#home" class="hover:text-blue-600">Home</a></li>
-        <li><a href="#about" class="hover:text-blue-600">About</a></li>
-        <li><a href="#contact" class="hover:text-blue-600">Contact</a></li>
-        <li><a href="#privacy" class="hover:text-blue-600">Privacy</a></li>
-      </ul>
-    </nav>
+<body class="bg-gray-100 text-gray-900 font-sans">
+
+  <!-- الموقع الرئيسي -->
+  <header class="text-center py-10 bg-blue-600 text-white">
+    <h1 class="text-4xl font-bold">Rujex — Age Calculator</h1>
+    <p class="mt-2">Calculate your exact age instantly online!</p>
   </header>
 
-  <!-- ✅ Main Content -->
-  <main id="home" class="container mx-auto pt-28 px-4 text-center">
-    <h2 class="text-4xl font-bold mb-6 text-blue-700">Free Age Calculator</h2>
-    <p class="text-gray-600 mb-6">Find out your exact age in years, months, and days instantly.</p>
+  <main class="max-w-xl mx-auto p-6">
 
-    <div class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow-lg">
-      <label for="birthdate" class="block text-lg font-medium mb-2">Enter your birth date:</label>
-      <input type="date" id="birthdate" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500" />
-      <button onclick="calculateAge()" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition">Calculate</button>
-      <div id="result" class="mt-6 text-lg font-medium text-gray-700"></div>
+    <!-- Banner Ad -->
+    <div class="my-6 text-center">
+      <script type="text/javascript">
+        atOptions = {
+          'key' : 'c75931fa51a9da29fcabfc423bfe7608',
+          'format' : 'iframe',
+          'height' : 60,
+          'width' : 468,
+          'params' : {}
+        };
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"></script>
     </div>
+
+    <!-- Age Calculator Tool -->
+    <section id="calculator" class="bg-white rounded-lg shadow p-6">
+      <label for="birthdate" class="block mb-2 font-semibold">Enter your birthdate:</label>
+      <input type="date" id="birthdate" class="border rounded px-3 py-2 w-full mb-4">
+      <button id="calculateBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Calculate Age</button>
+      <p id="result" class="mt-4 text-lg font-semibold"></p>
+    </section>
+
+    <!-- روابط داخلية -->
+    <nav class="mt-8 text-center space-x-4">
+      <a href="#calculator" class="text-blue-600 hover:underline">Calculator</a>
+      <a href="#about" class="text-blue-600 hover:underline">About</a>
+      <a href="#contact" class="text-blue-600 hover:underline">Contact</a>
+      <a href="#privacy" class="text-blue-600 hover:underline">Privacy Policy</a>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about" class="mt-12">
+      <h2 class="text-2xl font-bold mb-2">About Rujex</h2>
+      <p>Rujex Age Calculator is a free online tool to calculate your exact age in years, months, and days instantly.</p>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="mt-12">
+      <h2 class="text-2xl font-bold mb-2">Contact</h2>
+      <p>Email: contact@rujex.com</p>
+    </section>
+
+    <!-- Privacy Policy Section -->
+    <section id="privacy" class="mt-12 mb-12">
+      <h2 class="text-2xl font-bold mb-2">Privacy Policy</h2>
+      <p>We respect your privacy. No personal data is stored permanently.</p>
+    </section>
+
   </main>
 
-  <!-- ✅ About -->
-  <section id="about" class="container mx-auto mt-20 p-6 bg-white rounded-2xl shadow">
-    <h3 class="text-2xl font-bold mb-3 text-blue-700">About Rujex Age Calculator</h3>
-    <p class="text-gray-600">
-      Rujex Age Calculator is a simple, accurate, and fast online tool to help you find your exact age.
-      Whether you’re calculating your age for travel, job applications, or curiosity — this tool gives you instant results.
-    </p>
-  </section>
+  <!-- Popunder Ad -->
+  <script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
 
-  <!-- ✅ Contact -->
-  <section id="contact" class="container mx-auto mt-20 p-6 bg-white rounded-2xl shadow">
-    <h3 class="text-2xl font-bold mb-3 text-blue-700">Contact Us</h3>
-    <p class="text-gray-600 mb-4">We’d love to hear from you! Send us your feedback or questions.</p>
-    <form class="max-w-md mx-auto">
-      <input type="text" placeholder="Your Name" class="w-full mb-3 border border-gray-300 p-3 rounded-lg" required>
-      <input type="email" placeholder="Your Email" class="w-full mb-3 border border-gray-300 p-3 rounded-lg" required>
-      <textarea placeholder="Your Message" class="w-full mb-3 border border-gray-300 p-3 rounded-lg" rows="4" required></textarea>
-      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow">Send Message</button>
-    </form>
-  </section>
-
-  <!-- ✅ Privacy Policy -->
-  <section id="privacy" class="container mx-auto mt-20 p-6 bg-white rounded-2xl shadow mb-20">
-    <h3 class="text-2xl font-bold mb-3 text-blue-700">Privacy Policy</h3>
-    <p class="text-gray-600 mb-2">
-      We respect your privacy. This site does not collect personal information or store any data entered by users.
-      All calculations happen locally in your browser — nothing is sent to our servers.
-    </p>
-    <p class="text-gray-600">
-      For any inquiries, contact us via the form above.
-    </p>
-  </section>
-
-  <!-- ✅ Footer -->
-  <footer class="bg-gray-800 text-white text-center py-6 mt-10">
-    <p>© 2025 Rujex. All rights reserved.</p>
-  </footer>
-
-  <!-- ✅ JavaScript -->
+  <!-- Age Calculator Script -->
   <script>
-    function calculateAge() {
-      const input = document.getElementById('birthdate').value;
-      if (!input) return alert("Please enter your birth date.");
+    const calculateBtn = document.getElementById('calculateBtn');
+    const birthdateInput = document.getElementById('birthdate');
+    const result = document.getElementById('result');
 
-      const birthDate = new Date(input);
+    calculateBtn.addEventListener('click', () => {
+      const birthdate = new Date(birthdateInput.value);
       const today = new Date();
-
-      let years = today.getFullYear() - birthDate.getFullYear();
-      let months = today.getMonth() - birthDate.getMonth();
-      let days = today.getDate() - birthDate.getDate();
-
-      if (days < 0) {
-        months--;
-        days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      if(!birthdateInput.value){
+        result.textContent = "Please enter a valid date!";
+        return;
       }
-      if (months < 0) {
-        years--;
-        months += 12;
+      let age = today.getFullYear() - birthdate.getFullYear();
+      const m = today.getMonth() - birthdate.getMonth();
+      if(m < 0 || (m === 0 && today.getDate() < birthdate.getDate())){
+        age--;
       }
-
-      document.getElementById('result').innerHTML = `
-        <p>Your exact age is:</p>
-        <p class="text-2xl font-bold text-blue-700 mt-2">${years} years, ${months} months, and ${days} days</p>
-      `;
-    }
+      result.textContent = `Your age is ${age} years.`;
+    });
   </script>
 
-  <script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
 </body>
 </html>
