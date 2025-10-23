@@ -14,13 +14,14 @@ nav a { margin:0 10px; text-decoration:none; color:#ff6f61; font-weight:bold; cu
 input, button { padding:10px; margin:10px 0; width:80%; border-radius:10px; border:1px solid #ccc; font-size:16px;}
 button { background-color:#ff6f61; color:#fff; border:none; cursor:pointer;}
 button:hover { background-color:#ff4c3b; }
-.result { margin-top:20px; font-size:18px; min-height:60px; transition: all 0.5s;}
+.result { margin-top:20px; font-size:18px; min-height:80px; transition: all 0.5s;}
 .points { margin-top:10px; font-size:16px; font-weight:bold;}
 .share-buttons button { background-color:#4caf50; margin:5px;}
 .ads { margin-top:20px; font-size:12px; color:#999;}
 .section { display:none; margin-top:20px; text-align:left;}
 .section h2 { color:#ff6f61;}
 canvas { position:fixed; top:0; left:0; pointer-events:none; z-index:9999;}
+.card-preview { margin-top:20px; border:2px solid #ff6f61; border-radius:15px; padding:10px; background:#fff0f0;}
 </style>
 </head>
 <body>
@@ -39,6 +40,7 @@ canvas { position:fixed; top:0; left:0; pointer-events:none; z-index:9999;}
   <input type="date" id="birthdate" placeholder="Enter your birth date">
   <button onclick="calculateSnapshot()">See Your Daily Snapshot</button>
   <div class="result" id="result"></div>
+  <div class="card-preview" id="cardPreview"></div>
   <div class="points" id="points">Points: 0</div>
   <div class="share-buttons">
     <button onclick="shareTwitter()">Share on Twitter</button>
@@ -71,7 +73,7 @@ canvas { position:fixed; top:0; left:0; pointer-events:none; z-index:9999;}
 <canvas id="confetti"></canvas>
 
 <script>
-// Gamification & Daily Snapshot
+// Gamification & Accurate Age Calculation
 let totalPoints = localStorage.getItem('rujexPoints') ? parseInt(localStorage.getItem('rujexPoints')) : 0;
 document.getElementById('points').textContent = `Points: ${totalPoints}`;
 
@@ -80,21 +82,37 @@ function calculateSnapshot() {
   if (!birthdate.getTime()) { alert("Please enter a valid date!"); return; }
 
   const today = new Date();
-  const ageInMs = today - birthdate;
-  const ageInDays = Math.floor(ageInMs / (1000*60*60*24));
-  const ageInYears = Math.floor(ageInDays / 365);
-  const remainingDays = ageInDays % 365;
+  
+  let years = today.getFullYear() - birthdate.getFullYear();
+  let months = today.getMonth() - birthdate.getMonth();
+  let days = today.getDate() - birthdate.getDate();
 
+  if (days < 0) {
+    months -= 1;
+    days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+  }
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  // Fun Facts based on age
+  const daysLived = Math.floor((today - birthdate) / (1000*60*60*24));
+  const milesWalked = Math.floor(daysLived * 2.5); // average 2.5 miles/day
   const snapshotMessages = [
-    `🎉 Wow! You've lived ${ageInDays} days!`,
-    `🌟 You are ${ageInYears} years and ${remainingDays} days old!`,
-    `💡 Fun fact: Today is your day to shine!`,
-    `✨ Your personal snapshot: ${ageInYears} years of awesomeness!`,
-    `🚀 Challenge: Send a kind message to a friend today!`
+    `🎉 You are ${years}y ${months}m ${days}d old!`,
+    `💡 Fun fact: You have walked approx ${milesWalked} miles in your life!`,
+    `🚀 Daily Challenge: Do something new today!`,
+    `✨ Life Snapshot: ${years} years, ${months} months, ${days} days of awesomeness!`
   ];
 
   const randomMessage = snapshotMessages[Math.floor(Math.random()*snapshotMessages.length)];
   document.getElementById('result').textContent = randomMessage;
+
+  // Shareable Card Preview
+  document.getElementById('cardPreview').innerHTML = `
+    <strong>Your Fun Snapshot:</strong><br>${randomMessage}
+  `;
 
   // Increase points
   totalPoints += 10;
@@ -118,7 +136,7 @@ function launchConfetti() {
   for(let i=0;i<150;i++){
     confettiParticles.push({
       x: Math.random()*canvas.width,
-      y: Math.random()*canvas.height- canvas.height,
+      y: Math.random()*canvas.height - canvas.height,
       r: Math.random()*6+4,
       d: Math.random()*20+10,
       color: `hsl(${Math.random()*360}, 100%, 50%)`,
@@ -132,8 +150,8 @@ function drawConfetti(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   confettiParticles.forEach((p)=>{
     ctx.beginPath();
-    ctx.moveTo(p.x+ p.tilt+ p.r/2, p.y);
-    ctx.lineTo(p.x+ p.tilt, p.y+ p.r);
+    ctx.moveTo(p.x + p.tilt + p.r/2, p.y);
+    ctx.lineTo(p.x + p.tilt, p.y + p.r);
     ctx.strokeStyle = p.color;
     ctx.lineWidth = p.r/2;
     ctx.stroke();
