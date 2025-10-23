@@ -2,204 +2,123 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rujex CV Builder</title>
-<meta name="description" content="Create a professional, modern CV in minutes. Preview for free — download PDF after ad.">
-<meta name="keywords" content="resume builder, CV maker, professional CV, USA, modern CV">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rujex – Coming Soon</title>
+<meta name="description" content="Rujex is coming soon! Stay updated and be the first to experience our amazing tool.">
+<meta name="keywords" content="Rujex, coming soon, tool, USA, launch, update">
 <style>
-:root{
-  --primary:#0b4da2;
-  --accent:#ff6b6b;
-  --bg:#f7fbff;
-  --card:#fff;
-  --text:#0f1724;
-  --muted:#6b7280;
+:root {
+  --primary: #0b4da2;
+  --accent: #ff6b6b;
+  --bg: #f7f9fc;
+  --text: #0f1724;
 }
-body{font-family:Inter,Arial,sans-serif;margin:0;padding:0;background:var(--bg);color:var(--text);}
-header{background:linear-gradient(90deg,var(--primary),#0f6bd8);color:#fff;text-align:center;padding:24px 12px;}
-header h1{margin:0;font-size:1.8rem;}
-main{max-width:960px;margin:20px auto;padding:12px;}
-.card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 6px 20px rgba(0,0,0,0.05);}
-label{display:block;font-weight:600;margin:6px 0 4px;}
-input, textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef8;margin-bottom:10px;}
-textarea{resize:none;}
-.btn{background:var(--accent);color:#fff;padding:10px 14px;border:none;border-radius:10px;cursor:pointer;font-weight:700;margin-top:6px;}
-.footer{text-align:center;color:var(--muted);font-size:0.9rem;margin-top:16px;}
-.flex{display:flex;gap:10px;flex-wrap:wrap;}
-.preview-area{background:#f0f8ff;padding:12px;border-radius:8px;border:1px dashed #dbeafe;min-height:200px;}
-.skills-box{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
-.skill-pill{background:#0b4da2;color:#fff;padding:4px 8px;border-radius:6px;font-size:0.85rem;}
-.profile-img{width:80px;height:80px;border-radius:50%;object-fit:cover;margin-bottom:8px;}
+body {
+  margin:0;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  text-align: center;
+}
+header {
+  padding: 60px 20px;
+  background: linear-gradient(90deg, var(--primary), #0f6bd8);
+  color: white;
+}
+header h1 {
+  font-size: 3rem;
+  margin: 0 0 10px;
+}
+header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+input[type="email"] {
+  padding: 12px 15px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  margin-right: 10px;
+  width: 250px;
+  max-width: 80%;
+}
+button {
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+}
+button:hover { opacity: 0.9; }
+footer {
+  padding: 20px;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+.ad-banner {
+  margin: 20px 0;
+}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
 <header>
-  <h1>Rujex CV Builder</h1>
-  <p style="opacity:0.9;margin-top:4px;">Modern & professional CV — preview for free</p>
+  <h1>Rujex</h1>
+  <p>Coming Soon — Stay tuned for our amazing new tool!</p>
 </header>
 
 <main>
+  <p>Enter your email to be the first to get notified:</p>
+  <div>
+    <input type="email" id="email" placeholder="your.email@example.com">
+    <button onclick="subscribeEmail()">Notify Me</button>
+  </div>
 
-<div class="card">
-  <h2>Upload Profile Image</h2>
-  <input type="file" id="profileImage" accept="image/*">
-</div>
-
-<div class="card">
-  <h2>Personal Info</h2>
-  <label>Name</label>
-  <input id="fullName" placeholder="John Doe">
-  <label>Job Title</label>
-  <input id="jobTitle" placeholder="Product Manager">
-  <label>Email</label>
-  <input id="email" placeholder="john@example.com">
-  <label>Phone</label>
-  <input id="phone" placeholder="+1 123 456 7890">
-</div>
-
-<div class="card">
-  <h2>Summary</h2>
-  <textarea id="summary" rows="3" placeholder="Short professional summary"></textarea>
-</div>
-
-<div class="card">
-  <h2>Skills</h2>
-  <div class="flex" id="skillsContainer"></div>
-  <input id="skillInput" placeholder="Type skill and press Enter">
-</div>
-
-<div class="card">
-  <h2>Experience</h2>
-  <textarea id="experience" rows="4" placeholder="Company | Role | Years | Key achievement"></textarea>
-</div>
-
-<div class="card">
-  <h2>Education</h2>
-  <textarea id="education" rows="3" placeholder="Degree | University | Year"></textarea>
-</div>
-
-<div class="card">
-  <button class="btn" id="generate">Preview CV</button>
-  <button class="btn" id="download" style="background:#0b4da2;">Download PDF</button>
-</div>
-
-<div class="card">
-  <h2>CV Preview</h2>
-  <div id="preview" class="preview-area">Your CV preview will appear here.</div>
-</div>
-
-<div id="ad-banner" class="card" style="text-align:center;">
-  <!-- Banner ad will appear here -->
-</div>
-
+  <!-- Banner Ad -->
+  <div class="ad-banner" id="ad-banner"></div>
 </main>
 
-<footer class="footer">
-  &copy; 2025 Rujex CV Builder — Contact: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a>
+<footer>
+  &copy; 2025 Rujex — Contact: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a>
 </footer>
 
-<!-- Ads Scripts -->
+<!-- Popunder Ad -->
 <script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
+
+<!-- Banner Ad (Adsterra example) -->
 <script type="text/javascript">
-atOptions = {
-  'key' : 'c75931fa51a9da29fcabfc423bfe7608',
-  'format' : 'iframe',
-  'height' : 60,
-  'width' : 468,
-  'params' : {}
-};
+  atOptions = {
+    'key' : 'c75931fa51a9da29fcabfc423bfe7608',
+    'format' : 'iframe',
+    'height' : 60,
+    'width' : 468,
+    'params' : {}
+  };
 </script>
 <script type="text/javascript" src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"></script>
 
 <script>
-(function(){
-const preview = document.getElementById('preview');
-const generateBtn = document.getElementById('generate');
-const downloadBtn = document.getElementById('download');
-const profileInput = document.getElementById('profileImage');
-
-let profileDataUrl = '';
-
-profileInput.addEventListener('change', function(e){
-  const file = e.target.files[0];
-  if(file){
-    const reader = new FileReader();
-    reader.onload = function(ev){ profileDataUrl = ev.target.result; };
-    reader.readAsDataURL(file);
-  }
-});
-
-// Skills
-const skillsContainer = document.getElementById('skillsContainer');
-const skillInput = document.getElementById('skillInput');
-let skills = [];
-
-skillInput.addEventListener('keypress', function(e){
-  if(e.key === 'Enter' && skillInput.value.trim()){
-    skills.push(skillInput.value.trim());
-    const span = document.createElement('span');
-    span.className = 'skill-pill';
-    span.textContent = skillInput.value.trim();
-    skillsContainer.appendChild(span);
-    skillInput.value='';
-    e.preventDefault();
-  }
-});
-
-// Render Preview
-function renderPreview(){
-  const name = document.getElementById('fullName').value;
-  const title = document.getElementById('jobTitle').value;
-  const email = document.getElementById('email').value;
-  const phone = document.getElementById('phone').value;
-  const summary = document.getElementById('summary').value;
-  const experience = document.getElementById('experience').value;
-  const education = document.getElementById('education').value;
-
-  preview.innerHTML = '';
-  if(profileDataUrl){
-    const img = document.createElement('img');
-    img.src = profileDataUrl;
-    img.className='profile-img';
-    preview.appendChild(img);
-  }
-  const h2 = document.createElement('h2'); h2.textContent=name; preview.appendChild(h2);
-  const h3 = document.createElement('h3'); h3.textContent=title; preview.appendChild(h3);
-  const contact = document.createElement('p'); contact.textContent=`Email: ${email} | Phone: ${phone}`; preview.appendChild(contact);
-  if(summary){ const s=document.createElement('p'); s.textContent='Summary: '+summary; preview.appendChild(s);}
-  if(skills.length){ const s=document.createElement('p'); s.textContent='Skills:'; preview.appendChild(s); 
-    const skillDiv=document.createElement('div'); skillDiv.className='skills-box';
-    skills.forEach(skill=>{ const sp=document.createElement('span'); sp.className='skill-pill'; sp.textContent=skill; skillDiv.appendChild(sp); });
-    preview.appendChild(skillDiv);
-  }
-  if(experience){ const exp=document.createElement('p'); exp.textContent='Experience: '+experience; preview.appendChild(exp);}
-  if(education){ const edu=document.createElement('p'); edu.textContent='Education: '+education; preview.appendChild(edu);}
+// Simple email subscription placeholder
+function subscribeEmail(){
+  const email = document.getElementById('email').value.trim();
+  if(!email){ alert('Please enter a valid email'); return; }
+  alert('Thanks! You will be notified at ' + email);
+  document.getElementById('email').value = '';
 }
-
-// Generate Preview
-generateBtn.addEventListener('click', function(){ renderPreview(); alert('Ad would display here!'); });
-
-// Download PDF
-downloadBtn.addEventListener('click', async function(){
-  renderPreview();
-  alert('Ad popup before download!');
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  let y=20;
-  if(profileDataUrl){ doc.addImage(profileDataUrl,'JPEG',80,y,50,50); y+=60;}
-  doc.setFontSize(16); doc.text(document.getElementById('fullName').value,20,y); y+=10;
-  doc.setFontSize(12); doc.text(document.getElementById('jobTitle').value,20,y); y+=10;
-  doc.text(`Email: ${document.getElementById('email').value}`,20,y); y+=7;
-  doc.text(`Phone: ${document.getElementById('phone').value}`,20,y); y+=10;
-  doc.text('Summary: '+document.getElementById('summary').value,20,y); y+=10;
-  doc.text('Skills: '+skills.join(', '),20,y); y+=10;
-  doc.text('Experience: '+document.getElementById('experience').value,20,y); y+=10;
-  doc.text('Education: '+document.getElementById('education').value,20,y+=10);
-  doc.save('Rujex_CV.pdf');
-});
-})();
 </script>
 
 </body>
