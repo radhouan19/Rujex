@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Viral Pro Boost: Healthy Habits & BMI Tracker 🇺🇸</title>
-<meta name="description" content="Track your BMI and daily health habits! Get multiple dynamic personalized tips and share them on social media. Perfect for US users.">
+<meta name="description" content="Track your BMI and daily health habits! Get dynamic personalized tips as shareable images. Perfect for US users.">
 <meta name="keywords" content="BMI calculator, health tracker, healthy habits, US fitness, wellness tips, weight management, viral health tips">
 <style>
 body {font-family:'Segoe UI',Arial,sans-serif; margin:0; padding:0; background:#f0f8ff; color:#333;}
@@ -19,21 +19,16 @@ input[type="number"] {width:100%; padding:14px; margin-top:10px; border:2px soli
 input[type="checkbox"] {margin-right:10px;}
 button {padding:16px; background:#ff4d4d; color:#fff; border:none; border-radius:12px; cursor:pointer; font-size:1.2em; margin-top:20px; transition:0.3s;}
 button:hover {background:#ff6b6b;}
-.result {display:none; margin-top:25px; padding:25px; border-radius:25px; background:#e6ffe6; box-shadow:0 0 25px rgba(0,0,0,0.2); animation:pop 0.5s ease;}
-@keyframes pop {0%{transform:scale(0)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+.result {display:none; margin-top:25px; padding:25px; border-radius:25px; background:#e6ffe6; box-shadow:0 0 25px rgba(0,0,0,0.2);}
 .habit {margin-top:12px; font-size:1em;}
 .habit label {font-weight:normal;}
-.viral-item {margin-bottom:20px; padding:15px; background:#d1f2eb; border-radius:15px; border-left:6px solid #00b894; animation:fadein 0.5s ease; transition:0.3s;}
-.viral-item:hover {transform:scale(1.02); box-shadow:0 8px 25px rgba(0,0,0,0.2);}
-@keyframes fadein {from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);}}
+.tip-card {position:relative; background:#d1f2eb; padding:20px; border-radius:20px; margin-bottom:20px; box-shadow:0 6px 20px rgba(0,0,0,0.2); font-size:1.2em; transition:0.3s;}
+.tip-card:hover {transform:scale(1.02);}
 .share-buttons {margin-top:12px; display:flex; justify-content:space-between; flex-wrap:wrap;}
-.share-buttons button {flex:1; margin:5px; padding:10px; font-size:1em; border:none; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.3s;}
-.share-facebook {background:#3b5998;}
-.share-facebook:hover {background:#5b7bd5;}
-.share-twitter {background:#1da1f2;}
-.share-twitter:hover {background:#66c0f5;}
-.share-linkedin {background:#0077b5;}
-.share-linkedin:hover {background:#3399cc;}
+.share-buttons button {flex:1; margin:5px; padding:10px; font-size:1em; border:none; border-radius:10px; cursor:pointer; color:#fff; display:flex; justify-content:center; align-items:center; transition:0.3s;}
+.share-facebook {background:#3b5998;} .share-facebook:hover {background:#5b7bd5;}
+.share-twitter {background:#1da1f2;} .share-twitter:hover {background:#66c0f5;}
+.share-linkedin {background:#0077b5;} .share-linkedin:hover {background:#3399cc;}
 footer {background:#00274d; color:#fff; text-align:center; padding:25px; margin-top:30px; border-top:3px solid #ff4d4d;}
 #ad-banner {width:100%; height:60px; margin-top:25px; text-align:center;}
 </style>
@@ -69,7 +64,6 @@ footer {background:#00274d; color:#fff; text-align:center; padding:25px; margin-
   <div id="result" class="result"></div>
 
   <div id="ad-banner">
-    <!-- Banner Ad -->
     <script type="text/javascript">
       atOptions = {
         'key' : 'c75931fa51a9da29fcabfc423bfe7608',
@@ -85,7 +79,7 @@ footer {background:#00274d; color:#fff; text-align:center; padding:25px; margin-
 
 <section id="about" style="padding:25px; max-width:720px; margin:auto;">
   <h2>About Viral Pro Boost</h2>
-  <p>Track your BMI and daily habits, receive multiple dynamic personalized tips, and share your progress on social media. Designed for American users who want to stay healthy, motivated, and viral!</p>
+  <p>Track your BMI and daily habits, receive multiple dynamic personalized tips as beautiful shareable cards, and post your progress on social media. Designed for American users!</p>
 </section>
 
 <section id="contact" style="padding:25px; max-width:720px; margin:auto;">
@@ -95,7 +89,7 @@ footer {background:#00274d; color:#fff; text-align:center; padding:25px; margin-
 
 <section id="privacy" style="padding:25px; max-width:720px; margin:auto;">
   <h2>Privacy Policy</h2>
-  <p>We respect your privacy. Your data is used locally to generate health tips. No personal data is stored.</p>
+  <p>Your data is used locally for generating health tips. No personal information is stored.</p>
 </section>
 
 <footer>
@@ -108,67 +102,50 @@ footer {background:#00274d; color:#fff; text-align:center; padding:25px; margin-
 <script>
 function calculateBMI(weight, height) {
     if(weight <= 0 || height <= 0) return 0;
-    let bmi = weight / ((height/100) ** 2);
-    return bmi.toFixed(1);
+    return (weight / ((height/100) ** 2)).toFixed(1);
 }
 
-function generateTips(bmi, habits) {
-    let status = '';
-    if(bmi < 18.5) status = 'Underweight';
-    else if(bmi < 25) status = 'Normal weight';
-    else if(bmi < 30) status = 'Overweight';
-    else status = 'Obese';
-
+function generateTips() {
     const tipPool = [
         "Drink more water 💧","Get better sleep 😴","Exercise regularly 🏃‍♂️",
         "Eat more healthy food 🥗","Take short walks today 🚶‍♂️","Try meditation 🧘‍♂️",
         "Limit sugary drinks 🥤","Include more vegetables 🥦","Stay active throughout the day 💪",
         "Stretch for 5 minutes 🧎‍♂️","Avoid junk food 🍔","Track your calories 🔢"
     ];
-
     let tips = [];
     while(tips.length < 5){
-        let randomTip = tipPool[Math.floor(Math.random()*tipPool.length)];
-        if(!tips.includes(randomTip)) tips.push(randomTip);
+        let t = tipPool[Math.floor(Math.random()*tipPool.length)];
+        if(!tips.includes(t)) tips.push(t);
     }
-
-    return {status, tips};
+    return tips;
 }
 
 document.getElementById('generateBtn').addEventListener('click', function() {
     const weight = parseFloat(document.getElementById('weight').value);
     const height = parseFloat(document.getElementById('height').value);
-    const habits = {
-        water: document.getElementById('habitWater').checked,
-        sleep: document.getElementById('habitSleep').checked,
-        exercise: document.getElementById('habitExercise').checked,
-        food: document.getElementById('habitHealthyFood').checked
-    };
 
-    if(!weight || !height) { alert("Please enter valid weight and height."); return; }
+    if(!weight || !height){ alert("Please enter valid weight and height."); return; }
 
     const bmi = calculateBMI(weight, height);
-    const resultData = generateTips(bmi, habits);
+    const tips = generateTips();
 
-    const resultDiv = document.getElementconst resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = `<h3>Your BMI: ${bmi} (${resultData.status})</h3>`;
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `<h3>Your BMI: ${bmi}</h3>`;
 
-    // توليد النصائح بشكل ديناميكي
-    resultData.tips.forEach(tip => {
-        const tipDiv = document.createElement('div');
-        tipDiv.className = 'viral-item';
-        tipDiv.innerHTML = `<div>${tip}</div>
+    tips.forEach(tip => {
+        const card = document.createElement('div');
+        card.className = 'tip-card';
+        card.innerHTML = `<div>${tip}</div>
         <div class="share-buttons">
             <button class="share-facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=&quote=${encodeURIComponent(tip)}','_blank','width=600,height=400')">📘 Facebook</button>
             <button class="share-twitter" onclick="window.open('https://twitter.com/intent/tweet?text=${encodeURIComponent(tip)}','_blank','width=600,height=400')">🐦 Twitter</button>
             <button class="share-linkedin" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=&summary=${encodeURIComponent(tip)}','_blank','width=600,height=400')">💼 LinkedIn</button>
         </div>`;
-        resultDiv.appendChild(tipDiv);
+        resultDiv.appendChild(card);
     });
 
-    resultDiv.style.display = "block";
+    resultDiv.style.display = 'block';
 });
 </script>
-
 </body>
 </html>
