@@ -3,38 +3,43 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Rujex Pro CV — Free Resume Builder (USA Templates)</title>
-<meta name="description" content="Create American-style resumes: multiple templates, preview and download PDF. Free, fast, and privacy-first." />
-<meta name="keywords" content="resume builder, american resume, cv templates, download pdf resume, free resume builder" />
+<title>Rujex Pro CV — Free Resume Builder (5 USA Templates)</title>
+<meta name="description" content="Create American-style resumes: 5 professional templates, preview and download PDF. Free, fast and privacy-first." />
+<meta name="keywords" content="resume builder, american resume, cv templates, download pdf resume, free resume builder, usa" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--blue:#0b4da2;--accent:#ff6b6b;--muted:#6b7280;--card:#fff;--maxwidth:1100px}
-*{box-sizing:border-box}body{font-family:Inter,Segoe UI,Arial,sans-serif;margin:0;background:#f8fafc;color:#0f1724}
-.header{background:linear-gradient(90deg,var(--blue),#0f6bd8);color:#fff;padding:18px 14px}
-.header .wrap{max-width:var(--maxwidth);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.header h1{margin:0;font-size:1.25rem}
-.header nav{display:flex;gap:8px}
-.nav-btn{background:transparent;border:none;color:#fff;font-weight:600;cursor:pointer;padding:8px 10px;border-radius:8px}
-.main{max-width:var(--maxwidth);margin:20px auto;padding:14px}
-.grid{display:grid;grid-template-columns:1fr 420px;gap:18px}
+:root{
+  --blue:#0b4da2; --accent:#ff6b6b; --muted:#6b7280; --card:#fff; --maxw:1200px;
+  --chip-bg:#eef2ff; --chip-border:#cfe0ff;
+}
+*{box-sizing:border-box}
+body{font-family:Inter,Arial,Helvetica,sans-serif;margin:0;background:#f8fafc;color:#0f1724;line-height:1.45}
+.header{background:linear-gradient(90deg,var(--blue),#0f6bd8);color:#fff;padding:18px}
+.header .wrap{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header h1{margin:0;font-size:1.25rem;font-weight:800}
+.nav{display:flex;gap:8px}
+.nav button{background:transparent;border:none;color:#fff;font-weight:600;cursor:pointer;padding:8px 10px;border-radius:8px}
+.container{max-width:var(--maxw);margin:20px auto;padding:14px}
+.top-banner, .side-banner, .bottom-banner{text-align:center;margin:10px 0}
+.grid{display:grid;grid-template-columns:1fr 380px;gap:18px}
 .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 28px rgba(11,77,162,0.06)}
 .label{display:block;font-weight:700;margin-bottom:6px}
-.input,textarea,select{width:100%;padding:9px;border-radius:8px;border:1px solid #e6eef8;margin-bottom:10px;font-size:0.95rem}
+.input, textarea, select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef8;margin-bottom:10px;font-size:0.95rem}
 .small{color:var(--muted);font-size:0.95rem}
 .btn{background:var(--accent);color:#fff;padding:10px 12px;border:none;border-radius:10px;cursor:pointer;font-weight:700}
 .btn.secondary{background:var(--blue)}
 .row{display:flex;gap:8px;align-items:center}
-.preview{background:#f0f8ff;padding:12px;border-radius:8px;border:1px dashed #cbd5e1;min-height:220px;max-height:560px;overflow:auto}
+.preview{background:#f0f8ff;padding:12px;border-radius:8px;border:1px dashed #cbd5e1;min-height:220px;max-height:680px;overflow:auto}
 .resume{background:#fff;padding:14px;border-radius:8px;border:1px solid #eef2ff}
-.field-actions{display:flex;gap:6px;margin-bottom:8px}
-.add-btn{background:#10b981;color:#fff;border:none;padding:6px 8px;border-radius:8px;cursor:pointer}
-.remove-btn{background:#ef4444;color:#fff;border:none;padding:6px 8px;border-radius:8px;cursor:pointer}
-.footer{text-align:center;color:var(--muted);font-size:0.9rem;margin:24px 0}
-.banner-wrap{text-align:center;margin-top:16px}
-@media(max-width:980px){.grid{grid-template-columns:1fr}.header .wrap{flex-direction:column;align-items:flex-start}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chip{background:var(--chip-bg);border:1px solid var(--chip-border);padding:6px 10px;border-radius:999px;font-weight:600;font-size:0.95rem;display:flex;gap:8px;align-items:center}
+.chip button{background:transparent;border:none;color:#ef4444;cursor:pointer;font-weight:800}
+.templatetabs{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.tab{padding:8px 10px;border-radius:8px;border:1px solid transparent;background:#fff;cursor:pointer}
+.tab.active{border-color:#cfe0ff;box-shadow:0 6px 20px rgba(11,77,162,0.05)}
+.footer{text-align:center;color:var(--muted);font-size:0.9rem;margin:26px 0}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}.header .wrap{flex-direction:column;align-items:flex-start}}
 </style>
-
-<!-- jsPDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -42,223 +47,267 @@
   <div class="wrap">
     <div>
       <h1>Rujex Pro CV</h1>
-      <div class="small">American-style resume templates — preview & download PDF (free)</div>
+      <div class="small">5 American-style templates — preview & download PDF</div>
     </div>
-    <nav>
-      <button class="nav-btn" data-target="home">Home</button>
-      <button class="nav-btn" data-target="about">About</button>
-      <button class="nav-btn" data-target="privacy">Privacy</button>
-      <button class="nav-btn" data-target="contact">Contact</button>
-    </nav>
+    <div class="nav">
+      <button data-target="home" class="navbtn">Home</button>
+      <button data-target="about" class="navbtn">About</button>
+      <button data-target="privacy" class="navbtn">Privacy</button>
+      <button data-target="contact" class="navbtn">Contact</button>
+    </div>
   </div>
 </header>
 
-<main class="main" id="app">
-  <!-- HOME -->
-  <section id="home" class="section">
-    <div class="grid">
-      <!-- Builder -->
-      <div class="card">
-        <h2>Create American-style Resume</h2>
-        <p class="small">Choose a template, fill the fields below, then Preview or Download. Ads will show before preview/download.</p>
+<div class="container">
+  <!-- TOP BANNER -->
+  <div class="top-banner card" id="top-banner" aria-hidden="false">
+    <!-- Banner script inserted here -->
+    <div id="ad-top"></div>
+  </div>
 
-        <label class="label">Template</label>
-        <select id="templateSelect" class="input">
-          <option value="modern">Modern (clean)</option>
-          <option value="classic">Classic (traditional)</option>
-          <option value="creative">Creative (bold header)</option>
-        </select>
-
-        <label class="label">Full name</label><input id="fullName" class="input" placeholder="Jane Doe" autocomplete="name">
-        <label class="label">Email</label><input id="email" class="input" placeholder="jane.doe@example.com" autocomplete="email">
-        <label class="label">Phone</label><input id="phone" class="input" placeholder="(555) 555-5555">
-        <label class="label">City, State, ZIP</label><input id="location" class="input" placeholder="Los Angeles, CA 90001">
-        <label class="label">LinkedIn / Portfolio (optional)</label><input id="linkedin" class="input" placeholder="https://linkedin.com/in/janedoe">
-        <label class="label">Professional Title</label><input id="title" class="input" placeholder="Senior Product Manager">
-
-        <label class="label">Summary / Objective</label><textarea id="summary" class="input" rows="3" placeholder="2-3 sentence professional summary"></textarea>
-
-        <!-- Experience -->
-        <div style="margin-top:8px; display:flex;justify-content:space-between;align-items:center">
-          <div><strong>Experience</strong></div>
-          <div class="field-actions"><button id="addExp" class="add-btn">+ Add</button></div>
+  <!-- MAIN -->
+  <main id="home" class="section">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div>
+          <h2 style="margin:0">Create your American-style resume</h2>
+          <div class="small">Choose a template, fill the fields, preview or download. Ads support this free tool.</div>
         </div>
-        <div id="expList"></div>
-
-        <!-- Education -->
-        <div style="margin-top:8px; display:flex;justify-content:space-between;align-items:center">
-          <div><strong>Education</strong></div>
-          <div class="field-actions"><button id="addEdu" class="add-btn">+ Add</button></div>
-        </div>
-        <div id="eduList"></div>
-
-        <label class="label">Skills (comma separated)</label><input id="skills" class="input" placeholder="JavaScript, Product, SQL, Leadership">
-
-        <label class="label">Certifications (comma separated)</label><input id="certs" class="input" placeholder="PMP, AWS Certified">
-
-        <div class="row" style="margin-top:10px">
-          <button id="previewBtn" class="btn">Preview (Show Ad)</button>
-          <button id="downloadBtn" class="btn secondary">Download PDF (Show Ad)</button>
-          <button id="saveBtn" class="btn" style="background:#64748b">Save (local)</button>
-        </div>
-
-        <div class="small" style="margin-top:10px">Tip: Fill multiple experience blocks to reflect US-style bullets (Company | Role | 2019–2023 | Achievement).</div>
+        <div style="text-align:right" class="small">Templates: <strong>5</strong></div>
       </div>
+    </div>
 
-      <!-- Preview & Sidebar -->
+    <div style="height:12px"></div>
+
+    <div class="grid">
+      <!-- LEFT: Builder -->
+      <section>
+        <div class="card">
+          <div class="templatetabs" id="templateTabs"></div>
+
+          <label class="label">Full name</label>
+          <input id="fullName" class="input" placeholder="Jane Doe">
+
+          <div style="display:flex;gap:8px">
+            <div style="flex:1">
+              <label class="label">Email</label><input id="email" class="input" placeholder="jane.doe@example.com">
+            </div>
+            <div style="width:160px">
+              <label class="label">Phone</label><input id="phone" class="input" placeholder="(555) 555-5555">
+            </div>
+          </div>
+
+          <label class="label">Location (City, State)</label><input id="location" class="input" placeholder="Los Angeles, CA">
+
+          <label class="label">LinkedIn / Portfolio</label><input id="linkedin" class="input" placeholder="https://...">
+
+          <label class="label">Professional Title</label><input id="title" class="input" placeholder="Senior Product Manager">
+
+          <label class="label">Summary</label><textarea id="summary" class="input" rows="3" placeholder="2-3 sentence professional summary"></textarea>
+
+          <!-- Experience -->
+          <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Experience</strong></div>
+            <div><button id="addExp" class="btn" style="background:#10b981;padding:6px 10px">+ Add Experience</button></div>
+          </div>
+          <div id="expList"></div>
+
+          <!-- Education -->
+          <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Education</strong></div>
+            <div><button id="addEdu" class="btn" style="background:#10b981;padding:6px 10px">+ Add Education</button></div>
+          </div>
+          <div id="eduList"></div>
+
+          <!-- Skills chips -->
+          <label class="label" style="margin-top:10px">Skills</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input id="skillInput" class="input" placeholder="Type a skill and press Enter" style="flex:1;padding:8px">
+            <button id="addSkillBtn" class="btn" style="padding:8px 12px">Add</button>
+          </div>
+          <div class="chips" id="skillChips" aria-live="polite"></div>
+
+          <label class="label" style="margin-top:10px">Certifications (optional)</label>
+          <input id="certs" class="input" placeholder="PMP, AWS Certified">
+
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button id="previewBtn" class="btn">Preview (Show Ad)</button>
+            <button id="downloadBtn" class="btn secondary">Download PDF (Show Ad)</button>
+            <button id="saveBtn" class="btn" style="background:#64748b">Save</button>
+          </div>
+
+          <div class="small" style="margin-top:10px">Tip: Add multiple experience entries; use bullets inside the experience input separated by semicolons.</div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Preview & side banners -->
       <aside>
         <div class="card">
-          <h3>Preview</h3>
-          <div id="preview" class="preview" aria-live="polite">
-            <div class="small">Click "Preview" to render your resume using selected template.</div>
-          </div>
+          <h3 style="margin-top:0">Preview</h3>
+          <div id="preview" class="preview"><div class="small">Click Preview to render selected template.</div></div>
         </div>
 
         <div style="height:12px"></div>
 
         <div class="card">
-          <h4>Why US-style CV?</h4>
-          <p class="small">Clear contact info, focused summary, concise achievements and keywords for ATS compatibility.</p>
+          <h4>Ads & Support</h4>
+          <div class="small">This free service is supported by ads. To get help: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></div>
+          <div id="side-ad" style="margin-top:10px;text-align:center"></div>
         </div>
       </aside>
     </div>
 
-    <!-- Banner -->
-    <div class="banner-wrap">
-      <div id="ad-banner"></div>
+    <!-- BOTTOM BANNER -->
+    <div class="bottom-banner card" style="margin-top:16px">
+      <div id="ad-bottom"></div>
     </div>
-  </section>
+  </main>
 
   <!-- ABOUT -->
   <section id="about" class="section" style="display:none">
-    <div class="card" style="max-width:980px;margin:0 auto">
+    <div class="card" style="max-width:1000px;margin:0 auto">
       <h2>About Rujex Pro CV</h2>
-      <p class="small">Rujex Pro CV provides several American-style resume templates. All data stays in your browser. Ads support the free service.</p>
+      <p class="small">Rujex Pro CV offers 5 US-style resume templates, local PDF generation, and privacy-first design. Use for job applications, LinkedIn uploads, and ATS friendly submissions.</p>
     </div>
   </section>
 
   <!-- PRIVACY -->
   <section id="privacy" class="section" style="display:none">
-    <div class="card" style="max-width:980px;margin:0 auto">
+    <div class="card" style="max-width:1000px;margin:0 auto">
       <h2>Privacy Policy</h2>
-      <p class="small">This tool stores data locally in your browser only. No server upload. Ads are served by third parties (Adsterra).</p>
+      <p class="small">No server storage: all data stays in your browser. Ads are served by third parties (Adsterra). If you need data removal support, contact: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></p>
     </div>
   </section>
 
   <!-- CONTACT -->
   <section id="contact" class="section" style="display:none">
-    <div class="card" style="max-width:980px;margin:0 auto">
+    <div class="card" style="max-width:1000px;margin:0 auto">
       <h2>Contact</h2>
       <p class="small">Support: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></p>
       <p class="small">Powered by Rujex Pro CV — Free Resume Builder</p>
     </div>
   </section>
-</main>
+</div>
 
 <footer class="footer">© 2025 Rujex Pro CV — Free Resume Builder</footer>
 
-<!-- -------- Adsterra snippets -------- -->
-<!-- Popunder file will be injected dynamically when user clicks preview/download -->
-<!-- Banner setup (Adsterra) -->
+<!-- ---------- Adsterra Banner (top/bottom/side) ---------- -->
 <script type="text/javascript">
-  atOptions = {
-    'key' : 'c75931fa51a9da29fcabfc423bfe7608',
-    'format' : 'iframe',
-    'height' : 60,
-    'width' : 468,
-    'params' : {}
-  };
+  // top banner
+  try{
+    window.atOptions = {
+      'key' : 'c75931fa51a9da29fcabfc423bfe7608',
+      'format' : 'iframe',
+      'height' : 60,
+      'width' : 468,
+      'params' : {}
+    };
+    (function(){ var s = document.createElement('script'); s.src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"; s.async=true; document.getElementById('ad-top').appendChild(s); })();
+    // bottom copy
+    (function(){ var s2 = document.createElement('script'); s2.src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"; s2.async=true; document.getElementById('ad-bottom').appendChild(s2); })();
+    // side ad (another slot)
+    (function(){ var s3 = document.createElement('script'); s3.src="//www.highperformanceformat.com/c75931a9da29fcabfc423bfe7608/invoke.js"; s3.async=true; document.getElementById('side-ad').appendChild(s3); })();
+  }catch(e){console.warn('banner ad load error',e)}
 </script>
-<script type="text/javascript" src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"></script>
 
+<!-- ---------- Main JS (templates, fields, PDF, popunder) ---------- -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-/* ---------- Config ---------- */
+/* Configuration */
 const POPUNDER_SRC = "//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js";
 
-/* ---------- SPA nav ---------- */
-document.querySelectorAll('.nav-btn').forEach(b=>{
+/* SPA nav */
+document.querySelectorAll('.navbtn').forEach(b=>{
   b.addEventListener('click', ()=> {
     const t = b.dataset.target;
     document.querySelectorAll('.section').forEach(s=>s.style.display='none');
-    document.getElementById(t).style.display='block';
+    document.getElementById(t).style.display = 'block';
     window.scrollTo({top:0,behavior:'smooth'});
   });
 });
 
-/* ---------- Dynamic fields ---------- */
-function createExpBlock(data){
-  const id = 'exp_' + Date.now() + Math.floor(Math.random()*1000);
-  const wrap = document.createElement('div');
-  wrap.id = id;
-  wrap.style.marginBottom = '10px';
-  wrap.innerHTML = `
-    <input class="input" placeholder="Company | Role | 2019-2023 | Achievements (bullet one; ; bullet two)" />
-    <div style="display:flex;gap:8px;margin-top:6px">
-      <button class="remove-btn">Remove</button>
-    </div>
-  `;
-  const input = wrap.querySelector('input');
-  if(data) input.value = data;
-  wrap.querySelector('.remove-btn').addEventListener('click', ()=>wrap.remove());
-  return wrap;
-}
-function createEduBlock(data){
-  const id = 'edu_' + Date.now() + Math.floor(Math.random()*1000);
-  const wrap = document.createElement('div');
-  wrap.id = id;
-  wrap.style.marginBottom = '10px';
-  wrap.innerHTML = `
-    <input class="input" placeholder="Degree | School | Year" />
-    <div style="display:flex;gap:8px;margin-top:6px">
-      <button class="remove-btn">Remove</button>
-    </div>
-  `;
-  const input = wrap.querySelector('input');
-  if(data) input.value = data;
-  wrap.querySelector('.remove-btn').addEventListener('click', ()=>wrap.remove());
-  return wrap;
-}
-document.getElementById('addExp').addEventListener('click', ()=> {
-  const n = createExpBlock(); document.getElementById('expList').appendChild(n);
-});
-document.getElementById('addEdu').addEventListener('click', ()=> {
-  const n = createEduBlock(); document.getElementById('eduList').appendChild(n);
+/* Template tabs (5 templates using variations) */
+const templates = ['Modern', 'Classic', 'Creative', 'Simple', 'Executive'];
+const templateTabs = document.getElementById('templateTabs');
+let currentTemplate = 0;
+templates.forEach((t,i)=>{
+  const tb = document.createElement('button');
+  tb.className = 'tab' + (i===0? ' active':'');
+  tb.textContent = t;
+  tb.addEventListener('click', ()=> {
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    tb.classList.add('active'); currentTemplate = i; renderPreview(collectData());
+  });
+  templateTabs.appendChild(tb);
 });
 
-/* Pre-populate one block for convenience */
-document.getElementById('expList').appendChild(createExpBlock());
-document.getElementById('eduList').appendChild(createEduBlock());
-
-/* ---------- Save / Load local ---------- */
-function saveLocal(data){ try{ localStorage.setItem('rujex_procv_full', JSON.stringify(data)); }catch(e){} }
-function loadLocal(){
-  try{ return JSON.parse(localStorage.getItem('rujex_procv_full')||'null'); }catch(e){return null}
+/* Dynamic fields: experience & education */
+function createExp(value=''){
+  const wrap = document.createElement('div'); wrap.style.marginBottom='8px';
+  const inp = document.createElement('input'); inp.className='input'; inp.placeholder='Company | Role | 2019-2023 | Achievement bullets separated by ;'; inp.value = value;
+  const row = document.createElement('div'); row.style.display='flex'; row.style.gap='8px'; row.style.marginTop='6px';
+  const rm = document.createElement('button'); rm.className='remove-btn'; rm.textContent='Remove'; rm.addEventListener('click', ()=>wrap.remove());
+  row.appendChild(rm); wrap.appendChild(inp); wrap.appendChild(row);
+  return wrap;
 }
+function createEdu(value=''){
+  const wrap = document.createElement('div'); wrap.style.marginBottom='8px';
+  const inp = document.createElement('input'); inp.className='input'; inp.placeholder='Degree | School | Year'; inp.value = value;
+  const row = document.createElement('div'); row.style.display='flex'; row.style.gap='8px'; row.style.marginTop='6px';
+  const rm = document.createElement('button'); rm.className='remove-btn'; rm.textContent='Remove'; rm.addEventListener('click', ()=>wrap.remove());
+  row.appendChild(rm); wrap.appendChild(inp); wrap.appendChild(row);
+  return wrap;
+}
+document.getElementById('addExp').addEventListener('click', ()=> document.getElementById('expList').appendChild(createExp()));
+document.getElementById('addEdu').addEventListener('click', ()=> document.getElementById('eduList').appendChild(createEdu()));
+// prepopulate one block each
+document.getElementById('expList').appendChild(createExp());
+document.getElementById('eduList').appendChild(createEdu());
+
+/* Skills chips */
+const skillChips = document.getElementById('skillChips');
+function addSkillChip(text){
+  if(!text) return;
+  const chip = document.createElement('span'); chip.className='chip';
+  chip.innerHTML = `<span>${escapeHtml(text)}</span>`;
+  const rm = document.createElement('button'); rm.innerHTML='✕'; rm.title='Remove'; rm.addEventListener('click', ()=>chip.remove());
+  chip.appendChild(rm); skillChips.appendChild(chip);
+}
+document.getElementById('addSkillBtn').addEventListener('click', ()=>{
+  const val = document.getElementById('skillInput').value.trim();
+  if(val){ addSkillChip(val); document.getElementById('skillInput').value=''; }
+});
+document.getElementById('skillInput').addEventListener('keyup', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); document.getElementById('addSkillBtn').click(); } });
+
+/* Save/load local */
+function saveLocal(obj){ try{ localStorage.setItem('rujex_procv_v2', JSON.stringify(obj)); }catch(e){} }
+function loadLocal(){ try{ return JSON.parse(localStorage.getItem('rujex_procv_v2')||'null'); }catch(e){return null} }
 function populateFromLocal(){
-  const obj = loadLocal();
-  if(!obj) return;
-  $('fullName').value = obj.name||'';
-  $('email').value = obj.email||'';
-  $('phone').value = obj.phone||'';
-  $('location').value = obj.location||'';
-  $('linkedin').value = obj.linkedin||'';
-  $('title').value = obj.title||'';
-  $('summary').value = obj.summary||'';
-  $('skills').value = obj.skills||'';
-  $('certs').value = obj.certs||'';
+  const o = loadLocal(); if(!o) return;
+  document.getElementById('fullName').value=o.name||'';
+  document.getElementById('email').value=o.email||'';
+  document.getElementById('phone').value=o.phone||'';
+  document.getElementById('location').value=o.location||'';
+  document.getElementById('linkedin').value=o.linkedin||'';
+  document.getElementById('title').value=o.title||'';
+  document.getElementById('summary').value=o.summary||'';
+  document.getElementById('skills').value=o.skills||'';
+  document.getElementById('certs').value=o.certs||'';
   // clear lists
-  document.getElementById('expList').innerHTML = '';
-  (obj.experience||[]).forEach(e=>document.getElementById('expList').appendChild(createExpBlock(e)));
-  document.getElementById('eduList').innerHTML = '';
-  (obj.education||[]).forEach(e=>document.getElementById('eduList').appendChild(createEduBlock(e)));
+  document.getElementById('expList').innerHTML=''; (o.experience||[]).forEach(e=>document.getElementById('expList').appendChild(createExp(e)));
+  document.getElementById('eduList').innerHTML=''; (o.education||[]).forEach(e=>document.getElementById('eduList').appendChild(createEdu(e)));
+  // chips
+  skillChips.innerHTML=''; (o.skillsArr||[]).forEach(s=>addSkillChip(s));
 }
 populateFromLocal();
 
+/* Collect data */
 function collectData(){
-  const experience = Array.from(document.getElementById('expList').querySelectorAll('input')).map(i=>i.value.trim()).filter(Boolean);
-  const education = Array.from(document.getElementById('eduList').querySelectorAll('input')).map(i=>i.value.trim()).filter(Boolean);
+  const exp = Array.from(document.getElementById('expList').querySelectorAll('input')).map(i=>i.value.trim()).filter(Boolean);
+  const edu = Array.from(document.getElementById('eduList').querySelectorAll('input')).map(i=>i.value.trim()).filter(Boolean);
+  const skills = Array.from(skillChips.querySelectorAll('.chip span')).map(s=>s.textContent.trim());
   return {
-    template: document.getElementById('templateSelect').value,
+    template: currentTemplate,
     name: document.getElementById('fullName').value.trim(),
     email: document.getElementById('email').value.trim(),
     phone: document.getElementById('phone').value.trim(),
@@ -266,113 +315,79 @@ function collectData(){
     linkedin: document.getElementById('linkedin').value.trim(),
     title: document.getElementById('title').value.trim(),
     summary: document.getElementById('summary').value.trim(),
-    experience, education,
-    skills: document.getElementById('skills').value.trim(),
-    certs: document.getElementById('certs') ? document.getElementById('certs').value.trim() : ''
+    experience: exp, education: edu,
+    skillsArr: skills, skills: skills.join(', '),
+    certs: document.getElementById('certs').value.trim()
   };
 }
 
-/* Render preview depending on template */
+/* Render preview (by template) */
 function renderPreview(data){
-  if(!data.name){ $('preview').innerHTML = '<div class="small">Please fill your name and click Preview.</div>'; return; }
-  let html = '';
-  if(data.template === 'modern'){
-    html = `
-      <div class="resume">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div style="font-size:1.05rem;font-weight:800;color:var(--blue)">${escapeHtml(data.name)}</div>
-            <div style="color:#475569">${escapeHtml(data.title)}</div>
-            <div style="color:#475569;margin-top:6px">${escapeHtml(data.location)} · ${escapeHtml(data.phone)} · ${escapeHtml(data.email)}</div>
-          </div>
-          <div style="text-align:right;color:#475569">${escapeHtml(data.linkedin)}</div>
-        </div>
-        <hr style="margin:10px 0;border:none;border-top:1px solid #eef2ff" />
-        <div><strong>Summary</strong><div>${escapeHtml(data.summary)}</div></div>
-        <div style="margin-top:8px"><strong>Experience</strong><ul>${data.experience.map(e=>`<li>${escapeHtml(e)}</li>`).join('')}</ul></div>
-        <div style="margin-top:8px"><strong>Education</strong><ul>${data.education.map(e=>`<li>${escapeHtml(e)}</li>`).join('')}</ul></div>
-        <div style="margin-top:8px"><strong>Skills</strong><div>${escapeHtml(data.skills)}</div></div>
-        <div style="margin-top:8px"><strong>Certifications</strong><div>${escapeHtml(data.certs)}</div></div>
-      </div>
-    `;
-  } else if(data.template === 'classic'){
-    html = `
-      <div class="resume" style="font-family:Georgia, serif">
-        <div style="text-align:center">
-          <div style="font-size:1.1rem;font-weight:800">${escapeHtml(data.name)}</div>
-          <div style="color:#475569">${escapeHtml(data.title)} · ${escapeHtml(data.location)}</div>
-          <div style="color:#475569;margin-top:6px">${escapeHtml(data.phone)} · ${escapeHtml(data.email)} · ${escapeHtml(data.linkedin)}</div>
-        </div>
-        <hr style="margin:10px 0;border:none;border-top:1px solid #eee" />
-        <div><strong>Professional Summary</strong><div>${escapeHtml(data.summary)}</div></div>
-        <div style="margin-top:8px"><strong>Work Experience</strong>${data.experience.map(e=>`<div style="margin:6px 0">• ${escapeHtml(e)}</div>`).join('')}</div>
-        <div style="margin-top:8px"><strong>Education</strong>${data.education.map(e=>`<div style="margin:6px 0">${escapeHtml(e)}</div>`).join('')}</div>
-        <div style="margin-top:8px"><strong>Skills</strong><div>${escapeHtml(data.skills)}</div></div>
-      </div>
-    `;
-  } else { // creative
-    html = `
-      <div class="resume" style="border-left:6px solid var(--blue);padding-left:12px">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div style="font-size:1.05rem;font-weight:800">${escapeHtml(data.name)}</div>
-            <div style="color:#475569">${escapeHtml(data.title)}</div>
-          </div>
-        </div>
-        <div style="margin-top:8px;color:#475569">${escapeHtml(data.location)} · ${escapeHtml(data.phone)} · ${escapeHtml(data.email)}</div>
-        <hr style="margin:10px 0;border:none;border-top:1px solid #eef2ff" />
-        <div><strong>About</strong><div>${escapeHtml(data.summary)}</div></div>
-        <div style="margin-top:8px"><strong>Experience</strong><ul>${data.experience.map(e=>`<li>${escapeHtml(e)}</li>`).join('')}</ul></div>
-        <div style="margin-top:8px"><strong>Education</strong><div>${escapeHtml(data.education.join(', '))}</div></div>
-        <div style="margin-top:8px"><strong>Skills</strong><div>${escapeHtml(data.skills)}</div></div>
-      </div>
-    `;
+  if(!data || !data.name){ document.getElementById('preview').innerHTML='<div class="small">Please fill name and click Preview.</div>'; return; }
+  let html='';
+  if(data.template===0){ // Modern
+    html = `<div class="resume">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-size:1.05rem;font-weight:800;color:var(--blue)">${escape(data.name)}</div><div style="color:#475569">${escape(data.title)}</div><div style="color:#475569;margin-top:6px">${escape(data.location)} · ${escape(data.phone)} · ${escape(data.email)}</div></div>
+        <div style="text-align:right;color:#475569">${escape(data.linkedin)}</div>
+      </div><hr style="margin:10px 0;border:none;border-top:1px solid #eef2ff" />
+      <div><strong>Summary</strong><div>${escape(data.summary)}</div></div>
+      <div style="margin-top:8px"><strong>Experience</strong><ul>${data.experience.map(e=>`<li>${escape(e)}</li>`).join('')}</ul></div>
+      <div style="margin-top:8px"><strong>Education</strong><ul>${data.education.map(e=>`<li>${escape(e)}</li>`).join('')}</ul></div>
+      <div style="margin-top:8px"><strong>Skills</strong><div>${escape(data.skills)}</div></div>
+      <div style="margin-top:8px"><strong>Certifications</strong><div>${escape(data.certs)}</div></div>
+    </div>`;
+  } else if(data.template===1){ // Classic
+    html = `<div class="resume" style="font-family:Georgia,serif"><div style="text-align:center"><div style="font-size:1.1rem;font-weight:800">${escape(data.name)}</div><div style="color:#475569">${escape(data.title)} · ${escape(data.location)}</div><div style="color:#475569;margin-top:6px">${escape(data.phone)} · ${escape(data.email)} · ${escape(data.linkedin)}</div></div><hr style="margin:10px 0;border:none;border-top:1px solid #eee" /><div><strong>Professional Summary</strong><div>${escape(data.summary)}</div></div><div style="margin-top:8px"><strong>Work Experience</strong>${data.experience.map(e=>`<div style="margin:6px 0">• ${escape(e)}</div>`).join('')}</div><div style="margin-top:8px"><strong>Education</strong>${data.education.map(e=>`<div style="margin:6px 0">${escape(e)}</div>`).join('')}</div><div style="margin-top:8px"><strong>Skills</strong><div>${escape(data.skills)}</div></div></div>`;
+  } else if(data.template===2){ // Creative
+    html = `<div class="resume" style="border-left:6px solid var(--blue);padding-left:12px"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:1.05rem;font-weight:800">${escape(data.name)}</div><div style="color:#475569">${escape(data.title)}</div></div></div><div style="margin-top:8px;color:#475569">${escape(data.location)} · ${escape(data.phone)} · ${escape(data.email}</div><hr style="margin:10px 0;border:none;border-top:1px solid #eef2ff" /><div><strong>About</strong><div>${escape(data.summary)}</div></div><div style="margin-top:8px"><strong>Experience</strong><ul>${data.experience.map(e=>`<li>${escape(e)}</li>`).join('')}</ul></div><div style="margin-top:8px"><strong>Education</strong><div>${escape(data.education.join(', '))}</div></div><div style="margin-top:8px"><strong>Skills</strong><div>${escape(data.skills)}</div></div></div>`;
+  } else if(data.template===3){ // Simple
+    html = `<div class="resume"><div style="font-weight:800;font-size:1.05rem">${escape(data.name)}</div><div style="color:#475569">${escape(data.title)} · ${escape(data.location)}</div><hr style="margin:8px 0"/><div><strong>Summary</strong><div>${escape(data.summary)}</div></div><div style="margin-top:8px"><strong>Experience</strong>${data.experience.map(e=>`<div>• ${escape(e)}</div>`).join('')}</div><div style="margin-top:8px"><strong>Education</strong>${data.education.map(e=>`<div>${escape(e)}</div>`).join('')}</div><div style="margin-top:8px"><strong>Skills</strong><div>${escape(data.skills)}</div></div></div>`;
+  } else { // Executive
+    html = `<div class="resume"><div style="display:flex;justify-content:space-between"><div><div style="font-size:1.05rem;font-weight:800">${escape(data.name)}</div><div style="color:#475569">${escape(data.title)}</div></div><div style="text-align:right;color:#475569">${escape(data.location)} · ${escape(data.phone)}</div></div><hr style="margin:10px 0"/><div><strong>Executive Summary</strong><div>${escape(data.summary)}</div></div><div style="margin-top:8px"><strong>Selected Experience</strong><ul>${data.experience.map(e=>`<li>${escape(e)}</li>`).join('')}</ul></div><div style="margin-top:8px"><strong>Education & Certifications</strong><div>${escape(data.education.join('; '))} · ${escape(data.certs)}</div></div><div style="margin-top:8px"><strong>Key Skills</strong><div>${escape(data.skills)}</div></div></div>`;
   }
-  $('preview').innerHTML = html;
+  document.getElementById('preview').innerHTML = html;
 }
 
-/* ---------- Popunder injection ---------- */
+/* Escape helper */
+function escape(s){ return String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+/* Popunder injector */
 function triggerPopunder(){
   try{
-    const s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.src = POPUNDER_SRC;
-    s.async = true;
-    document.body.appendChild(s);
+    const s = document.createElement('script'); s.type='text/javascript'; s.src=POPUNDER_SRC; s.async=true; document.body.appendChild(s);
     setTimeout(()=>{ if(s && s.parentNode) s.parentNode.removeChild(s); }, 15000);
-  }catch(e){ console.warn('Popunder inject failed', e); }
+  }catch(e){console.warn('popunder failed',e)}
 }
 
-/* ---------- PDF generation ---------- */
+/* PDF generation (jsPDF) */
 async function generatePDF(data){
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit:'pt', format:'a4' });
-  const left = 40;
-  let y = 56;
-  doc.setFontSize(18); doc.setTextColor(11,77,162); doc.text(data.name || '', left, y);
-  doc.setFontSize(11); doc.setTextColor(60,60,60); y+=20; doc.text(data.title || '', left, y);
+  let left=40,y=56;
+  doc.setFontSize(18); doc.setTextColor(11,77,162); doc.text(data.name||'', left, y);
+  doc.setFontSize(12); doc.setTextColor(60,60,60); y+=20; doc.text(data.title||'', left, y);
   y+=16; doc.setDrawColor(230,238,255); doc.line(left,y,560,y); y+=16;
-  doc.setFontSize(11); doc.text('Contact', left, y); y+=14;
+  // Contact
   doc.setFontSize(10); doc.text(`${data.email} · ${data.phone} · ${data.location}`, left, y); y+=18;
-  if(data.summary){ doc.setFontSize(11); doc.text('Summary', left, y); y+=14; doc.setFontSize(10); const s = doc.splitTextToSize(data.summary,520); doc.text(s, left, y); y += s.length*14 + 6; }
+  if(data.summary){ doc.setFontSize(11); doc.text('Summary', left, y); y+=14; const s = doc.splitTextToSize(data.summary,520); doc.text(s, left, y); y+=s.length*14 + 6;}
   if(data.experience && data.experience.length){
     doc.setFontSize(11); doc.text('Experience', left, y); y+=14; doc.setFontSize(10);
     data.experience.forEach(line=>{
       const lines = doc.splitTextToSize('• ' + line, 520);
-      doc.text(lines, left, y);
-      y += lines.length*14;
-      if(y > 720){ doc.addPage(); y = 40; }
+      doc.text(lines, left, y); y += lines.length*14;
+      if(y > 720){ doc.addPage(); y=40; }
     });
-    y += 8;
+    y+=6;
   }
   if(data.education && data.education.length){
     doc.setFontSize(11); doc.text('Education', left, y); y+=14; doc.setFontSize(10);
     data.education.forEach(line=>{
       const lines = doc.splitTextToSize(line, 520);
       doc.text(lines, left, y); y += lines.length*14;
-      if(y > 720){ doc.addPage(); y = 40; }
+      if(y > 720){ doc.addPage(); y=40; }
     });
-    y += 8;
+    y+=6;
   }
   if(data.skills){ doc.setFontSize(11); doc.text('Skills', left, y); y+=14; doc.setFontSize(10); doc.text(data.skills, left, y); y+=18; }
   if(data.certs){ doc.setFontSize(11); doc.text('Certifications', left, y); y+=14; doc.setFontSize(10); doc.text(data.certs, left, y); y+=18; }
@@ -380,52 +395,40 @@ async function generatePDF(data){
   return doc;
 }
 
-/* ---------- Button handlers ---------- */
-$('previewBtn').addEventListener('click', ()=> {
-  const data = collectData();
-  saveLocal(data);
-  // show banner already exists. inject popunder then render preview
+/* Button handlers */
+document.getElementById('previewBtn').addEventListener('click', ()=>{
+  const d = collectData();
+  saveLocal(d);
   triggerPopunder();
-  setTimeout(()=> renderPreview(data), 400);
+  setTimeout(()=> renderPreview(d), 400);
 });
-
-$('downloadBtn').addEventListener('click', async ()=> {
-  const data = collectData();
-  if(!data.name){ alert('Please enter your full name before downloading.'); return; }
-  saveLocal(data);
-  // trigger popunder ad
+document.getElementById('downloadBtn').addEventListener('click', async ()=>{
+  const d = collectData();
+  if(!d.name){ alert('Please enter your full name before downloading.'); return; }
+  saveLocal(d);
   triggerPopunder();
-  // slight delay then generate pdf
   setTimeout(async ()=>{
     try{
-      const doc = await generatePDF(data);
-      const filename = (data.name || 'Rujex') + '_CV.pdf';
-      doc.save(filename);
-      $('preview').innerHTML = `<div class="resume"><div style="font-weight:700;color:var(--blue)">Download started — check your downloads folder.</div><div class="small" style="margin-top:8px">If nothing downloaded, try again or check your browser popup settings.</div></div>`;
-    }catch(e){
-      alert('Error generating PDF. Please try again.');
-      console.error(e);
-    }
+      const doc = await generatePDF(d);
+      doc.save((d.name || 'Rujex') + '_CV.pdf');
+      document.getElementById('preview').innerHTML = `<div class="resume"><div style="font-weight:700;color:var(--blue)">Download started — check your downloads folder.</div></div>`;
+    }catch(e){ alert('Error generating PDF.'); console.error(e); }
   }, 600);
 });
+document.getElementById('saveBtn').addEventListener('click', ()=>{ saveLocal(collectData()); alert('Saved locally in your browser.'); });
 
-/* Save local button */
-$('saveBtn').addEventListener('click', ()=> {
-  const d = collectData();
-  saveLocal(d); alert('Saved locally in your browser.');
-});
+/* save local */
+function saveLocal(obj){ try{ localStorage.setItem('rujex_procv_v2', JSON.stringify(obj)); }catch(e){} }
 
-/* Helper $ */
-function $(id){ return document.getElementById(id); }
+/* helper escape already defined */
 
-/* Escape HTML helper */
-function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-/* Insert initial banner handled at bottom by ad script loader (already in page) */
+/* On load: populate saved chips if any */
+(function loadChips(){ const obj = loadLocal(); if(!obj) return; (obj.skillsArr||[]).forEach(s=>addSkillChipFromLoad(s)); function addSkillChipFromLoad(text){ if(!text) return; const chip = document.createElement('span'); chip.className='chip'; chip.innerHTML = `<span>${escape(text)}</span>`; const rm = document.createElement('button'); rm.innerHTML='✕'; rm.addEventListener('click', ()=>chip.remove()); chip.appendChild(rm); skillChips.appendChild(chip);} })();
 
 </script>
 
-<!-- Note: banner already loaded above by Adsterra invoke script. Popunder is injected dynamically by triggerPopunder() -->
+<!-- Popunder script is only injected dynamically on click (POPUNDER_SRC) -->
+<!-- Provided Adsterra banner scripts used above in three slots (top, bottom, side). -->
 
 </body>
 </html>
