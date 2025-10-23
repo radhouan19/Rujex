@@ -1,211 +1,110 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Fun Life Challenges - Track your daily challenges, earn badges, and share achievements. Perfect for Americans looking for daily motivation and fun progress.">
-<meta name="keywords" content="Daily Challenge, Fun Badge, Productivity, Wellness, US Users, Life Challenges">
-<title>Fun Life Challenges – Daily Motivation & Badges</title>
+<title>Rujex Age Calculator – Health & Life Tips USA</title>
+<meta name="description" content="Rujex Age Calculator: Calculate your age and get personalized life & health advice tailored for Americans.">
+<meta name="keywords" content="age calculator, health tips, life advice, USA, American users, wellness">
 <style>
-body { font-family:'Helvetica Neue',Arial,sans-serif; background:linear-gradient(to right,#ffeaa7,#fab1a0); margin:0; padding:0; text-align:center;}
-nav { background:#fff; padding:10px; box-shadow:0 5px 10px rgba(0,0,0,0.1);}
-nav a { margin:0 10px; text-decoration:none; color:#d63031; font-weight:bold; cursor:pointer;}
-.container { max-width:700px; margin:20px auto; background:#fff; padding:25px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.2);}
-h1 { color:#d63031;}
-button { padding:10px 20px; margin:10px; border:none; border-radius:10px; background:#d63031; color:#fff; cursor:pointer; font-size:16px;}
-button:hover { background:#e17055;}
-.challenge { margin:15px 0; font-size:18px; font-weight:bold; color:#2d3436;}
-.result { margin-top:20px; font-size:16px; font-weight:bold;}
-.points { margin-top:10px; font-size:14px; font-weight:bold; color:#0984e3;}
-.streak { margin-top:5px; font-size:12px; color:#636e72;}
-canvas { max-width:100%; margin-top:20px; }
-.ads { margin-top:20px; font-size:12px; color:#636e72;}
-#shareModal {display:none; position:fixed; left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;}
-#shareModal div {background:#fff;padding:15px;border-radius:8px;max-width:90%;width:420px;margin:auto;text-align:center;}
-#shareModal img {max-width:100%;border-radius:6px;}
-#shareModal button {margin:5px;}
+body {font-family: Arial, sans-serif; margin:0; padding:0; background:#f9f9f9; color:#333;}
+header {background:#2c3e50; color:#fff; padding:20px; text-align:center;}
+main {padding:20px; max-width:600px; margin:auto;}
+label, button {display:block; margin:10px 0; font-size:1.1em;}
+input[type="date"] {width:100%; padding:10px; border:1px solid #ccc; border-radius:5px;}
+button {padding:10px; background:#27ae60; color:#fff; border:none; border-radius:5px; cursor:pointer;}
+button:hover {background:#2ecc71;}
+.result {background:#fff; padding:15px; margin-top:20px; border-radius:5px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+footer {background:#2c3e50; color:#fff; text-align:center; padding:20px; margin-top:30px;}
+.nav {text-align:center; margin-bottom:20px;}
+.nav a {margin:0 10px; color:#fff; text-decoration:none;}
+.nav a:hover {text-decoration:underline;}
+#ad-banner {width:100%; height:60px; margin-top:20px; text-align:center;}
 </style>
 </head>
 <body>
 
-<nav>
-  <a onclick="showSection('home')">Home</a> |
-  <a onclick="showSection('about')">About</a> |
-  <a onclick="showSection('contact')">Contact</a> |
-  <a onclick="showSection('privacy')">Privacy</a>
-</nav>
-
-<div class="container" id="home">
-<h1>Fun Life Challenges</h1>
-<p>Complete daily challenges and earn badges!</p>
-
-<div id="challengeList"></div>
-<button onclick="completeChallenge()">Complete Challenge</button>
-
-<div class="result" id="result"></div>
-<div class="points" id="points">Points: 0</div>
-<div class="streak" id="streak">Streak: 0 days</div>
-
-<canvas id="progressChart"></canvas>
-<canvas id="shareCanvas" style="display:none;"></canvas>
-
-<div class="ads">
-  <div id="ad-popunder"></div>
-  <div id="ad-banana"></div>
-</div>
-</div>
-
-<div class="container section" id="about">
-<h2>About Fun Life Challenges</h2>
-<p>Complete simple daily challenges, earn badges, and share your achievements. Designed for Americans seeking daily motivation and fun progress.</p>
-</div>
-
-<div class="container section" id="contact">
-<h2>Contact</h2>
-<p>Email: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></p>
-</div>
-
-<div class="container section" id="privacy">
-<h2>Privacy Policy</h2>
-<p>All data is stored locally in your browser. Your progress is never sent to servers unless you choose to share.</p>
-</div>
-
-<!-- Share Modal -->
-<div id="shareModal">
-  <div>
-    <h3>Your Progress Image</h3>
-    <img id="sharePreview" alt="Progress Preview">
-    <div>
-      <button id="downloadBtn">Download PNG</button>
-      <button id="copyBtn">Copy Image</button>
-      <button id="closeShare">Close</button>
-    </div>
-    <p style="font-size:12px;color:#666;">Image is generated locally. You control when/where to share it.</p>
+<header>
+  <h1>Rujex Age Calculator</h1>
+  <div class="nav">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="#privacy">Privacy</a>
   </div>
-</div>
+</header>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<main id="home">
+  <label for="dob">Enter Your Date of Birth:</label>
+  <input type="date" id="dob" required>
+  <button id="calculateBtn">Calculate Age & Get Advice</button>
+
+  <div id="result" class="result" style="display:none;">
+    <p><strong>Your Age:</strong> <span id="ageDisplay"></span></p>
+    <p><strong>Advice for You:</strong></p>
+    <p id="advice"></p>
+  </div>
+
+  <div id="ad-banner">
+    <!-- Banner Ad -->
+    <script type="text/javascript">
+      atOptions = {
+        'key' : 'c75931fa51a9da29fcabfc423bfe7608',
+        'format' : 'iframe',
+        'height' : 60,
+        'width' : 468,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"></script>
+  </div>
+</main>
+
+<section id="about" style="padding:20px; max-width:600px; margin:auto;">
+  <h2>About Rujex Age Calculator</h2>
+  <p>This tool calculates your exact age and gives personalized health and life advice based on your age. Designed for American users, it helps you stay aware of wellness and lifestyle tips suitable for your stage of life.</p>
+</section>
+
+<section id="contact" style="padding:20px; max-width:600px; margin:auto;">
+  <h2>Contact Us</h2>
+  <p>Email: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></p>
+</section>
+
+<section id="privacy" style="padding:20px; max-width:600px; margin:auto;">
+  <h2>Privacy Policy</h2>
+  <p>We respect your privacy. This tool does not store any personal data. Your date of birth is used only for calculating your age and generating advice locally on your device.</p>
+</section>
+
+<footer>
+  &copy; 2025 Rujex. All rights reserved.
+</footer>
+
+<!-- Popunder Ad -->
+<script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
+
 <script>
-// Navigation
-function showSection(section){
-  ['home','about','contact','privacy'].forEach(s=>{
-    document.getElementById(s).style.display=(s===section)?'block':'none';
-  });
-}
-showSection('home');
+document.getElementById('calculateBtn').addEventListener('click', function() {
+    const dob = document.getElementById('dob').value;
+    if(!dob) { alert("Please enter your date of birth."); return; }
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if(m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
+    document.getElementById('ageDisplay').textContent = age + " years";
 
-// Sample daily challenges
-const challenges = [
-  "Drink 2L water today",
-  "Walk 5000 steps",
-  "Read for 20 minutes",
-  "Learn one new word",
-  "Do 15 push-ups",
-  "Write a gratitude note",
-  "Meditate for 10 minutes"
-];
+    let adviceText = "";
+    if(age <= 12) adviceText = "Focus on playing, being active, and eating healthy.";
+    else if(age <= 18) adviceText = "Get enough sleep and limit phone use before bed.";
+    else if(age <= 25) adviceText = "Exercise regularly and start financial planning.";
+    else if(age <= 35) adviceText = "Maintain a balanced diet and save money.";
+    else if(age <= 50) adviceText = "Regular health check-ups, manage stress, stay active.";
+    else if(age <= 65) adviceText = "Monitor blood pressure and cholesterol, stay active.";
+    else adviceText = "Engage in light exercises, eat healthy, follow medical advice.";
 
-// Points & Streak
-let totalPoints = localStorage.getItem('funPoints') ? parseInt(localStorage.getItem('funPoints')) : 0;
-let streak = localStorage.getItem('funStreak') ? parseInt(localStorage.getItem('funStreak')) : 0;
-let lastVisit = localStorage.getItem('funLastVisit') ? new Date(localStorage.getItem('funLastVisit')) : null;
-
-document.getElementById('points').textContent = `Points: ${totalPoints}`;
-document.getElementById('streak').textContent = `Streak: ${streak} days`;
-
-let chart;
-
-// Display random challenge
-function showChallenge(){
-  const randIndex = Math.floor(Math.random()*challenges.length);
-  document.getElementById('challengeList').textContent = challenges[randIndex];
-}
-showChallenge();
-
-// Complete challenge
-function completeChallenge(){
-  const today=new Date();
-  if(lastVisit){
-    const diffDays=Math.floor((today-lastVisit)/(1000*60*60*24));
-    if(diffDays===1) streak++;
-    else if(diffDays>1) streak=1;
-  } else streak=1;
-  lastVisit=today;
-  totalPoints+=10;
-  localStorage.setItem('funPoints',totalPoints);
-  localStorage.setItem('funStreak',streak);
-  localStorage.setItem('funLastVisit',today);
-
-  document.getElementById('points').textContent=`Points: ${totalPoints}`;
-  document.getElementById('streak').textContent=`Streak: ${streak} days`;
-
-  const badge = streak>=10 ? "🏆 Consistency Champion" :
-                streak>=5 ? "🥈 Dedicated Doer" : "🥉 Beginner Achiever";
-  document.getElementById('result').textContent=`Challenge Completed! Badge: ${badge}`;
-  renderChart(totalPoints, streak);
-  showChallenge();
-  loadAds();
-}
-
-// Chart.js
-function renderChart(points, streak){
-  const ctx = document.getElementById('progressChart').getContext('2d');
-  const data = {
-    labels:['Points','Streak'],
-    datasets:[{
-      label:'Progress',
-      data:[points, streak],
-      backgroundColor:['#0984e3','#d63031']
-    }]
-  };
-  if(chart) chart.destroy();
-  chart = new Chart(ctx,{ type:'bar', data:data, options:{responsive:true} });
-}
-
-// Share as Image
-function shareProgress(){
-  const chartCanvas = document.getElementById('progressChart');
-  const shareCanvas = document.getElementById('shareCanvas');
-  shareCanvas.width = chartCanvas.width;
-  shareCanvas.height = chartCanvas.height + 100;
-  const ctx = shareCanvas.getContext('2d');
-
-  ctx.fillStyle='#fff';
-  ctx.fillRect(0,0,shareCanvas.width,shareCanvas.height);
-  ctx.drawImage(chartCanvas,0,0);
-
-  const resultText=document.getElementById('result').innerText;
-  ctx.fillStyle='#222';
-  ctx.font='14px Arial';
-  ctx.fillText(resultText,10,chartCanvas.height+20);
-
-  const dataURL=shareCanvas.toDataURL('image/png');
-  const modal=document.getElementById('shareModal');
-  const preview=document.getElementById('sharePreview');
-  preview.src=dataURL;
-  modal.style.display='flex';
-
-  document.getElementById('downloadBtn').onclick=()=>{ const a=document.createElement('a'); a.href=dataURL; a.download='fun-challenge.png'; a.click();};
-  document.getElementById('copyBtn').onclick=async()=>{ try { const res=await fetch(dataURL); const blob=await res.blob(); await navigator.clipboard.write([new ClipboardItem({[blob.type]:blob})]); alert('Image copied to clipboard!');} catch(e){alert('Copy failed');}};
-  document.getElementById('closeShare').onclick=()=>{modal.style.display='none';};
-}
-
-// Ads
-function loadAds(){
-  var po=document.createElement('script');
-  po.type='text/javascript';
-  po.src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js';
-  document.getElementById('ad-popunder').appendChild(po);
-
-  var ba=document.createElement('script');
-  ba.type='text/javascript';
-  ba.text=`atOptions = {'key' : 'c75931fa51a9da29fcabfc423bfe7608','format' : 'iframe','height' : 60,'width' : 468,'params' : {}};`;
-  document.getElementById('ad-banana').appendChild(ba);
-  var ba2=document.createElement('script');
-  ba2.type='text/javascript';
-  ba2.src='//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js';
-  document.getElementById('ad-banana').appendChild(ba2);
-}
+    document.getElementById('advice').textContent = adviceText;
+    document.getElementById('result').style.display = "block";
+});
 </script>
 
 </body>
