@@ -1,115 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rujex — Age Calculator Online</title>
-
-  <!-- Meta Tags SEO -->
-  <meta name="description" content="Calculate your exact age instantly with Rujex Age Calculator. Free online tool to know your age in years, months, and days.">
-  <meta name="keywords" content="age calculator, calculate age online, free age calculator, Rujex, online tools">
-  <meta name="author" content="Radhouan">
-
-  <!-- Open Graph / Social Sharing -->
-  <meta property="og:title" content="Rujex — Age Calculator Online">
-  <meta property="og:description" content="Calculate your exact age instantly with Rujex Age Calculator. Free online tool to know your age in years, months, and days.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://rujex.com">
-  <meta property="og:image" content="https://rujex.com/thumbnail.png">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Rujex — Age Calculator Online">
-  <meta name="twitter:description" content="Calculate your exact age instantly with Rujex Age Calculator. Free online tool to know your age in years, months, and days.">
-  <meta name="twitter:image" content="https://rujex.com/thumbnail.png">
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Rujex Life Adventure – Fun interactive daily tool giving personal snapshots, challenges, and points. Optimized for US users.">
+<meta name="keywords" content="Daily Fun, US Users, Personal Snapshot, Gamification, Challenges, Fun Facts, Interactive Tool, Rujex">
+<title>Rujex Life Adventure – Daily Fun & Challenges</title>
+<style>
+body { font-family: Arial, sans-serif; background: linear-gradient(to right, #ffecd2, #fcb69f); margin:0; padding:0; overflow-x:hidden;}
+nav { background:#fff; padding:10px; text-align:center; box-shadow:0 5px 10px rgba(0,0,0,0.1);}
+nav a { margin:0 10px; text-decoration:none; color:#ff6f61; font-weight:bold; cursor:pointer;}
+.container { background:#fff; padding:30px; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.2); text-align:center; max-width:450px; width:90%; margin:20px auto; position:relative;}
+input, button { padding:10px; margin:10px 0; width:80%; border-radius:10px; border:1px solid #ccc; font-size:16px;}
+button { background-color:#ff6f61; color:#fff; border:none; cursor:pointer;}
+button:hover { background-color:#ff4c3b; }
+.result { margin-top:20px; font-size:18px; min-height:60px; transition: all 0.5s;}
+.points { margin-top:10px; font-size:16px; font-weight:bold;}
+.share-buttons button { background-color:#4caf50; margin:5px;}
+.ads { margin-top:20px; font-size:12px; color:#999;}
+.section { display:none; margin-top:20px; text-align:left;}
+.section h2 { color:#ff6f61;}
+canvas { position:fixed; top:0; left:0; pointer-events:none; z-index:9999;}
+</style>
 </head>
-<body class="bg-gray-100 text-gray-900 font-sans">
+<body>
 
-  <!-- الموقع الرئيسي -->
-  <header class="text-center py-10 bg-blue-600 text-white">
-    <h1 class="text-4xl font-bold">Rujex — Age Calculator</h1>
-    <p class="mt-2">Calculate your exact age instantly online!</p>
-  </header>
+<nav>
+  <a onclick="showSection('home')">Home</a> |
+  <a onclick="showSection('about')">About</a> |
+  <a onclick="showSection('contact')">Contact Us</a> |
+  <a onclick="showSection('privacy')">Privacy Policy</a>
+</nav>
 
-  <main class="max-w-xl mx-auto p-6">
+<!-- Home Section -->
+<div class="container" id="home">
+  <h1>Rujex Life Adventure</h1>
+  <p>Enter your birth date and get your daily fun snapshot + challenge!</p>
+  <input type="date" id="birthdate" placeholder="Enter your birth date">
+  <button onclick="calculateSnapshot()">See Your Daily Snapshot</button>
+  <div class="result" id="result"></div>
+  <div class="points" id="points">Points: 0</div>
+  <div class="share-buttons">
+    <button onclick="shareTwitter()">Share on Twitter</button>
+    <button onclick="shareFacebook()">Share on Facebook</button>
+  </div>
+  <div class="ads">
+    <div id="ad-popunder"></div>
+    <div id="ad-banana"></div>
+  </div>
+</div>
 
-    <!-- Banner Ad -->
-    <div class="my-6 text-center">
-      <script type="text/javascript">
-        atOptions = {
-          'key' : 'c75931fa51a9da29fcabfc423bfe7608',
-          'format' : 'iframe',
-          'height' : 60,
-          'width' : 468,
-          'params' : {}
-        };
-      </script>
-      <script type="text/javascript" src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"></script>
-    </div>
+<!-- About Section -->
+<div class="container section" id="about">
+  <h2>About Rujex Life Adventure</h2>
+  <p>Rujex Life Adventure is a fun, interactive daily tool that gives you personal snapshots, challenges, and points. Designed for daily use and maximum fun. Optimized for users in the United States.</p>
+</div>
 
-    <!-- Age Calculator Tool -->
-    <section id="calculator" class="bg-white rounded-lg shadow p-6">
-      <label for="birthdate" class="block mb-2 font-semibold">Enter your birthdate:</label>
-      <input type="date" id="birthdate" class="border rounded px-3 py-2 w-full mb-4">
-      <button id="calculateBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Calculate Age</button>
-      <p id="result" class="mt-4 text-lg font-semibold"></p>
-    </section>
+<!-- Contact Section -->
+<div class="container section" id="contact">
+  <h2>Contact Us</h2>
+  <p>Email: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></p>
+</div>
 
-    <!-- روابط داخلية -->
-    <nav class="mt-8 text-center space-x-4">
-      <a href="#calculator" class="text-blue-600 hover:underline">Calculator</a>
-      <a href="#about" class="text-blue-600 hover:underline">About</a>
-      <a href="#contact" class="text-blue-600 hover:underline">Contact</a>
-      <a href="#privacy" class="text-blue-600 hover:underline">Privacy Policy</a>
-    </nav>
+<!-- Privacy Section -->
+<div class="container section" id="privacy">
+  <h2>Privacy Policy</h2>
+  <p>Your privacy is important. Rujex Life Adventure does not store any personal data except for points saved locally in your browser. No personal data is transmitted or shared.</p>
+</div>
 
-    <!-- About Section -->
-    <section id="about" class="mt-12">
-      <h2 class="text-2xl font-bold mb-2">About Rujex</h2>
-      <p>Rujex Age Calculator is a free online tool to calculate your exact age in years, months, and days instantly.</p>
-    </section>
+<canvas id="confetti"></canvas>
 
-    <!-- Contact Section -->
-    <section id="contact" class="mt-12">
-      <h2 class="text-2xl font-bold mb-2">Contact</h2>
-      <p>Email: mrguettafradhouan@gmail.com</p>
-    </section>
+<script>
+// Gamification & Daily Snapshot
+let totalPoints = localStorage.getItem('rujexPoints') ? parseInt(localStorage.getItem('rujexPoints')) : 0;
+document.getElementById('points').textContent = `Points: ${totalPoints}`;
 
-    <!-- Privacy Policy Section -->
-    <section id="privacy" class="mt-12 mb-12">
-      <h2 class="text-2xl font-bold mb-2">Privacy Policy</h2>
-      <p>We respect your privacy. No personal data is stored permanently.</p>
-    </section>
+function calculateSnapshot() {
+  const birthdate = new Date(document.getElementById('birthdate').value);
+  if (!birthdate.getTime()) { alert("Please enter a valid date!"); return; }
 
-  </main>
+  const today = new Date();
+  const ageInMs = today - birthdate;
+  const ageInDays = Math.floor(ageInMs / (1000*60*60*24));
+  const ageInYears = Math.floor(ageInDays / 365);
+  const remainingDays = ageInDays % 365;
 
-  <!-- Popunder Ad -->
-  <script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
+  const snapshotMessages = [
+    `🎉 Wow! You've lived ${ageInDays} days!`,
+    `🌟 You are ${ageInYears} years and ${remainingDays} days old!`,
+    `💡 Fun fact: Today is your day to shine!`,
+    `✨ Your personal snapshot: ${ageInYears} years of awesomeness!`,
+    `🚀 Challenge: Send a kind message to a friend today!`
+  ];
 
-  <!-- Age Calculator Script -->
-  <script>
-    const calculateBtn = document.getElementById('calculateBtn');
-    const birthdateInput = document.getElementById('birthdate');
-    const result = document.getElementById('result');
+  const randomMessage = snapshotMessages[Math.floor(Math.random()*snapshotMessages.length)];
+  document.getElementById('result').textContent = randomMessage;
 
-    calculateBtn.addEventListener('click', () => {
-      const birthdate = new Date(birthdateInput.value);
-      const today = new Date();
-      if(!birthdateInput.value){
-        result.textContent = "Please enter a valid date!";
-        return;
-      }
-      let age = today.getFullYear() - birthdate.getFullYear();
-      const m = today.getMonth() - birthdate.getMonth();
-      if(m < 0 || (m === 0 && today.getDate() < birthdate.getDate())){
-        age--;
-      }
-      result.textContent = `Your age is ${age} years.`;
+  // Increase points
+  totalPoints += 10;
+  localStorage.setItem('rujexPoints', totalPoints);
+  document.getElementById('points').textContent = `Points: ${totalPoints}`;
+
+  // Confetti + Sound
+  launchConfetti();
+  playSound();
+}
+
+// Confetti effect
+const canvas = document.getElementById('confetti');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let confettiParticles = [];
+
+function launchConfetti() {
+  confettiParticles = [];
+  for(let i=0;i<150;i++){
+    confettiParticles.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height- canvas.height,
+      r: Math.random()*6+4,
+      d: Math.random()*20+10,
+      color: `hsl(${Math.random()*360}, 100%, 50%)`,
+      tilt: Math.random()*10-10
     });
-  </script>
+  }
+  requestAnimationFrame(drawConfetti);
+}
+
+function drawConfetti(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  confettiParticles.forEach((p)=>{
+    ctx.beginPath();
+    ctx.moveTo(p.x+ p.tilt+ p.r/2, p.y);
+    ctx.lineTo(p.x+ p.tilt, p.y+ p.r);
+    ctx.strokeStyle = p.color;
+    ctx.lineWidth = p.r/2;
+    ctx.stroke();
+    p.y += (Math.cos(p.d)+3+ p.r/2)/2;
+    p.tilt += 0.1;
+    if(p.y>canvas.height) p.y = -10;
+  });
+  requestAnimationFrame(drawConfetti);
+}
+
+// Sound effect
+function playSound(){
+  const audio = new Audio('https://www.myinstants.com/media/sounds/tada-fanfare.mp3');
+  audio.volume = 0.3;
+  audio.play();
+}
+
+// Social sharing
+function shareTwitter() {
+  const result = document.getElementById('result').textContent;
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(result)}&url=${url}`,"_blank");
+}
+function shareFacebook() {
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`,"_blank");
+}
+
+// Navigation
+function showSection(section){
+  ['home','about','contact','privacy'].forEach(s=>{
+    document.getElementById(s).style.display = s===section?'block':'none';
+  });
+}
+showSection('home');
+
+// Responsive canvas
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight;});
+</script>
+
+<!-- Popunder Ads -->
+<script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
+
+<!-- Banana Ads -->
+<script type="text/javascript">
+atOptions = {
+  'key' : 'c75931fa51a9da29fcabfc423bfe7608',
+  'format' : 'iframe',
+  'height' : 60,
+  'width' : 468,
+  'params' : {}
+};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"></script>
 
 </body>
 </html>
