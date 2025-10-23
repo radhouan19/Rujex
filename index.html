@@ -26,7 +26,6 @@ button:hover {background:#34d399;}
 .share-buttons button:hover {background:#60a5fa;}
 footer {background:#1e3a8a; color:#fff; text-align:center; padding:20px; margin-top:30px;}
 #ad-banner {width:100%; height:60px; margin-top:20px; text-align:center;}
-canvas {display:none;}
 </style>
 </head>
 <body>
@@ -55,8 +54,6 @@ canvas {display:none;}
       <button id="shareLinkedIn">Share on LinkedIn</button>
     </div>
   </div>
-
-  <canvas id="giftCanvas" width="600" height="400"></canvas>
 
   <div id="ad-banner">
     <!-- Banner Ad -->
@@ -96,6 +93,17 @@ canvas {display:none;}
 <script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
 
 <script>
+// صور نصائح جاهزة حسب الفئة العمرية
+const giftImages = {
+  "0-12": "https://i.ibb.co/0yX0P2F/kid-gift.png",
+  "13-18": "https://i.ibb.co/4YqZyNf/teen-gift.png",
+  "19-25": "https://i.ibb.co/3WNQHq1/young-adult-gift.png",
+  "26-35": "https://i.ibb.co/9GdF9PT/adult-gift.png",
+  "36-50": "https://i.ibb.co/DkXv4Q2/mid-age-gift.png",
+  "51-65": "https://i.ibb.co/Z6cThyX/senior-gift.png",
+  "66+": "https://i.ibb.co/HNBRhZs/elder-gift.png"
+};
+
 function calculateAge(dob) {
     const birthDate = new Date(dob);
     const today = new Date();
@@ -113,7 +121,7 @@ function calculateAge(dob) {
     return {years, months, days};
 }
 
-function getGift(years) {
+function getGiftText(years) {
     if(years <= 12) return "🎁 Enjoy playing, being active, and eating healthy!";
     else if(years <= 18) return "🎁 Get enough sleep and limit phone use before bed.";
     else if(years <= 25) return "🎁 Exercise regularly and start planning your financial future.";
@@ -123,19 +131,14 @@ function getGift(years) {
     else return "🎁 Engage in light exercises, eat healthy, and follow medical advice.";
 }
 
-function drawGiftCanvas(ageText, giftText) {
-    const canvas = document.getElementById('giftCanvas');
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = "#1e3a8a";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = "#fde68a";
-    ctx.font = "bold 28px Arial";
-    ctx.fillText("Your Age & Gift 🎁", 120, 60);
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "22px Arial";
-    ctx.fillText(ageText, 50, 150);
-    ctx.fillText(giftText, 50, 220);
-    return canvas.toDataURL("image/png");
+function getGiftImage(years) {
+    if(years <= 12) return giftImages["0-12"];
+    else if(years <= 18) return giftImages["13-18"];
+    else if(years <= 25) return giftImages["19-25"];
+    else if(years <= 35) return giftImages["26-35"];
+    else if(years <= 50) return giftImages["36-50"];
+    else if(years <= 65) return giftImages["51-65"];
+    else return giftImages["66+"];
 }
 
 document.getElementById('calculateBtn').addEventListener('click', function() {
@@ -144,39 +147,17 @@ document.getElementById('calculateBtn').addEventListener('click', function() {
 
     const age = calculateAge(dob);
     const ageText = `${age.years} years, ${age.months} months, ${age.days} days`;
-    const giftText = getGift(age.years);
+    const giftText = getGiftText(age.years);
+    const giftImage = getGiftImage(age.years);
 
     document.getElementById('ageDisplay').textContent = ageText;
     document.getElementById('giftMessage').textContent = giftText;
     document.getElementById('result').style.display = "block";
 
-    // Draw image for sharing
-    const dataURL = drawGiftCanvas(ageText, giftText);
-    document.getElementById('shareFacebook').dataset.image = dataURL;
-    document.getElementById('shareTwitter').dataset.image = dataURL;
-    document.getElementById('shareLinkedIn').dataset.image = dataURL;
-});
-
-// Sharing buttons
-function openShare(url) {
-    window.open(url, '_blank', 'width=600,height=400');
-}
-
-document.getElementById('shareFacebook').addEventListener('click', function() {
-    const image = this.dataset.image;
-    const shareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(image)}`;
-    openShare(shareURL);
-});
-document.getElementById('shareTwitter').addEventListener('click', function() {
-    const image = this.dataset.image;
-    const text = encodeURIComponent("Check my personalized age gift!");
-    const shareURL = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(image)}`;
-    openShare(shareURL);
-});
-document.getElementById('shareLinkedIn').addEventListener('click', function() {
-    const image = this.dataset.image;
-    const shareURL = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(image)}`;
-    openShare(shareURL);
+    // روابط المشاركة
+    document.getElementById('shareFacebook').onclick = () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(giftImage)}`, '_blank', 'width=600,height=400');
+    document.getElementById('shareTwitter').onclick = () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent("Check my personalized age gift")}&url=${encodeURIComponent(giftImage)}`, '_blank', 'width=600,height=400');
+    document.getElementById('shareLinkedIn').onclick = () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(giftImage)}`, '_blank', 'width=600,height=400');
 });
 </script>
 
