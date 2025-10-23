@@ -3,29 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rujex Age Calculator – Health & Life Tips USA</title>
-<meta name="description" content="Rujex Age Calculator: Calculate your age and get personalized life & health advice tailored for Americans.">
+<title>Rujex Age Calculator – Personalized Life Gift</title>
+<meta name="description" content="Calculate your exact age and receive a personalized life & health gift. Designed for American users.">
 <meta name="keywords" content="age calculator, health tips, life advice, USA, American users, wellness">
 <style>
-body {font-family: Arial, sans-serif; margin:0; padding:0; background:#f9f9f9; color:#333;}
-header {background:#2c3e50; color:#fff; padding:20px; text-align:center;}
-main {padding:20px; max-width:600px; margin:auto;}
-label, button {display:block; margin:10px 0; font-size:1.1em;}
-input[type="date"] {width:100%; padding:10px; border:1px solid #ccc; border-radius:5px;}
-button {padding:10px; background:#27ae60; color:#fff; border:none; border-radius:5px; cursor:pointer;}
-button:hover {background:#2ecc71;}
-.result {background:#fff; padding:15px; margin-top:20px; border-radius:5px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
-footer {background:#2c3e50; color:#fff; text-align:center; padding:20px; margin-top:30px;}
-.nav {text-align:center; margin-bottom:20px;}
+body {font-family: Arial, sans-serif; margin:0; padding:0; background:#f0f4f8; color:#333;}
+header {background:#1e3a8a; color:#fff; padding:20px; text-align:center;}
+header h1 {margin:0;}
+.nav {text-align:center; margin-top:10px;}
 .nav a {margin:0 10px; color:#fff; text-decoration:none;}
 .nav a:hover {text-decoration:underline;}
+main {padding:20px; max-width:600px; margin:auto; background:#fff; border-radius:10px; box-shadow:0 0 15px rgba(0,0,0,0.1);}
+label, button {display:block; margin:15px 0; font-size:1.1em;}
+input[type="date"] {width:100%; padding:10px; border:1px solid #ccc; border-radius:5px;}
+button {padding:12px; background:#10b981; color:#fff; border:none; border-radius:5px; cursor:pointer; font-size:1.1em;}
+button:hover {background:#34d399;}
+.result {display:none; margin-top:20px; padding:15px; border-radius:10px; background:#fef9c3; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+.gift {background:#fde68a; padding:15px; border-radius:10px; margin-top:10px; font-size:1.1em; animation: pop 0.5s ease;}
+@keyframes pop {0%{transform:scale(0)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+.share-buttons {margin-top:15px; display:flex; justify-content:space-around;}
+.share-buttons button {background:#3b82f6; color:#fff; border-radius:5px; padding:8px; font-size:0.9em; cursor:pointer;}
+.share-buttons button:hover {background:#60a5fa;}
+footer {background:#1e3a8a; color:#fff; text-align:center; padding:20px; margin-top:30px;}
 #ad-banner {width:100%; height:60px; margin-top:20px; text-align:center;}
+canvas {display:none;}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Rujex Age Calculator</h1>
+  <h1>Rujex Age Calculator 🎁</h1>
   <div class="nav">
     <a href="#home">Home</a>
     <a href="#about">About</a>
@@ -37,13 +44,19 @@ footer {background:#2c3e50; color:#fff; text-align:center; padding:20px; margin-
 <main id="home">
   <label for="dob">Enter Your Date of Birth:</label>
   <input type="date" id="dob" required>
-  <button id="calculateBtn">Calculate Age & Get Advice</button>
+  <button id="calculateBtn">Get Your Gift 🎁</button>
 
-  <div id="result" class="result" style="display:none;">
+  <div id="result" class="result">
     <p><strong>Your Age:</strong> <span id="ageDisplay"></span></p>
-    <p><strong>Advice for You:</strong></p>
-    <p id="advice"></p>
+    <div class="gift" id="giftMessage"></div>
+    <div class="share-buttons">
+      <button id="shareFacebook">Share on Facebook</button>
+      <button id="shareTwitter">Share on Twitter</button>
+      <button id="shareLinkedIn">Share on LinkedIn</button>
+    </div>
   </div>
+
+  <canvas id="giftCanvas" width="600" height="400"></canvas>
 
   <div id="ad-banner">
     <!-- Banner Ad -->
@@ -62,7 +75,7 @@ footer {background:#2c3e50; color:#fff; text-align:center; padding:20px; margin-
 
 <section id="about" style="padding:20px; max-width:600px; margin:auto;">
   <h2>About Rujex Age Calculator</h2>
-  <p>This tool calculates your exact age and gives personalized health and life advice based on your age. Designed for American users, it helps you stay aware of wellness and lifestyle tips suitable for your stage of life.</p>
+  <p>Calculate your exact age and receive a personalized life & health gift! This tool provides advice tailored to your age and is designed for American users to help you stay healthy and motivated.</p>
 </section>
 
 <section id="contact" style="padding:20px; max-width:600px; margin:auto;">
@@ -72,7 +85,7 @@ footer {background:#2c3e50; color:#fff; text-align:center; padding:20px; margin-
 
 <section id="privacy" style="padding:20px; max-width:600px; margin:auto;">
   <h2>Privacy Policy</h2>
-  <p>We respect your privacy. This tool does not store any personal data. Your date of birth is used only for calculating your age and generating advice locally on your device.</p>
+  <p>We respect your privacy. Your date of birth is used locally to calculate your age and generate your personalized gift. No personal data is stored.</p>
 </section>
 
 <footer>
@@ -83,27 +96,87 @@ footer {background:#2c3e50; color:#fff; text-align:center; padding:20px; margin-
 <script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
 
 <script>
+function calculateAge(dob) {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let years = today.getFullYear() - birthDate.getFullYear();
+    let months = today.getMonth() - birthDate.getMonth();
+    if(today.getDate() < birthDate.getDate()) months--;
+    if(months < 0) { years--; months += 12; }
+    let days = today.getDate() - birthDate.getDate();
+    if(days < 0) {
+        const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        days += prevMonth.getDate();
+        months--;
+        if(months < 0) { months += 12; years--; }
+    }
+    return {years, months, days};
+}
+
+function getGift(years) {
+    if(years <= 12) return "🎁 Enjoy playing, being active, and eating healthy!";
+    else if(years <= 18) return "🎁 Get enough sleep and limit phone use before bed.";
+    else if(years <= 25) return "🎁 Exercise regularly and start planning your financial future.";
+    else if(years <= 35) return "🎁 Maintain a balanced diet and take care of your health.";
+    else if(years <= 50) return "🎁 Do regular health check-ups, exercise, and manage stress.";
+    else if(years <= 65) return "🎁 Monitor blood pressure & cholesterol and stay active.";
+    else return "🎁 Engage in light exercises, eat healthy, and follow medical advice.";
+}
+
+function drawGiftCanvas(ageText, giftText) {
+    const canvas = document.getElementById('giftCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = "#1e3a8a";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "#fde68a";
+    ctx.font = "bold 28px Arial";
+    ctx.fillText("Your Age & Gift 🎁", 120, 60);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "22px Arial";
+    ctx.fillText(ageText, 50, 150);
+    ctx.fillText(giftText, 50, 220);
+    return canvas.toDataURL("image/png");
+}
+
 document.getElementById('calculateBtn').addEventListener('click', function() {
     const dob = document.getElementById('dob').value;
     if(!dob) { alert("Please enter your date of birth."); return; }
-    const birthDate = new Date(dob);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if(m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
-    document.getElementById('ageDisplay').textContent = age + " years";
 
-    let adviceText = "";
-    if(age <= 12) adviceText = "Focus on playing, being active, and eating healthy.";
-    else if(age <= 18) adviceText = "Get enough sleep and limit phone use before bed.";
-    else if(age <= 25) adviceText = "Exercise regularly and start financial planning.";
-    else if(age <= 35) adviceText = "Maintain a balanced diet and save money.";
-    else if(age <= 50) adviceText = "Regular health check-ups, manage stress, stay active.";
-    else if(age <= 65) adviceText = "Monitor blood pressure and cholesterol, stay active.";
-    else adviceText = "Engage in light exercises, eat healthy, follow medical advice.";
+    const age = calculateAge(dob);
+    const ageText = `${age.years} years, ${age.months} months, ${age.days} days`;
+    const giftText = getGift(age.years);
 
-    document.getElementById('advice').textContent = adviceText;
+    document.getElementById('ageDisplay').textContent = ageText;
+    document.getElementById('giftMessage').textContent = giftText;
     document.getElementById('result').style.display = "block";
+
+    // Draw image for sharing
+    const dataURL = drawGiftCanvas(ageText, giftText);
+    document.getElementById('shareFacebook').dataset.image = dataURL;
+    document.getElementById('shareTwitter').dataset.image = dataURL;
+    document.getElementById('shareLinkedIn').dataset.image = dataURL;
+});
+
+// Sharing buttons
+function openShare(url) {
+    window.open(url, '_blank', 'width=600,height=400');
+}
+
+document.getElementById('shareFacebook').addEventListener('click', function() {
+    const image = this.dataset.image;
+    const shareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(image)}`;
+    openShare(shareURL);
+});
+document.getElementById('shareTwitter').addEventListener('click', function() {
+    const image = this.dataset.image;
+    const text = encodeURIComponent("Check my personalized age gift!");
+    const shareURL = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(image)}`;
+    openShare(shareURL);
+});
+document.getElementById('shareLinkedIn').addEventListener('click', function() {
+    const image = this.dataset.image;
+    const shareURL = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(image)}`;
+    openShare(shareURL);
 });
 </script>
 
