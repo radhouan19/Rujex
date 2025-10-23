@@ -3,35 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rujex Age Calculator – Personalized Life Gift</title>
-<meta name="description" content="Calculate your exact age and receive a personalized life & health gift. Designed for American users.">
-<meta name="keywords" content="age calculator, health tips, life advice, USA, American users, wellness">
+<title>Viral Brainstorm Magic 🇺🇸</title>
+<meta name="description" content="Transform your idea into viral posts instantly! Generate 3 ready-to-share posts with US trending hashtags.">
+<meta name="keywords" content="viral ideas, marketing, social media, USA, trending hashtags, share content">
 <style>
-body {font-family: Arial, sans-serif; margin:0; padding:0; background:#f0f4f8; color:#333;}
-header {background:#1e3a8a; color:#fff; padding:25px; text-align:center;}
-header h1 {margin:0; font-size:2em;}
+body {font-family:'Segoe UI',Arial,sans-serif; margin:0; padding:0; background:#f0f4f8; color:#333;}
+header {background:#00274d; color:#fff; padding:25px; text-align:center;}
+header h1 {margin:0; font-size:2em; color:#ff0000;}
 .nav {text-align:center; margin-top:12px;}
 .nav a {margin:0 12px; color:#fff; text-decoration:none; font-weight:bold;}
 .nav a:hover {text-decoration:underline;}
-main {padding:25px; max-width:650px; margin:auto; background:#fff; border-radius:15px; box-shadow:0 4px 25px rgba(0,0,0,0.1);}
-label {display:block; margin-top:20px; font-size:1.2em;}
-input[type="date"] {width:100%; padding:12px; margin-top:8px; border:1px solid #ccc; border-radius:8px; font-size:1em;}
-button {padding:14px; background:#10b981; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:1.2em; margin-top:20px; transition:0.3s;}
-button:hover {background:#34d399;}
-.result {display:none; margin-top:25px; padding:20px; border-radius:15px; background:#fef9c3; box-shadow:0 0 20px rgba(0,0,0,0.15); animation:pop 0.5s ease;}
+main {padding:25px; max-width:720px; margin:auto; background:#fff; border-radius:20px; box-shadow:0 6px 30px rgba(0,0,0,0.2);}
+label {display:block; margin-top:20px; font-size:1.2em; font-weight:bold;}
+input[type="text"] {width:100%; padding:14px; margin-top:10px; border:2px solid #ccc; border-radius:12px; font-size:1em;}
+button {padding:16px; background:#ff0000; color:#fff; border:none; border-radius:12px; cursor:pointer; font-size:1.2em; margin-top:20px; transition:0.3s;}
+button:hover {background:#ff4d4d;}
+.result {display:none; margin-top:25px; padding:20px; border-radius:20px; background:#fff9e6; box-shadow:0 0 25px rgba(0,0,0,0.2); animation:pop 0.5s ease;}
 @keyframes pop {0%{transform:scale(0)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
-.gift {background:#fde68a; padding:15px; border-radius:12px; margin-top:15px; font-size:1.15em; font-weight:bold;}
-.share-buttons {margin-top:20px; display:flex; justify-content:space-between; flex-wrap:wrap;}
-.share-buttons button {flex:1; margin:5px; background:#3b82f6; color:#fff; border-radius:8px; padding:10px; font-size:1em; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:0.3s;}
-.share-buttons button:hover {background:#60a5fa;}
-footer {background:#1e3a8a; color:#fff; text-align:center; padding:25px; margin-top:30px; border-top:3px solid #10b981;}
+.viral-item {margin-bottom:20px; padding:15px; background:#e6f0ff; border-radius:15px; border-left:6px solid #ff0000; animation:fadein 0.5s ease;}
+@keyframes fadein {from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);}}
+.share-buttons {margin-top:12px; display:flex; justify-content:space-between; flex-wrap:wrap;}
+.share-buttons button {flex:1; margin:5px; padding:10px; font-size:1em; border:none; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.3s;}
+.share-facebook {background:#3b5998;}
+.share-facebook:hover {background:#5b7bd5;}
+.share-twitter {background:#1da1f2;}
+.share-twitter:hover {background:#66c0f5;}
+.share-linkedin {background:#0077b5;}
+.share-linkedin:hover {background:#3399cc;}
+footer {background:#00274d; color:#fff; text-align:center; padding:25px; margin-top:30px; border-top:3px solid #ff0000;}
 #ad-banner {width:100%; height:60px; margin-top:25px; text-align:center;}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Rujex Age Calculator 🎁</h1>
+  <h1>Viral Brainstorm Magic 🇺🇸</h1>
   <div class="nav">
     <a href="#home">Home</a>
     <a href="#about">About</a>
@@ -41,19 +47,11 @@ footer {background:#1e3a8a; color:#fff; text-align:center; padding:25px; margin-
 </header>
 
 <main id="home">
-  <label for="dob">Enter Your Date of Birth:</label>
-  <input type="date" id="dob" required>
-  <button id="calculateBtn">Get Your Gift 🎁</button>
+  <label for="ideaInput">Enter your idea or project:</label>
+  <input type="text" id="ideaInput" placeholder="Type your idea here..." required>
+  <button id="generateBtn">Generate 3 Viral Posts 🚀</button>
 
-  <div id="result" class="result">
-    <p><strong>Your Age:</strong> <span id="ageDisplay"></span></p>
-    <div class="gift" id="giftMessage"></div>
-    <div class="share-buttons">
-      <button id="shareFacebook">📘 Share on Facebook</button>
-      <button id="shareTwitter">🐦 Share on Twitter</button>
-      <button id="shareLinkedIn">💼 Share on LinkedIn</button>
-    </div>
-  </div>
+  <div id="result" class="result"></div>
 
   <div id="ad-banner">
     <!-- Banner Ad -->
@@ -70,76 +68,66 @@ footer {background:#1e3a8a; color:#fff; text-align:center; padding:25px; margin-
   </div>
 </main>
 
-<section id="about" style="padding:25px; max-width:650px; margin:auto;">
-  <h2>About Rujex Age Calculator</h2>
-  <p>Calculate your exact age and receive a personalized life & health gift! This tool provides advice tailored to your age and is designed for American users to help you stay healthy and motivated.</p>
+<section id="about" style="padding:25px; max-width:720px; margin:auto;">
+  <h2>About Viral Brainstorm Magic</h2>
+  <p>Turn any idea into multiple viral posts instantly! Generate attention-grabbing text and trending hashtags to maximize reach. Perfect for American users aiming for fast idea spread and viral engagement.</p>
 </section>
 
-<section id="contact" style="padding:25px; max-width:650px; margin:auto;">
+<section id="contact" style="padding:25px; max-width:720px; margin:auto;">
   <h2>Contact Us</h2>
   <p>Email: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></p>
 </section>
 
-<section id="privacy" style="padding:25px; max-width:650px; margin:auto;">
+<section id="privacy" style="padding:25px; max-width:720px; margin:auto;">
   <h2>Privacy Policy</h2>
-  <p>We respect your privacy. Your date of birth is used locally to calculate your age and generate your personalized gift. No personal data is stored.</p>
+  <p>We respect your privacy. Your idea is used locally to generate viral-ready content. No personal data is stored.</p>
 </section>
 
 <footer>
-  &copy; 2025 Rujex. All rights reserved.
+  &copy; 2025 Viral Brainstorm Magic. All rights reserved.
 </footer>
 
 <!-- Popunder Ad -->
 <script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
 
 <script>
-function calculateAge(dob) {
-    const birthDate = new Date(dob);
-    const today = new Date();
-    let years = today.getFullYear() - birthDate.getFullYear();
-    let months = today.getMonth() - birthDate.getMonth();
-    if(today.getDate() < birthDate.getDate()) months--;
-    if(months < 0) { years--; months += 12; }
-    let days = today.getDate() - birthDate.getDate();
-    if(days < 0) {
-        const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-        days += prevMonth.getDate();
-        months--;
-        if(months < 0) { months += 12; years--; }
+function generateViralContent(idea) {
+    const hashtags = ["#Viral","#Trending","#Innovation","#USA","#Marketing","#Idea","#Growth","#Inspiration","#Success","#Entrepreneur"];
+    const encouragements = [
+      "This idea could go viral today! 🚀",
+      "Share it now and watch it spread! 🔥",
+      "Your idea deserves the spotlight! ✨",
+      "Make this trend on social media! 🌟",
+      "Get ready for massive engagement! 💡"
+    ];
+    let posts = [];
+    for(let i=0; i<3; i++){
+        const randomTag = hashtags[Math.floor(Math.random() * hashtags.length)];
+        const randomEnc = encouragements[Math.floor(Math.random() * encouragements.length)];
+        posts.push(`💡 Idea: "${idea}" — ${randomEnc} ${randomTag}`);
     }
-    return {years, months, days};
+    return posts;
 }
 
-function getGiftText(years) {
-    if(years <= 12) return "🎁 Enjoy playing, being active, and eating healthy!";
-    else if(years <= 18) return "🎁 Get enough sleep and limit phone use before bed.";
-    else if(years <= 25) return "🎁 Exercise regularly and start planning your financial future.";
-    else if(years <= 35) return "🎁 Maintain a balanced diet and take care of your health.";
-    else if(years <= 50) return "🎁 Do regular health check-ups, exercise, and manage stress.";
-    else if(years <= 65) return "🎁 Monitor blood pressure & cholesterol and stay active.";
-    else return "🎁 Engage in light exercises, eat healthy, and follow medical advice.";
-}
+document.getElementById('generateBtn').addEventListener('click', function() {
+    const idea = document.getElementById('ideaInput').value.trim();
+    if(!idea) { alert("Please enter your idea."); return; }
 
-document.getElementById('calculateBtn').addEventListener('click', function() {
-    const dob = document.getElementById('dob').value;
-    if(!dob) { alert("Please enter your date of birth."); return; }
-
-    const age = calculateAge(dob);
-    const ageText = `${age.years} years, ${age.months} months, ${age.days} days`;
-    const giftText = getGiftText(age.years);
-
-    document.getElementById('ageDisplay').textContent = ageText;
-    document.getElementById('giftMessage').textContent = giftText;
-    document.getElementById('result').style.display = "block";
-
-    const shareText = `I just used Rujex Age Calculator! My age is ${ageText} and my gift/advice: ${giftText}`;
-
-    document.getElementById('shareFacebook').onclick = () =>
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=&quote=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
-    document.getElementById('shareTwitter').onclick = () =>
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
-    document.getElementById('shareLinkedIn').onclick = () =>
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=&summary=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
+    const viralPosts = generateViralContent(idea);
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = '';
+    viralPosts.forEach((post, idx) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'viral-item';
+        itemDiv.innerHTML = `<div>${post}</div>
+            <div class="share-buttons">
+                <button class="share-facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=&quote=${encodeURIComponent(post)}','_blank','width=600,height=400')">📘 Facebook</button>
+                <button class="share-twitter" onclick="window.open('https://twitter.com/intent/tweet?text=${encodeURIComponent(post)}','_blank','width=600,height=400')">🐦 Twitter</button>
+                <button class="share-linkedin" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=&summary=${encodeURIComponent(post)}','_blank','width=600,height=400')">💼 LinkedIn</button>
+            </div>`;
+        resultDiv.appendChild(itemDiv);
+    });
+    resultDiv.style.display = "block";
 });
 </script>
 
