@@ -3,25 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Rujex Life Adventure – Fun interactive daily tool giving personal snapshots, challenges, and points. Optimized for US users.">
-<meta name="keywords" content="Daily Fun, US Users, Personal Snapshot, Gamification, Challenges, Fun Facts, Interactive Tool, Rujex">
-<title>Rujex Life Adventure – Daily Fun & Challenges</title>
+<meta name="description" content="Discover your US State personality! Fun quiz with memes, daily challenge, points, streaks, and ads for Americans.">
+<meta name="keywords" content="US Quiz, Personality Quiz, Fun Quiz, American, Gamification, Popunder Ads, Banana Ads, Interactive Tool, Rujex, Daily Challenge">
+<title>Rujex Daily Quiz – Which US State Matches You?</title>
 <style>
-body { font-family: Arial, sans-serif; background: linear-gradient(to right, #ffecd2, #fcb69f); margin:0; padding:0; overflow-x:hidden;}
-nav { background:#fff; padding:10px; text-align:center; box-shadow:0 5px 10px rgba(0,0,0,0.1);}
-nav a { margin:0 10px; text-decoration:none; color:#ff6f61; font-weight:bold; cursor:pointer;}
-.container { background:#fff; padding:30px; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.2); text-align:center; max-width:450px; width:90%; margin:20px auto; position:relative;}
-input, button { padding:10px; margin:10px 0; width:80%; border-radius:10px; border:1px solid #ccc; font-size:16px;}
-button { background-color:#ff6f61; color:#fff; border:none; cursor:pointer;}
-button:hover { background-color:#ff4c3b; }
-.result { margin-top:20px; font-size:18px; min-height:80px; transition: all 0.5s;}
+body { font-family:'Helvetica Neue',Arial,sans-serif; background:linear-gradient(to right,#ffeaa7,#fab1a0); margin:0; padding:0; text-align:center;}
+nav { background:#fff; padding:10px; box-shadow:0 5px 10px rgba(0,0,0,0.1);}
+nav a { margin:0 10px; text-decoration:none; color:#d63031; font-weight:bold; cursor:pointer;}
+.container { max-width:550px; margin:20px auto; background:#fff; padding:25px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+h1 { color:#d63031;}
+button { padding:10px 20px; margin:10px; border:none; border-radius:10px; background:#d63031; color:#fff; cursor:pointer; font-size:16px;}
+button:hover { background:#e17055;}
+.question { margin:20px 0;}
+.result { margin-top:20px; font-size:18px; font-weight:bold;}
 .points { margin-top:10px; font-size:16px; font-weight:bold;}
-.share-buttons button { background-color:#4caf50; margin:5px;}
-.ads { margin-top:20px; font-size:12px; color:#999;}
+.streak { margin-top:5px; font-size:14px; color:#0984e3;}
+.ads { margin-top:20px; font-size:12px; color:#636e72;}
 .section { display:none; margin-top:20px; text-align:left;}
-.section h2 { color:#ff6f61;}
+.section h2 { color:#d63031;}
 canvas { position:fixed; top:0; left:0; pointer-events:none; z-index:9999;}
-.card-preview { margin-top:20px; border:2px solid #ff6f61; border-radius:15px; padding:10px; background:#fff0f0;}
+.card-preview { margin-top:20px; border:2px solid #d63031; border-radius:15px; padding:10px; background:#fff5f5;}
+.meme-img { max-width:100%; border-radius:10px; margin-top:10px;}
+.share-buttons { margin-top:15px;}
+.share-buttons button { background:#0984e3; margin:5px;}
+.daily-challenge { margin-top:20px; font-size:14px; color:#d63031; font-weight:bold;}
 </style>
 </head>
 <body>
@@ -33,179 +38,175 @@ canvas { position:fixed; top:0; left:0; pointer-events:none; z-index:9999;}
   <a onclick="showSection('privacy')">Privacy Policy</a>
 </nav>
 
-<!-- Home Section -->
+<!-- Home / Quiz -->
 <div class="container" id="home">
-  <h1>Rujex Life Adventure</h1>
-  <p>Enter your birth date and get your daily fun snapshot + challenge!</p>
-  <input type="date" id="birthdate" placeholder="Enter your birth date">
-  <button onclick="calculateSnapshot()">See Your Daily Snapshot</button>
-  <div class="result" id="result"></div>
-  <div class="card-preview" id="cardPreview"></div>
-  <div class="points" id="points">Points: 0</div>
-  <div class="share-buttons">
-    <button onclick="shareTwitter()">Share on Twitter</button>
-    <button onclick="shareFacebook()">Share on Facebook</button>
+<h1>Which US State Matches Your Personality?</h1>
+<div id="quiz">
+  <div class="question" id="q1">
+    <p>Pick a hobby:</p>
+    <button onclick="nextQ(1,'Hiking')">Hiking</button>
+    <button onclick="nextQ(1,'Reading')">Reading</button>
+    <button onclick="nextQ(1,'Gaming')">Gaming</button>
+    <button onclick="nextQ(1,'Cooking')">Cooking</button>
   </div>
-  <div class="ads">
-    <div id="ad-popunder"></div>
-    <div id="ad-banana"></div>
+  <div class="question" id="q2" style="display:none;">
+    <p>Choose a favorite season:</p>
+    <button onclick="nextQ(2,'Winter')">Winter</button>
+    <button onclick="nextQ(2,'Spring')">Spring</button>
+    <button onclick="nextQ(2,'Summer')">Summer</button>
+    <button onclick="nextQ(2,'Fall')">Fall</button>
+  </div>
+  <div class="question" id="q3" style="display:none;">
+    <p>Pick a pet:</p>
+    <button onclick="nextQ(3,'Dog')">Dog</button>
+    <button onclick="nextQ(3,'Cat')">Cat</button>
+    <button onclick="nextQ(3,'Bird')">Bird</button>
+    <button onclick="nextQ(3,'Fish')">Fish</button>
+  </div>
+  <div class="question" id="q4" style="display:none;">
+    <p>Pick a snack:</p>
+    <button onclick="nextQ(4,'Chips')">Chips</button>
+    <button onclick="nextQ(4,'Chocolate')">Chocolate</button>
+    <button onclick="nextQ(4,'Fruits')">Fruits</button>
+    <button onclick="nextQ(4,'Nuts')">Nuts</button>
+  </div>
+  <div class="question" id="q5" style="display:none;">
+    <p>Pick a color:</p>
+    <button onclick="nextQ(5,'Red')">Red</button>
+    <button onclick="nextQ(5,'Blue')">Blue</button>
+    <button onclick="nextQ(5,'Green')">Green</button>
+    <button onclick="nextQ(5,'Yellow')">Yellow</button>
   </div>
 </div>
 
-<!-- About Section -->
+<div class="result" id="result"></div>
+<div class="card-preview" id="cardPreview"></div>
+
+<div class="points" id="points">Points: 0</div>
+<div class="streak" id="streak">Streak: 0 days</div>
+<div class="daily-challenge" id="dailyChallenge">Daily Challenge: Solve a new quiz today!</div>
+
+<div class="share-buttons">
+<button onclick="shareTwitter()">Share on Twitter</button>
+<button onclick="shareFacebook()">Share on Facebook</button>
+</div>
+
+<div class="ads">
+  <div id="ad-popunder"></div>
+  <div id="ad-banana"></div>
+</div>
+</div>
+
+<!-- About -->
 <div class="container section" id="about">
-  <h2>About Rujex Life Adventure</h2>
-  <p>Rujex Life Adventure is a fun, interactive daily tool that gives you personal snapshots, challenges, and points. Designed for daily use and maximum fun. Optimized for users in the United States.</p>
+<h2>About Rujex Quiz</h2>
+<p>Rujex Daily Quiz is a fun, interactive personality tool for Americans. Get your personalized US State match, enjoy memes, earn points, and share your results!</p>
 </div>
 
-<!-- Contact Section -->
+<!-- Contact -->
 <div class="container section" id="contact">
-  <h2>Contact Us</h2>
-  <p>Email: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></p>
+<h2>Contact Us</h2>
+<p>Email: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></p>
 </div>
 
-<!-- Privacy Section -->
+<!-- Privacy -->
 <div class="container section" id="privacy">
-  <h2>Privacy Policy</h2>
-  <p>Your privacy is important. Rujex Life Adventure does not store any personal data except for points saved locally in your browser. No personal data is transmitted or shared.</p>
+<h2>Privacy Policy</h2>
+<p>We respect your privacy. Only points and streaks are stored locally. No personal data is transmitted or shared.</p>
 </div>
 
 <canvas id="confetti"></canvas>
 
 <script>
-// Gamification & Accurate Age Calculation
-let totalPoints = localStorage.getItem('rujexPoints') ? parseInt(localStorage.getItem('rujexPoints')) : 0;
-document.getElementById('points').textContent = `Points: ${totalPoints}`;
+// Quiz + Points + Streak
+let answers=[], totalPoints=localStorage.getItem('rujexPoints')?parseInt(localStorage.getItem('rujexPoints')):0;
+let streak=localStorage.getItem('rujexStreak')?parseInt(localStorage.getItem('rujexStreak')):0;
+let lastVisit=localStorage.getItem('rujexLastVisit')?new Date(localStorage.getItem('rujexLastVisit')):null;
 
-function calculateSnapshot() {
-  const birthdate = new Date(document.getElementById('birthdate').value);
-  if (!birthdate.getTime()) { alert("Please enter a valid date!"); return; }
+document.getElementById('points').textContent=`Points: ${totalPoints}`;
+document.getElementById('streak').textContent=`Streak: ${streak} days`;
 
-  const today = new Date();
-  
-  let years = today.getFullYear() - birthdate.getFullYear();
-  let months = today.getMonth() - birthdate.getMonth();
-  let days = today.getDate() - birthdate.getDate();
-
-  if (days < 0) {
-    months -= 1;
-    days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
-  }
-  if (months < 0) {
-    years -= 1;
-    months += 12;
-  }
-
-  // Fun Facts based on age
-  const daysLived = Math.floor((today - birthdate) / (1000*60*60*24));
-  const milesWalked = Math.floor(daysLived * 2.5); // average 2.5 miles/day
-  const snapshotMessages = [
-    `🎉 You are ${years}y ${months}m ${days}d old!`,
-    `💡 Fun fact: You have walked approx ${milesWalked} miles in your life!`,
-    `🚀 Daily Challenge: Do something new today!`,
-    `✨ Life Snapshot: ${years} years, ${months} months, ${days} days of awesomeness!`
-  ];
-
-  const randomMessage = snapshotMessages[Math.floor(Math.random()*snapshotMessages.length)];
-  document.getElementById('result').textContent = randomMessage;
-
-  // Shareable Card Preview
-  document.getElementById('cardPreview').innerHTML = `
-    <strong>Your Fun Snapshot:</strong><br>${randomMessage}
-  `;
-
-  // Increase points
-  totalPoints += 10;
-  localStorage.setItem('rujexPoints', totalPoints);
-  document.getElementById('points').textContent = `Points: ${totalPoints}`;
-
-  // Confetti + Sound
-  launchConfetti();
-  playSound();
+function nextQ(qNum, answer){
+  answers.push(answer);
+  document.getElementById('q'+qNum).style.display='none';
+  if(qNum<5){document.getElementById('q'+(qNum+1)).style.display='block';}
+  else{showResult();}
 }
 
-// Confetti effect
-const canvas = document.getElementById('confetti');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-let confettiParticles = [];
+// Memes URLs for states
+const stateMemes = {
+  "California":"https://i.imgur.com/3ZQZ3aF.png",
+  "New York":"https://i.imgur.com/1rVQ7Bp.png",
+  "Texas":"https://i.imgur.com/e3QZ4aR.png",
+  "Florida":"https://i.imgur.com/2xQZ5bS.png",
+  "Illinois":"https://i.imgur.com/6aQZ6cT.png",
+  "Washington":"https://i.imgur.com/4bQZ7cP.png",
+  "Colorado":"https://i.imgur.com/7yQZ8dL.png",
+  "Nevada":"https://i.imgur.com/5xQZ9dN.png"
+};
 
-function launchConfetti() {
-  confettiParticles = [];
-  for(let i=0;i<150;i++){
-    confettiParticles.push({
-      x: Math.random()*canvas.width,
-      y: Math.random()*canvas.height - canvas.height,
-      r: Math.random()*6+4,
-      d: Math.random()*20+10,
-      color: `hsl(${Math.random()*360}, 100%, 50%)`,
-      tilt: Math.random()*10-10
-    });
-  }
-  requestAnimationFrame(drawConfetti);
+function showResult(){
+  const states=Object.keys(stateMemes);
+  const idx=Math.floor(Math.random()*states.length);
+  const state=states[idx];
+  const meme=stateMemes[state];
+  const resultText=`🎉 Your personality matches <strong>${state}</strong>! 🌟 Enjoy your day!`;
+  document.getElementById('result').innerHTML=resultText;
+  document.getElementById('cardPreview').innerHTML=`${resultText}<br><img src="${meme}" class="meme-img">`;
+
+  // Points & streak
+  const today=new Date();
+  if(lastVisit){
+    const diffDays=Math.floor((today-lastVisit)/(1000*60*60*24));
+    if(diffDays===1){streak++;} else if(diffDays>1){streak=1;}
+  } else {streak=1;}
+  lastVisit=today; totalPoints+=10;
+  localStorage.setItem('rujexPoints',totalPoints);
+  localStorage.setItem('rujexStreak',streak);
+  localStorage.setItem('rujexLastVisit',today);
+  document.getElementById('points').textContent=`Points: ${totalPoints}`;
+  document.getElementById('streak').textContent=`Streak: ${streak} days`;
+
+  launchConfetti(); playSound(); loadAds();
 }
 
+// Confetti
+const canvas=document.getElementById('confetti'); const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth; canvas.height=window.innerHeight; let confettiParticles=[];
+function launchConfetti(){
+  confettiParticles=[]; for(let i=0;i<150;i++){
+    confettiParticles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,r:Math.random()*6+4,d:Math.random()*20+10,color:`hsl(${Math.random()*360},100%,50%)`,tilt:Math.random()*10-10});
+  } requestAnimationFrame(drawConfetti);
+}
 function drawConfetti(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  confettiParticles.forEach((p)=>{
+  confettiParticles.forEach(p=>{
     ctx.beginPath();
-    ctx.moveTo(p.x + p.tilt + p.r/2, p.y);
-    ctx.lineTo(p.x + p.tilt, p.y + p.r);
-    ctx.strokeStyle = p.color;
-    ctx.lineWidth = p.r/2;
-    ctx.stroke();
-    p.y += (Math.cos(p.d)+3+ p.r/2)/2;
-    p.tilt += 0.1;
-    if(p.y>canvas.height) p.y = -10;
+    ctx.moveTo(p.x+p.tilt+p.r/2,p.y);
+    ctx.lineTo(p.x+p.tilt,p.y+p.r);
+    ctx.strokeStyle=p.color; ctx.lineWidth=p.r/2; ctx.stroke();
+    p.y+=(Math.cos(p.d)+3+p.r/2)/2; p.tilt+=0.1;
+    if(p.y>canvas.height)p.y=-10;
   });
   requestAnimationFrame(drawConfetti);
 }
-
-// Sound effect
-function playSound(){
-  const audio = new Audio('https://www.myinstants.com/media/sounds/tada-fanfare.mp3');
-  audio.volume = 0.3;
-  audio.play();
-}
-
-// Social sharing
-function shareTwitter() {
-  const result = document.getElementById('result').textContent;
-  const url = encodeURIComponent(window.location.href);
-  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(result)}&url=${url}`,"_blank");
-}
-function shareFacebook() {
-  const url = encodeURIComponent(window.location.href);
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`,"_blank");
-}
+function playSound(){const audio=new Audio('https://www.myinstants.com/media/sounds/tada-fanfare.mp3'); audio.volume=0.3; audio.play();}
 
 // Navigation
-function showSection(section){
-  ['home','about','contact','privacy'].forEach(s=>{
-    document.getElementById(s).style.display = s===section?'block':'none';
-  });
+function showSection(section){['home','about','contact','privacy'].forEach(s=>{document.getElementById(s).style.display=(s===section)?'block':'none';});}
+showSection('home'); window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight;});
+
+// Social Share
+function shareTwitter(){const result=document.getElementById('cardPreview').textContent; const url=encodeURIComponent(window.location.href); window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(result)}&url=${url}`,"_blank");}
+function shareFacebook(){const url=encodeURIComponent(window.location.href); window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`,"_blank");}
+
+// Ads
+function loadAds(){
+  const popScript=document.createElement('script'); popScript.src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'; document.getElementById('ad-popunder').appendChild(popScript);
+  const bananaScript=document.createElement('script'); bananaScript.innerHTML=`atOptions = {'key':'c75931fa51a9da29fc423bfe7608','format':'iframe','height':60,'width':468,'params':{}};`; document.getElementById('ad-banana').appendChild(bananaScript);
+  const bananaInvoke=document.createElement('script'); bananaInvoke.src='//www.highperformanceformat.com/c75931fa51a9da29fc423bfe7608/invoke.js'; document.getElementById('ad-banana').appendChild(bananaInvoke);
 }
-showSection('home');
-
-// Responsive canvas
-window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight;});
 </script>
-
-<!-- Popunder Ads -->
-<script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
-
-<!-- Banana Ads -->
-<script type="text/javascript">
-atOptions = {
-  'key' : 'c75931fa51a9da29fcabfc423bfe7608',
-  'format' : 'iframe',
-  'height' : 60,
-  'width' : 468,
-  'params' : {}
-};
-</script>
-<script type="text/javascript" src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"></script>
 
 </body>
 </html>
