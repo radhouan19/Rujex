@@ -3,27 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Interactive Personal Budget Calculator for Americans. Track income, expenses, savings, and get daily tips to improve your finances.">
-<meta name="keywords" content="Budget Calculator, Personal Finance, Money Management, Savings, Expenses, US, Financial Tool, Popunder Ads, Banana Ads, Rujex">
-<title>Rujex Budget Calculator – Track Your Monthly Expenses</title>
+<meta name="description" content="Fun Life Challenges - Track your daily challenges, earn badges, and share achievements. Perfect for Americans looking for daily motivation and fun progress.">
+<meta name="keywords" content="Daily Challenge, Fun Badge, Productivity, Wellness, US Users, Life Challenges">
+<title>Fun Life Challenges – Daily Motivation & Badges</title>
 <style>
-body { font-family:'Helvetica Neue',Arial,sans-serif; background:linear-gradient(to right,#dfe6e9,#b2bec3); margin:0; padding:0; text-align:center;}
+body { font-family:'Helvetica Neue',Arial,sans-serif; background:linear-gradient(to right,#ffeaa7,#fab1a0); margin:0; padding:0; text-align:center;}
 nav { background:#fff; padding:10px; box-shadow:0 5px 10px rgba(0,0,0,0.1);}
-nav a { margin:0 10px; text-decoration:none; color:#0984e3; font-weight:bold; cursor:pointer;}
-.container { max-width:650px; margin:20px auto; background:#fff; padding:25px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.2);}
-h1 { color:#0984e3;}
-input[type=number] { width:75%; padding:10px; margin:5px 0; border-radius:8px; border:1px solid #b2bec3;}
-button { padding:10px 20px; margin:10px; border:none; border-radius:10px; background:#0984e3; color:#fff; cursor:pointer; font-size:16px;}
-button:hover { background:#74b9ff;}
-.result, .tips { margin-top:20px; font-size:16px; font-weight:bold;}
-.points { margin-top:10px; font-size:14px; font-weight:bold; color:#d63031;}
+nav a { margin:0 10px; text-decoration:none; color:#d63031; font-weight:bold; cursor:pointer;}
+.container { max-width:700px; margin:20px auto; background:#fff; padding:25px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+h1 { color:#d63031;}
+button { padding:10px 20px; margin:10px; border:none; border-radius:10px; background:#d63031; color:#fff; cursor:pointer; font-size:16px;}
+button:hover { background:#e17055;}
+.challenge { margin:15px 0; font-size:18px; font-weight:bold; color:#2d3436;}
+.result { margin-top:20px; font-size:16px; font-weight:bold;}
+.points { margin-top:10px; font-size:14px; font-weight:bold; color:#0984e3;}
 .streak { margin-top:5px; font-size:12px; color:#636e72;}
-.section { display:none; margin-top:20px; text-align:left;}
-.section h2 { color:#0984e3;}
-.share-buttons { margin-top:15px;}
-.share-buttons button { background:#00b894; margin:5px;}
 canvas { max-width:100%; margin-top:20px; }
 .ads { margin-top:20px; font-size:12px; color:#636e72;}
+#shareModal {display:none; position:fixed; left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;}
+#shareModal div {background:#fff;padding:15px;border-radius:8px;max-width:90%;width:420px;margin:auto;text-align:center;}
+#shareModal img {max-width:100%;border-radius:6px;}
+#shareModal button {margin:5px;}
 </style>
 </head>
 <body>
@@ -36,31 +36,18 @@ canvas { max-width:100%; margin-top:20px; }
 </nav>
 
 <div class="container" id="home">
-<h1>Interactive Personal Budget Calculator</h1>
-<p>Enter your monthly income and expenses:</p>
-<div>
-  <input type="number" id="income" placeholder="Monthly Income ($)">
-  <input type="number" id="rent" placeholder="Rent / Mortgage ($)">
-  <input type="number" id="food" placeholder="Food ($)">
-  <input type="number" id="transport" placeholder="Transport ($)">
-  <input type="number" id="entertainment" placeholder="Entertainment ($)">
-  <input type="number" id="savings" placeholder="Savings ($)">
-  <input type="number" id="others" placeholder="Other Expenses ($)">
-</div>
-<button onclick="calculateBudget()">Calculate</button>
-<button onclick="savePDF()">Save PDF</button>
+<h1>Fun Life Challenges</h1>
+<p>Complete daily challenges and earn badges!</p>
+
+<div id="challengeList"></div>
+<button onclick="completeChallenge()">Complete Challenge</button>
 
 <div class="result" id="result"></div>
-<div class="tips" id="tips"></div>
 <div class="points" id="points">Points: 0</div>
 <div class="streak" id="streak">Streak: 0 days</div>
 
-<canvas id="budgetChart"></canvas>
-
-<div class="share-buttons">
-<button onclick="shareTwitter()">Share on Twitter</button>
-<button onclick="shareFacebook()">Share on Facebook</button>
-</div>
+<canvas id="progressChart"></canvas>
+<canvas id="shareCanvas" style="display:none;"></canvas>
 
 <div class="ads">
   <div id="ad-popunder"></div>
@@ -69,8 +56,8 @@ canvas { max-width:100%; margin-top:20px; }
 </div>
 
 <div class="container section" id="about">
-<h2>About Rujex Budget Calculator</h2>
-<p>Track your monthly expenses and savings. Get daily tips to improve your finances. Designed for Americans seeking a simple, interactive tool to manage money effectively.</p>
+<h2>About Fun Life Challenges</h2>
+<p>Complete simple daily challenges, earn badges, and share your achievements. Designed for Americans seeking daily motivation and fun progress.</p>
 </div>
 
 <div class="container section" id="contact">
@@ -80,11 +67,24 @@ canvas { max-width:100%; margin-top:20px; }
 
 <div class="container section" id="privacy">
 <h2>Privacy Policy</h2>
-<p>Your data is stored locally in your browser only for points and streaks. No personal data is shared or transmitted.</p>
+<p>All data is stored locally in your browser. Your progress is never sent to servers unless you choose to share.</p>
+</div>
+
+<!-- Share Modal -->
+<div id="shareModal">
+  <div>
+    <h3>Your Progress Image</h3>
+    <img id="sharePreview" alt="Progress Preview">
+    <div>
+      <button id="downloadBtn">Download PNG</button>
+      <button id="copyBtn">Copy Image</button>
+      <button id="closeShare">Close</button>
+    </div>
+    <p style="font-size:12px;color:#666;">Image is generated locally. You control when/where to share it.</p>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // Navigation
 function showSection(section){
@@ -94,103 +94,109 @@ function showSection(section){
 }
 showSection('home');
 
+// Sample daily challenges
+const challenges = [
+  "Drink 2L water today",
+  "Walk 5000 steps",
+  "Read for 20 minutes",
+  "Learn one new word",
+  "Do 15 push-ups",
+  "Write a gratitude note",
+  "Meditate for 10 minutes"
+];
+
 // Points & Streak
-let totalPoints = localStorage.getItem('rujexPoints') ? parseInt(localStorage.getItem('rujexPoints')) : 0;
-let streak = localStorage.getItem('rujexStreak') ? parseInt(localStorage.getItem('rujexStreak')) : 0;
-let lastVisit = localStorage.getItem('rujexLastVisit') ? new Date(localStorage.getItem('rujexLastVisit')) : null;
+let totalPoints = localStorage.getItem('funPoints') ? parseInt(localStorage.getItem('funPoints')) : 0;
+let streak = localStorage.getItem('funStreak') ? parseInt(localStorage.getItem('funStreak')) : 0;
+let lastVisit = localStorage.getItem('funLastVisit') ? new Date(localStorage.getItem('funLastVisit')) : null;
+
 document.getElementById('points').textContent = `Points: ${totalPoints}`;
 document.getElementById('streak').textContent = `Streak: ${streak} days`;
 
 let chart;
 
-// Calculate Budget
-function calculateBudget(){
-  const income = parseFloat(document.getElementById('income').value)||0;
-  const rent = parseFloat(document.getElementById('rent').value)||0;
-  const food = parseFloat(document.getElementById('food').value)||0;
-  const transport = parseFloat(document.getElementById('transport').value)||0;
-  const entertainment = parseFloat(document.getElementById('entertainment').value)||0;
-  const savings = parseFloat(document.getElementById('savings').value)||0;
-  const others = parseFloat(document.getElementById('others').value)||0;
-  const totalExpenses = rent+food+transport+entertainment+savings+others;
-  const balance = income-totalExpenses;
-  const savingPercent = income?((savings/income)*100).toFixed(1):0;
-
-  document.getElementById('result').innerHTML=`💰 Total Expenses: $${totalExpenses}<br>💵 Remaining Balance: $${balance}<br>💾 Savings: $${savings} (${savingPercent}%)`;
-
-  let tip="";
-  if(savingPercent<10) tip="Tip: Try to save at least 10% of your income!";
-  else if(savingPercent<20) tip="Good job! Consider increasing savings gradually.";
-  else tip="Excellent! You are saving a healthy portion of your income.";
-  document.getElementById('tips').textContent=tip;
-
-  updatePoints();
-  renderChart(rent, food, transport, entertainment, savings, others);
-  loadAds();
+// Display random challenge
+function showChallenge(){
+  const randIndex = Math.floor(Math.random()*challenges.length);
+  document.getElementById('challengeList').textContent = challenges[randIndex];
 }
+showChallenge();
 
-// Points & Streak
-function updatePoints(){
+// Complete challenge
+function completeChallenge(){
   const today=new Date();
   if(lastVisit){
     const diffDays=Math.floor((today-lastVisit)/(1000*60*60*24));
     if(diffDays===1) streak++;
     else if(diffDays>1) streak=1;
-  }else streak=1;
-  lastVisit=today; totalPoints+=5;
-  localStorage.setItem('rujexPoints',totalPoints);
-  localStorage.setItem('rujexStreak',streak);
-  localStorage.setItem('rujexLastVisit',today);
+  } else streak=1;
+  lastVisit=today;
+  totalPoints+=10;
+  localStorage.setItem('funPoints',totalPoints);
+  localStorage.setItem('funStreak',streak);
+  localStorage.setItem('funLastVisit',today);
+
   document.getElementById('points').textContent=`Points: ${totalPoints}`;
   document.getElementById('streak').textContent=`Streak: ${streak} days`;
+
+  const badge = streak>=10 ? "🏆 Consistency Champion" :
+                streak>=5 ? "🥈 Dedicated Doer" : "🥉 Beginner Achiever";
+  document.getElementById('result').textContent=`Challenge Completed! Badge: ${badge}`;
+  renderChart(totalPoints, streak);
+  showChallenge();
+  loadAds();
 }
 
 // Chart.js
-function renderChart(rent,food,transport,entertainment,savings,others){
-  const ctx = document.getElementById('budgetChart').getContext('2d');
+function renderChart(points, streak){
+  const ctx = document.getElementById('progressChart').getContext('2d');
   const data = {
-    labels: ['Rent','Food','Transport','Entertainment','Savings','Others'],
-    datasets: [{
-      label: 'Monthly Expenses',
-      data: [rent,food,transport,entertainment,savings,others],
-      backgroundColor: ['#0984e3','#00b894','#fdcb6e','#d63031','#6c5ce7','#e17055']
+    labels:['Points','Streak'],
+    datasets:[{
+      label:'Progress',
+      data:[points, streak],
+      backgroundColor:['#0984e3','#d63031']
     }]
   };
   if(chart) chart.destroy();
-  chart = new Chart(ctx,{ type:'pie', data:data, options:{responsive:true} });
+  chart = new Chart(ctx,{ type:'bar', data:data, options:{responsive:true} });
 }
 
-// Save PDF
-function savePDF(){
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  const resultText = document.getElementById('result').innerText;
-  const tipsText = document.getElementById('tips').innerText;
-  doc.text("Rujex Budget Report", 20, 20);
-  doc.text(resultText, 20, 30);
-  doc.text(tipsText, 20, 50);
-  doc.save("Budget_Report.pdf");
+// Share as Image
+function shareProgress(){
+  const chartCanvas = document.getElementById('progressChart');
+  const shareCanvas = document.getElementById('shareCanvas');
+  shareCanvas.width = chartCanvas.width;
+  shareCanvas.height = chartCanvas.height + 100;
+  const ctx = shareCanvas.getContext('2d');
+
+  ctx.fillStyle='#fff';
+  ctx.fillRect(0,0,shareCanvas.width,shareCanvas.height);
+  ctx.drawImage(chartCanvas,0,0);
+
+  const resultText=document.getElementById('result').innerText;
+  ctx.fillStyle='#222';
+  ctx.font='14px Arial';
+  ctx.fillText(resultText,10,chartCanvas.height+20);
+
+  const dataURL=shareCanvas.toDataURL('image/png');
+  const modal=document.getElementById('shareModal');
+  const preview=document.getElementById('sharePreview');
+  preview.src=dataURL;
+  modal.style.display='flex';
+
+  document.getElementById('downloadBtn').onclick=()=>{ const a=document.createElement('a'); a.href=dataURL; a.download='fun-challenge.png'; a.click();};
+  document.getElementById('copyBtn').onclick=async()=>{ try { const res=await fetch(dataURL); const blob=await res.blob(); await navigator.clipboard.write([new ClipboardItem({[blob.type]:blob})]); alert('Image copied to clipboard!');} catch(e){alert('Copy failed');}};
+  document.getElementById('closeShare').onclick=()=>{modal.style.display='none';};
 }
 
-// Share Buttons
-function shareTwitter(){
-  const url=encodeURIComponent(window.location.href);
-  window.open(`https://twitter.com/intent/tweet?url=${url}&text=Check+my+budget+using+Rujex+Calculator!`);
-}
-function shareFacebook(){
-  const url=encodeURIComponent(window.location.href);
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
-}
-
-// Ads (Popunder + Banana)
+// Ads
 function loadAds(){
-  // Popunder
   var po=document.createElement('script');
   po.type='text/javascript';
   po.src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js';
   document.getElementById('ad-popunder').appendChild(po);
 
-  // Banana
   var ba=document.createElement('script');
   ba.type='text/javascript';
   ba.text=`atOptions = {'key' : 'c75931fa51a9da29fcabfc423bfe7608','format' : 'iframe','height' : 60,'width' : 468,'params' : {}};`;
@@ -201,5 +207,6 @@ function loadAds(){
   document.getElementById('ad-banana').appendChild(ba2);
 }
 </script>
+
 </body>
 </html>
