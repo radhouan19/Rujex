@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Healthy Habits & BMI Tracker 🇺🇸</title>
-<meta name="description" content="Track your BMI and daily health habits instantly! Get personalized tips and share them on social media. Perfect for US users.">
-<meta name="keywords" content="BMI calculator, health tracker, healthy habits, US fitness, wellness tips, weight management">
+<title>Viral Pro Boost: Healthy Habits & BMI Tracker 🇺🇸</title>
+<meta name="description" content="Track your BMI and daily health habits! Get multiple dynamic personalized tips and share them on social media. Perfect for US users.">
+<meta name="keywords" content="BMI calculator, health tracker, healthy habits, US fitness, wellness tips, weight management, viral health tips">
 <style>
 body {font-family:'Segoe UI',Arial,sans-serif; margin:0; padding:0; background:#f0f8ff; color:#333;}
 header {background:#00274d; color:#fff; padding:25px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.2);}
@@ -23,7 +23,8 @@ button:hover {background:#ff6b6b;}
 @keyframes pop {0%{transform:scale(0)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
 .habit {margin-top:12px; font-size:1em;}
 .habit label {font-weight:normal;}
-.viral-item {margin-bottom:20px; padding:15px; background:#d1f2eb; border-radius:15px; border-left:6px solid #00b894; animation:fadein 0.5s ease;}
+.viral-item {margin-bottom:20px; padding:15px; background:#d1f2eb; border-radius:15px; border-left:6px solid #00b894; animation:fadein 0.5s ease; transition:0.3s;}
+.viral-item:hover {transform:scale(1.02); box-shadow:0 8px 25px rgba(0,0,0,0.2);}
 @keyframes fadein {from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);}}
 .share-buttons {margin-top:12px; display:flex; justify-content:space-between; flex-wrap:wrap;}
 .share-buttons button {flex:1; margin:5px; padding:10px; font-size:1em; border:none; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.3s;}
@@ -40,7 +41,7 @@ footer {background:#00274d; color:#fff; text-align:center; padding:25px; margin-
 <body>
 
 <header>
-  <h1>Healthy Habits & BMI Tracker 🇺🇸</h1>
+  <h1>Viral Pro Boost: Healthy Habits & BMI Tracker 🇺🇸</h1>
   <div class="nav">
     <a href="#home">Home</a>
     <a href="#about">About</a>
@@ -83,8 +84,8 @@ footer {background:#00274d; color:#fff; text-align:center; padding:25px; margin-
 </main>
 
 <section id="about" style="padding:25px; max-width:720px; margin:auto;">
-  <h2>About Healthy Habits Tracker</h2>
-  <p>Track your BMI and daily habits, receive personalized tips, and share your progress on social media. Designed for American users who want to stay healthy and motivated!</p>
+  <h2>About Viral Pro Boost</h2>
+  <p>Track your BMI and daily habits, receive multiple dynamic personalized tips, and share your progress on social media. Designed for American users who want to stay healthy, motivated, and viral!</p>
 </section>
 
 <section id="contact" style="padding:25px; max-width:720px; margin:auto;">
@@ -98,7 +99,7 @@ footer {background:#00274d; color:#fff; text-align:center; padding:25px; margin-
 </section>
 
 <footer>
-  &copy; 2025 Healthy Habits & BMI Tracker. All rights reserved.
+  &copy; 2025 Viral Pro Boost. All rights reserved.
 </footer>
 
 <!-- Popunder Ad -->
@@ -118,12 +119,18 @@ function generateTips(bmi, habits) {
     else if(bmi < 30) status = 'Overweight';
     else status = 'Obese';
 
+    const tipPool = [
+        "Drink more water 💧","Get better sleep 😴","Exercise regularly 🏃‍♂️",
+        "Eat more healthy food 🥗","Take short walks today 🚶‍♂️","Try meditation 🧘‍♂️",
+        "Limit sugary drinks 🥤","Include more vegetables 🥦","Stay active throughout the day 💪",
+        "Stretch for 5 minutes 🧎‍♂️","Avoid junk food 🍔","Track your calories 🔢"
+    ];
+
     let tips = [];
-    if(!habits.water) tips.push("Drink more water 💧");
-    if(!habits.sleep) tips.push("Get better sleep 😴");
-    if(!habits.exercise) tips.push("Exercise regularly 🏃‍♂️");
-    if(!habits.food) tips.push("Eat more healthy food 🥗");
-    if(tips.length===0) tips.push("Great job! Keep up the healthy habits! 🎉");
+    while(tips.length < 5){
+        let randomTip = tipPool[Math.floor(Math.random()*tipPool.length)];
+        if(!tips.includes(randomTip)) tips.push(randomTip);
+    }
 
     return {status, tips};
 }
@@ -143,8 +150,10 @@ document.getElementById('generateBtn').addEventListener('click', function() {
     const bmi = calculateBMI(weight, height);
     const resultData = generateTips(bmi, habits);
 
-    const resultDiv = document.getElementById('result');
+    const resultDiv = document.getElementconst resultDiv = document.getElementById('result');
     resultDiv.innerHTML = `<h3>Your BMI: ${bmi} (${resultData.status})</h3>`;
+
+    // توليد النصائح بشكل ديناميكي
     resultData.tips.forEach(tip => {
         const tipDiv = document.createElement('div');
         tipDiv.className = 'viral-item';
