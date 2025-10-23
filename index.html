@@ -1,151 +1,381 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Viral Pro Boost: Healthy Habits & BMI Tracker 🇺🇸</title>
-<meta name="description" content="Track your BMI and daily health habits! Get dynamic personalized tips as shareable images. Perfect for US users.">
-<meta name="keywords" content="BMI calculator, health tracker, healthy habits, US fitness, wellness tips, weight management, viral health tips">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Rujex Pro CV — Free Resume Builder</title>
+<meta name="description" content="Build a professional, ATS-friendly resume online for free. Create, preview, and download your CV as PDF instantly. Optimized for US job seekers."/>
+<meta name="keywords" content="resume builder, cv maker, free resume, download pdf resume, professional resume, usa jobs" />
+<meta name="robots" content="index,follow" />
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"SoftwareApplication",
+  "name":"Rujex Pro CV",
+  "url":"https://YOUR_DOMAIN_HERE/",
+  "description":"Free online resume builder to create and download professional PDF CVs.",
+  "applicationCategory":"Productivity",
+  "offers":{"@type":"Offer","price":"0.00","priceCurrency":"USD"}
+}
+</script>
+
 <style>
-body {font-family:'Segoe UI',Arial,sans-serif; margin:0; padding:0; background:#f0f8ff; color:#333;}
-header {background:#00274d; color:#fff; padding:25px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.2);}
-header h1 {margin:0; font-size:2em; color:#ff4d4d;}
-.nav {text-align:center; margin-top:12px;}
-.nav a {margin:0 12px; color:#fff; text-decoration:none; font-weight:bold;}
-.nav a:hover {text-decoration:underline;}
-main {padding:30px; max-width:720px; margin:auto; background:#fff; border-radius:25px; box-shadow:0 6px 30px rgba(0,0,0,0.2);}
-label {display:block; margin-top:20px; font-size:1.2em; font-weight:bold;}
-input[type="number"] {width:100%; padding:14px; margin-top:10px; border:2px solid #ccc; border-radius:12px; font-size:1em;}
-input[type="checkbox"] {margin-right:10px;}
-button {padding:16px; background:#ff4d4d; color:#fff; border:none; border-radius:12px; cursor:pointer; font-size:1.2em; margin-top:20px; transition:0.3s;}
-button:hover {background:#ff6b6b;}
-.result {display:none; margin-top:25px; padding:25px; border-radius:25px; background:#e6ffe6; box-shadow:0 0 25px rgba(0,0,0,0.2);}
-.habit {margin-top:12px; font-size:1em;}
-.habit label {font-weight:normal;}
-.tip-card {position:relative; background:#d1f2eb; padding:20px; border-radius:20px; margin-bottom:20px; box-shadow:0 6px 20px rgba(0,0,0,0.2); font-size:1.2em; transition:0.3s;}
-.tip-card:hover {transform:scale(1.02);}
-.share-buttons {margin-top:12px; display:flex; justify-content:space-between; flex-wrap:wrap;}
-.share-buttons button {flex:1; margin:5px; padding:10px; font-size:1em; border:none; border-radius:10px; cursor:pointer; color:#fff; display:flex; justify-content:center; align-items:center; transition:0.3s;}
-.share-facebook {background:#3b5998;} .share-facebook:hover {background:#5b7bd5;}
-.share-twitter {background:#1da1f2;} .share-twitter:hover {background:#66c0f5;}
-.share-linkedin {background:#0077b5;} .share-linkedin:hover {background:#3399cc;}
-footer {background:#00274d; color:#fff; text-align:center; padding:25px; margin-top:30px; border-top:3px solid #ff4d4d;}
-#ad-banner {width:100%; height:60px; margin-top:25px; text-align:center;}
+:root{
+  --blue:#0b4da2; --accent:#ff6b6b; --muted:#6b7280; --card:#fff;
+  --maxwidth:1100px;
+}
+*{box-sizing:border-box}
+body{
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  margin:0;background:#f8fafc;color:#0f1724;line-height:1.45;
+}
+.header{
+  background:linear-gradient(90deg,var(--blue),#0f6bd8);
+  color:#fff;padding:22px 16px 18px;box-shadow:0 3px 8px rgba(2,6,23,0.08);
+}
+.header .wrap{max-width:var(--maxwidth);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header h1{margin:0;font-size:1.25rem;font-weight:800;letter-spacing:0.2px}
+.header nav{display:flex;gap:10px}
+.nav-btn{background:transparent;border:none;color:#fff;font-weight:600;cursor:pointer;padding:8px 10px;border-radius:8px;opacity:0.95}
+.nav-btn:hover{background:rgba(255,255,255,0.06)}
+.main{max-width:var(--maxwidth);margin:22px auto;padding:18px}
+.grid{display:grid;grid-template-columns:1fr 380px;gap:20px}
+.card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 28px rgba(11,77,162,0.06)}
+.label{display:block;font-weight:700;margin-bottom:6px}
+.input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef8;margin-bottom:10px;font-size:0.97rem}
+.input::placeholder, textarea::placeholder{color:#9aa6be}
+.btn{background:var(--accent);color:#fff;padding:10px 14px;border:none;border-radius:10px;cursor:pointer;font-weight:800}
+.btn.secondary{background:var(--blue)}
+.flex{display:flex;gap:10px;align-items:center}
+.notice{background:#fff7ed;padding:10px;border-left:4px solid #ffb547;border-radius:6px;margin-top:10px}
+.preview{background:#f0f8ff;padding:12px;border-radius:8px;border:1px dashed #cbd5e1;min-height:180px;max-height:520px;overflow:auto}
+.resume{background:#fff;padding:14px;border-radius:8px;border:1px solid #eef2ff}
+.small{color:var(--muted);font-size:0.95rem}
+.footer{max-width:var(--maxwidth);margin:26px auto;padding:14px;text-align:center;color:var(--muted);font-size:0.92rem}
+.banner-wrap{text-align:center;margin-top:18px}
+@media(max-width:980px){
+  .grid{grid-template-columns:1fr}
+  .header .wrap{flex-direction:column;align-items:flex-start;gap:10px}
+}
 </style>
+
+<!-- jsPDF CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
-<header>
-  <h1>Viral Pro Boost: Healthy Habits & BMI Tracker 🇺🇸</h1>
-  <div class="nav">
-    <a href="#home">Home</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
-    <a href="#privacy">Privacy</a>
+<header class="header" role="banner">
+  <div class="wrap">
+    <div>
+      <h1>Rujex Pro CV</h1>
+      <div class="small" style="opacity:0.95">Free Resume Builder — create ATS-friendly CV and download as PDF</div>
+    </div>
+    <nav aria-label="Main navigation">
+      <button class="nav-btn" data-target="home">Home</button>
+      <button class="nav-btn" data-target="about">About</button>
+      <button class="nav-btn" data-target="privacy">Privacy</button>
+      <button class="nav-btn" data-target="contact">Contact</button>
+    </nav>
   </div>
 </header>
 
-<main id="home">
-  <label for="weight">Weight (kg or lbs)</label>
-  <input type="number" id="weight" placeholder="Enter your weight" required>
+<main class="main" id="app" role="main">
+  <!-- HOME SECTION -->
+  <section id="home" class="section">
+    <div class="grid">
+      <div class="card" aria-labelledby="builderHeading">
+        <h2 id="builderHeading">Create your resume</h2>
+        <p class="small">Fill in the fields below → click <strong>Generate Preview</strong> → Download PDF (free).</p>
 
-  <label for="height">Height (cm or inches)</label>
-  <input type="number" id="height" placeholder="Enter your height" required>
+        <label class="label">Full name</label>
+        <input id="fullName" class="input" placeholder="e.g. Jane Doe" autocomplete="name">
 
-  <div class="habit">
-    <label><input type="checkbox" id="habitWater"> Drank enough water 💧</label>
-    <label><input type="checkbox" id="habitSleep"> Slept well 😴</label>
-    <label><input type="checkbox" id="habitExercise"> Did exercise 🏃‍♂️</label>
-    <label><input type="checkbox" id="habitHealthyFood"> Ate healthy food 🥗</label>
-  </div>
+        <label class="label">Professional title</label>
+        <input id="title" class="input" placeholder="e.g. Product Manager">
 
-  <button id="generateBtn">Check My Health & Get Tips 🚀</button>
+        <label class="label">Summary</label>
+        <textarea id="summary" class="input" rows="3" placeholder="2–3-sentence professional summary"></textarea>
 
-  <div id="result" class="result"></div>
+        <label class="label">Experience (one per line)</label>
+        <textarea id="experience" class="input" rows="4" placeholder="Company | Role | Years | Achievement"></textarea>
 
-  <div id="ad-banner">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'c75931fa51a9da29fcabfc423bfe7608',
-        'format' : 'iframe',
-        'height' : 60,
-        'width' : 468,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"></script>
-  </div>
+        <label class="label">Education</label>
+        <input id="education" class="input" placeholder="Degree | University | Year">
+
+        <label class="label">Skills (comma separated)</label>
+        <input id="skills" class="input" placeholder="e.g. JavaScript, Leadership, SQL">
+
+        <div class="flex" style="margin-top:8px">
+          <button id="generate" class="btn">Generate Preview</button>
+          <button id="download" class="btn secondary">Download PDF</button>
+          <button id="clear" class="btn" style="background:#94a3b8">Clear</button>
+        </div>
+
+        <div class="notice small" style="margin-top:12px">
+          <strong>Privacy:</strong> Your data stays in your browser only. No server upload.
+        </div>
+
+        <h3 style="margin-top:14px">Preview</h3>
+        <div id="preview" class="preview" aria-live="polite">
+          <div class="small">Click <strong>Generate Preview</strong> to see your CV.</div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <h3>Quick tips for a winning CV</h3>
+          <ul class="small">
+            <li>Keep it concise — one page for most professionals.</li>
+            <li>Use numbers to show impact (e.g., "increased sales by 20%").</li>
+            <li>Match keywords from the job posting for ATS.</li>
+          </ul>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="card">
+          <h4>About Rujex Pro CV</h4>
+          <p class="small">Fast, free, and easy — create an ATS-friendly resume and download instantly. No signup required.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Banner container -->
+    <div class="banner-wrap" id="banner-wrap" aria-hidden="false">
+      <div id="ad-banner"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section id="about" class="section" style="display:none">
+    <div class="card" style="max-width:900px;margin:0 auto">
+      <h2>About Rujex Pro CV</h2>
+      <p class="small">Rujex Pro CV is a lightweight web tool built to help job seekers quickly create professional resumes. It was created to be fast, privacy-friendly, and optimized for the US job market.</p>
+      <h3>How it works</h3>
+      <ol class="small">
+        <li>Fill your details in the Resume Builder.</li>
+        <li>Generate a preview and make edits as needed.</li>
+        <li>Download the PDF — ready to send to employers or upload to job portals.</li>
+      </ol>
+      <h3>Free and privacy-first</h3>
+      <p class="small">All resume data stays in the browser. Downloads are generated locally — no server storage.</p>
+    </div>
+  </section>
+
+  <!-- PRIVACY SECTION -->
+  <section id="privacy" class="section" style="display:none">
+    <div class="card" style="max-width:900px;margin:0 auto">
+      <h2>Privacy Policy</h2>
+      <p class="small">This tool does not collect or store personal data on servers. Data you enter is saved only in your browser (localStorage) to allow editing and download. If you clear your browser cache or storage, the data will be removed.</p>
+      <p class="small">Ads shown on this page are served by third-party networks (Adsterra). We do not control ad content. For privacy questions about ads, contact the ad provider.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="section" style="display:none">
+    <div class="card" style="max-width:900px;margin:0 auto">
+      <h2>Contact</h2>
+      <p class="small">Support & inquiries: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></p>
+      <p class="small">Powered by Rujex Pro CV — Free Resume Builder</p>
+    </div>
+  </section>
 </main>
 
-<section id="about" style="padding:25px; max-width:720px; margin:auto;">
-  <h2>About Viral Pro Boost</h2>
-  <p>Track your BMI and daily habits, receive multiple dynamic personalized tips as beautiful shareable cards, and post your progress on social media. Designed for American users!</p>
-</section>
-
-<section id="contact" style="padding:25px; max-width:720px; margin:auto;">
-  <h2>Contact Us</h2>
-  <p>Email: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></p>
-</section>
-
-<section id="privacy" style="padding:25px; max-width:720px; margin:auto;">
-  <h2>Privacy Policy</h2>
-  <p>Your data is used locally for generating health tips. No personal information is stored.</p>
-</section>
-
-<footer>
-  &copy; 2025 Viral Pro Boost. All rights reserved.
+<footer class="footer">
+  © 2025 Rujex Pro CV — Free Resume Builder
 </footer>
 
-<!-- Popunder Ad -->
-<script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
-
+<!-- Popunder will be injected on download click -->
 <script>
-function calculateBMI(weight, height) {
-    if(weight <= 0 || height <= 0) return 0;
-    return (weight / ((height/100) ** 2)).toFixed(1);
+const POPUNDER_SRC = "//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js";
+const BANNER_OPTIONS = {
+  key: 'c75931fa51a9da29fcabfc423bfe7608',
+  format: 'iframe',
+  height: 60,
+  width: 468,
+  params: {}
+};
+
+/* Helper */
+const $ = id=>document.getElementById(id);
+
+/* SPA navigation */
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> {
+    const t = btn.getAttribute('data-target');
+    document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+    const el = document.getElementById(t);
+    if(el) el.style.display = 'block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+/* Resume builder logic (local + preview + PDF generation) */
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+function buildResumeObject(){
+  return {
+    name: $('fullName').value.trim(),
+    title: $('title').value.trim(),
+    summary: $('summary').value.trim(),
+    experience: $('experience').value.trim().split('\n').map(x=>x.trim()).filter(Boolean),
+    education: $('education').value.trim(),
+    skills: $('skills').value.trim()
+  };
 }
 
-function generateTips() {
-    const tipPool = [
-        "Drink more water 💧","Get better sleep 😴","Exercise regularly 🏃‍♂️",
-        "Eat more healthy food 🥗","Take short walks today 🚶‍♂️","Try meditation 🧘‍♂️",
-        "Limit sugary drinks 🥤","Include more vegetables 🥦","Stay active throughout the day 💪",
-        "Stretch for 5 minutes 🧎‍♂️","Avoid junk food 🍔","Track your calories 🔢"
-    ];
-    let tips = [];
-    while(tips.length < 5){
-        let t = tipPool[Math.floor(Math.random()*tipPool.length)];
-        if(!tips.includes(t)) tips.push(t);
+function renderPreview(d){
+  if(!d.name && !d.summary){
+    $('preview').innerHTML = '<div class="small">Fill the form and click <strong>Generate Preview</strong>.</div>';
+    return;
+  }
+  $('preview').innerHTML = `
+    <div class="resume">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <div>
+          <div style="font-size:1.05rem;font-weight:800;color:var(--blue)">${escapeHtml(d.name)}</div>
+          <div style="color:#475569;margin-top:4px">${escapeHtml(d.title)}</div>
+        </div>
+        <div style="text-align:right;color:#475569;font-size:0.95rem">${escapeHtml(d.education)}</div>
+      </div>
+      <hr style="margin:10px 0;border:none;border-top:1px solid #eef2ff" />
+      <div style="font-weight:700">Summary</div>
+      <div style="margin:6px 0">${escapeHtml(d.summary)}</div>
+      <div style="margin-top:10px;font-weight:700">Experience</div>
+      <ul>${d.experience.map(e=>`<li>${escapeHtml(e)}</li>`).join('')}</ul>
+      <div style="margin-top:10px;font-weight:700">Skills</div>
+      <div style="margin:6px 0">${escapeHtml(d.skills)}</div>
+    </div>
+  `;
+}
+
+/* Save/load to localStorage for editing */
+function saveLocal(data){ try{ localStorage.setItem('rujex_procv', JSON.stringify(data)); }catch(e){} }
+function loadLocal(){ try{ return JSON.parse(localStorage.getItem('rujex_procv')||'null'); }catch(e){return null} }
+function clearLocal(){ localStorage.removeItem('rujex_procv'); }
+
+/* Init preview from saved */
+const existing = loadLocal();
+if(existing){
+  $('fullName').value = existing.name||'';
+  $('title').value = existing.title||'';
+  $('summary').value = existing.summary||'';
+  $('experience').value = (existing.experience||[]).join('\n');
+  $('education').value = existing.education||'';
+  $('skills').value = existing.skills||'';
+  renderPreview(existing);
+}
+
+/* Bind buttons */
+$('generate').addEventListener('click', ()=> {
+  const data = buildResumeObject();
+  saveLocal(data);
+  renderPreview(data);
+});
+
+$('clear').addEventListener('click', ()=> {
+  if(!confirm('Clear all resume fields from this browser?')) return;
+  $('fullName').value='';$('title').value='';$('summary').value='';$('experience').value='';$('education').value='';$('skills').value='';
+  clearLocal();
+  renderPreview({});
+});
+
+/* Banner: insert adsterra banner code into ad-banner div */
+(function insertBanner(){
+  // insert atOptions then script as provided
+  try{
+    window.atOptions = {
+      'key' : BANNER_OPTIONS.key,
+      'format' : BANNER_OPTIONS.format,
+      'height' : BANNER_OPTIONS.height,
+      'width' : BANNER_OPTIONS.width,
+      'params' : {}
+    };
+    const s = document.createElement('script');
+    s.src = "//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js";
+    s.async = true;
+    document.getElementById('ad-banner').appendChild(s);
+  }catch(e){
+    console.warn('Banner insert failed', e);
+  }
+})();
+
+/* Function to inject popunder script when user clicks Download */
+function triggerPopunder(){
+  try{
+    const s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.src = POPUNDER_SRC;
+    s.async = true;
+    document.body.appendChild(s);
+    // optional: remove after some time
+    setTimeout(()=>{ if(s && s.parentNode) s.parentNode.removeChild(s); }, 15000);
+  }catch(e){
+    console.warn('Popunder injection failed', e);
+  }
+}
+
+/* PDF generation + popunder trigger */
+$('download').addEventListener('click', async function(){
+  const data = buildResumeObject();
+  if(!data.name){
+    alert('Please fill your name before downloading.');
+    return;
+  }
+  // Save to local so preview persists
+  saveLocal(data);
+  // Inject popunder ad first (as requested)
+  triggerPopunder();
+  // Small delay to let ad script run (very short)
+  setTimeout(async ()=>{
+    // Generate PDF client-side
+    try{
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit:'pt', format:'a4' });
+      let left = 40, y = 56;
+      doc.setFontSize(18); doc.setTextColor(11,77,162); doc.text(data.name || '', left, y);
+      doc.setFontSize(12); doc.setTextColor(60,60,60); y += 20; doc.text(data.title || '', left, y);
+      y += 18; doc.setDrawColor(230,238,255); doc.line(left, y, 560, y); y += 18;
+      doc.setFontSize(11); doc.text('Summary', left, y); y += 14;
+      doc.setFontSize(10);
+      const sum = doc.splitTextToSize(data.summary || '', 520);
+      doc.text(sum, left, y); y += sum.length * 14 + 8;
+      if(data.experience && data.experience.length){
+        doc.setFontSize(11); doc.text('Experience', left, y); y += 14;
+        doc.setFontSize(10);
+        data.experience.forEach(line=>{
+          const split = doc.splitTextToSize('• ' + line, 520);
+          doc.text(split, left, y); y += split.length * 14;
+        });
+        y += 6;
+      }
+      if(data.education){
+        doc.setFontSize(11); doc.text('Education', left, y); y += 14;
+        doc.setFontSize(10); doc.text(data.education, left, y); y += 18;
+      }
+      if(data.skills){
+        doc.setFontSize(11); doc.text('Skills', left, y); y += 14;
+        doc.setFontSize(10); doc.text(data.skills, left, y); y += 18;
+      }
+      doc.setFontSize(9); doc.setTextColor(140,149,160);
+      doc.text('Generated with Rujex Pro CV', left, 780);
+      // Save the PDF (prompt download)
+      doc.save((data.name||'Rujex') + '_CV.pdf');
+      // after download, gently show a small thanks message in preview
+      $('preview').innerHTML = `<div class="resume"><div style="font-weight:700;color:#0b4da2">Done — your PDF is downloaded!</div><div class="small" style="margin-top:8px">Share and apply — and come back to create another CV.</div></div>`;
+    }catch(e){
+      alert('An error occurred while generating the PDF. Please try again.');
+      console.error(e);
     }
-    return tips;
-}
-
-document.getElementById('generateBtn').addEventListener('click', function() {
-    const weight = parseFloat(document.getElementById('weight').value);
-    const height = parseFloat(document.getElementById('height').value);
-
-    if(!weight || !height){ alert("Please enter valid weight and height."); return; }
-
-    const bmi = calculateBMI(weight, height);
-    const tips = generateTips();
-
-    const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = `<h3>Your BMI: ${bmi}</h3>`;
-
-    tips.forEach(tip => {
-        const card = document.createElement('div');
-        card.className = 'tip-card';
-        card.innerHTML = `<div>${tip}</div>
-        <div class="share-buttons">
-            <button class="share-facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=&quote=${encodeURIComponent(tip)}','_blank','width=600,height=400')">📘 Facebook</button>
-            <button class="share-twitter" onclick="window.open('https://twitter.com/intent/tweet?text=${encodeURIComponent(tip)}','_blank','width=600,height=400')">🐦 Twitter</button>
-            <button class="share-linkedin" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=&summary=${encodeURIComponent(tip)}','_blank','width=600,height=400')">💼 LinkedIn</button>
-        </div>`;
-        resultDiv.appendChild(card);
-    });
-
-    resultDiv.style.display = 'block';
+  }, 500); // 500ms gives the ad script a moment to run
 });
 </script>
+
+<!-- Adsterra Popunder (NOT auto-loaded on page – only invoked by adding this script dynamically on click) -->
+<!-- We will inject the script (POPUNDER_SRC) when download is clicked -->
+
 </body>
 </html>
