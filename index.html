@@ -1,436 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Rujex Pro CV — Modern Corporate (Light Blue)</title>
-<meta name="description" content="Create a modern corporate resume (two-column) — preview and download PDF. Free, privacy-first." />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rujex CV Builder</title>
+<meta name="description" content="Create a professional, modern CV in minutes. Preview for free — download PDF after ad.">
+<meta name="keywords" content="resume builder, CV maker, professional CV, USA, modern CV">
 <style>
 :root{
-  --bg:#f3f9ff; --card:#ffffff; --accent:#0f6bd8; --muted:#62748a;
-  --chip-bg:#eaf4ff; --chip-border:#cfe8ff; --maxw:1000px;
+  --primary:#0b4da2;
+  --accent:#ff6b6b;
+  --bg:#f7fbff;
+  --card:#fff;
+  --text:#0f1724;
+  --muted:#6b7280;
 }
-*{box-sizing:border-box}
-body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:var(--bg);color:#0b2035}
-.header{background:linear-gradient(90deg,var(--accent),#1b82f2);color:#fff;padding:18px 12px}
-.header .wrap{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-.header h1{margin:0;font-size:1.2rem;font-weight:700}
-.container{max-width:var(--maxw);margin:18px auto;padding:14px}
-.card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 8px 30px rgba(11,77,162,0.06)}
-.grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
-.label{display:block;font-weight:700;margin-bottom:6px;color:#14324a}
-.input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6f0fb;margin-bottom:10px;font-size:0.95rem;background:#fbfdff}
-.small{color:var(--muted);font-size:0.92rem}
-.btn{background:var(--accent);color:#fff;padding:10px 12px;border:none;border-radius:10px;cursor:pointer;font-weight:700}
-.btn.secondary{background:#0a56b0}
-.preview{background:#fbfeff;padding:14px;border-radius:8px;border:1px dashed #e3f0ff;min-height:300px;overflow:auto}
-.left-col{display:flex;flex-direction:column;gap:12px}
-.right-col{display:flex;flex-direction:column;gap:12px}
-.section-title{font-weight:800;color:#0c2340;margin-bottom:6px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{background:var(--chip-bg);border:1px solid var(--chip-border);padding:6px 10px;border-radius:999px;font-weight:600;color:#08386f;display:flex;gap:8px;align-items:center}
-.remove-btn{background:#ef4444;color:#fff;border:none;padding:6px 8px;border-radius:8px;cursor:pointer}
-.ad-slot{background:#fff;border:1px solid #eef7ff;border-radius:8px;padding:8px;text-align:center;color:var(--muted)}
-.footer{text-align:center;color:var(--muted);font-size:0.9rem;margin:22px 0}
-.note{background:#fffbe6;border-left:4px solid #ffd27a;padding:10px;border-radius:6px}
+body{font-family:Inter,Arial,sans-serif;margin:0;padding:0;background:var(--bg);color:var(--text);}
+header{background:linear-gradient(90deg,var(--primary),#0f6bd8);color:#fff;text-align:center;padding:24px 12px;}
+header h1{margin:0;font-size:1.8rem;}
+main{max-width:960px;margin:20px auto;padding:12px;}
+.card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 6px 20px rgba(0,0,0,0.05);}
+label{display:block;font-weight:600;margin:6px 0 4px;}
+input, textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef8;margin-bottom:10px;}
+textarea{resize:none;}
+.btn{background:var(--accent);color:#fff;padding:10px 14px;border:none;border-radius:10px;cursor:pointer;font-weight:700;margin-top:6px;}
+.footer{text-align:center;color:var(--muted);font-size:0.9rem;margin-top:16px;}
+.flex{display:flex;gap:10px;flex-wrap:wrap;}
+.preview-area{background:#f0f8ff;padding:12px;border-radius:8px;border:1px dashed #dbeafe;min-height:200px;}
+.skills-box{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.skill-pill{background:#0b4da2;color:#fff;padding:4px 8px;border-radius:6px;font-size:0.85rem;}
+.profile-img{width:80px;height:80px;border-radius:50%;object-fit:cover;margin-bottom:8px;}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
-<header class="header">
-  <div class="wrap">
-    <div>
-      <h1>Rujex Pro CV</h1>
-      <div style="opacity:.95;font-size:.95rem">Modern corporate resume — light blue theme</div>
-    </div>
-    <div style="font-weight:600">Templates: 1 • English</div>
-  </div>
+<header>
+  <h1>Rujex CV Builder</h1>
+  <p style="opacity:0.9;margin-top:4px;">Modern & professional CV — preview for free</p>
 </header>
 
-<div class="container">
-  <!-- TOP BANNER -->
-  <div style="margin-bottom:12px" id="topBannerSlot" class="card ad-slot"></div>
+<main>
 
-  <div class="grid">
-    <!-- LEFT column -->
-    <aside class="left-col">
-      <div class="card">
-        <div class="section-title">Personal</div>
-        <label class="label">Full Name</label>
-        <input id="fullName" class="input" placeholder="Jane Doe">
-
-        <label class="label">Job Title</label>
-        <input id="title" class="input" placeholder="Senior Materials Physicist">
-
-        <label class="label">Contact (email)</label>
-        <input id="email" class="input" placeholder="jane.doe@example.com">
-
-        <label class="label">Phone</label>
-        <input id="phone" class="input" placeholder="(555) 555-5555">
-
-        <div style="margin-top:8px">
-          <div class="section-title">Skills</div>
-          <div style="display:flex;gap:8px">
-            <input id="skillInput" class="input" placeholder="Type a skill and press Enter" style="flex:1;padding:8px">
-            <button id="addSkillBtn" class="btn" style="padding:8px">Add</button>
-          </div>
-          <div id="skillChips" class="chips" style="margin-top:8px"></div>
-        </div>
-
-        <div style="margin-top:12px">
-          <div class="section-title">Education</div>
-          <div id="eduList"></div>
-          <div style="margin-top:8px"><button id="addEdu" class="btn" style="background:#10b981;padding:8px">+ Add Education</button></div>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:10px">
-        <div class="section-title">Support</div>
-        <div class="small">This tool is free and supported by ads. For help: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a></div>
-        <div style="height:10px"></div>
-        <div id="sideAd" class="ad-slot">Ad</div>
-      </div>
-    </aside>
-
-    <!-- RIGHT column -->
-    <section class="right-col">
-      <div class="card">
-        <div class="section-title">Summary</div>
-        <textarea id="summary" class="input" rows="4" placeholder="Brief 2–3 sentence professional summary"></textarea>
-
-        <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
-          <div class="section-title">Experience</div>
-          <div><button id="addExp" class="btn" style="background:#10b981;padding:8px">+ Add Experience</button></div>
-        </div>
-        <div id="expList"></div>
-
-        <div style="margin-top:12px;display:flex;gap:10px">
-          <button id="previewBtn" class="btn">Preview (Show Ad)</button>
-          <button id="downloadBtn" class="btn secondary">Download PDF (Show Ad)</button>
-          <button id="clearBtn" class="btn" style="background:#94a3b8">Clear</button>
-        </div>
-
-        <div style="margin-top:10px" class="note small">Data stays in your browser only (localStorage). No server uploads.</div>
-      </div>
-
-      <div class="card">
-        <div class="section-title">Preview</div>
-        <div id="preview" class="preview"><div class="small">Fill the fields and click Preview to see your modern corporate CV.</div></div>
-      </div>
-    </section>
-  </div>
-
-  <!-- BOTTOM BANNER -->
-  <div style="margin-top:14px" id="bottomBannerSlot" class="card ad-slot"></div>
+<div class="card">
+  <h2>Upload Profile Image</h2>
+  <input type="file" id="profileImage" accept="image/*">
 </div>
 
-<footer class="footer">© 2025 Rujex Pro CV — Support: mrguettafradhouan@gmail.com</footer>
+<div class="card">
+  <h2>Personal Info</h2>
+  <label>Name</label>
+  <input id="fullName" placeholder="John Doe">
+  <label>Job Title</label>
+  <input id="jobTitle" placeholder="Product Manager">
+  <label>Email</label>
+  <input id="email" placeholder="john@example.com">
+  <label>Phone</label>
+  <input id="phone" placeholder="+1 123 456 7890">
+</div>
 
-<!-- Adsterra Banner top/bottom (insert using your keys) -->
+<div class="card">
+  <h2>Summary</h2>
+  <textarea id="summary" rows="3" placeholder="Short professional summary"></textarea>
+</div>
+
+<div class="card">
+  <h2>Skills</h2>
+  <div class="flex" id="skillsContainer"></div>
+  <input id="skillInput" placeholder="Type skill and press Enter">
+</div>
+
+<div class="card">
+  <h2>Experience</h2>
+  <textarea id="experience" rows="4" placeholder="Company | Role | Years | Key achievement"></textarea>
+</div>
+
+<div class="card">
+  <h2>Education</h2>
+  <textarea id="education" rows="3" placeholder="Degree | University | Year"></textarea>
+</div>
+
+<div class="card">
+  <button class="btn" id="generate">Preview CV</button>
+  <button class="btn" id="download" style="background:#0b4da2;">Download PDF</button>
+</div>
+
+<div class="card">
+  <h2>CV Preview</h2>
+  <div id="preview" class="preview-area">Your CV preview will appear here.</div>
+</div>
+
+<div id="ad-banner" class="card" style="text-align:center;">
+  <!-- Banner ad will appear here -->
+</div>
+
+</main>
+
+<footer class="footer">
+  &copy; 2025 Rujex CV Builder — Contact: <a href="mailto:mrguettafradhouan@gmail.com">mrguettafradhouan@gmail.com</a>
+</footer>
+
+<!-- Ads Scripts -->
+<script type='text/javascript' src='//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js'></script>
 <script type="text/javascript">
-  try{
-    window.atOptions = {
-      'key' : 'c75931fa51a9da29fcabfc423bfe7608',
-      'format' : 'iframe',
-      'height' : 60,
-      'width' : 468,
-      'params' : {}
-    };
-    (function(){ var s=document.createElement('script'); s.src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"; s.async=true; document.getElementById('topBannerSlot').appendChild(s); })();
-    (function(){ var s2=document.createElement('script'); s2.src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"; s2.async=true; document.getElementById('bottomBannerSlot').appendChild(s2); })();
-    (function(){ var s3=document.createElement('script'); s3.src="//www.highperformanceformat.com/c75931a9da29fcabfc423bfe7608/invoke.js"; s3.async=true; document.getElementById('sideAd').appendChild(s3); })();
-  }catch(e){ console.warn('banner load failed', e); }
+atOptions = {
+  'key' : 'c75931fa51a9da29fcabfc423bfe7608',
+  'format' : 'iframe',
+  'height' : 60,
+  'width' : 468,
+  'params' : {}
+};
 </script>
-
-<!-- jsPDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script type="text/javascript" src="//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js"></script>
 
 <script>
-/* CONFIG */
-const POPUNDER_SRC = "//pl27907857.effectivegatecpm.com/6a/71/d5/6a71d5e33ff49f9f240baf362afebc46.js";
+(function(){
+const preview = document.getElementById('preview');
+const generateBtn = document.getElementById('generate');
+const downloadBtn = document.getElementById('download');
+const profileInput = document.getElementById('profileImage');
 
-/* HELPERS */
-function $(id){ return document.getElementById(id); }
-function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+let profileDataUrl = '';
 
-/* Dynamic fields: Experience & Education */
-function createExpBlock(val=''){
-  const id = 'exp_' + Date.now() + Math.floor(Math.random()*1000);
-  const wrap = document.createElement('div');
-  wrap.id = id;
-  wrap.style.marginBottom = '10px';
-  wrap.style.display = 'grid';
-  wrap.style.gridTemplateColumns = '1fr 90px';
-  wrap.style.gap = '8px';
-  const left = document.createElement('div');
-  const inp = document.createElement('input'); inp.className='input'; inp.placeholder='Company | Role | 2019–2023 | Achievements (separate bullets with ; )'; inp.value = val;
-  left.appendChild(inp);
-  const right = document.createElement('div'); right.style.display='flex'; right.style.flexDirection='column'; right.style.gap='8px';
-  const adDiv = document.createElement('div'); adDiv.className='ad-slot'; adDiv.style.height='60px'; adDiv.innerText = 'Ad';
-  const rm = document.createElement('button'); rm.className='remove-btn'; rm.textContent='Remove'; rm.addEventListener('click', ()=>wrap.remove());
-  right.appendChild(adDiv); right.appendChild(rm);
-  wrap.appendChild(left); wrap.appendChild(right);
-
-  // inject small banner for this experience slot
-  setTimeout(()=> {
-    try{
-      const s = document.createElement('script');
-      s.src = "//www.highperformanceformat.com/c75931fa51a9da29fcabfc423bfe7608/invoke.js";
-      s.async = true;
-      adDiv.appendChild(s);
-    }catch(e){ console.warn('exp-slot ad failed', e); }
-  }, 300);
-
-  return wrap;
-}
-function createEduBlock(val=''){
-  const wrap = document.createElement('div'); wrap.style.marginBottom='8px';
-  const inp = document.createElement('input'); inp.className='input'; inp.placeholder='Degree | School | Year'; inp.value = val;
-  const row = document.createElement('div'); row.style.display='flex'; row.style.gap='8px'; row.style.marginTop='6px';
-  const rm = document.createElement('button'); rm.className='remove-btn'; rm.textContent='Remove'; rm.addEventListener('click', ()=>wrap.remove());
-  row.appendChild(rm); wrap.appendChild(inp); wrap.appendChild(row);
-  return wrap;
-}
-
-/* Initialize one block each */
-$('expList').appendChild(createExpBlock());
-$('eduList').appendChild(createEduBlock());
-$('addExp').addEventListener('click', ()=> $('expList').appendChild(createExpBlock()));
-$('addEdu').addEventListener('click', ()=> $('eduList').appendChild(createEduBlock()));
-
-/* Skills chips */
-const skillChips = $('skillChips');
-function addSkill(text){
-  if(!text) return;
-  const chip = document.createElement('span'); chip.className='chip';
-  chip.innerHTML = `<span>${escapeHtml(text)}</span>`;
-  const rm = document.createElement('button'); rm.innerHTML='✕'; rm.title='Remove'; rm.addEventListener('click', ()=>chip.remove());
-  chip.appendChild(rm); skillChips.appendChild(chip);
-}
-$('addSkillBtn').addEventListener('click', ()=>{
-  const v = $('skillInput').value.trim();
-  if(v){ addSkill(v); $('skillInput').value=''; }
+profileInput.addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = function(ev){ profileDataUrl = ev.target.result; };
+    reader.readAsDataURL(file);
+  }
 });
-$('skillInput').addEventListener('keyup', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); $('addSkillBtn').click(); } });
 
-/* Save/load local */
-function saveLocal(obj){ try{ localStorage.setItem('rujex_minimal_cv', JSON.stringify(obj)); }catch(e){} }
-function loadLocal(){ try{ return JSON.parse(localStorage.getItem('rujex_minimal_cv')||'null'); }catch(e){return null} }
-(function populateFromLocal(){
-  const o = loadLocal(); if(!o) return;
-  $('fullName').value = o.name || '';
-  $('title').value = o.title || '';
-  $('email').value = o.email || '';
-  $('phone').value = o.phone || '';
-  $('summary').value = o.summary || '';
-  $('expList').innerHTML=''; (o.experience||[]).forEach(x=> $('expList').appendChild(createExpBlock(x)));
-  $('eduList').innerHTML=''; (o.education||[]).forEach(x=> $('eduList').appendChild(createEduBlock(x)));
-  (o.skillsArr||[]).forEach(s=>addSkill(s));
-})();
+// Skills
+const skillsContainer = document.getElementById('skillsContainer');
+const skillInput = document.getElementById('skillInput');
+let skills = [];
 
-/* Collect data */
-function collectData(){
-  const exp = Array.from($('expList').querySelectorAll('input')).map(i=>i.value.trim()).filter(Boolean);
-  const edu = Array.from($('eduList').querySelectorAll('input')).map(i=>i.value.trim()).filter(Boolean);
-  const skills = Array.from(skillChips.querySelectorAll('.chip span')).map(s=>s.textContent.trim());
-  return {
-    name: $('fullName').value.trim(),
-    title: $('title').value.trim(),
-    email: $('email').value.trim(),
-    phone: $('phone').value.trim(),
-    summary: $('summary').value.trim(),
-    experience: exp, education: edu,
-    skillsArr: skills, skills: skills.join(', ')
-  };
+skillInput.addEventListener('keypress', function(e){
+  if(e.key === 'Enter' && skillInput.value.trim()){
+    skills.push(skillInput.value.trim());
+    const span = document.createElement('span');
+    span.className = 'skill-pill';
+    span.textContent = skillInput.value.trim();
+    skillsContainer.appendChild(span);
+    skillInput.value='';
+    e.preventDefault();
+  }
+});
+
+// Render Preview
+function renderPreview(){
+  const name = document.getElementById('fullName').value;
+  const title = document.getElementById('jobTitle').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const summary = document.getElementById('summary').value;
+  const experience = document.getElementById('experience').value;
+  const education = document.getElementById('education').value;
+
+  preview.innerHTML = '';
+  if(profileDataUrl){
+    const img = document.createElement('img');
+    img.src = profileDataUrl;
+    img.className='profile-img';
+    preview.appendChild(img);
+  }
+  const h2 = document.createElement('h2'); h2.textContent=name; preview.appendChild(h2);
+  const h3 = document.createElement('h3'); h3.textContent=title; preview.appendChild(h3);
+  const contact = document.createElement('p'); contact.textContent=`Email: ${email} | Phone: ${phone}`; preview.appendChild(contact);
+  if(summary){ const s=document.createElement('p'); s.textContent='Summary: '+summary; preview.appendChild(s);}
+  if(skills.length){ const s=document.createElement('p'); s.textContent='Skills:'; preview.appendChild(s); 
+    const skillDiv=document.createElement('div'); skillDiv.className='skills-box';
+    skills.forEach(skill=>{ const sp=document.createElement('span'); sp.className='skill-pill'; sp.textContent=skill; skillDiv.appendChild(sp); });
+    preview.appendChild(skillDiv);
+  }
+  if(experience){ const exp=document.createElement('p'); exp.textContent='Experience: '+experience; preview.appendChild(exp);}
+  if(education){ const edu=document.createElement('p'); edu.textContent='Education: '+education; preview.appendChild(edu);}
 }
 
-/* Render preview (two-column feel) */
-function renderPreview(data){
-  if(!data || !data.name){ $('preview').innerHTML = '<div class="small">Please enter your full name and click Preview.</div>'; return; }
-  const skillsHtml = data.skillsArr.map(s=>`<span class="chip" style="margin:4px 6px;padding:6px 8px">${escapeHtml(s)}<button style="margin-left:8px;background:transparent;border:none;color:#ef4444;cursor:pointer" onclick="this.parentNode.remove()">✕</button></span>`).join('');
-  const expHtml = data.experience.map(e=>`<div style="margin-bottom:6px"><strong style="color:#0b3a63">•</strong> ${escapeHtml(e)}</div>`).join('');
-  const eduHtml = data.education.map(e=>`<div style="margin-bottom:6px">${escapeHtml(e)}</div>`).join('');
-  const html = `
-    <div style="display:grid;grid-template-columns:180px 1fr;gap:18px;align-items:start">
-      <div style="background:#fbfeff;padding:12px;border-radius:8px">
-        <div style="font-weight:800;font-size:1.05rem;color:var(--accent)">${escapeHtml(data.name)}</div>
-        <div style="color:#31485f;margin-top:6px">${escapeHtml(data.title)}</div>
-        <div style="margin-top:10px;font-weight:700;color:#31485f">Contact</div>
-        <div class="small" style="margin-top:6px">${escapeHtml(data.email)}<br>${escapeHtml(data.phone)}</div>
-        <div style="margin-top:12px;font-weight:700;color:#31485f">Skills</div>
-        <div style="margin-top:8px">${skillsHtml}</div>
-      </div>
-      <div>
-        <div style="font-weight:700;color:#0b3a63">Summary</div>
-        <div style="margin-top:6px">${escapeHtml(data.summary)}</div>
-        <div style="margin-top:12px;font-weight:700;color:#0b3a63">Experience</div>
-        <div style="margin-top:8px">${expHtml}</div>
-        <div style="margin-top:12px;font-weight:700;color:#0b3a63">Education</div>
-        <div style="margin-top:8px">${eduHtml}</div>
-      </div>
-    </div>
-  `;
-  $('preview').innerHTML = html;
-}
+// Generate Preview
+generateBtn.addEventListener('click', function(){ renderPreview(); alert('Ad would display here!'); });
 
-/* Popunder injector */
-function triggerPopunder(){
-  try{
-    const s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.src = POPUNDER_SRC;
-    s.async = true;
-    document.body.appendChild(s);
-    setTimeout(()=>{ if(s && s.parentNode) s.parentNode.removeChild(s); }, 15000);
-  }catch(e){ console.warn('popunder failed', e); }
-}
-
-/* PDF generation (A4, two-column feel) */
-async function generatePDF(data){
+// Download PDF
+downloadBtn.addEventListener('click', async function(){
+  renderPreview();
+  alert('Ad popup before download!');
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit:'pt', format:'a4' });
-  const leftX = 40, rightX = 220;
-  let y = 50;
-
-  doc.setFontSize(18); doc.setTextColor(15,57,120); doc.setFont('helvetica','bold');
-  doc.text(data.name || '', leftX, y);
-  doc.setFontSize(11); doc.setFont('helvetica','normal'); y += 18;
-  doc.text(data.title || '', leftX, y);
-  y += 12;
-  doc.setDrawColor(230,240,255); doc.setLineWidth(0.5); doc.line(leftX, y, 560, y);
-  y += 14;
-
-  // Left column: contact & skills (we'll print contact at top and skills in a box)
-  doc.setFontSize(9);
-  doc.text('Contact:', leftX, y); doc.setFontSize(10);
-  doc.text(`${data.email || ''} · ${data.phone || ''}`, leftX, y + 12);
-  // skills box
-  let skillsY = y + 36;
-  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.text('Skills', leftX, skillsY); skillsY += 10;
-  doc.setFont('helvetica','normal'); doc.setFontSize(10);
-  let sx = leftX, sy = skillsY;
-  for(const s of data.skillsArr || []){
-    const w = doc.getTextWidth(s) + 12;
-    if(sx + w > rightX + 300){ sx = leftX; sy += 18; }
-    doc.setFillColor(234,244,255); doc.roundedRect(sx, sy, w, 16, 4, 4, 'F');
-    doc.setTextColor(14,52,100); doc.text(s, sx + 6, sy + 12);
-    sx += w + 8;
-  }
-  let contentY = Math.max(sy + 26, y + 36);
-
-  // Summary (full width right area)
-  if(data.summary){
-    doc.setTextColor(10,40,80); doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.text('Summary', rightX, y);
-    doc.setFont('helvetica','normal'); doc.setFontSize(10);
-    const split = doc.splitTextToSize(data.summary, 560 - rightX - 20);
-    doc.text(split, rightX, y + 16);
-    contentY = Math.max(contentY, y + 16 + split.length * 14);
-  }
-
-  // Experience
-  let expY = contentY + 6;
-  if(data.experience && data.experience.length){
-    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.text('Experience', leftX, expY); expY += 14;
-    doc.setFont('helvetica','normal'); doc.setFontSize(10);
-    for(const e of data.experience){
-      const lines = doc.splitTextToSize('• ' + e, 520);
-      doc.text(lines, leftX, expY);
-      expY += lines.length * 14;
-      if(expY > 740){ doc.addPage(); expY = 40; }
-    }
-  }
-
-  // Education
-  let eduY = expY + 6;
-  if(data.education && data.education.length){
-    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.text('Education', leftX, eduY); eduY += 14;
-    doc.setFont('helvetica','normal'); doc.setFontSize(10);
-    for(const ed of data.education){
-      const lines = doc.splitTextToSize(ed, 520);
-      doc.text(lines, leftX, eduY); eduY += lines.length * 14;
-      if(eduY > 740){ doc.addPage(); eduY = 40; }
-    }
-  }
-
-  // Footer small
-  doc.setFontSize(9); doc.setTextColor(120,130,140);
-  doc.text('Generated with Rujex Pro CV', leftX, 780);
-  return doc;
-}
-
-/* BUTTON HANDLERS */
-$('previewBtn').addEventListener('click', ()=>{
-  const d = collectData();
-  saveLocal(d);
-  triggerPopunder();
-  setTimeout(()=> renderPreview(d), 450);
+  const doc = new jsPDF();
+  let y=20;
+  if(profileDataUrl){ doc.addImage(profileDataUrl,'JPEG',80,y,50,50); y+=60;}
+  doc.setFontSize(16); doc.text(document.getElementById('fullName').value,20,y); y+=10;
+  doc.setFontSize(12); doc.text(document.getElementById('jobTitle').value,20,y); y+=10;
+  doc.text(`Email: ${document.getElementById('email').value}`,20,y); y+=7;
+  doc.text(`Phone: ${document.getElementById('phone').value}`,20,y); y+=10;
+  doc.text('Summary: '+document.getElementById('summary').value,20,y); y+=10;
+  doc.text('Skills: '+skills.join(', '),20,y); y+=10;
+  doc.text('Experience: '+document.getElementById('experience').value,20,y); y+=10;
+  doc.text('Education: '+document.getElementById('education').value,20,y+=10);
+  doc.save('Rujex_CV.pdf');
 });
-$('downloadBtn').addEventListener('click', async ()=>{
-  const d = collectData();
-  if(!d.name){ alert('Please enter your full name before downloading.'); return; }
-  saveLocal(d);
-  triggerPopunder();
-  setTimeout(async ()=>{
-    try{
-      const doc = await generatePDF(d);
-      const fname = (d.name || 'Rujex') + '_CV.pdf';
-      doc.save(fname);
-      $('preview').innerHTML = '<div class="small" style="color:var(--accent);font-weight:700">Download started — check your downloads folder.</div>';
-    }catch(e){ alert('Error generating PDF. Try again.'); console.error(e); }
-  }, 700);
-});
-$('clearBtn').addEventListener('click', ()=>{
-  if(!confirm('Clear all fields?')) return;
-  ['fullName','title','email','phone','summary','skillInput'].forEach(id=>{ if($(id)) $(id).value=''; });
-  $('expList').innerHTML=''; $('eduList').innerHTML=''; skillChips.innerHTML=''; $('expList').appendChild(createExpBlock()); $('eduList').appendChild(createEduBlock());
-});
-
-/* Save local */
-function saveLocal(obj){ try{ localStorage.setItem('rujex_minimal_cv_v2', JSON.stringify(obj)); }catch(e){} }
-
-/* Helper escape used in renderPreview */
-function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-/* small helpers for createEduBlock (used in clear) */
-function createEduBlock(val=''){
-  const wrap = document.createElement('div'); wrap.style.marginBottom='8px';
-  const inp = document.createElement('input'); inp.className='input'; inp.placeholder='Degree | School | Year'; inp.value = val;
-  const row = document.createElement('div'); row.style.display='flex'; row.style.gap='8px'; row.style.marginTop='6px';
-  const rm = document.createElement('button'); rm.className='remove-btn'; rm.textContent='Remove'; rm.addEventListener('click', ()=>wrap.remove());
-  row.appendChild(rm); wrap.appendChild(inp); wrap.appendChild(row); return wrap;
-}
-/* Recreate initial blocks if cleared */
-function createExpBlock(){ return createExpBlockImpl(''); }
-function createExpBlockImpl(val=''){
-  const id = 'exp_' + Date.now() + Math.floor(Math.random()*1000);
-  const wrap = document.createElement('div');
-  wrap.id = id; wrap.style.marginBottom='10px';
-  wrap.style.display = 'grid'; wrap.style.gridTemplateColumns = '1fr 90px'; wrap.style.gap='8px';
-  const left = document.createElement('div');
-  const inp = document.createElement('input'); inp.className='input'; inp.placeholder='Company | Role | 2019–2023 | Achievements'; inp.value = val;
-  left.appendChild(inp);
-  const right = document.createElement('div'); right.style.display='flex'; right.style.flexDirection='column'; right.style.gap='8px';
-  const adDiv = document.createElement('div'); adDiv.className='ad-slot'; adDiv.style.height='60px'; adDiv.innerText = 'Ad';
-  const rm = document.createElement('button'); rm.className='remove-btn'; rm.textContent='Remove'; rm.addEventListener('click', ()=>wrap.remove());
-  right.appendChild(adDiv); right.appendChild(rm);
-  wrap.appendChild(left); wrap.appendChild(right);
-  // inject ad small
-  setTimeout(()=> {
-    try{ const s = document.createElement('script'); s.src="//www.highperformanceformat.com/c75931a9da29fcabfc423bfe7608/invoke.js"; s.async=true; adDiv.appendChild(s); }catch(e){console.warn(e);}
-  }, 300);
-  return wrap;
-}
-/* ensure initial blocks exist */
-if($('expList').children.length === 0) $('expList').appendChild(createExpBlockImpl(''));
-if($('eduList').children.length === 0) $('eduList').appendChild(createEduBlock());
-
+})();
 </script>
-
-<!-- NOTE: Popunder script is injected dynamically via triggerPopunder() when Preview or Download clicked -->
-<!-- Popunder source used: -->
-<script> /* keep POPUNDER_SRC var used in script above */</script>
 
 </body>
 </html>
