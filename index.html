@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>السيرة الذاتية - نموذج أمريكي</title>
+<title>American Resume Template</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   body {
@@ -14,10 +14,7 @@
     align-items: center;
     padding: 20px;
   }
-  h1 {
-    margin-bottom: 20px;
-    color: #333;
-  }
+  h1 { color: #333; margin-bottom: 20px; }
   .form-container, .resume-container {
     background: #fff;
     padding: 20px;
@@ -27,7 +24,7 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
   }
-  input, textarea {
+  input, textarea, select {
     width: 100%;
     padding: 10px;
     margin: 8px 0;
@@ -43,63 +40,72 @@
     cursor: pointer;
     margin-top: 10px;
   }
-  button:hover {
-    background-color: #0056b3;
-  }
+  button:hover { background-color: #0056b3; }
   .resume-container h2 {
     text-align: center;
     font-size: 24px;
     margin-bottom: 5px;
   }
-  .resume-container p {
-    margin: 4px 0;
-  }
+  .resume-container p { margin: 4px 0; }
   .section-title {
     font-weight: bold;
     margin-top: 15px;
     border-bottom: 1px solid #333;
     padding-bottom: 3px;
   }
+  hr { border: 1px solid #007bff; margin: 10px 0; }
 </style>
 </head>
 <body>
 
-<h1>إنشاء السيرة الذاتية - النموذج الأمريكي</h1>
+<h1>Create Your Resume</h1>
 
 <div class="form-container">
-  <label>الاسم الكامل:</label>
+  <label>Full Name:</label>
   <input type="text" id="name" placeholder="John Doe">
-  <label>البريد الإلكتروني:</label>
+  <label>Email:</label>
   <input type="email" id="email" placeholder="johndoe@example.com">
-  <label>الهاتف:</label>
+  <label>Phone:</label>
   <input type="text" id="phone" placeholder="+1 234 567 890">
-  <label>العنوان:</label>
+  <label>Address:</label>
   <input type="text" id="address" placeholder="123 Main St, City, USA">
-  <label>ملخص شخصي:</label>
+  
+  <label>Languages (Select proficiency):</label>
+  <select id="language">
+    <option value="Beginner">English - Beginner</option>
+    <option value="Intermediate">English - Intermediate</option>
+    <option value="Advanced">English - Advanced</option>
+    <option value="Fluent">English - Fluent</option>
+    <option value="Native">English - Native</option>
+  </select>
+
+  <label>Professional Summary:</label>
   <textarea id="summary" rows="3" placeholder="Professional summary here..."></textarea>
-  <label>الخبرة العملية:</label>
+  <label>Work Experience:</label>
   <textarea id="experience" rows="4" placeholder="Work experience here..."></textarea>
-  <label>التعليم:</label>
+  <label>Education:</label>
   <textarea id="education" rows="3" placeholder="Education here..."></textarea>
-  <button onclick="generateResume()">إنشاء السيرة الذاتية</button>
+  <button onclick="generateResume()">Create Resume</button>
 </div>
 
 <div class="resume-container" id="resume" style="display:none;">
   <h2 id="res-name"></h2>
   <p id="res-contact"></p>
+  <p id="res-languages"></p>
+  <hr>
   <div>
-    <div class="section-title">ملخص شخصي</div>
+    <div class="section-title">Professional Summary</div>
     <p id="res-summary"></p>
   </div>
   <div>
-    <div class="section-title">الخبرة العملية</div>
+    <div class="section-title">Work Experience</div>
     <p id="res-experience"></p>
   </div>
   <div>
-    <div class="section-title">التعليم</div>
+    <div class="section-title">Education</div>
     <p id="res-education"></p>
   </div>
-  <button onclick="downloadPDF()">تحميل PDF</button>
+  <button onclick="downloadPDF()">Download PDF</button>
 </div>
 
 <script>
@@ -108,12 +114,14 @@ function generateResume() {
   const email = document.getElementById('email').value;
   const phone = document.getElementById('phone').value;
   const address = document.getElementById('address').value;
+  const language = document.getElementById('language').value;
   const summary = document.getElementById('summary').value;
   const experience = document.getElementById('experience').value;
   const education = document.getElementById('education').value;
 
   document.getElementById('res-name').textContent = name;
   document.getElementById('res-contact').textContent = `${email} | ${phone} | ${address}`;
+  document.getElementById('res-languages').textContent = `Languages: ${language}`;
   document.getElementById('res-summary').textContent = summary;
   document.getElementById('res-experience').textContent = experience;
   document.getElementById('res-education').textContent = education;
@@ -128,6 +136,7 @@ function downloadPDF() {
 
   const name = document.getElementById('res-name').textContent;
   const contact = document.getElementById('res-contact').textContent;
+  const languages = document.getElementById('res-languages').textContent;
   const summary = document.getElementById('res-summary').textContent;
   const experience = document.getElementById('res-experience').textContent;
   const education = document.getElementById('res-education').textContent;
@@ -138,26 +147,34 @@ function downloadPDF() {
   y += 10;
   doc.setFontSize(12);
   doc.text(contact, 105, y, {align: 'center'});
-  y += 15;
+  y += 7;
+  doc.text(languages, 105, y, {align: 'center'});
+  y += 10;
+  doc.setLineWidth(0.8);
+  doc.line(20, y, 190, y); // horizontal line
+  y += 10;
+
   doc.setFontSize(14);
-  doc.text('ملخص شخصي', 20, y);
+  doc.text('Professional Summary', 20, y);
   y += 7;
   doc.setFontSize(12);
   doc.text(summary, 20, y);
   y += 20;
+
   doc.setFontSize(14);
-  doc.text('الخبرة العملية', 20, y);
+  doc.text('Work Experience', 20, y);
   y += 7;
   doc.setFontSize(12);
   doc.text(experience, 20, y);
   y += 20;
+
   doc.setFontSize(14);
-  doc.text('التعليم', 20, y);
+  doc.text('Education', 20, y);
   y += 7;
   doc.setFontSize(12);
   doc.text(education, 20, y);
 
-  doc.save('السيرة_الذاتية.pdf');
+  doc.save('Resume.pdf');
 }
 </script>
 
