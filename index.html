@@ -1,254 +1,161 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نماذج السيرة الذاتية</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-    h1 {
-      color: #333;
-      margin-bottom: 20px;
-    }
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .tab {
-      padding: 10px 20px;
-      background: #007bff;
-      color: #fff;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .tab.active {
-      background: #0056b3;
-    }
-    .form-container, .resume-container {
-      background: #fff;
-      padding: 20px;
-      margin: 10px 0;
-      width: 100%;
-      max-width: 700px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background-color: #28a745;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #1e7e34;
-    }
-    .resume-container h2 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    .resume-container p {
-      margin: 5px 0;
-    }
-
-    /* اختلاف الألوان بين النماذج */
-    #form1 { border-left: 6px solid #007bff; }
-    #form2 { border-left: 6px solid #28a745; }
-    #form3 { border-left: 6px solid #ffc107; }
-    #form4 { border-left: 6px solid #17a2b8; }
-    #form5 { border-left: 6px solid #6f42c1; }
-
-    /* اختلاف ألوان السيرة الذاتية حسب النموذج */
-    .resume1 { border-top: 6px solid #007bff; }
-    .resume2 { border-top: 6px solid #28a745; }
-    .resume3 { border-top: 6px solid #ffc107; }
-    .resume4 { border-top: 6px solid #17a2b8; }
-    .resume5 { border-top: 6px solid #6f42c1; }
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>السيرة الذاتية - نموذج أمريكي</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  .form-container, .resume-container {
+    background: #fff;
+    padding: 20px;
+    margin: 10px 0;
+    width: 100%;
+    max-width: 700px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  .resume-container h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+  .resume-container p {
+    margin: 4px 0;
+  }
+  .section-title {
+    font-weight: bold;
+    margin-top: 15px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 3px;
+  }
+</style>
 </head>
 <body>
 
-<h1>نماذج السيرة الذاتية</h1>
+<h1>إنشاء السيرة الذاتية - النموذج الأمريكي</h1>
 
-<div class="tabs">
-  <div class="tab active" onclick="showForm(1)">نموذج 1</div>
-  <div class="tab" onclick="showForm(2)">نموذج 2</div>
-  <div class="tab" onclick="showForm(3)">نموذج 3</div>
-  <div class="tab" onclick="showForm(4)">نموذج 4</div>
-  <div class="tab" onclick="showForm(5)">نموذج 5</div>
+<div class="form-container">
+  <label>الاسم الكامل:</label>
+  <input type="text" id="name" placeholder="John Doe">
+  <label>البريد الإلكتروني:</label>
+  <input type="email" id="email" placeholder="johndoe@example.com">
+  <label>الهاتف:</label>
+  <input type="text" id="phone" placeholder="+1 234 567 890">
+  <label>العنوان:</label>
+  <input type="text" id="address" placeholder="123 Main St, City, USA">
+  <label>ملخص شخصي:</label>
+  <textarea id="summary" rows="3" placeholder="Professional summary here..."></textarea>
+  <label>الخبرة العملية:</label>
+  <textarea id="experience" rows="4" placeholder="Work experience here..."></textarea>
+  <label>التعليم:</label>
+  <textarea id="education" rows="3" placeholder="Education here..."></textarea>
+  <button onclick="generateResume()">إنشاء السيرة الذاتية</button>
 </div>
 
-<div id="forms">
-
-  <!-- نموذج 1 -->
-  <div class="form-container" id="form1">
-    <label>الاسم الكامل:</label>
-    <input type="text" id="name1" placeholder="أدخل اسمك">
-    <label>البريد الإلكتروني:</label>
-    <input type="email" id="email1" placeholder="أدخل بريدك الإلكتروني">
-    <label>الهاتف:</label>
-    <input type="text" id="phone1" placeholder="أدخل رقم هاتفك">
-    <label>الملخص الشخصي:</label>
-    <textarea id="summary1" rows="3" placeholder="أدخل ملخصك"></textarea>
-    <label>الخبرة العملية:</label>
-    <textarea id="experience1" rows="4" placeholder="أدخل خبراتك"></textarea>
-    <label>التعليم:</label>
-    <textarea id="education1" rows="3" placeholder="أدخل تعليمك"></textarea>
-    <button onclick="generateResume(1)">إنشاء السيرة الذاتية</button>
-  </div>
-
-  <!-- نموذج 2 -->
-  <div class="form-container" id="form2" style="display:none;">
-    <label>الاسم الكامل:</label>
-    <input type="text" id="name2" placeholder="أدخل اسمك">
-    <label>البريد الإلكتروني:</label>
-    <input type="email" id="email2" placeholder="أدخل بريدك الإلكتروني">
-    <label>الهاتف:</label>
-    <input type="text" id="phone2" placeholder="أدخل رقم هاتفك">
-    <label>الملخص الشخصي:</label>
-    <textarea id="summary2" rows="3" placeholder="أدخل ملخصك"></textarea>
-    <label>الخبرة العملية:</label>
-    <textarea id="experience2" rows="4" placeholder="أدخل خبراتك"></textarea>
-    <label>التعليم:</label>
-    <textarea id="education2" rows="3" placeholder="أدخل تعليمك"></textarea>
-    <button onclick="generateResume(2)">إنشاء السيرة الذاتية</button>
-  </div>
-
-  <!-- نموذج 3 -->
-  <div class="form-container" id="form3" style="display:none;">
-    <label>الاسم الكامل:</label>
-    <input type="text" id="name3" placeholder="أدخل اسمك">
-    <label>البريد الإلكتروني:</label>
-    <input type="email" id="email3" placeholder="أدخل بريدك الإلكتروني">
-    <label>الهاتف:</label>
-    <input type="text" id="phone3" placeholder="أدخل رقم هاتفك">
-    <label>الملخص الشخصي:</label>
-    <textarea id="summary3" rows="3" placeholder="أدخل ملخصك"></textarea>
-    <label>الخبرة العملية:</label>
-    <textarea id="experience3" rows="4" placeholder="أدخل خبراتك"></textarea>
-    <label>التعليم:</label>
-    <textarea id="education3" rows="3" placeholder="أدخل تعليمك"></textarea>
-    <button onclick="generateResume(3)">إنشاء السيرة الذاتية</button>
-  </div>
-
-  <!-- نموذج 4 -->
-  <div class="form-container" id="form4" style="display:none;">
-    <label>الاسم الكامل:</label>
-    <input type="text" id="name4" placeholder="أدخل اسمك">
-    <label>البريد الإلكتروني:</label>
-    <input type="email" id="email4" placeholder="أدخل بريدك الإلكتروني">
-    <label>الهاتف:</label>
-    <input type="text" id="phone4" placeholder="أدخل رقم هاتفك">
-    <label>الملخص الشخصي:</label>
-    <textarea id="summary4" rows="3" placeholder="أدخل ملخصك"></textarea>
-    <label>الخبرة العملية:</label>
-    <textarea id="experience4" rows="4" placeholder="أدخل خبراتك"></textarea>
-    <label>التعليم:</label>
-    <textarea id="education4" rows="3" placeholder="أدخل تعليمك"></textarea>
-    <button onclick="generateResume(4)">إنشاء السيرة الذاتية</button>
-  </div>
-
-  <!-- نموذج 5 -->
-  <div class="form-container" id="form5" style="display:none;">
-    <label>الاسم الكامل:</label>
-    <input type="text" id="name5" placeholder="أدخل اسمك">
-    <label>البريد الإلكتروني:</label>
-    <input type="email" id="email5" placeholder="أدخل بريدك الإلكتروني">
-    <label>الهاتف:</label>
-    <input type="text" id="phone5" placeholder="أدخل رقم هاتفك">
-    <label>الملخص الشخصي:</label>
-    <textarea id="summary5" rows="3" placeholder="أدخل ملخصك"></textarea>
-    <label>الخبرة العملية:</label>
-    <textarea id="experience5" rows="4" placeholder="أدخل خبراتك"></textarea>
-    <label>التعليم:</label>
-    <textarea id="education5" rows="3" placeholder="أدخل تعليمك"></textarea>
-    <button onclick="generateResume(5)">إنشاء السيرة الذاتية</button>
-  </div>
-
-</div>
-
-<!-- عرض السيرة الذاتية -->
 <div class="resume-container" id="resume" style="display:none;">
-  <h2>السيرة الذاتية</h2>
-  <p><strong>الاسم:</strong> <span id="res-name"></span></p>
-  <p><strong>البريد الإلكتروني:</strong> <span id="res-email"></span></p>
-  <p><strong>الهاتف:</strong> <span id="res-phone"></span></p>
-  <p><strong>الملخص الشخصي:</strong> <span id="res-summary"></span></p>
-  <p><strong>الخبرة العملية:</strong> <span id="res-experience"></span></p>
-  <p><strong>التعليم:</strong> <span id="res-education"></span></p>
+  <h2 id="res-name"></h2>
+  <p id="res-contact"></p>
+  <div>
+    <div class="section-title">ملخص شخصي</div>
+    <p id="res-summary"></p>
+  </div>
+  <div>
+    <div class="section-title">الخبرة العملية</div>
+    <p id="res-experience"></p>
+  </div>
+  <div>
+    <div class="section-title">التعليم</div>
+    <p id="res-education"></p>
+  </div>
   <button onclick="downloadPDF()">تحميل PDF</button>
 </div>
 
 <script>
-let currentForm = 1;
+function generateResume() {
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const address = document.getElementById('address').value;
+  const summary = document.getElementById('summary').value;
+  const experience = document.getElementById('experience').value;
+  const education = document.getElementById('education').value;
 
-function showForm(n) {
-  currentForm = n;
-  for (let i = 1; i <= 5; i++) {
-    document.getElementById('form'+i).style.display = (i===n)?'block':'none';
-    document.querySelectorAll('.tab')[i-1].classList.toggle('active', i===n);
-  }
-  document.getElementById('resume').style.display = 'none';
+  document.getElementById('res-name').textContent = name;
+  document.getElementById('res-contact').textContent = `${email} | ${phone} | ${address}`;
+  document.getElementById('res-summary').textContent = summary;
+  document.getElementById('res-experience').textContent = experience;
+  document.getElementById('res-education').textContent = education;
+
+  document.getElementById('resume').style.display = 'block';
+  window.scrollTo(0, document.getElementById('resume').offsetTop);
 }
 
-function generateResume(n){
-  document.getElementById('res-name').textContent = document.getElementById('name'+n).value;
-  document.getElementById('res-email').textContent = document.getElementById('email'+n).value;
-  document.getElementById('res-phone').textContent = document.getElementById('phone'+n).value;
-  document.getElementById('res-summary').textContent = document.getElementById('summary'+n).value;
-  document.getElementById('res-experience').textContent = document.getElementById('experience'+n).value;
-  document.getElementById('res-education').textContent = document.getElementById('education'+n).value;
-
-  const resumeDiv = document.getElementById('resume');
-  resumeDiv.style.display = 'block';
-  resumeDiv.className = 'resume-container resume'+n;
-  window.scrollTo(0,resumeDiv.offsetTop);
-}
-
-async function downloadPDF(){
+function downloadPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
   const name = document.getElementById('res-name').textContent;
-  const email = document.getElementById('res-email').textContent;
-  const phone = document.getElementById('res-phone').textContent;
+  const contact = document.getElementById('res-contact').textContent;
   const summary = document.getElementById('res-summary').textContent;
   const experience = document.getElementById('res-experience').textContent;
   const education = document.getElementById('res-education').textContent;
 
-  doc.setFontSize(16);
-  doc.text('السيرة الذاتية',105,20,{align:'center'});
-
+  let y = 20;
+  doc.setFontSize(20);
+  doc.text(name, 105, y, {align: 'center'});
+  y += 10;
   doc.setFontSize(12);
-  let y = 40;
-  const lineHeight = 10;
-  doc.text(`الاسم: ${name}`,20,y); y+=lineHeight;
-  doc.text(`البريد الإلكتروني: ${email}`,20,y); y+=lineHeight;
-  doc.text(`الهاتف: ${phone}`,20,y); y+=lineHeight;
-  doc.text(`الملخص الشخصي: ${summary}`,20,y); y+=lineHeight;
-  doc.text(`الخبرة العملية: ${experience}`,20,y); y+=lineHeight;
-  doc.text(`التعليم: ${education}`,20,y); y+=lineHeight;
+  doc.text(contact, 105, y, {align: 'center'});
+  y += 15;
+  doc.setFontSize(14);
+  doc.text('ملخص شخصي', 20, y);
+  y += 7;
+  doc.setFontSize(12);
+  doc.text(summary, 20, y);
+  y += 20;
+  doc.setFontSize(14);
+  doc.text('الخبرة العملية', 20, y);
+  y += 7;
+  doc.setFontSize(12);
+  doc.text(experience, 20, y);
+  y += 20;
+  doc.setFontSize(14);
+  doc.text('التعليم', 20, y);
+  y += 7;
+  doc.setFontSize(12);
+  doc.text(education, 20, y);
 
   doc.save('السيرة_الذاتية.pdf');
 }
