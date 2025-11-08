@@ -3,103 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Resume</title>
+<title>Professional Resume Column Layout</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f3f4f6;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-  .form-container, .cv-container {
-    background: white;
-    padding: 25px;
-    width: 100%;
-    max-width: 800px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-  }
-  input, textarea {
-    width: 100%;
-    margin: 5px 0 12px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: 14px;
-  }
-  button:hover { background: #0056b3; }
+body {
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+.form-container, .cv-container {
+  background: white;
+  padding: 25px;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+input, textarea {
+  width: 100%;
+  margin: 5px 0 12px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 14px;
+}
+button:hover { background: #0056b3; }
 
-  .cv {
-    font-family: 'Helvetica', Arial, sans-serif;
-    color: #000;
-    line-height: 1.6;
-    text-align: left;
-    max-width: 750px;
-  }
+.cv {
+  font-family: 'Helvetica', Arial, sans-serif;
+  color: #000;
+  line-height: 1.6;
+  text-align: left;
+  max-width: 750px;
+}
 
-  /* العناوين الرئيسية */
-  .cv h2 {
-    font-size: 17px;
-    font-weight: bold;          
-    text-transform: uppercase;
-    padding-bottom: 5px;
-    margin-top: 25px;
-    margin-bottom: 6px;
-    letter-spacing: 1px;
-    text-align: left;           
-    border-bottom: 1px dotted #000;  
-    width: 95%;                 
-    margin-left: 5%;            
-    direction: rtl;             
-  }
+/* العنوان الرئيسي */
+.cv h2 {
+  font-size: 17px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 25px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  text-align: left;
+  border-bottom: 1px dotted #000;
+  width: 95%;
+  margin-left: 5%;
+  direction: rtl;
+}
 
-  .cv h1 {
-    font-size: 28px;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 8px;
-  }
+/* العناوين الفرعية */
+.section-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 5%;      /* في نفس عمود العنوان الرئيسي */
+  margin-bottom: 2px;
+}
 
-  .cv .contact {
-    text-align: center;
-    font-size: 13px;
-    color: #333;
-    margin-bottom: 22px;
-  }
-
-  .cv .contact span {
-    margin: 0 12px;
-  }
-
-  .section-item { margin-bottom: 18px; }
-
-  /* التفاصيل بخط رقيق ومتقدمة قليلاً لليمين */
-  .section-title {
-    font-weight: normal;         
-    font-size: 14px;
-    margin-bottom: 4px;
-  }
-  .section-details {
-    font-size: 13px;
-    margin-left: 40px;          
-    margin-right: 30px;
-    white-space: pre-line;
-  }
+/* التفاصيل */
+.section-details {
+  font-weight: normal;
+  font-size: 13px;
+  margin-left: 5%;      /* نفس العمود */
+  margin-bottom: 8px;
+  white-space: pre-line;
+}
+.cv h1 {
+  font-size: 28px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.cv .contact {
+  text-align: center;
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 22px;
+}
+.cv .contact span {
+  margin: 0 12px;
+}
+.section-item { margin-bottom: 18px; }
 </style>
 </head>
 <body>
@@ -120,23 +119,17 @@
   <textarea id="experience" rows="6">Digital Marketing Specialist, XYZ Company
 Managed social media accounts and increased engagement by 35%
 Created Google Ads campaigns and optimized SEO content
-Collaborated with the design team to produce promotional materials
-Analyzed campaign performance and reported KPIs monthly
 
 Software Developer, ABC Tech
 Developed internal tools using Python and JavaScript
-Collaborated with the design team to improve UX
-Fixed bugs and optimized application performance
-Participated in code reviews and team meetings</textarea>
+Collaborated with the design team to improve UX</textarea>
 
   <label>Education:</label>
   <textarea id="education" rows="4">Bachelor’s Degree in Business Administration, New York University
 Graduated: 2022
-GPA: 3.8/4.0
 
 Master’s Degree in Marketing, Columbia University
-Graduated: 2024
-Thesis: Digital Marketing Strategies</textarea>
+Graduated: 2024</textarea>
 
   <label>Languages:</label>
   <textarea id="languages" rows="2">English
@@ -192,20 +185,25 @@ Swimming, Football</textarea>
 function generateSection(containerId, text) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
-  const sections = text.split(/\n\s*\n/);
+  const sections = text.split(/\n\s*\n/); // فصل كل قسم
   sections.forEach((section) => {
     const lines = section.split('\n').filter(line => line.trim() !== '');
     if (lines.length === 0) return;
+
+    // العنوان الفرعي (السطر الأول)
     const titleDiv = document.createElement('div');
     titleDiv.className = 'section-title';
     titleDiv.textContent = lines[0];  
     container.appendChild(titleDiv);
+
+    // التفاصيل (السطر الثاني وما بعده)
     if (lines.length > 1) {
       const detailsDiv = document.createElement('div');
       detailsDiv.className = 'section-details';
       detailsDiv.textContent = lines.slice(1).join('\n');
       container.appendChild(detailsDiv);
     }
+
     const wrapper = document.createElement('div');
     wrapper.className = 'section-item';
     container.appendChild(wrapper);
