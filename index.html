@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Create Professional Resume</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   body {
@@ -103,21 +104,22 @@
   <label>Location:</label>
   <input id="location" placeholder="New York, USA">
 
-  <label>Job Experience (HTML format or plain text):</label>
+  <label>Job Experience:</label>
   <textarea id="experience" rows="4" placeholder="Example:
-Oct. – June 20XX | City, Country
-NAME OF THE COMPANY, Sector
-Job occupied xxxxxxxxxxx
+Oct. 2022 – June 2024 | New York, USA
+XYZ Company, Marketing Department
+Position: Digital Marketing Specialist
 Missions:
-- Xxxxx
-- Xxxxx
-- Xxxxx"></textarea>
+- Managed social media accounts and increased engagement by 35%.
+- Created Google Ads campaigns and optimized SEO content.
+- Collaborated with the design team to produce promotional materials.
+- Analyzed campaign performance and reported KPIs monthly."></textarea>
 
   <label>Education:</label>
   <textarea id="education" rows="3" placeholder="Example:
-Years | City, Country
-Diploma xxxxxxxxxxxxxxxxx
-University or school"></textarea>
+2018 – 2022 | New York, USA
+Bachelor’s Degree in Business Administration
+New York University"></textarea>
 
   <label>Languages:</label>
   <input id="languages" placeholder="English: Advanced, Spanish: Native, French: Moderate">
@@ -152,7 +154,7 @@ University or school"></textarea>
     <div id="cv-hobbies"></div>
   </div>
   <br>
-  <button onclick="downloadPDF()">Download PDF</button>
+  <button onclick="downloadPDF()">⬇️ Download PDF</button>
 </div>
 
 <script>
@@ -180,17 +182,20 @@ function generateResume() {
   window.scrollTo(0, document.getElementById('cv-container').offsetTop);
 }
 
-function downloadPDF() {
+async function downloadPDF() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('p', 'mm', 'a4');
-  doc.html(document.querySelector("#cv-content"), {
-    callback: function (pdf) {
-      pdf.save("Resume.pdf");
-    },
-    margin: [10, 10, 10, 10],
-    autoPaging: 'text',
-    html2canvas: { scale: 0.25 }
-  });
+  const cvElement = document.getElementById("cv-content");
+
+  // تحويل السيرة إلى صورة باستخدام html2canvas
+  const canvas = await html2canvas(cvElement, { scale: 2 });
+  const imgData = canvas.toDataURL("image/png");
+
+  // إنشاء ملف PDF
+  const pdf = new jsPDF("p", "mm", "a4");
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+  pdf.save("Resume.pdf");
 }
 </script>
 
