@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Resume & Cover Letter</title>
+<title>Editable Professional Resume & Cover Letter</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -16,15 +16,17 @@ body {
   align-items: center;
   padding: 20px;
 }
+
 .form-container, .cv-container, .letter-container {
   background: white;
   padding: 30px;
   width: 100%;
-  max-width: 850px;
+  max-width: 900px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   margin-bottom: 20px;
 }
+
 input, textarea {
   width: 100%;
   margin: 5px 0 12px;
@@ -33,6 +35,7 @@ input, textarea {
   border-radius: 5px;
   font-size: 14px;
 }
+
 button {
   background: #007bff;
   color: white;
@@ -46,22 +49,32 @@ button {
 button:hover { background: #0056b3; }
 
 .bold-black { font-weight: 700; color:#000; margin-bottom:5px; }
+
 .cv-inner, .letter-inner { padding:10mm; }
 .cv-section, .letter-section { margin-bottom:20px; }
-.editable { outline:none; margin-left:5px; white-space: pre-line; }
-hr { border-top:1px dashed #aaa; margin:10px 0; }
-h2 { font-size: 16pt; margin-bottom:8px; }
+
+.editable-box {
+  border:1px solid #aaa;
+  padding:10px;
+  min-height:60px;
+  margin-bottom:10px;
+  overflow-y:auto;
+}
+.editable-box:focus { outline:2px solid #007bff; }
+
+h2 { font-size: 16pt; margin-bottom:5px; }
 
 .letter-header { display:flex; justify-content:space-between; font-size:13px; line-height:1.4; margin-bottom:20px; }
 .letter-left { font-size:22px; font-weight:bold; }
 .letter-right { display:flex; flex-direction:column; align-items:flex-end; }
 .letter-right span { margin-bottom:5px; }
 .letter p { margin-bottom:15px; text-align:justify; font-size:12.5pt; }
+
 </style>
 </head>
 <body>
 
-<h1 style="text-align:center;">Professional Resume & Cover Letter</h1>
+<h1 style="text-align:center;">Editable Professional Resume & Cover Letter</h1>
 
 <div class="form-container">
   <h2>CV Information</h2>
@@ -152,27 +165,27 @@ Beyond technical skills, I bring creativity, dedication, and a strong sense of t
 
     <div class="cv-section">
       <h2>Job Experience</h2>
-      <div class="editable" contenteditable="true" id="cv-experience"></div>
+      <div class="editable-box" contenteditable="true" id="cv-experience"></div>
     </div>
 
     <div class="cv-section">
       <h2>Education</h2>
-      <div class="editable" contenteditable="true" id="cv-education"></div>
+      <div class="editable-box" contenteditable="true" id="cv-education"></div>
     </div>
 
     <div class="cv-section">
       <h2>Languages</h2>
-      <div class="editable" contenteditable="true" id="cv-languages"></div>
+      <div class="editable-box" contenteditable="true" id="cv-languages"></div>
     </div>
 
     <div class="cv-section">
       <h2>Software</h2>
-      <div class="editable" contenteditable="true" id="cv-software"></div>
+      <div class="editable-box" contenteditable="true" id="cv-software"></div>
     </div>
 
     <div class="cv-section">
       <h2>Hobbies</h2>
-      <div class="editable" contenteditable="true" id="cv-hobbies"></div>
+      <div class="editable-box" contenteditable="true" id="cv-hobbies"></div>
     </div>
   </div>
   <button onclick="downloadPDF('cv-content','Resume.pdf')">⬇️ Download Resume PDF</button>
@@ -189,72 +202,56 @@ Beyond technical skills, I bring creativity, dedication, and a strong sense of t
         <span id="letter-location">📍 New York, NY, USA</span>
       </div>
     </div>
-    <p id="letter-body"></p>
-    <p id="letter-footer"></p>
+    <div class="editable-box" contenteditable="true" id="letter-body" style="min-height:200px;"></div>
+    <div class="editable-box" contenteditable="true" id="letter-footer" style="text-align:right;"></div>
   </div>
   <br>
   <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
 </div>
 
 <script>
-function populateSection(id, text) {
-  const container = document.getElementById(id);
-  container.innerHTML = '';
-  const blocks = text.split(/\n\n/);
-  blocks.forEach(block => {
-    const lines = block.split('\n').filter(l=>l.trim()!=='');
-    if(lines.length===0) return;
-    const title = document.createElement('div');
-    title.innerHTML = `<span class="bold-black">${lines[0]}</span>`;
-    container.appendChild(title);
-    if(lines.length>1){
-      const detail = document.createElement('div');
-      detail.className='editable';
-      detail.textContent = lines.slice(1).join('\n');
-      container.appendChild(detail);
-    }
-    container.appendChild(document.createElement('hr'));
-  });
+function populateBox(id, text){
+  document.getElementById(id).textContent=text;
 }
 
-function generateCV() {
-  document.getElementById('cv-name').textContent = document.getElementById('name').value;
-  document.getElementById('cv-phone').textContent = `📞 ${document.getElementById('phone').value}`;
-  document.getElementById('cv-email').textContent = `✉️ ${document.getElementById('email').value}`;
-  document.getElementById('cv-location').textContent = `📍 ${document.getElementById('location').value}`;
-  populateSection('cv-experience', document.getElementById('experience').value);
-  populateSection('cv-education', document.getElementById('education').value);
-  populateSection('cv-languages', document.getElementById('languages').value);
-  populateSection('cv-software', document.getElementById('software').value);
-  populateSection('cv-hobbies', document.getElementById('hobbies').value);
-  document.getElementById('cv-container').style.display = 'block';
+function generateCV(){
+  populateBox('cv-name',document.getElementById('name').value);
+  populateBox('cv-phone',`📞 ${document.getElementById('phone').value}`);
+  populateBox('cv-email',`✉️ ${document.getElementById('email').value}`);
+  populateBox('cv-location',`📍 ${document.getElementById('location').value}`);
+  populateBox('cv-experience',document.getElementById('experience').value);
+  populateBox('cv-education',document.getElementById('education').value);
+  populateBox('cv-languages',document.getElementById('languages').value);
+  populateBox('cv-software',document.getElementById('software').value);
+  populateBox('cv-hobbies',document.getElementById('hobbies').value);
+  document.getElementById('cv-container').style.display='block';
   window.scrollTo(0, document.getElementById('cv-container').offsetTop);
 }
 
-function generateLetter() {
-  const name = document.getElementById('letter-name').value;
-  const phone = document.getElementById('phone').value;
-  const email = document.getElementById('email').value;
-  const location = document.getElementById('location').value;
-  const text = document.getElementById('letter-text').value;
-  document.getElementById('letter-name-display').textContent = name;
-  document.getElementById('letter-phone').textContent = `📞 ${phone}`;
-  document.getElementById('letter-email').textContent = `✉️ ${email}`;
-  document.getElementById('letter-location').textContent = `📍 ${location}`;
-  document.getElementById('letter-body').textContent = text;
-  document.getElementById('letter-footer').textContent = name;
-  document.getElementById('letter-container').style.display = 'block';
+function generateLetter(){
+  const name=document.getElementById('letter-name').value;
+  const phone=document.getElementById('phone').value;
+  const email=document.getElementById('email').value;
+  const location=document.getElementById('location').value;
+  const text=document.getElementById('letter-text').value;
+  document.getElementById('letter-name-display').textContent=name;
+  document.getElementById('letter-phone').textContent=`📞 ${phone}`;
+  document.getElementById('letter-email').textContent=`✉️ ${email}`;
+  document.getElementById('letter-location').textContent=`📍 ${location}`;
+  document.getElementById('letter-body').textContent=text;
+  document.getElementById('letter-footer').textContent=name;
+  document.getElementById('letter-container').style.display='block';
   window.scrollTo(0, document.getElementById('letter-container').offsetTop);
 }
 
-async function downloadPDF(elementId, filename){
-  const { jsPDF } = window.jspdf;
-  const element = document.getElementById(elementId);
-  const canvas = await html2canvas(element,{scale:2});
-  const imgData = canvas.toDataURL('image/png');
-  const pdf = new jsPDF('p','mm','a4');
-  const pdfWidth = pdf.internal.pageSize.getWidth();
-  const pdfHeight = (canvas.height*pdfWidth)/canvas.width;
+async function downloadPDF(elementId,filename){
+  const { jsPDF }=window.jspdf;
+  const element=document.getElementById(elementId);
+  const canvas=await html2canvas(element,{scale:2});
+  const imgData=canvas.toDataURL('image/png');
+  const pdf=new jsPDF('p','mm','a4');
+  const pdfWidth=pdf.internal.pageSize.getWidth();
+  const pdfHeight=(canvas.height*pdfWidth)/canvas.width;
   pdf.addImage(imgData,'PNG',0,0,pdfWidth,pdfHeight);
   pdf.save(filename);
 }
