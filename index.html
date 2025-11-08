@@ -3,200 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive CV Generator</title>
+<title>Professional Resume Column Layout</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 body {
   font-family: Arial, sans-serif;
-  background: #f4f4f6;
-  margin: 0;
+  background: #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
 }
-.form-container {
-  background: #fff;
+.form-container, .cv-container {
+  background: white;
   padding: 25px;
+  width: 100%;
+  max-width: 800px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  max-width: 800px;
-  margin: auto;
+  margin-bottom: 20px;
 }
 input, textarea {
   width: 100%;
-  margin: 6px 0 12px;
+  margin: 5px 0 12px;
   padding: 10px;
-  border-radius: 5px;
   border: 1px solid #ccc;
+  border-radius: 5px;
   font-size: 14px;
 }
 button {
-  padding: 10px 20px;
-  border-radius: 6px;
+  background: #007bff;
+  color: white;
   border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
   cursor: pointer;
+  margin-top: 10px;
   font-size: 14px;
 }
-.btn-blue { background: #007bff; color:white; }
-.btn-blue:hover { background: #0056b3; }
-.btn-gray { background: #444; color:white; }
-.btn-gray:hover { background: #222; }
+button:hover { background: #0056b3; }
 
-/* CV styles */
-.cv-container {
-  background: #fff;
-  max-width: 800px;
-  margin: 30px auto;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.cv {
+  font-family: 'Helvetica', Arial, sans-serif;
+  color: #000;
+  line-height: 1.6;
+  text-align: left;
+  max-width: 750px;
+}
+
+/* العنوان الرئيسي */
+.cv h2 {
+  font-size: 17px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 25px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  text-align: left;
+  border-bottom: 1px dotted #000;
+  width: 95%;
+  margin-left: 5%;
+  direction: rtl;
+}
+
+/* العناوين الفرعية */
+.section-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 5%;      /* في نفس عمود العنوان الرئيسي */
+  margin-bottom: 2px;
+}
+
+/* التفاصيل */
+.section-details {
+  font-weight: normal;
+  font-size: 13px;
+  margin-left: 5%;      /* نفس العمود */
+  margin-bottom: 8px;
+  white-space: pre-line;
 }
 .cv h1 {
+  font-size: 28px;
   text-transform: uppercase;
   text-align: center;
   margin-bottom: 8px;
 }
-.cv .contact { text-align: center; font-size: 13px; margin-bottom: 15px; color:#333; }
-.cv h2 { font-size: 18px; font-weight:bold; margin-top:20px; border-bottom:1px dotted #000; padding-bottom:4px; }
-.section-title { font-weight:bold; font-size:14px; margin-top:10px; }
-.section-details { font-size:13px; margin-left:10px; white-space: pre-line; }
-
-.cv-flex { display:flex; align-items:flex-start; justify-content:space-between; }
-.cv-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:2px solid #007bff; margin-left:15px; }
-.info-left { display:flex; flex-direction:column; align-items:flex-start; }
-.info-left h1 { margin:0; font-size:26px; }
-.info-left .contact span { display:block; font-size:13px; color:#444; margin:3px 0; }
-.btns { display:flex; justify-content:center; gap:10px; margin-top:15px; }
+.cv .contact {
+  text-align: center;
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 22px;
+}
+.cv .contact span {
+  margin: 0 12px;
+}
+.section-item { margin-bottom: 18px; }
 </style>
 </head>
 <body>
 
+<h1 style="text-align:center;">Professional Resume</h1>
+
 <div class="form-container">
-  <h2>Enter your information</h2>
-  <label>Full Name:</label><input id="name" placeholder="John Smith">
-  <label>Phone:</label><input id="phone" placeholder="1 800 433 7300">
-  <label>Email:</label><input id="email" placeholder="john.smith@gmail.com">
-  <label>Location:</label><input id="location" placeholder="New York, USA">
+  <label>Full Name:</label>
+  <input id="name" value="John Smith">
+  <label>Phone:</label>
+  <input id="phone" value="1 800 433 7300">
+  <label>Email:</label>
+  <input id="email" value="john.smith@gmail.com">
+  <label>Location:</label>
+  <input id="location" value="New York, USA">
 
   <label>Job Experience:</label>
-  <textarea id="experience" rows="6" placeholder="Title, Company&#10;Details line 1&#10;Details line 2"></textarea>
+  <textarea id="experience" rows="6">Digital Marketing Specialist, XYZ Company
+Managed social media accounts and increased engagement by 35%
+Created Google Ads campaigns and optimized SEO content
+
+Software Developer, ABC Tech
+Developed internal tools using Python and JavaScript
+Collaborated with the design team to improve UX</textarea>
 
   <label>Education:</label>
-  <textarea id="education" rows="4" placeholder="Degree, University&#10;Graduation Year"></textarea>
+  <textarea id="education" rows="4">Bachelor’s Degree in Business Administration, New York University
+Graduated: 2022
+
+Master’s Degree in Marketing, Columbia University
+Graduated: 2024</textarea>
 
   <label>Languages:</label>
-  <textarea id="languages" rows="3" placeholder="Language&#10;Level"></textarea>
+  <textarea id="languages" rows="2">English
+Advanced (fluent speaking and writing)
+
+Spanish
+Native</textarea>
 
   <label>Software:</label>
-  <textarea id="software" rows="2" placeholder="Software skills"></textarea>
+  <textarea id="software" rows="2">Microsoft Office
+Word, Excel, PowerPoint
+
+Adobe Creative Suite
+Photoshop, Illustrator, InDesign</textarea>
 
   <label>Hobbies:</label>
-  <textarea id="hobbies" rows="2" placeholder="Hobbies"></textarea>
+  <textarea id="hobbies" rows="2">Reading
+Business and personal development books
 
-  <button class="btn-blue" onclick="generateCVs()">Generate CVs</button>
+Sports
+Swimming, Football</textarea>
+
+  <button onclick="generateResume()">Create Resume</button>
 </div>
 
-<!-- النسخة الأصلية -->
-<div class="cv-container" id="cv1" style="display:none;">
-  <div class="cv">
-    <h1 id="cv1-name"></h1>
-    <div class="contact" id="cv1-contact"></div>
-    <div id="cv1-content"></div>
-  </div>
-  <div class="btns">
-    <button class="btn-blue" onclick="downloadPDF('cv1')">⬇️ Download PDF</button>
-    <button class="btn-gray" onclick="printCV('cv1')">🖨️ Print</button>
-  </div>
-</div>
+<div class="cv-container" id="cv-container" style="display:none;">
+  <div class="cv" id="cv-content">
+    <h1 id="cv-name"></h1>
+    <div class="contact" id="cv-contact"></div>
 
-<!-- النسخة الثانية مع الصورة -->
-<div class="cv-container" id="cv2" style="display:none;">
-  <div class="cv cv-flex">
-    <div class="info-left">
-      <h1 id="cv2-name"></h1>
-      <div class="contact" id="cv2-contact"></div>
+    <div class="section">
+      <h2>Job Experience</h2>
+      <div id="cv-experience"></div>
+
+      <h2>Education</h2>
+      <div id="cv-education"></div>
+
+      <h2>Languages</h2>
+      <div id="cv-languages"></div>
+
+      <h2>Software</h2>
+      <div id="cv-software"></div>
+
+      <h2>Hobbies</h2>
+      <div id="cv-hobbies"></div>
     </div>
-    <img src="https://i.ibb.co/ykhZzLd/profile.jpg" alt="Profile" class="cv-photo">
   </div>
-  <div id="cv2-content"></div>
-  <div class="btns">
-    <button class="btn-gray" onclick="downloadPDF('cv2')">⬇️ Download PDF</button>
-    <button class="btn-blue" onclick="printCV('cv2')">🖨️ Print</button>
-  </div>
+  <br>
+  <button onclick="downloadPDF()">⬇️ Download PDF</button>
 </div>
 
 <script>
-function generateSection(text) {
-  const sections = text.split(/\n\s*\n/);
-  let html = '';
-  sections.forEach(section => {
-    const lines = section.split('\n').filter(l => l.trim() !== '');
-    if(lines.length === 0) return;
-    html += '<div class="section">';
-    html += `<h2>${lines[0]}</h2>`;
-    lines.slice(1).forEach(line => {
-      html += `<div class="section-title">${line}</div>`;
-    });
-    html += '</div>';
+function generateSection(containerId, text) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  const sections = text.split(/\n\s*\n/); // فصل كل قسم
+  sections.forEach((section) => {
+    const lines = section.split('\n').filter(line => line.trim() !== '');
+    if (lines.length === 0) return;
+
+    // العنوان الفرعي (السطر الأول)
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'section-title';
+    titleDiv.textContent = lines[0];  
+    container.appendChild(titleDiv);
+
+    // التفاصيل (السطر الثاني وما بعده)
+    if (lines.length > 1) {
+      const detailsDiv = document.createElement('div');
+      detailsDiv.className = 'section-details';
+      detailsDiv.textContent = lines.slice(1).join('\n');
+      container.appendChild(detailsDiv);
+    }
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'section-item';
+    container.appendChild(wrapper);
   });
-  return html;
 }
 
-function generateCVs() {
+function generateResume() {
   const name = document.getElementById('name').value;
   const phone = document.getElementById('phone').value;
   const email = document.getElementById('email').value;
   const location = document.getElementById('location').value;
-  const experience = document.getElementById('experience').value;
-  const education = document.getElementById('education').value;
-  const languages = document.getElementById('languages').value;
-  const software = document.getElementById('software').value;
-  const hobbies = document.getElementById('hobbies').value;
 
-  const contactInfo = `📞 ${phone} | ✉️ ${email} | 📍 ${location}`;
+  document.getElementById('cv-name').textContent = name;
+  document.getElementById('cv-contact').innerHTML = 
+    `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
 
-  // النسخة 1
-  document.getElementById('cv1').style.display = 'block';
-  document.getElementById('cv1-name').textContent = name;
-  document.getElementById('cv1-contact').textContent = contactInfo;
-  document.getElementById('cv1-content').innerHTML = 
-    generateSection('Job Experience\n' + experience) + 
-    generateSection('Education\n' + education) +
-    generateSection('Languages\n' + languages) +
-    generateSection('Software\n' + software) +
-    generateSection('Hobbies\n' + hobbies);
+  generateSection('cv-experience', document.getElementById('experience').value);
+  generateSection('cv-education', document.getElementById('education').value);
+  generateSection('cv-languages', document.getElementById('languages').value);
+  generateSection('cv-software', document.getElementById('software').value);
+  generateSection('cv-hobbies', document.getElementById('hobbies').value);
 
-  // النسخة 2
-  document.getElementById('cv2').style.display = 'block';
-  document.getElementById('cv2-name').textContent = name;
-  document.getElementById('cv2-contact').textContent = contactInfo;
-  document.getElementById('cv2-content').innerHTML = 
-    generateSection('Job Experience\n' + experience) + 
-    generateSection('Education\n' + education) +
-    generateSection('Languages\n' + languages) +
-    generateSection('Software\n' + software) +
-    generateSection('Hobbies\n' + hobbies);
+  document.getElementById('cv-container').style.display = 'block';
+  window.scrollTo(0, document.getElementById('cv-container').offsetTop);
 }
 
-async function downloadPDF(id) {
+async function downloadPDF() {
   const { jsPDF } = window.jspdf;
-  const element = document.getElementById(id);
-  const canvas = await html2canvas(element, { scale:2 });
-  const imgData = canvas.toDataURL('image/png');
-  const pdf = new jsPDF('p','mm','a4');
-  const width = pdf.internal.pageSize.getWidth();
-  const height = (canvas.height * width) / canvas.width;
-  pdf.addImage(imgData,'PNG',0,0,width,height);
-  pdf.save(`${id}.pdf`);
-}
-
-function printCV(id) {
-  const printContent = document.getElementById(id).outerHTML;
-  const WinPrint = window.open('', '', 'width=900,height=900');
-  WinPrint.document.write('<html><head><title>Print CV</title></head><body>');
-  WinPrint.document.write(printContent);
-  WinPrint.document.write('</body></html>');
-  WinPrint.document.close();
-  WinPrint.print();
+  const cvElement = document.getElementById("cv-content");
+  const canvas = await html2canvas(cvElement, { scale: 2 });
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jsPDF("p", "mm", "a4");
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+  pdf.save("Resume.pdf");
 }
 </script>
 
