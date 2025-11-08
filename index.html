@@ -42,7 +42,9 @@ button {
   margin-top: 10px;
   font-size: 14px;
 }
-button:hover { background: #0056b3; }.letter-header { display: flex; justify-content: space-between; font-size: 13px; line-height: 1.4; padding: 40px 20px 20px 20px; } .letter-left { font-size: 22px; font-weight: bold; display: flex; align-items: center; } .letter-right { display: flex; flex-direction: column; align-items: flex-end; } .letter-right span { margin-bottom: 5px; } .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 20px; text-align: left; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
+button:hover { background: #0056b3; }.cv { font-family: 'Helvetica', Arial, sans-serif; color: #000; line-height: 1.6; text-align: left; max-width: 750px; } .cv h1 { font-size: 28px; text-transform: uppercase; text-align: center; margin-bottom: 8px; } .cv .contact { text-align: center; font-size: 13px; color: #333; margin-bottom: 22px; } .cv .contact span { margin: 0 12px; } .section-title { font-weight: bold; font-size: 14px; margin-left: 5%; margin-bottom: 2px; } .section-details { font-weight: normal; font-size: 13px; margin-left: 5%; margin-bottom: 8px; white-space: pre-line; } .section-item { margin-bottom: 18px; }
+
+.letter-header { display: flex; justify-content: space-between; font-size: 13px; line-height: 1.4; padding: 40px 20px 20px 20px; } .letter-left { font-size: 22px; font-weight: bold; display: flex; align-items: center; } .letter-right { display: flex; flex-direction: column; align-items: flex-end; } .letter-right span { margin-bottom: 5px; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
 
 </head>
 <body><h1 style="text-align:center;">Professional Resume & Cover Letter</h1><div class="form-container">
@@ -96,6 +98,29 @@ Swimming, Football</textarea>  <h2>Cover Letter</h2>
 
 <button onclick="generateCV()">Create CV</button> <button onclick="generateLetter()">Create Cover Letter</button>
 
+</div><div class="cv-container" id="cv-container" style="display:none;">
+  <div class="cv" id="cv-content">
+    <h1 id="cv-name"></h1>
+    <div class="contact" id="cv-contact"></div><div class="section">
+  <h2>Job Experience</h2>
+  <div id="cv-experience"></div>
+
+  <h2>Education</h2>
+  <div id="cv-education"></div>
+
+  <h2>Languages</h2>
+  <div id="cv-languages"></div>
+
+  <h2>Software</h2>
+  <div id="cv-software"></div>
+
+  <h2>Hobbies</h2>
+  <div id="cv-hobbies"></div>
+</div>
+
+  </div>
+  <br>
+  <button onclick="downloadPDF('cv-content','Resume.pdf')">⬇️ Download CV PDF</button>
 </div><div class="letter-container" id="letter-container" style="display:none;">
   <div class="letter" id="letter-content">
     <div class="letter-header">
@@ -112,6 +137,54 @@ Swimming, Football</textarea>  <h2>Cover Letter</h2>
   <br>
   <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
 </div><script>
+function generateCV() {
+  const name = document.getElementById('name').value;
+  const phone = document.getElementById('phone').value;
+  const email = document.getElementById('email').value;
+  const location = document.getElementById('location').value;
+
+  const experience = document.getElementById('experience').value;
+  const education = document.getElementById('education').value;
+  const languages = document.getElementById('languages').value;
+  const software = document.getElementById('software').value;
+  const hobbies = document.getElementById('hobbies').value;
+
+  document.getElementById('cv-name').textContent = name;
+  document.getElementById('cv-contact').innerHTML = `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
+
+  function fillSection(id, text) {
+    const container = document.getElementById(id);
+    container.innerHTML = '';
+    const sections = text.split(/\n\s*\n/);
+    sections.forEach(section => {
+      const lines = section.split('\n').filter(line => line.trim() !== '');
+      if (lines.length === 0) return;
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'section-title';
+      titleDiv.textContent = lines[0];
+      container.appendChild(titleDiv);
+      if (lines.length > 1) {
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'section-details';
+        detailsDiv.textContent = lines.slice(1).join('\n');
+        container.appendChild(detailsDiv);
+      }
+      const wrapper = document.createElement('div');
+      wrapper.className = 'section-item';
+      container.appendChild(wrapper);
+    });
+  }
+
+  fillSection('cv-experience', experience);
+  fillSection('cv-education', education);
+  fillSection('cv-languages', languages);
+  fillSection('cv-software', software);
+  fillSection('cv-hobbies', hobbies);
+
+  document.getElementById('cv-container').style.display = 'block';
+  window.scrollTo(0, document.getElementById('cv-container').offsetTop);
+}
+
 function generateLetter() {
   const name = document.getElementById('letter-name').value;
   const phone = document.getElementById('phone').value;
