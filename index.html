@@ -3,261 +3,200 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Resume (2 Versions)</title>
+<title>Interactive CV Generator</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 body {
   font-family: Arial, sans-serif;
   background: #f4f4f6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: 0;
   padding: 20px;
 }
-.cv-container {
-  background: white;
-  width: 100%;
-  max-width: 800px;
+.form-container {
+  background: #fff;
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin-bottom: 40px;
-}
-.cv {
-  color: #000;
-  line-height: 1.6;
-  text-align: left;
-  max-width: 750px;
+  max-width: 800px;
   margin: auto;
 }
-
-/* عناوين رئيسية */
-.cv h2 {
-  font-size: 17px;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-top: 25px;
-  margin-bottom: 8px;
-  padding-bottom: 4px;
-  border-bottom: 1px dotted #000;
-  width: 95%;
-  margin-left: 5%;
-  direction: rtl;
-}
-
-/* عناوين فرعية وتفاصيل */
-.section-title {
-  font-weight: bold;
+input, textarea {
+  width: 100%;
+  margin: 6px 0 12px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
   font-size: 14px;
-  margin-left: 5%;
-  margin-bottom: 2px;
 }
-.section-details {
-  font-weight: normal;
-  font-size: 13px;
-  margin-left: 5%;
-  margin-bottom: 8px;
-  white-space: pre-line;
-}
-
-/* اسم وتفاصيل */
-.cv h1 {
-  font-size: 28px;
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 8px;
-}
-.cv .contact {
-  text-align: center;
-  font-size: 13px;
-  color: #333;
-  margin-bottom: 22px;
-}
-.cv .contact span { margin: 0 12px; }
-
-/* النسخة الثانية */
-.cv-flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.cv-photo {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-left: 15px;
-  border: 2px solid #007bff;
-}
-.info-left {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.info-left h1 {
-  margin: 0;
-  font-size: 26px;
-}
-.info-left .contact span {
-  display: block;
-  margin: 4px 0;
-  font-size: 13px;
-  color: #444;
-}
-
-/* الأزرار */
 button {
-  background: #007bff;
-  color: white;
-  border: none;
   padding: 10px 20px;
   border-radius: 6px;
+  border: none;
   cursor: pointer;
-  margin-top: 10px;
+  font-size: 14px;
 }
-button:hover { background: #0056b3; }
-.btns {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 15px;
+.btn-blue { background: #007bff; color:white; }
+.btn-blue:hover { background: #0056b3; }
+.btn-gray { background: #444; color:white; }
+.btn-gray:hover { background: #222; }
+
+/* CV styles */
+.cv-container {
+  background: #fff;
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
+.cv h1 {
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.cv .contact { text-align: center; font-size: 13px; margin-bottom: 15px; color:#333; }
+.cv h2 { font-size: 18px; font-weight:bold; margin-top:20px; border-bottom:1px dotted #000; padding-bottom:4px; }
+.section-title { font-weight:bold; font-size:14px; margin-top:10px; }
+.section-details { font-size:13px; margin-left:10px; white-space: pre-line; }
+
+.cv-flex { display:flex; align-items:flex-start; justify-content:space-between; }
+.cv-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:2px solid #007bff; margin-left:15px; }
+.info-left { display:flex; flex-direction:column; align-items:flex-start; }
+.info-left h1 { margin:0; font-size:26px; }
+.info-left .contact span { display:block; font-size:13px; color:#444; margin:3px 0; }
+.btns { display:flex; justify-content:center; gap:10px; margin-top:15px; }
 </style>
 </head>
 <body>
 
-<h1 style="text-align:center;">Professional Resume Collection</h1>
+<div class="form-container">
+  <h2>Enter your information</h2>
+  <label>Full Name:</label><input id="name" placeholder="John Smith">
+  <label>Phone:</label><input id="phone" placeholder="1 800 433 7300">
+  <label>Email:</label><input id="email" placeholder="john.smith@gmail.com">
+  <label>Location:</label><input id="location" placeholder="New York, USA">
+
+  <label>Job Experience:</label>
+  <textarea id="experience" rows="6" placeholder="Title, Company&#10;Details line 1&#10;Details line 2"></textarea>
+
+  <label>Education:</label>
+  <textarea id="education" rows="4" placeholder="Degree, University&#10;Graduation Year"></textarea>
+
+  <label>Languages:</label>
+  <textarea id="languages" rows="3" placeholder="Language&#10;Level"></textarea>
+
+  <label>Software:</label>
+  <textarea id="software" rows="2" placeholder="Software skills"></textarea>
+
+  <label>Hobbies:</label>
+  <textarea id="hobbies" rows="2" placeholder="Hobbies"></textarea>
+
+  <button class="btn-blue" onclick="generateCVs()">Generate CVs</button>
+</div>
 
 <!-- النسخة الأصلية -->
-<div class="cv-container" id="cv1">
+<div class="cv-container" id="cv1" style="display:none;">
   <div class="cv">
-    <h1>John Smith</h1>
-    <div class="contact">
-      <span>📞 1 800 433 7300</span> | 
-      <span>✉️ john.smith@gmail.com</span> | 
-      <span>📍 New York, USA</span>
-    </div>
-
-    <div class="section">
-      <h2>Job Experience</h2>
-      <div class="section-title">Digital Marketing Specialist, XYZ Company</div>
-      <div class="section-details">Managed social media accounts and increased engagement by 35%
-Created Google Ads campaigns and optimized SEO content</div>
-
-      <div class="section-title">Software Developer, ABC Tech</div>
-      <div class="section-details">Developed internal tools using Python and JavaScript
-Collaborated with the design team to improve UX</div>
-
-      <h2>Education</h2>
-      <div class="section-title">Bachelor’s Degree in Business Administration, NYU</div>
-      <div class="section-details">Graduated: 2022</div>
-      <div class="section-title">Master’s Degree in Marketing, Columbia University</div>
-      <div class="section-details">Graduated: 2024</div>
-
-      <h2>Languages</h2>
-      <div class="section-title">English</div>
-      <div class="section-details">Advanced (fluent speaking and writing)</div>
-      <div class="section-title">Spanish</div>
-      <div class="section-details">Native</div>
-
-      <h2>Software</h2>
-      <div class="section-title">Microsoft Office</div>
-      <div class="section-details">Word, Excel, PowerPoint</div>
-      <div class="section-title">Adobe Creative Suite</div>
-      <div class="section-details">Photoshop, Illustrator, InDesign</div>
-
-      <h2>Hobbies</h2>
-      <div class="section-title">Reading</div>
-      <div class="section-details">Business and personal development books</div>
-      <div class="section-title">Sports</div>
-      <div class="section-details">Swimming, Football</div>
-    </div>
+    <h1 id="cv1-name"></h1>
+    <div class="contact" id="cv1-contact"></div>
+    <div id="cv1-content"></div>
   </div>
-
   <div class="btns">
-    <button onclick="downloadPDF('cv1')">⬇️ Download PDF</button>
-    <button onclick="printCV('cv1')">🖨️ Print</button>
+    <button class="btn-blue" onclick="downloadPDF('cv1')">⬇️ Download PDF</button>
+    <button class="btn-gray" onclick="printCV('cv1')">🖨️ Print</button>
   </div>
 </div>
 
-<!-- النسخة الثانية (مع الصورة) -->
-<div class="cv-container" id="cv2">
-  <div class="cv">
-    <div class="cv-flex">
-      <div class="info-left">
-        <h1>John Smith</h1>
-        <div class="contact">
-          <span>📞 1 800 433 7300</span>
-          <span>✉️ john.smith@gmail.com</span>
-          <span>📍 New York, USA</span>
-        </div>
-      </div>
-      <img src="https://i.ibb.co/ykhZzLd/profile.jpg" alt="Profile" class="cv-photo">
+<!-- النسخة الثانية مع الصورة -->
+<div class="cv-container" id="cv2" style="display:none;">
+  <div class="cv cv-flex">
+    <div class="info-left">
+      <h1 id="cv2-name"></h1>
+      <div class="contact" id="cv2-contact"></div>
     </div>
-
-    <div class="section">
-      <h2>Job Experience</h2>
-      <div class="section-title">Digital Marketing Specialist, XYZ Company</div>
-      <div class="section-details">Managed social media accounts and increased engagement by 35%
-Created Google Ads campaigns and optimized SEO content</div>
-
-      <div class="section-title">Software Developer, ABC Tech</div>
-      <div class="section-details">Developed internal tools using Python and JavaScript
-Collaborated with the design team to improve UX</div>
-
-      <h2>Education</h2>
-      <div class="section-title">Bachelor’s Degree in Business Administration, NYU</div>
-      <div class="section-details">Graduated: 2022</div>
-      <div class="section-title">Master’s Degree in Marketing, Columbia University</div>
-      <div class="section-details">Graduated: 2024</div>
-
-      <h2>Languages</h2>
-      <div class="section-title">English</div>
-      <div class="section-details">Advanced (fluent speaking and writing)</div>
-      <div class="section-title">Spanish</div>
-      <div class="section-details">Native</div>
-
-      <h2>Software</h2>
-      <div class="section-title">Microsoft Office</div>
-      <div class="section-details">Word, Excel, PowerPoint</div>
-      <div class="section-title">Adobe Creative Suite</div>
-      <div class="section-details">Photoshop, Illustrator, InDesign</div>
-
-      <h2>Hobbies</h2>
-      <div class="section-title">Reading</div>
-      <div class="section-details">Business and personal development books</div>
-      <div class="section-title">Sports</div>
-      <div class="section-details">Swimming, Football</div>
-    </div>
+    <img src="https://i.ibb.co/ykhZzLd/profile.jpg" alt="Profile" class="cv-photo">
   </div>
-
+  <div id="cv2-content"></div>
   <div class="btns">
-    <button onclick="downloadPDF('cv2')">⬇️ Download PDF</button>
-    <button onclick="printCV('cv2')">🖨️ Print</button>
+    <button class="btn-gray" onclick="downloadPDF('cv2')">⬇️ Download PDF</button>
+    <button class="btn-blue" onclick="printCV('cv2')">🖨️ Print</button>
   </div>
 </div>
 
 <script>
+function generateSection(text) {
+  const sections = text.split(/\n\s*\n/);
+  let html = '';
+  sections.forEach(section => {
+    const lines = section.split('\n').filter(l => l.trim() !== '');
+    if(lines.length === 0) return;
+    html += '<div class="section">';
+    html += `<h2>${lines[0]}</h2>`;
+    lines.slice(1).forEach(line => {
+      html += `<div class="section-title">${line}</div>`;
+    });
+    html += '</div>';
+  });
+  return html;
+}
+
+function generateCVs() {
+  const name = document.getElementById('name').value;
+  const phone = document.getElementById('phone').value;
+  const email = document.getElementById('email').value;
+  const location = document.getElementById('location').value;
+  const experience = document.getElementById('experience').value;
+  const education = document.getElementById('education').value;
+  const languages = document.getElementById('languages').value;
+  const software = document.getElementById('software').value;
+  const hobbies = document.getElementById('hobbies').value;
+
+  const contactInfo = `📞 ${phone} | ✉️ ${email} | 📍 ${location}`;
+
+  // النسخة 1
+  document.getElementById('cv1').style.display = 'block';
+  document.getElementById('cv1-name').textContent = name;
+  document.getElementById('cv1-contact').textContent = contactInfo;
+  document.getElementById('cv1-content').innerHTML = 
+    generateSection('Job Experience\n' + experience) + 
+    generateSection('Education\n' + education) +
+    generateSection('Languages\n' + languages) +
+    generateSection('Software\n' + software) +
+    generateSection('Hobbies\n' + hobbies);
+
+  // النسخة 2
+  document.getElementById('cv2').style.display = 'block';
+  document.getElementById('cv2-name').textContent = name;
+  document.getElementById('cv2-contact').textContent = contactInfo;
+  document.getElementById('cv2-content').innerHTML = 
+    generateSection('Job Experience\n' + experience) + 
+    generateSection('Education\n' + education) +
+    generateSection('Languages\n' + languages) +
+    generateSection('Software\n' + software) +
+    generateSection('Hobbies\n' + hobbies);
+}
+
 async function downloadPDF(id) {
   const { jsPDF } = window.jspdf;
   const element = document.getElementById(id);
-  const canvas = await html2canvas(element, { scale: 2 });
-  const imgData = canvas.toDataURL("image/png");
-  const pdf = new jsPDF("p", "mm", "a4");
+  const canvas = await html2canvas(element, { scale:2 });
+  const imgData = canvas.toDataURL('image/png');
+  const pdf = new jsPDF('p','mm','a4');
   const width = pdf.internal.pageSize.getWidth();
   const height = (canvas.height * width) / canvas.width;
-  pdf.addImage(imgData, "PNG", 0, 0, width, height);
+  pdf.addImage(imgData,'PNG',0,0,width,height);
   pdf.save(`${id}.pdf`);
 }
+
 function printCV(id) {
-  const printContent = document.getElementById(id).innerHTML;
-  const win = window.open('', '', 'width=900,height=700');
-  win.document.write('<html><head><title>Print CV</title></head><body>');
-  win.document.write(printContent);
-  win.document.write('</body></html>');
-  win.document.close();
-  win.print();
+  const printContent = document.getElementById(id).outerHTML;
+  const WinPrint = window.open('', '', 'width=900,height=900');
+  WinPrint.document.write('<html><head><title>Print CV</title></head><body>');
+  WinPrint.document.write(printContent);
+  WinPrint.document.write('</body></html>');
+  WinPrint.document.close();
+  WinPrint.print();
 }
 </script>
 
