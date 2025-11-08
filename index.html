@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Resume Column Layout</title>
+<title>Multiple Resume Versions</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -15,11 +15,12 @@ body {
   align-items: center;
   padding: 20px;
 }
+h1 { text-align: center; margin-bottom: 20px; }
 .form-container, .cv-container {
   background: white;
   padding: 25px;
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   margin-bottom: 20px;
@@ -44,15 +45,17 @@ button {
 }
 button:hover { background: #0056b3; }
 
+/* النسخ المشتركة */
 .cv {
   font-family: 'Helvetica', Arial, sans-serif;
   color: #000;
   line-height: 1.6;
   text-align: left;
-  max-width: 750px;
+  max-width: 800px;
+  margin-bottom: 30px;
 }
 
-/* العنوان الرئيسي */
+/* العناوين الرئيسية */
 .cv h2 {
   font-size: 17px;
   font-weight: bold;
@@ -71,7 +74,7 @@ button:hover { background: #0056b3; }
 .section-title {
   font-weight: bold;
   font-size: 14px;
-  margin-left: 5%;      /* في نفس عمود العنوان الرئيسي */
+  margin-left: 5%;      
   margin-bottom: 2px;
 }
 
@@ -79,10 +82,12 @@ button:hover { background: #0056b3; }
 .section-details {
   font-weight: normal;
   font-size: 13px;
-  margin-left: 5%;      /* نفس العمود */
+  margin-left: 5%;
   margin-bottom: 8px;
   white-space: pre-line;
 }
+
+/* العناوين الكبيرة للاسم */
 .cv h1 {
   font-size: 28px;
   text-transform: uppercase;
@@ -99,11 +104,21 @@ button:hover { background: #0056b3; }
   margin: 0 12px;
 }
 .section-item { margin-bottom: 18px; }
+
+/* تعديلات بسيطة للنسخ المختلفة */
+.cv2 h2 { border-bottom: 2px dashed #000; }
+.cv2 .section-details { margin-left: 6%; }
+.cv3 h2 { font-size: 18px; }
+.cv3 .section-details { margin-left: 7%; }
+.cv4 h2 { text-shadow: 1px 1px #aaa; }
+.cv4 .section-details { font-size: 12.5px; }
+.cv5 h2 { font-style: italic; border-bottom: 1px solid #555; }
+.cv5 .section-details { margin-left: 8%; font-weight: normal; }
 </style>
 </head>
 <body>
 
-<h1 style="text-align:center;">Professional Resume</h1>
+<h1>Multiple Resume Versions</h1>
 
 <div class="form-container">
   <label>Full Name:</label>
@@ -152,94 +167,158 @@ Business and personal development books
 Sports
 Swimming, Football</textarea>
 
-  <button onclick="generateResume()">Create Resume</button>
+  <button onclick="generateAllResumes()">Generate All Resumes</button>
 </div>
 
-<div class="cv-container" id="cv-container" style="display:none;">
-  <div class="cv" id="cv-content">
-    <h1 id="cv-name"></h1>
-    <div class="contact" id="cv-contact"></div>
-
-    <div class="section">
-      <h2>Job Experience</h2>
-      <div id="cv-experience"></div>
-
-      <h2>Education</h2>
-      <div id="cv-education"></div>
-
-      <h2>Languages</h2>
-      <div id="cv-languages"></div>
-
-      <h2>Software</h2>
-      <div id="cv-software"></div>
-
-      <h2>Hobbies</h2>
-      <div id="cv-hobbies"></div>
-    </div>
+<!-- CV Containers -->
+<div class="cv-container" id="cv-container1" style="display:none;">
+  <div class="cv cv1" id="cv1">
+    <h1 id="cv1-name"></h1>
+    <div class="contact" id="cv1-contact"></div>
+    <h2>Job Experience</h2>
+    <div id="cv1-experience"></div>
+    <h2>Education</h2>
+    <div id="cv1-education"></div>
+    <h2>Languages</h2>
+    <div id="cv1-languages"></div>
+    <h2>Software</h2>
+    <div id="cv1-software"></div>
+    <h2>Hobbies</h2>
+    <div id="cv1-hobbies"></div>
   </div>
   <br>
-  <button onclick="downloadPDF()">⬇️ Download PDF</button>
+  <button onclick="downloadPDF('cv1')">⬇️ Download PDF</button>
+</div>
+
+<div class="cv-container" id="cv-container2" style="display:none;">
+  <div class="cv cv2" id="cv2">
+    <h1 id="cv2-name"></h1>
+    <div class="contact" id="cv2-contact"></div>
+    <h2>Job Experience</h2>
+    <div id="cv2-experience"></div>
+    <h2>Education</h2>
+    <div id="cv2-education"></div>
+    <h2>Languages</h2>
+    <div id="cv2-languages"></div>
+    <h2>Software</h2>
+    <div id="cv2-software"></div>
+    <h2>Hobbies</h2>
+    <div id="cv2-hobbies"></div>
+  </div>
+  <br>
+  <button onclick="downloadPDF('cv2')">⬇️ Download PDF</button>
+</div>
+
+<div class="cv-container" id="cv-container3" style="display:none;">
+  <div class="cv cv3" id="cv3">
+    <h1 id="cv3-name"></h1>
+    <div class="contact" id="cv3-contact"></div>
+    <h2>Job Experience</h2>
+    <div id="cv3-experience"></div>
+    <h2>Education</h2>
+    <div id="cv3-education"></div>
+    <h2>Languages</h2>
+    <div id="cv3-languages"></div>
+    <h2>Software</h2>
+    <div id="cv3-software"></div>
+    <h2>Hobbies</h2>
+    <div id="cv3-hobbies"></div>
+  </div>
+  <br>
+  <button onclick="downloadPDF('cv3')">⬇️ Download PDF</button>
+</div>
+
+<div class="cv-container" id="cv-container4" style="display:none;">
+  <div class="cv cv4" id="cv4">
+    <h1 id="cv4-name"></h1>
+    <div class="contact" id="cv4-contact"></div>
+    <h2>Job Experience</h2>
+    <div id="cv4-experience"></div>
+    <h2>Education</h2>
+    <div id="cv4-education"></div>
+    <h2>Languages</h2>
+    <div id="cv4-languages"></div>
+    <h2>Software</h2>
+    <div id="cv4-software"></div>
+    <h2>Hobbies</h2>
+    <div id="cv4-hobbies"></div>
+  </div>
+  <br>
+  <button onclick="downloadPDF('cv4')">⬇️ Download PDF</button>
+</div>
+
+<div class="cv-container" id="cv-container5" style="display:none;">
+  <div class="cv cv5" id="cv5">
+    <h1 id="cv5-name"></h1>
+    <div class="contact" id="cv5-contact"></div>
+    <h2>Job Experience</h2>
+    <div id="cv5-experience"></div>
+    <h2>Education</h2>
+    <div id="cv5-education"></div>
+    <h2>Languages</h2>
+    <div id="cv5-languages"></div>
+    <h2>Software</h2>
+    <div id="cv5-software"></div>
+    <h2>Hobbies</h2>
+    <div id="cv5-hobbies"></div>
+  </div>
+  <br>
+  <button onclick="downloadPDF('cv5')">⬇️ Download PDF</button>
 </div>
 
 <script>
 function generateSection(containerId, text) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
-  const sections = text.split(/\n\s*\n/); // فصل كل قسم
-  sections.forEach((section) => {
-    const lines = section.split('\n').filter(line => line.trim() !== '');
+  const sections = text.split(/\n\s*\n/);
+  sections.forEach(section => {
+    const lines = section.split('\n').filter(l => l.trim() !== '');
     if (lines.length === 0) return;
-
-    // العنوان الفرعي (السطر الأول)
     const titleDiv = document.createElement('div');
     titleDiv.className = 'section-title';
-    titleDiv.textContent = lines[0];  
+    titleDiv.textContent = lines[0];
     container.appendChild(titleDiv);
-
-    // التفاصيل (السطر الثاني وما بعده)
     if (lines.length > 1) {
       const detailsDiv = document.createElement('div');
       detailsDiv.className = 'section-details';
       detailsDiv.textContent = lines.slice(1).join('\n');
       container.appendChild(detailsDiv);
     }
-
     const wrapper = document.createElement('div');
     wrapper.className = 'section-item';
     container.appendChild(wrapper);
   });
 }
 
-function generateResume() {
+function generateAllResumes() {
   const name = document.getElementById('name').value;
   const phone = document.getElementById('phone').value;
   const email = document.getElementById('email').value;
   const location = document.getElementById('location').value;
 
-  document.getElementById('cv-name').textContent = name;
-  document.getElementById('cv-contact').innerHTML = 
-    `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
-
-  generateSection('cv-experience', document.getElementById('experience').value);
-  generateSection('cv-education', document.getElementById('education').value);
-  generateSection('cv-languages', document.getElementById('languages').value);
-  generateSection('cv-software', document.getElementById('software').value);
-  generateSection('cv-hobbies', document.getElementById('hobbies').value);
-
-  document.getElementById('cv-container').style.display = 'block';
-  window.scrollTo(0, document.getElementById('cv-container').offsetTop);
+  for(let i=1;i<=5;i++){
+    document.getElementById(`cv${i}-name`).textContent = name;
+    document.getElementById(`cv${i}-contact`).innerHTML = `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
+    generateSection(`cv${i}-experience`, document.getElementById('experience').value);
+    generateSection(`cv${i}-education`, document.getElementById('education').value);
+    generateSection(`cv${i}-languages`, document.getElementById('languages').value);
+    generateSection(`cv${i}-software`, document.getElementById('software').value);
+    generateSection(`cv${i}-hobbies`, document.getElementById('hobbies').value);
+    document.getElementById(`cv-container${i}`).style.display = 'block';
+  }
+  window.scrollTo(0, document.getElementById('cv-container1').offsetTop);
 }
 
-async function downloadPDF() {
+async function downloadPDF(cvId) {
   const { jsPDF } = window.jspdf;
-  const cvElement = document.getElementById("cv-content");
+  const cvElement = document.getElementById(cvId);
   const canvas = await html2canvas(cvElement, { scale: 2 });
   const imgData = canvas.toDataURL("image/png");
   const pdf = new jsPDF("p", "mm", "a4");
   const pdfWidth = pdf.internal.pageSize.getWidth();
   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
   pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-  pdf.save("Resume.pdf");
+  pdf.save(`${cvId}.pdf`);
 }
 </script>
 
