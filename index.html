@@ -54,16 +54,21 @@ button:hover { background: #555; }
   background: white;
   width: 210mm; /* A4 width */
   min-height: 297mm; /* A4 height */
-  padding: 10mm;   /* 10mm margins from top and sides */
-  border-radius: 0;
-  border: 1px solid #ddd;
-  font-size: 12pt;
-  line-height: 1.6;
   display: none;
+  border: 1px solid #ddd;
   box-sizing: border-box;
+  font-size: 12pt;
   color: #000;
 }
 
+.cv-inner, .letter-inner {
+  width: 190mm; /* margin 10mm on each side */
+  margin: 0 auto;
+  padding: 10mm;
+  box-sizing: border-box;
+}
+
+/* Sections */
 .cv-section, .letter-section {
   margin-bottom: 18px;
 }
@@ -80,7 +85,7 @@ button:hover { background: #555; }
 }
 
 .editable {
-  min-height: 60px; 
+  min-height: 60px;
   padding: 5px;
   border-radius: 4px;
   font-size: 12pt;
@@ -88,7 +93,7 @@ button:hover { background: #555; }
   white-space: pre-wrap;
 }
 
-/* Cover Letter Styles */
+/* Cover Letter Header */
 .letter-header {
   display: flex;
   justify-content: space-between;
@@ -154,7 +159,7 @@ John Smith</textarea>
 
 <!-- CV Preview -->
 <div class="cv-container" id="cv-container">
-  <div id="cv-content">
+  <div class="cv-inner" id="cv-content">
     <h2 style="text-align:center;" id="cv-name">John Smith</h2>
     <p style="text-align:center; margin-bottom:20px;">
       <span id="cv-phone">📞 +1 (800) 433-7300</span> | 
@@ -192,7 +197,7 @@ John Smith</textarea>
 
 <!-- Cover Letter Preview -->
 <div class="letter-container" id="letter-container">
-  <div id="letter-content">
+  <div class="letter-inner" id="letter-content">
     <div class="letter-header">
       <div class="letter-left" id="letter-name-display">John Smith</div>
       <div class="letter-right">
@@ -201,11 +206,9 @@ John Smith</textarea>
         <div id="letter-location">📍 New York, NY</div>
       </div>
     </div>
-    <div class="letter">
-      <div class="letter-section">
-        <h2>Motivation</h2>
-        <div class="editable" contenteditable="true" id="letter-body"></div>
-      </div>
+    <div class="letter-section">
+      <h2>Motivation</h2>
+      <div class="editable" contenteditable="true" id="letter-body"></div>
     </div>
   </div>
   <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
