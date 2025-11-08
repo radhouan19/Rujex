@@ -1,214 +1,203 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Professional Resume & Cover Letter</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-    body {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        margin: 40px;
-        background-color: #f8f8f8;
-        color: #222;
-    }
-    .container {
-        background-color: #fff;
-        max-width: 900px;
-        margin: auto;
-        padding: 40px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    /* ===== Cover Letter ===== */
-    .cover-letter {
-        border-bottom: 2px solid #ddd;
-        padding-bottom: 30px;
-        margin-bottom: 40px;
-    }
-    .cover-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-    .cover-header h1 {
-        font-size: 28px;
-        letter-spacing: 1px;
-        margin: 0;
-    }
-    .cover-header p {
-        margin: 2px 0;
-        font-size: 14px;
-    }
-    .cover-date {
-        text-align: right;
-        font-size: 14px;
-        margin-top: 10px;
-    }
-    .cover-body {
-        margin-top: 20px;
-        line-height: 1.6;
-        font-size: 15px;
-    }
-    .signature {
-        margin-top: 30px;
-    }
-    .signature strong {
-        display: block;
-        margin-bottom: 5px;
-    }
+body {
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+.form-container, .cv-container, .letter-container {
+  background: white;
+  padding: 25px;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+input, textarea {
+  width: 100%;
+  margin: 5px 0 12px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 14px;
+}
+button:hover { background: #0056b3; }.cv, .letter { font-family: 'Roboto', sans-serif; color: #000; line-height: 1.6; text-align: left; max-width: 750px; }
 
-    /* ===== Resume ===== */
-    .resume {
-        margin-top: 40px;
-    }
-    h1, h2 {
-        color: #333;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 5px;
-    }
-    .section {
-        margin-bottom: 25px;
-    }
-    .section h2 {
-        font-size: 20px;
-        color: #111;
-        margin-top: 30px;
-    }
-    .section div {
-        margin-left: 20px;
-        margin-top: 10px;
-    }
-    button {
-        display: inline-block;
-        margin-top: 30px;
-        padding: 10px 20px;
-        background-color: #111;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    button:hover {
-        background-color: #333;
-    }
-</style>
+/* CV Styles (unchanged) */ .cv h2 { font-size: 17px; font-weight: bold; text-transform: uppercase; margin-top: 25px; margin-bottom: 8px; padding-bottom: 4px; text-align: left; border-bottom: 1px dotted #000; width: 95%; margin-left: 5%; direction: rtl; } .section-title { font-weight: bold; font-size: 14px; margin-left: 5%; margin-bottom: 2px; } .section-details { font-weight: normal; font-size: 13px; margin-left: 5%; margin-bottom: 8px; white-space: pre-line; } .cv h1 { font-size: 28px; text-transform: uppercase; text-align: center; margin-bottom: 8px; } .cv .contact { text-align: center; font-size: 13px; color: #333; margin-bottom: 22px; } .cv .contact span { margin: 0 12px; } .section-item { margin-bottom: 18px; }
+
+/* Cover Letter Styles - Professional American */ .letter-header { text-align: right; margin-bottom: 25px; font-size: 13px; line-height: 1.4; } .letter-header p { margin: 2px 0; } .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 20px; text-align: left; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
+
 </head>
-<body>
+<body><h1 style="text-align:center;">Professional Resume & Cover Letter</h1><div class="form-container">
+  <h2>CV Information</h2>
+  <label>Full Name:</label>
+  <input id="name" value="John Smith">
+  <label>Phone:</label>
+  <input id="phone" value="1 800 433 7300">
+  <label>Email:</label>
+  <input id="email" value="john.smith@gmail.com">
+  <label>Location:</label>
+  <input id="location" value="New York, USA"><label>Job Experience:</label>
 
-<div class="container" id="content-to-download">
+  <textarea id="experience" rows="6">Digital Marketing Specialist, XYZ Company
+Managed social media accounts and increased engagement by 35%
+Created Google Ads campaigns and optimized SEO content
 
-    <!-- ===== COVER LETTER ===== -->
-    <div class="cover-letter">
-        <div class="cover-header">
-            <div>
-                <h1>OLIVIA WILSON</h1>
-                <p>Account Manager</p>
-            </div>
-            <div style="text-align:right;">
-                <p>+123-456-7890</p>
-                <p>hello@reallygreatsite.com</p>
-                <p>123 Anywhere St., Any City</p>
-            </div>
-        </div>
+Software Developer, ABC Tech
+Developed internal tools using Python and JavaScript
+Collaborated with the design team to improve UX</textarea><label>Education:</label>
 
-        <p class="cover-date">14th August 2026</p>
+  <textarea id="education" rows="4">Bachelor’s Degree in Business Administration, New York University
+Graduated: 2022
 
-        <div class="cover-body">
-            <p><strong>Helene Paquet</strong><br>
-            Hiring Manager, Really Great Place<br>
-            +123-456-7890<br>
-            hello@reallygreatsite.com<br>
-            123 Anywhere St., Any City</p>
+Master’s Degree in Marketing, Columbia University
+Graduated: 2024</textarea><label>Languages:</label>
 
-            <p><strong>Job Reference:</strong> Senior Account Manager</p>
+  <textarea id="languages" rows="2">English
+Advanced (fluent speaking and writing)
 
-            <p>Dear Helene,</p>
+Spanish
+Native</textarea><label>Software:</label>
 
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+  <textarea id="software" rows="2">Microsoft Office
+Word, Excel, PowerPoint
 
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+Adobe Creative Suite
+Photoshop, Illustrator, InDesign</textarea><label>Hobbies:</label>
 
-            <div class="signature">
-                <p>Sincerely,</p>
-                <strong>Olivia Wilson</strong>
-                <img src="" alt="signature" style="height:30px;">
-            </div>
-        </div>
-    </div>
+  <textarea id="hobbies" rows="2">Reading
+Business and personal development books
 
-    <!-- ===== RESUME ===== -->
-    <div class="resume">
-        <h1>Professional Resume Column Layout</h1>
+Sports
+Swimming, Football</textarea>  <h2>Cover Letter</h2>
+  <label>Company Name:</label>
+  <input id="letter-company" value="XYZ Company">
+  <label>Position:</label>
+  <input id="letter-position" value="Marketing Assistant">
+  <label>Your Motivation:</label>
+  <textarea id="letter-text" rows="12">I am writing to express my strong interest in the Marketing Assistant position at XYZ Company. Over the past several years, I have developed a deep passion for digital marketing and brand strategy, working on multiple campaigns that have significantly increased engagement and conversions for my previous employers. My experience spans social media management, SEO optimization, and content creation. I am highly proficient in creating marketing plans, analyzing performance metrics, and adjusting strategies to meet business objectives.Beyond technical skills, I bring creativity, dedication, and a strong sense of teamwork. I thrive in collaborative environments where I can contribute innovative ideas while learning from colleagues. Joining XYZ Company represents an exciting opportunity to apply my expertise, support your marketing goals, and grow within a forward-thinking organization. I am confident that my experience and enthusiasm make me a strong candidate, and I am eager to bring value to your team through strategic and innovative contributions.</textarea> <label>Closing Remark (Your Name):</label> <input id="letter-name" value="John Smith">
 
-        <h2>Professional Resume</h2>
-        <p>
-            <strong>Full Name:</strong> <br>
-            <strong>Phone:</strong> <br>
-            <strong>Email:</strong> <br>
-            <strong>Location:</strong>
-        </p>
+<button onclick="generateCV()">Create CV</button> <button onclick="generateLetter()">Create Cover Letter</button>
 
-        <div class="section">
-            <h2>Job Experience</h2>
-            <div id="cv-experience">
-                <p><strong>Digital Marketing Specialist, XYZ Company</strong><br>
-                Managed social media accounts and increased engagement by 35%.<br>
-                Created Google Ads campaigns and optimized SEO content.</p>
+</div><div class="cv-container" id="cv-container" style="display:none;">
+  <div class="cv" id="cv-content">
+    <h1 id="cv-name"></h1>
+    <div class="contact" id="cv-contact"></div><div class="section">
+  <h2>Job Experience</h2>
+  <div id="cv-experience"></div>
 
-                <p><strong>Software Developer, ABC Tech</strong><br>
-                Developed internal tools using Python and JavaScript.<br>
-                Collaborated with the design team to improve UX.</p>
-            </div>
+  <h2>Education</h2>
+  <div id="cv-education"></div>
 
-            <h2>Education</h2>
-            <div id="cv-education">
-                <p><strong>Bachelor’s Degree in Business Administration, New York University</strong><br>
-                Graduated: 2022</p>
+  <h2>Languages</h2>
+  <div id="cv-languages"></div>
 
-                <p><strong>Master’s Degree in Marketing, Columbia University</strong><br>
-                Graduated: 2024</p>
-            </div>
+  <h2>Software</h2>
+  <div id="cv-software"></div>
 
-            <h2>Languages</h2>
-            <div id="cv-languages">
-                <p><strong>English:</strong> Advanced (fluent speaking and writing)</p>
-                <p><strong>Spanish:</strong> Native</p>
-            </div>
-
-            <h2>Software</h2>
-            <div id="cv-software">
-                <p><strong>Microsoft Office:</strong> Word, Excel, PowerPoint</p>
-                <p><strong>Adobe Creative Suite:</strong> Photoshop, Illustrator, InDesign</p>
-            </div>
-
-            <h2>Hobbies</h2>
-            <div id="cv-hobbies">
-                <p><strong>Reading:</strong> Business and personal development books</p>
-                <p><strong>Sports:</strong> Swimming, Football</p>
-            </div>
-        </div>
-    </div>
+  <h2>Hobbies</h2>
+  <div id="cv-hobbies"></div>
 </div>
 
-<!-- ===== PDF Download Button ===== -->
-<div style="text-align:center;">
-    <button id="download-btn">⬇️ Download PDF</button>
-</div>
+  </div>
+  <br>
+  <button onclick="downloadPDF('cv-content','Resume.pdf')">⬇️ Download CV PDF</button>
+</div><div class="letter-container" id="letter-container" style="display:none;">
+  <div class="letter" id="letter-content">
+    <div class="letter-header" id="letter-header"></div>
+    <p id="letter-body"></p>
+    <p id="letter-footer"></p>
+  </div>
+  <br>
+  <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
+</div><script>
+function generateSection(containerId, text) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  const sections = text.split(/\n\s*\n/);
+  sections.forEach((section) => {
+    const lines = section.split('\n').filter(line => line.trim() !== '');
+    if (lines.length === 0) return;
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'section-title';
+    titleDiv.textContent = lines[0];
+    container.appendChild(titleDiv);
+    if (lines.length > 1) {
+      const detailsDiv = document.createElement('div');
+      detailsDiv.className = 'section-details';
+      detailsDiv.textContent = lines.slice(1).join('\n');
+      container.appendChild(detailsDiv);
+    }
+    const wrapper = document.createElement('div');
+    wrapper.className = 'section-item';
+    container.appendChild(wrapper);
+  });
+}
 
-<!-- ===== JavaScript ===== -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script>
-document.getElementById('download-btn').addEventListener('click', function() {
-    const element = document.getElementById('content-to-download');
-    const opt = {
-        margin:       0.5,
-        filename:     'Resume_and_CoverLetter.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-    };
-    html2pdf().set(opt).from(element).save();
-});
-</script>
+function generateCV() {
+  const name = document.getElementById('name').value;
+  const phone = document.getElementById('phone').value;
+  const email = document.getElementById('email').value;
+  const location = document.getElementById('location').value;
 
-</body>
+  document.getElementById('cv-name').textContent = name;
+  document.getElementById('cv-contact').innerHTML = `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
+
+  generateSection('cv-experience', document.getElementById('experience').value);
+  generateSection('cv-education', document.getElementById('education').value);
+  generateSection('cv-languages', document.getElementById('languages').value);
+  generateSection('cv-software', document.getElementById('software').value);
+  generateSection('cv-hobbies', document.getElementById('hobbies').value);
+
+  document.getElementById('cv-container').style.display = 'block';
+  window.scrollTo(0, document.getElementById('cv-container').offsetTop);
+}
+
+function generateLetter() {
+  const name = document.getElementById('letter-name').value;
+  const email = document.getElementById('email').value;
+  const location = document.getElementById('location').value;
+  const bodyText = document.getElementById('letter-text').value;
+
+  document.getElementById('letter-header').innerHTML = `<p>${name}</p><p>${email}</p><p>${location}</p>`;
+  document.getElementById('letter-body').textContent = bodyText;
+  document.getElementById('letter-footer').textContent = `Sincerely,\n${name}`;
+
+  document.getElementById('letter-container').style.display = 'block';
+  window.scrollTo(0, document.getElementById('letter-container').offsetTop);
+}
+
+async function downloadPDF(elementId, filename) {
+  const { jsPDF } = window.jspdf;
+  const element = document.getElementById(elementId);
+  const canvas = await html2canvas(element, { scale: 2 });
+  const imgData = canvas.toDataURL('image/png');
+  const pdf = new jsPDF('p', 'mm', 'a4');
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  pdf.save(filename);
+}
+</script></body>
 </html>
