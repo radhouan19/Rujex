@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Original + Canadian Resume</title>
+<title>Resume with Photo</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -54,8 +54,6 @@ button:hover { background: #0056b3; }
   max-width: 800px;
   margin-bottom: 30px;
 }
-
-/* العناوين الرئيسية */
 .cv h2 {
   font-size: 17px;
   font-weight: bold;
@@ -67,18 +65,13 @@ button:hover { background: #0056b3; }
   border-bottom: 1px dotted #000;
   width: 95%;
   margin-left: 5%;
-  direction: rtl;
 }
-
-/* العناوين الفرعية */
 .section-title {
   font-weight: bold;
   font-size: 14px;
   margin-left: 5%;      
   margin-bottom: 2px;
 }
-
-/* التفاصيل */
 .section-details {
   font-weight: normal;
   font-size: 13px;
@@ -86,8 +79,6 @@ button:hover { background: #0056b3; }
   margin-bottom: 8px;
   white-space: pre-line;
 }
-
-/* العناوين الكبيرة للاسم */
 .cv h1 {
   font-size: 28px;
   text-transform: uppercase;
@@ -104,11 +95,20 @@ button:hover { background: #0056b3; }
   margin: 0 12px;
 }
 .section-item { margin-bottom: 18px; }
+/* الصورة الشخصية */
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 12px auto;
+}
 </style>
 </head>
 <body>
 
-<h1>Original + Canadian Resume</h1>
+<h1>Resume Generator</h1>
 
 <div class="form-container">
   <label>Full Name:</label>
@@ -157,6 +157,9 @@ Business and personal development books
 Sports
 Swimming, Football</textarea>
 
+  <label>Upload Photo (for 2nd resume):</label>
+  <input type="file" id="photo" accept="image/*">
+
   <button onclick="generateResumes()">Generate Resumes</button>
 </div>
 
@@ -180,32 +183,28 @@ Swimming, Football</textarea>
   <button onclick="downloadPDF('cv-original')">⬇️ Download Original PDF</button>
 </div>
 
-<!-- Canadian Resume -->
-<div class="cv-container" id="cv-container-canada" style="display:none;">
-  <div class="cv" id="cv-canada-content" style="max-width:750px;">
-    <h1 id="cv-canada-name" style="text-align:center; font-size:26px; font-weight:bold;"></h1>
-    <div class="contact" id="cv-canada-contact" style="text-align:center; font-size:13px; margin-bottom:20px;"></div>
-
-    <h2 style="font-size:16px; font-weight:bold; border-bottom:1px solid #333; margin-top:20px;">Work Experience</h2>
-    <div id="cv-canada-experience" style="margin-left:5%; margin-bottom:15px; font-size:13px; line-height:1.5;"></div>
-
-    <h2 style="font-size:16px; font-weight:bold; border-bottom:1px solid #333; margin-top:20px;">Education</h2>
-    <div id="cv-canada-education" style="margin-left:5%; margin-bottom:15px; font-size:13px; line-height:1.5;"></div>
-
-    <h2 style="font-size:16px; font-weight:bold; border-bottom:1px solid #333; margin-top:20px;">Languages</h2>
-    <div id="cv-canada-languages" style="margin-left:5%; margin-bottom:15px; font-size:13px; line-height:1.5;"></div>
-
-    <h2 style="font-size:16px; font-weight:bold; border-bottom:1px solid #333; margin-top:20px;">Software</h2>
-    <div id="cv-canada-software" style="margin-left:5%; margin-bottom:15px; font-size:13px; line-height:1.5;"></div>
-
-    <h2 style="font-size:16px; font-weight:bold; border-bottom:1px solid #333; margin-top:20px;">Hobbies</h2>
-    <div id="cv-canada-hobbies" style="margin-left:5%; margin-bottom:15px; font-size:13px; line-height:1.5;"></div>
+<!-- Resume with Photo -->
+<div class="cv-container" id="cv-container-photo" style="display:none;">
+  <div class="cv cv-photo" id="cv-photo-content">
+    <img id="cv-photo-img" class="profile-pic" src="" style="display:none;">
+    <h1 id="cv-photo-name"></h1>
+    <div class="contact" id="cv-photo-contact"></div>
+    <h2>Job Experience</h2>
+    <div id="cv-photo-experience"></div>
+    <h2>Education</h2>
+    <div id="cv-photo-education"></div>
+    <h2>Languages</h2>
+    <div id="cv-photo-languages"></div>
+    <h2>Software</h2>
+    <div id="cv-photo-software"></div>
+    <h2>Hobbies</h2>
+    <div id="cv-photo-hobbies"></div>
   </div>
-  <button onclick="downloadPDF('cv-canada-content')">⬇️ Download Canadian PDF</button>
+  <button onclick="downloadPDF('cv-photo-content')">⬇️ Download PDF with Photo</button>
 </div>
 
 <script>
-// توليد النسختين معًا
+// توليد النسختين
 function generateSection(containerId, text) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
@@ -229,26 +228,6 @@ function generateSection(containerId, text) {
   });
 }
 
-function generateCanadaSection(containerId, text) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
-  const sections = text.split(/\n\s*\n/);
-  sections.forEach(section => {
-    const lines = section.split('\n').filter(l => l.trim() !== '');
-    if(lines.length === 0) return;
-    const title = document.createElement('div');
-    title.style.fontWeight = 'bold';
-    title.textContent = lines[0];
-    container.appendChild(title);
-    if(lines.length > 1) {
-      const details = document.createElement('div');
-      details.textContent = lines.slice(1).join('\n');
-      details.style.marginLeft = '15px';
-      container.appendChild(details);
-    }
-  });
-}
-
 function generateResumes() {
   const name = document.getElementById('name').value;
   const phone = document.getElementById('phone').value;
@@ -266,16 +245,29 @@ function generateResumes() {
   generateSection('cv1-hobbies', document.getElementById('hobbies').value);
   document.getElementById('cv-container-original').style.display = 'block';
 
-  // Canadian
-  document.getElementById('cv-canada-name').textContent = name;
-  document.getElementById('cv-canada-contact').innerHTML =
+  // With Photo
+  const photoInput = document.getElementById('photo');
+  const photoImg = document.getElementById('cv-photo-img');
+  if (photoInput.files && photoInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      photoImg.src = e.target.result;
+      photoImg.style.display = 'block';
+    }
+    reader.readAsDataURL(photoInput.files[0]);
+  } else {
+    photoImg.style.display = 'none';
+  }
+
+  document.getElementById('cv-photo-name').textContent = name;
+  document.getElementById('cv-photo-contact').innerHTML =
     `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
-  generateCanadaSection('cv-canada-experience', document.getElementById('experience').value);
-  generateCanadaSection('cv-canada-education', document.getElementById('education').value);
-  generateCanadaSection('cv-canada-languages', document.getElementById('languages').value);
-  generateCanadaSection('cv-canada-software', document.getElementById('software').value);
-  generateCanadaSection('cv-canada-hobbies', document.getElementById('hobbies').value);
-  document.getElementById('cv-container-canada').style.display = 'block';
+  generateSection('cv-photo-experience', document.getElementById('experience').value);
+  generateSection('cv-photo-education', document.getElementById('education').value);
+  generateSection('cv-photo-languages', document.getElementById('languages').value);
+  generateSection('cv-photo-software', document.getElementById('software').value);
+  generateSection('cv-photo-hobbies', document.getElementById('hobbies').value);
+  document.getElementById('cv-container-photo').style.display = 'block';
   window.scrollTo(0, document.getElementById('cv-container-original').offsetTop);
 }
 
