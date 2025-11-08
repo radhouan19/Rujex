@@ -8,102 +8,51 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-body {
-  font-family: 'Roboto', Arial, sans-serif;
-  background: #f3f4f6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-.form-container, .cv-container, .letter-container {
-  background: white;
-  padding: 25px;
-  width: 100%;
-  max-width: 900px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-}
-input, textarea {
-  width: 100%;
-  margin: 5px 0 12px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-}
-button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 10px;
-  font-size: 14px;
-}
-button:hover { background: #0056b3; }
-
+body { font-family: 'Roboto', Arial, sans-serif; background: #f3f4f6; display:flex; flex-direction:column; align-items:center; padding:20px; }
+.form-container, .cv-container, .letter-container { background:white; padding:25px; width:100%; max-width:900px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); margin-bottom:20px; }
+input, textarea { width:100%; margin:5px 0 12px; padding:10px; border:1px solid #ccc; border-radius:5px; font-size:14px; }
+button { background:#007bff; color:white; border:none; padding:12px 25px; border-radius:6px; cursor:pointer; margin-top:10px; font-size:14px; }
+button:hover { background:#0056b3; }
 h2.section-title { font-weight:700; margin-top:20px; margin-bottom:5px; }
-.editable-box {
-  border:1px solid #aaa;
-  padding:10px;
-  min-height:60px;
-  margin-bottom:15px;
-  overflow-y:auto;
-}
+.editable-box { border:1px solid #aaa; padding:10px; min-height:60px; margin-bottom:15px; overflow-y:auto; }
 .editable-box:focus { outline:2px solid #007bff; }
 .cv-inner, .letter-inner { padding:10mm; }
-.header-row {
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:20px;
-}
+.header-row { display:flex; justify-content:space-between; margin-bottom:20px; }
 .header-left { font-size:24px; font-weight:700; }
 .header-right { text-align:right; font-size:13px; line-height:1.4; }
 </style>
 </head>
 <body>
 
-<h1 style="text-align:center;">Final Editable CV & Cover Letter</h1>
+<h1 style="text-align:center;">CV & Cover Letter</h1>
 
 <div class="form-container">
   <h2>CV Information</h2>
   <label>Full Name:</label><input id="name" value="John Smith">
-  <label>Phone:</label><input id="phone" value="+1 (800) 433-7300">
+  <label>Phone:</label><input id="phone" value="1 800 433 7300">
   <label>Email:</label><input id="email" value="john.smith@gmail.com">
-  <label>Location:</label><input id="location" value="New York, NY, USA">
+  <label>Location:</label><input id="location" value="New York, USA">
 
   <label>Job Experience:</label>
-  <textarea id="experience" rows="8">Marketing Specialist
-XYZ Company | Jan 2020 - Dec 2021 | New York, USA
+  <textarea id="experience" rows="8">Digital Marketing Specialist, XYZ Company
 Managed social media accounts and increased engagement by 35%
 Created Google Ads campaigns and optimized SEO content
 
-Software Developer
-ABC Tech | Feb 2018 - Dec 2019 | New York, USA
+Software Developer, ABC Tech
 Developed internal tools using Python and JavaScript
-Collaborated with design team to improve UX
+Collaborated with the design team to improve UX
 
-Content Writer
-Creative Media | Mar 2016 - Jan 2018 | New York, USA
+Content Writer, Creative Media
 Produced SEO-optimized content for websites and blogs
 Worked with marketing team on content strategy
 </textarea>
 
   <label>Education:</label>
-  <textarea id="education" rows="6">Bachelor’s Degree
-Business Administration
+  <textarea id="education" rows="6">Bachelor’s Degree in Business Administration, NYU
 Graduated: 2015
 
-Master’s Degree
-Marketing
-Graduated: 2017
-
-Certification
-Digital Marketing
-Completed: 2019</textarea>
+Master’s Degree in Marketing, Columbia University
+Graduated: 2017</textarea>
 
   <label>Languages:</label>
   <textarea id="languages" rows="4">English - Fluent
@@ -138,38 +87,16 @@ I am highly proficient in creating marketing plans, analyzing performance metric
 I am confident that my experience and enthusiasm make me a strong candidate, and I am eager to bring value to your team through strategic and innovative contributions.</textarea>
   <label>Closing Remark (Your Name):</label><input id="closing-name" value="John Smith">
 
-  <button onclick="generateCV()">Generate CV Preview</button>
-  <button onclick="generateLetter()">Generate Cover Letter Preview</button>
+  <button onclick="generateCV()">Create CV</button>
+  <button onclick="generateLetter()">Create Cover Letter</button>
 </div>
 
-<!-- CV Container -->
+<!-- CV Container (No Change from Original Sample) -->
 <div class="cv-container" id="cv-container" style="display:none;">
   <div class="cv-inner" id="cv-content">
-    <div class="header-row">
-      <div class="header-left" id="cv-name"></div>
-      <div class="header-right">
-        <span id="cv-phone"></span><br>
-        <span id="cv-email"></span><br>
-        <span id="cv-location"></span>
-      </div>
-    </div>
-
-    <h2 class="section-title">Job Experience</h2>
-    <div class="editable-box" contenteditable="true" id="cv-experience"></div>
-
-    <h2 class="section-title">Education</h2>
-    <div class="editable-box" contenteditable="true" id="cv-education"></div>
-
-    <h2 class="section-title">Languages</h2>
-    <div class="editable-box" contenteditable="true" id="cv-languages"></div>
-
-    <h2 class="section-title">Software</h2>
-    <div class="editable-box" contenteditable="true" id="cv-software"></div>
-
-    <h2 class="section-title">Hobbies</h2>
-    <div class="editable-box" contenteditable="true" id="cv-hobbies"></div>
+    <pre id="cv-display" style="white-space:pre-wrap; font-family:Arial; font-size:12pt;"> </pre>
   </div>
-  <button onclick="downloadPDF('cv-content','CV_Test.pdf')">⬇️ Download CV PDF</button>
+  <button onclick="downloadPDF('cv-content','CV_Final.pdf')">⬇️ Download CV PDF</button>
 </div>
 
 <!-- Cover Letter Container -->
@@ -186,21 +113,34 @@ I am confident that my experience and enthusiasm make me a strong candidate, and
     <div class="editable-box" contenteditable="true" id="letter-body"></div>
     <div class="editable-box" contenteditable="true" id="letter-footer" style="min-height:50px; margin-top:20px;"></div>
   </div>
-  <button onclick="downloadPDF('letter-content','Cover_Letter_Test.pdf')">⬇️ Download Cover Letter PDF</button>
+  <button onclick="downloadPDF('letter-content','Cover_Letter_Final.pdf')">⬇️ Download Cover Letter PDF</button>
 </div>
 
 <script>
 function generateCV(){
   document.getElementById('cv-container').style.display='block';
-  document.getElementById('cv-name').textContent=document.getElementById('name').value;
-  document.getElementById('cv-phone').textContent=document.getElementById('phone').value;
-  document.getElementById('cv-email').textContent=document.getElementById('email').value;
-  document.getElementById('cv-location').textContent=document.getElementById('location').value;
-  document.getElementById('cv-experience').textContent=document.getElementById('experience').value;
-  document.getElementById('cv-education').textContent=document.getElementById('education').value;
-  document.getElementById('cv-languages').textContent=document.getElementById('languages').value;
-  document.getElementById('cv-software').textContent=document.getElementById('software').value;
-  document.getElementById('cv-hobbies').textContent=document.getElementById('hobbies').value;
+  const cvText = `
+Full Name: ${document.getElementById('name').value}
+Phone: ${document.getElementById('phone').value}
+Email: ${document.getElementById('email').value}
+Location: ${document.getElementById('location').value}
+
+Job Experience:
+${document.getElementById('experience').value}
+
+Education:
+${document.getElementById('education').value}
+
+Languages:
+${document.getElementById('languages').value}
+
+Software:
+${document.getElementById('software').value}
+
+Hobbies:
+${document.getElementById('hobbies').value}
+  `;
+  document.getElementById('cv-display').textContent=cvText;
   window.scrollTo(0,document.getElementById('cv-container').offsetTop);
 }
 
