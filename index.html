@@ -3,327 +3,224 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Resume & Cover Letter</title>
+<title>Editable CV & Cover Letter (Preview + Download)</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 body {
   font-family: Arial, sans-serif;
-  background: #f3f4f6;
+  background: #f1f1f1;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
 }
 
-.form-container, .cv-container, .letter-container {
+.page {
   background: white;
-  padding: 25px;
-  width: 100%;
-  max-width: 800px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm;
   margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
-input, textarea {
+h2 {
+  font-size: 13pt;
+  font-weight: bold;
+  border-bottom: 1px dashed #999;
+  padding-bottom: 4px;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+textarea {
   width: 100%;
-  margin: 5px 0 12px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
+  border: none;
+  resize: none;
+  outline: none;
+  font-family: Arial, sans-serif;
+  font-size: 12pt;
+  color: #333;
+  line-height: 1.5;
+  min-height: 80px;
+  background: transparent;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #999;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.header-left {
+  font-size: 22pt;
+  font-weight: bold;
+  color: #111;
+}
+
+.header-right {
+  text-align: right;
+  font-size: 11pt;
+  color: #333;
+  line-height: 1.4;
 }
 
 button {
-  background: #007bff;
+  background: #444;
   color: white;
   border: none;
   padding: 12px 25px;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 13pt;
   margin-top: 10px;
-  font-size: 14px;
+  margin-right: 10px;
+  transition: 0.3s;
+}
+button:hover {
+  background: #000;
 }
 
-button:hover { background: #0056b3; }
-
-/* CV Styles - Column One, centered */
-.cv {
-  font-family: 'Helvetica', Arial, sans-serif;
-  color: #000;
-  line-height: 1.6;
-  text-align: left;
-  max-width: 650px;
-  margin: 0 auto;
-}
-
-.cv h1 { 
-  font-size: 28px; 
-  text-transform: uppercase; 
-  text-align: center; 
-  margin-bottom: 15px; 
-}
-
-.cv .contact { 
-  text-align: center; 
-  font-size: 13px; 
-  color: #333; 
-  margin-bottom: 25px; 
-}
-
-.cv .contact span { margin: 0 12px; }
-
-.section-title { 
-  font-weight: bold; 
-  font-size: 16px; 
-  margin-top: 12px; 
-  margin-bottom: 6px; 
-}
-
-.section-details { 
-  font-weight: normal; 
-  font-size: 14px; 
-  margin-bottom: 12px; 
-  white-space: pre-line; 
-}
-
-/* Cover Letter Styles */
-.letter-container {
-  border: 1px solid #ddd;
-  padding: 30px;
-  border-radius: 8px;
+#previewContainer {
   display: none;
-}
-
-.letter-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  line-height: 1.4;
-  padding: 40px 20px 20px 20px;
-}
-
-.letter-left {
-  font-size: 22px;
-  font-weight: bold;
-  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.75);
+  justify-content: center;
   align-items: center;
+  z-index: 9999;
 }
-
-.letter-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+#previewContainer img {
+  max-width: 90%;
+  max-height: 90%;
+  border: 5px solid #fff;
+  border-radius: 8px;
 }
-
-.letter-right span { margin-bottom: 5px; }
-
-.letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; }
-
-/* Print Styles for A4 */
-@media print {
-  body, .cv-container, .letter-container {
-    width: 210mm;
-    height: 297mm;
-    margin: 0;
-    padding: 15mm;
-    box-shadow: none;
-    background: #fff;
-  }
-
-  button, .form-container {
-    display: none;
-  }
-
-  .cv, .letter {
-    max-width: 100%;
-    margin: 0;
-  }
+#closePreview {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  background: #fff;
+  color: #000;
+  padding: 10px 20px;
+  font-size: 14pt;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 </style>
 </head>
 <body>
 
-<h1 style="text-align:center;">Professional Resume & Cover Letter</h1>
-
-<div class="form-container">
-  <h2>CV Information</h2>
-  <label>Full Name:</label>
-  <input id="name" value="John Smith">
-  <label>Phone:</label>
-  <input id="phone" value="1 800 433 7300">
-  <label>Email:</label>
-  <input id="email" value="john.smith@gmail.com">
-  <label>Location:</label>
-  <input id="location" value="New York, USA">
-
-  <label>Job Experience:</label>
-  <textarea id="experience" rows="6">Digital Marketing Specialist, XYZ Company
-Managed social media accounts and increased engagement by 35%
-Created Google Ads campaigns and optimized SEO content
-
-Software Developer, ABC Tech
-Developed internal tools using Python and JavaScript
-Collaborated with the design team to improve UX</textarea>
-
-  <label>Education:</label>
-  <textarea id="education" rows="4">Bachelor’s Degree in Business Administration, New York University
-Graduated: 2022
-
-Master’s Degree in Marketing, Columbia University
-Graduated: 2024</textarea>
-
-  <label>Languages:</label>
-  <textarea id="languages" rows="2">English
-Advanced (fluent speaking and writing)
-
-Spanish
-Native</textarea>
-
-  <label>Software:</label>
-  <textarea id="software" rows="2">Microsoft Office
-Word, Excel, PowerPoint
-
-Adobe Creative Suite
-Photoshop, Illustrator, InDesign</textarea>
-
-  <label>Hobbies:</label>
-  <textarea id="hobbies" rows="2">Reading
-Business and personal development books
-
-Sports
-Swimming, Football</textarea>
-
-  <h2>Cover Letter</h2>
-  <label>Company Name:</label>
-  <input id="letter-company" value="XYZ Company">
-  <label>Position:</label>
-  <input id="letter-position" value="Marketing Assistant">
-  <label>Your Motivation:</label>
-  <textarea id="letter-text" rows="12">I am writing to express my strong interest in the Marketing Assistant position at XYZ Company. Over the past several years, I have developed a deep passion for digital marketing and brand strategy, working on multiple campaigns that have significantly increased engagement and conversions for my previous employers. My experience spans social media management, SEO optimization, and content creation. I am highly proficient in creating marketing plans, analyzing performance metrics, and adjusting strategies to meet business objectives.
-
-Beyond technical skills, I bring creativity, dedication, and a strong sense of teamwork. I thrive in collaborative environments where I can contribute innovative ideas while learning from colleagues. Joining XYZ Company represents an exciting opportunity to apply my expertise, support your marketing goals, and grow within a forward-thinking organization. I am confident that my experience and enthusiasm make me a strong candidate, and I am eager to bring value to your team through strategic and innovative contributions.</textarea>
-  <label>Closing Remark (Your Name):</label>
-  <input id="letter-name" value="John Smith">
-
-  <button onclick="generateCV()">Create CV</button>
-  <button onclick="generateLetter()">Create Cover Letter</button>
-</div>
-
-<!-- CV Container -->
-<div class="cv-container" id="cv-container" style="display:none;">
-  <div class="cv" id="cv-content">
-    <h1 id="cv-name"></h1>
-    <div class="contact" id="cv-contact"></div>
-
-    <div class="section">
-      <h2>Job Experience</h2>
-      <div id="cv-experience"></div>
-
-      <h2>Education</h2>
-      <div id="cv-education"></div>
-
-      <h2>Languages</h2>
-      <div id="cv-languages"></div>
-
-      <h2>Software</h2>
-      <div id="cv-software"></div>
-
-      <h2>Hobbies</h2>
-      <div id="cv-hobbies"></div>
+<!-- CV PAGE -->
+<div class="page" id="cv-page">
+  <div class="header">
+    <div class="header-left" contenteditable="true">John Smith</div>
+    <div class="header-right" contenteditable="true">
+      📞 1 800 433 7300<br>
+      ✉️ john.smith@gmail.com<br>
+      📍 New York, USA
     </div>
   </div>
-  <br>
-  <button onclick="downloadPDF('cv-content','Resume.pdf')">⬇️ Download CV PDF</button>
+
+  <h2>Professional Summary</h2>
+  <textarea>I am a dedicated and results-driven professional with strong experience in marketing, content creation, and brand development. Skilled in social media management, analytics, and project leadership.</textarea>
+
+  <h2>Experience</h2>
+  <textarea>Digital Marketing Specialist — XYZ Company
+Managed social media accounts, increasing engagement by 35%.
+Created ad campaigns and optimized SEO performance.
+
+Software Developer — ABC Tech
+Developed internal tools using Python and JavaScript.
+Collaborated with design teams to improve user experience.</textarea>
+
+  <h2>Education</h2>
+  <textarea>Master’s Degree in Marketing — Columbia University, 2024
+Bachelor’s Degree in Business Administration — New York University, 2022</textarea>
+
+  <h2>Languages</h2>
+  <textarea>English — Fluent
+Spanish — Native</textarea>
+
+  <h2>Software Skills</h2>
+  <textarea>Microsoft Office Suite — Word, Excel, PowerPoint
+Adobe Creative Suite — Photoshop, Illustrator, InDesign</textarea>
+
+  <h2>Hobbies & Interests</h2>
+  <textarea>Reading, Personal Development, Fitness, and Football.</textarea>
 </div>
 
-<!-- Cover Letter Container -->
-<div class="letter-container" id="letter-container">
-  <div class="letter" id="letter-content">
-    <div class="letter-header">
-      <div class="letter-left" id="letter-name-display">John Smith</div>
-      <div class="letter-right">
-        <span id="letter-phone">📞 1 800 433 7300</span>
-        <span id="letter-email">✉️ john.smith@gmail.com</span>
-        <span id="letter-location">📍 New York, USA</span>
-      </div>
+<!-- COVER LETTER PAGE -->
+<div class="page" id="letter-page">
+  <div class="header">
+    <div class="header-left" contenteditable="true">John Smith</div>
+    <div class="header-right" contenteditable="true">
+      📞 1 800 433 7300<br>
+      ✉️ john.smith@gmail.com<br>
+      📍 New York, USA
     </div>
-    <p id="letter-body"></p>
-    <p id="letter-footer"></p>
   </div>
-  <br>
-  <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
+
+  <textarea style="min-height: 200mm;">
+Dear Hiring Manager,
+
+I am writing to express my strong interest in the Marketing Assistant position at XYZ Company. Over the past several years, I have developed a deep passion for digital marketing and brand strategy, working on multiple campaigns that have significantly increased engagement and conversions.
+
+My experience includes managing social media channels, analyzing performance metrics, and developing creative campaigns that align with company goals. I take pride in my ability to adapt to fast-paced environments, collaborate effectively, and contribute innovative ideas to help organizations grow.
+
+I am confident that my blend of technical expertise and creativity makes me a valuable addition to your team. I look forward to the opportunity to discuss how my background and skills can support your company's objectives.
+
+Sincerely,
+John Smith
+  </textarea>
+</div>
+
+<div>
+  <button onclick="previewPage('cv-page')">👁️ Preview CV</button>
+  <button onclick="previewPage('letter-page')">👁️ Preview Letter</button>
+  <button onclick="downloadSinglePDF('cv-page','CV_John_Smith.pdf')">⬇️ Download CV PDF</button>
+  <button onclick="downloadSinglePDF('letter-page','Cover_Letter_John_Smith.pdf')">⬇️ Download Letter PDF</button>
+</div>
+
+<div id="previewContainer">
+  <button id="closePreview" onclick="closePreview()">✖ Close Preview</button>
+  <img id="previewImage" src="">
 </div>
 
 <script>
-function generateCV() {
-  const name = document.getElementById('name').value;
-  const phone = document.getElementById('phone').value;
-  const email = document.getElementById('email').value;
-  const location = document.getElementById('location').value;
-
-  document.getElementById('cv-name').textContent = name;
-  document.getElementById('cv-contact').innerHTML = `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
-
-  const sections = ['experience','education','languages','software','hobbies'];
-
-  sections.forEach(id => {
-    const container = document.getElementById('cv-' + id);
-    container.innerHTML = '';
-    const text = document.getElementById(id).value;
-    const blocks = text.split(/\n\s*\n/);
-    blocks.forEach(block => {
-      const lines = block.split('\n').filter(l => l.trim() !== '');
-      if(lines.length === 0) return;
-      const title = document.createElement('div');
-      title.className = 'section-title';
-      title.textContent = lines[0];
-      container.appendChild(title);
-      if(lines.length>1){
-        const details = document.createElement('div');
-        details.className = 'section-details';
-        details.textContent = lines.slice(1).join('\n');
-        container.appendChild(details);
-      }
-    });
-  });
-
-  document.getElementById('cv-container').style.display='block';
-  window.scrollTo(0,document.getElementById('cv-container').offsetTop);
-}
-
-function generateLetter() {
-  const name = document.getElementById('letter-name').value;
-  const phone = document.getElementById('phone').value;
-  const email = document.getElementById('email').value;
-  const location = document.getElementById('location').value;
-  const text = document.getElementById('letter-text').value;
-
-  document.getElementById('letter-name-display').textContent = name;
-  document.getElementById('letter-phone').textContent = `📞 ${phone}`;
-  document.getElementById('letter-email').textContent = `✉️ ${email}`;
-  document.getElementById('letter-location').textContent = `📍 ${location}`;
-  document.getElementById('letter-body').textContent = text;
-  document.getElementById('letter-footer').textContent = name;
-
-  document.getElementById('letter-container').style.display='block';
-  window.scrollTo(0,document.getElementById('letter-container').offsetTop);
-}
-
-async function downloadPDF(elementId, filename){
+async function downloadSinglePDF(elementId, filename) {
   const { jsPDF } = window.jspdf;
   const element = document.getElementById(elementId);
-  const canvas = await html2canvas(element, {scale:2, scrollY: -window.scrollY});
+  const canvas = await html2canvas(element, { scale: 2 });
   const imgData = canvas.toDataURL('image/png');
-  const pdf = new jsPDF('p','mm','a4');
-
-  const margin = 10; // ترك 10 ملم كهوامش
-  const pdfWidth = pdf.internal.pageSize.getWidth() - margin*2;
-  const pdfHeight = (canvas.height * pdfWidth)/canvas.width;
-
-  pdf.addImage(imgData,'PNG', margin, margin, pdfWidth, pdfHeight);
+  const pdf = new jsPDF('p', 'mm', 'a4');
+  const pdfWidth = pdf.internal.pageSize.getWidth() - 20;
+  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  pdf.addImage(imgData, 'PNG', 10, 10, pdfWidth, pdfHeight);
   pdf.save(filename);
+}
+
+async function previewPage(elementId) {
+  const element = document.getElementById(elementId);
+  const canvas = await html2canvas(element, { scale: 1.5 });
+  const img = canvas.toDataURL('image/png');
+  document.getElementById("previewImage").src = img;
+  document.getElementById("previewContainer").style.display = "flex";
+}
+
+function closePreview() {
+  document.getElementById("previewContainer").style.display = "none";
 }
 </script>
 
