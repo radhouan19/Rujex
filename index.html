@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Numbered Resume</title>
+<title>Simple Clean Resume</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -50,7 +50,7 @@
     text-align: left;
   }
   .cv h2 {
-    font-size: 14px;
+    font-size: 16px;
     text-transform: uppercase;
     padding-bottom: 5px;
     margin-top: 20px;
@@ -86,18 +86,8 @@
     border-radius: 5px;
   }
 
-  .section-item {
-    margin-bottom: 15px;
-  }
-  .section-item-title {
-    font-weight: bold;
-    margin-bottom: 3px;
-  }
-  .section-item-details {
-    margin-left: 15px;
-    list-style-type: disc;
-    font-size: 12px;
-  }
+  ul { margin: 5px 0 10px 20px; }
+  li { font-size: 12px; margin-bottom: 3px; }
 
   @media (max-width: 700px) {
     .cv-column { flex: 1 1 100%; }
@@ -106,7 +96,7 @@
 </head>
 <body>
 
-<h1 style="text-align:center;">Professional Numbered Resume</h1>
+<h1 style="text-align:center;">Clean Resume</h1>
 
 <div class="form-container">
   <label>Full Name:</label>
@@ -119,43 +109,19 @@
   <input id="location" placeholder="New York, USA">
 
   <label>Job Experience:</label>
-  <textarea id="experience" rows="6" placeholder="Job1 Title
-- Detail 1
-- Detail 2
-
-Job2 Title
-- Detail 1
-- Detail 2"></textarea>
+  <textarea id="experience" rows="6" placeholder="Write each job detail on a new line"></textarea>
 
   <label>Education:</label>
-  <textarea id="education" rows="4" placeholder="Degree1
-- Detail 1
-- Detail 2
-
-Degree2
-- Detail 1
-- Detail 2"></textarea>
+  <textarea id="education" rows="4" placeholder="Write each education detail on a new line"></textarea>
 
   <label>Languages:</label>
-  <textarea id="languages" rows="2" placeholder="Language1
-- Level
-
-Language2
-- Level"></textarea>
+  <textarea id="languages" rows="2" placeholder="Write each language on a new line"></textarea>
 
   <label>Software:</label>
-  <textarea id="software" rows="2" placeholder="Software1
-- Level
-
-Software2
-- Level"></textarea>
+  <textarea id="software" rows="2" placeholder="Write each software on a new line"></textarea>
 
   <label>Hobbies:</label>
-  <textarea id="hobbies" rows="2" placeholder="Hobby1
-- Detail
-
-Hobby2
-- Detail"></textarea>
+  <textarea id="hobbies" rows="2" placeholder="Write each hobby on a new line"></textarea>
 
   <button onclick="generateResume()">Create Resume</button>
 </div>
@@ -168,21 +134,21 @@ Hobby2
     <div class="cv-columns">
       <div class="cv-column">
         <h2>Job Experience</h2>
-        <div id="cv-experience"></div>
+        <ul id="cv-experience"></ul>
 
         <h2>Education</h2>
-        <div id="cv-education"></div>
+        <ul id="cv-education"></ul>
       </div>
 
       <div class="cv-column">
         <h2>Languages</h2>
-        <div id="cv-languages"></div>
+        <ul id="cv-languages"></ul>
 
         <h2>Software</h2>
-        <div id="cv-software"></div>
+        <ul id="cv-software"></ul>
 
         <h2>Hobbies</h2>
-        <div id="cv-hobbies"></div>
+        <ul id="cv-hobbies"></ul>
       </div>
     </div>
   </div>
@@ -191,35 +157,8 @@ Hobby2
 </div>
 
 <script>
-function generateSection(containerId, text, prefix) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
-
-  const sections = text.split(/\n\s*\n/); // تفصل بين العناصر عبر سطر فارغ
-  sections.forEach((section, index) => {
-    const lines = section.split('\n').filter(line => line.trim() !== '');
-    if (lines.length === 0) return;
-
-    const title = document.createElement('div');
-    title.className = 'section-item-title';
-    title.textContent = `${prefix} ${index + 1}: ${lines[0]}`;
-    container.appendChild(title);
-
-    if (lines.length > 1) {
-      const ul = document.createElement('ul');
-      ul.className = 'section-item-details';
-      for (let i = 1; i < lines.length; i++) {
-        const li = document.createElement('li');
-        li.textContent = lines[i].replace(/^- /, ''); // إزالة الـ "- " إذا كتبتها
-        ul.appendChild(li);
-      }
-      container.appendChild(ul);
-    }
-
-    const wrapper = document.createElement('div');
-    wrapper.className = 'section-item';
-    container.appendChild(wrapper);
-  });
+function textToList(text) {
+  return text.split('\n').filter(line => line.trim() !== '');
 }
 
 function generateResume() {
@@ -232,11 +171,21 @@ function generateResume() {
   document.getElementById('cv-contact').innerHTML = 
     `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
 
-  generateSection('cv-experience', document.getElementById('experience').value, 'Job');
-  generateSection('cv-education', document.getElementById('education').value, 'Education');
-  generateSection('cv-languages', document.getElementById('languages').value, 'Language');
-  generateSection('cv-software', document.getElementById('software').value, 'Software');
-  generateSection('cv-hobbies', document.getElementById('hobbies').value, 'Hobby');
+  function fillList(id, text) {
+    const list = document.getElementById(id);
+    list.innerHTML = '';
+    textToList(text).forEach(line => {
+      const li = document.createElement('li');
+      li.textContent = line;
+      list.appendChild(li);
+    });
+  }
+
+  fillList('cv-experience', document.getElementById('experience').value);
+  fillList('cv-education', document.getElementById('education').value);
+  fillList('cv-languages', document.getElementById('languages').value);
+  fillList('cv-software', document.getElementById('software').value);
+  fillList('cv-hobbies', document.getElementById('hobbies').value);
 
   document.getElementById('cv-container').style.display = 'block';
   window.scrollTo(0, document.getElementById('cv-container').offsetTop);
