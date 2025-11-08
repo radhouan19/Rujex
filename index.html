@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Numbered Resume</title>
+<title>Simple Numbered Resume</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -73,35 +73,18 @@
   .cv .contact span {
     margin: 0 10px;
   }
-
-  .cv-columns {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  .cv-column {
-    flex: 1 1 48%;
-    background: #ffffff;
-    padding: 10px 15px;
-    border-radius: 5px;
-  }
-
   .section-item {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
-  .section-item-number {
+  .section-title {
     font-weight: bold;
     font-size: 14px;
     margin-bottom: 3px;
   }
-  .section-item-details {
-    margin-left: 15px;
-    list-style-type: disc;
-    font-size: 12px;
-  }
-
-  @media (max-width: 700px) {
-    .cv-column { flex: 1 1 100%; }
+  .section-details {
+    font-size: 13px;
+    margin-left: 10px;
+    white-space: pre-line; /* يحافظ على السطور الجديدة */
   }
 </style>
 </head>
@@ -147,25 +130,21 @@ Each line inside the block is a detail"></textarea>
     <h1 id="cv-name"></h1>
     <div class="contact" id="cv-contact"></div>
 
-    <div class="cv-columns">
-      <div class="cv-column">
-        <h2>Job Experience</h2>
-        <div id="cv-experience"></div>
+    <div class="section">
+      <h2>Job Experience</h2>
+      <div id="cv-experience"></div>
 
-        <h2>Education</h2>
-        <div id="cv-education"></div>
-      </div>
+      <h2>Education</h2>
+      <div id="cv-education"></div>
 
-      <div class="cv-column">
-        <h2>Languages</h2>
-        <div id="cv-languages"></div>
+      <h2>Languages</h2>
+      <div id="cv-languages"></div>
 
-        <h2>Software</h2>
-        <div id="cv-software"></div>
+      <h2>Software</h2>
+      <div id="cv-software"></div>
 
-        <h2>Hobbies</h2>
-        <div id="cv-hobbies"></div>
-      </div>
+      <h2>Hobbies</h2>
+      <div id="cv-hobbies"></div>
     </div>
   </div>
   <br>
@@ -182,20 +161,18 @@ function generateSection(containerId, text) {
     const lines = section.split('\n').filter(line => line.trim() !== '');
     if (lines.length === 0) return;
 
-    const numberDiv = document.createElement('div');
-    numberDiv.className = 'section-item-number';
-    numberDiv.textContent = (index + 1); // رقم فقط
-    container.appendChild(numberDiv);
+    // الرقم + العنوان (السطر الأول)
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'section-title';
+    titleDiv.textContent = (index + 1) + ". " + lines[0];
+    container.appendChild(titleDiv);
 
-    if (lines.length > 0) {
-      const ul = document.createElement('ul');
-      ul.className = 'section-item-details';
-      lines.forEach(line => {
-        const li = document.createElement('li');
-        li.textContent = line;
-        ul.appendChild(li);
-      });
-      container.appendChild(ul);
+    // باقي التفاصيل
+    if (lines.length > 1) {
+      const detailsDiv = document.createElement('div');
+      detailsDiv.className = 'section-details';
+      detailsDiv.textContent = lines.slice(1).join('\n');
+      container.appendChild(detailsDiv);
     }
 
     const wrapper = document.createElement('div');
