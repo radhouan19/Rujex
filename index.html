@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,9 +14,7 @@ body {
   flex-direction: column;
   align-items: center;
 }
-
 h1 { text-align:center; margin-bottom:30px; }
-
 .form-container {
   background: white;
   padding: 20px;
@@ -27,7 +24,6 @@ h1 { text-align:center; margin-bottom:30px; }
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   margin-bottom: 25px;
 }
-
 input, textarea {
   width: 100%;
   margin: 6px 0 15px;
@@ -36,7 +32,6 @@ input, textarea {
   border-radius: 6px;
   font-size: 14px;
 }
-
 button {
   background: #333;
   color: white;
@@ -48,117 +43,58 @@ button {
   margin-top: 10px;
 }
 button:hover { background: #555; }
-
 /* CV Styles */
 .cv-container, .letter-container {
   background: white;
-  width: 210mm; /* A4 width */
-  min-height: 297mm; /* A4 height */
-  display: none;
+  width: 210mm; min-height: 297mm; display: none;
   border: 1px solid #ddd;
   box-sizing: border-box;
   font-size: 12pt;
   color: #000;
 }
-
 .cv-inner, .letter-inner {
-  width: 190mm; /* margin 10mm on each side */
-  margin: 0 auto;
-  padding: 10mm;
-  box-sizing: border-box;
+  width: 190mm; margin:0 auto; padding:10mm; box-sizing:border-box;
 }
-
-/* Sections */
-.cv-section, .letter-section {
-  margin-bottom: 18px;
-}
-
+.cv-section, .letter-section { margin-bottom: 18px; }
 .cv-section h2, .letter-section h2 {
-  font-size: 14pt;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #444;
-  margin-top: 12px;
-  margin-bottom: 6px;
-  border-bottom: 1px dashed #aaa;
-  padding-bottom: 4px;
+  font-size: 14pt; font-weight: bold; text-transform: uppercase;
+  color: #444; margin-top: 12px; margin-bottom: 6px;
+  border-bottom: 1px dashed #aaa; padding-bottom: 4px;
 }
-
-.editable {
-  min-height: 60px;
-  padding: 5px;
-  border-radius: 4px;
-  font-size: 12pt;
-  background-color: #fafafa;
-  white-space: pre-wrap;
-}
-
-/* Cover Letter Header */
-.letter-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13pt;
-  line-height: 1.5;
-  padding-bottom: 15px;
-  border-bottom: 1px dashed #aaa;
-  margin-bottom: 20px;
-}
-
-.letter-left { font-size: 18pt; font-weight: bold; text-transform: uppercase; }
-.letter-right { text-align: right; font-size: 12pt; color: #555; }
-.letter p { margin: 15px 0; text-align: justify; font-size: 12pt; }
+.editable { min-height: 60px; padding: 5px; border-radius: 4px;
+ font-size: 12pt; background-color: #fafafa; white-space: pre-wrap; }
+.letter-header { display:flex; justify-content:space-between; font-size:13pt; line-height:1.5;
+  padding-bottom:15px; border-bottom:1px dashed #aaa; margin-bottom:20px;}
+.letter-left { font-size:18pt; font-weight:bold; text-transform:uppercase; }
+.letter-right { text-align:right; font-size:12pt; color:#555; }
+.letter p { margin:15px 0; text-align:justify; font-size:12pt; }
 </style>
 </head>
-<body>
-
-<h1>Professional American Resume & Cover Letter</h1>
-
-<div class="form-container">
-  <h2>CV Information</h2>
-  <label>Full Name:</label><input id="name" value="John Smith">
-  <label>Phone:</label><input id="phone" value="+1 (800) 433-7300">
-  <label>Email:</label><input id="email" value="john.smith@gmail.com">
-  <label>Location:</label><input id="location" value="New York, NY, USA">
-
-  <label>Job Experience:</label>
-  <textarea id="experience" rows="6">Digital Marketing Specialist – XYZ Company
+<body><h1>Professional American Resume & Cover Letter</h1><div class="form-container">
+<h2>CV Information</h2>
+<label>Full Name:</label><input id="name" value="John Smith">
+<label>Phone:</label><input id="phone" value="+1 (800) 433-7300">
+<label>Email:</label><input id="email" value="john.smith@gmail.com">
+<label>Location:</label><input id="location" value="New York, NY, USA">
+<label>Job Experience:</label><textarea id="experience" rows="6">Digital Marketing Specialist – XYZ Company
 Managed social media campaigns and SEO
 Software Developer – ABC Tech
 Developed internal tools</textarea>
-
-  <label>Education:</label>
-  <textarea id="education" rows="4">Master’s in Marketing – Columbia University
+<label>Education:</label><textarea id="education" rows="4">Master’s in Marketing – Columbia University
 Bachelor’s in Business Administration – NYU</textarea>
-
-  <label>Languages:</label>
-  <textarea id="languages" rows="2">English – Fluent
+<label>Languages:</label><textarea id="languages" rows="2">English – Fluent
 Spanish – Native</textarea>
+<label>Software:</label><textarea id="software" rows="2">Microsoft Office, Adobe Suite</textarea>
+<label>Hobbies:</label><textarea id="hobbies" rows="2">Reading, Sports</textarea><h2>Cover Letter</h2>
+<label>Company Name:</label><input id="letter-company" value="XYZ Company">
+<label>Position:</label><input id="letter-position" value="Marketing Assistant">
+<label>Your Motivation:</label><textarea id="letter-text" rows="10">Dear Hiring Manager,I am writing to express my interest in the Marketing Assistant position at XYZ Company.
 
-  <label>Software:</label>
-  <textarea id="software" rows="2">Microsoft Office, Adobe Suite</textarea>
+Sincerely, John Smith</textarea> <label>Closing Remark (Your Name):</label><input id="letter-name" value="John Smith">
 
-  <label>Hobbies:</label>
-  <textarea id="hobbies" rows="2">Reading, Sports</textarea>
+<button onclick="generateCV()">Create Resume</button> <button onclick="generateLetter()">Create Cover Letter</button>
 
-  <h2>Cover Letter</h2>
-  <label>Company Name:</label><input id="letter-company" value="XYZ Company">
-  <label>Position:</label><input id="letter-position" value="Marketing Assistant">
-  <label>Your Motivation:</label>
-  <textarea id="letter-text" rows="10">Dear Hiring Manager,
-
-I am writing to express my interest in the Marketing Assistant position at XYZ Company.
-
-Sincerely,
-John Smith</textarea>
-  <label>Closing Remark (Your Name):</label>
-  <input id="letter-name" value="John Smith">
-
-  <button onclick="generateCV()">Create Resume</button>
-  <button onclick="generateLetter()">Create Cover Letter</button>
-</div>
-
-<!-- CV Preview -->
-<div class="cv-container" id="cv-container">
+</div><!-- CV Preview --><div class="cv-container" id="cv-container">
   <div class="cv-inner" id="cv-content">
     <h2 style="text-align:center;" id="cv-name">John Smith</h2>
     <p style="text-align:center; margin-bottom:20px;">
@@ -166,37 +102,14 @@ John Smith</textarea>
       <span id="cv-email">✉️ john.smith@gmail.com</span> | 
       <span id="cv-location">📍 New York, NY, USA</span>
     </p>
-
-    <div class="cv-section">
-      <h2>Job Experience</h2>
-      <div class="editable" contenteditable="true" id="cv-experience"></div>
-    </div>
-
-    <div class="cv-section">
-      <h2>Education</h2>
-      <div class="editable" contenteditable="true" id="cv-education"></div>
-    </div>
-
-    <div class="cv-section">
-      <h2>Languages</h2>
-      <div class="editable" contenteditable="true" id="cv-languages"></div>
-    </div>
-
-    <div class="cv-section">
-      <h2>Software</h2>
-      <div class="editable" contenteditable="true" id="cv-software"></div>
-    </div>
-
-    <div class="cv-section">
-      <h2>Hobbies</h2>
-      <div class="editable" contenteditable="true" id="cv-hobbies"></div>
-    </div>
+    <div class="cv-section"><h2>Job Experience</h2><div class="editable" contenteditable="true" id="cv-experience"></div></div>
+    <div class="cv-section"><h2>Education</h2><div class="editable" contenteditable="true" id="cv-education"></div></div>
+    <div class="cv-section"><h2>Languages</h2><div class="editable" contenteditable="true" id="cv-languages"></div></div>
+    <div class="cv-section"><h2>Software</h2><div class="editable" contenteditable="true" id="cv-software"></div></div>
+    <div class="cv-section"><h2>Hobbies</h2><div class="editable" contenteditable="true" id="cv-hobbies"></div></div>
   </div>
   <button onclick="downloadPDF('cv-content','Resume.pdf')">⬇️ Download Resume PDF</button>
-</div>
-
-<!-- Cover Letter Preview -->
-<div class="letter-container" id="letter-container">
+</div><!-- Cover Letter Preview --><div class="letter-container" id="letter-container">
   <div class="letter-inner" id="letter-content">
     <div class="letter-header">
       <div class="letter-left" id="letter-name-display">John Smith</div>
@@ -212,48 +125,39 @@ John Smith</textarea>
     </div>
   </div>
   <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
-</div>
-
-<script>
+</div><script>
 function generateCV() {
   document.getElementById("cv-name").textContent = document.getElementById("name").value;
   document.getElementById("cv-phone").textContent = "📞 " + document.getElementById("phone").value;
   document.getElementById("cv-email").textContent = "✉️ " + document.getElementById("email").value;
   document.getElementById("cv-location").textContent = "📍 " + document.getElementById("location").value;
-
   document.getElementById("cv-experience").textContent = document.getElementById("experience").value;
   document.getElementById("cv-education").textContent = document.getElementById("education").value;
   document.getElementById("cv-languages").textContent = document.getElementById("languages").value;
   document.getElementById("cv-software").textContent = document.getElementById("software").value;
   document.getElementById("cv-hobbies").textContent = document.getElementById("hobbies").value;
-
   document.getElementById("cv-container").style.display = "block";
   window.scrollTo(0, document.getElementById("cv-container").offsetTop);
 }
-
 function generateLetter() {
   document.getElementById("letter-name-display").textContent = document.getElementById("letter-name").value;
   document.getElementById("letter-phone").textContent = "📞 " + document.getElementById("phone").value;
   document.getElementById("letter-email").textContent = "✉️ " + document.getElementById("email").value;
   document.getElementById("letter-location").textContent = "📍 " + document.getElementById("location").value;
   document.getElementById("letter-body").textContent = document.getElementById("letter-text").value;
-
   document.getElementById("letter-container").style.display = "block";
   window.scrollTo(0, document.getElementById("letter-container").offsetTop);
 }
-
 async function downloadPDF(elementId, filename) {
   const { jsPDF } = window.jspdf;
   const element = document.getElementById(elementId);
   const canvas = await html2canvas(element, { scale: 2 });
   const imgData = canvas.toDataURL('image/png');
-  const pdf = new jsPDF('p', 'mm', 'a4');
+  const pdf = new jsPDF('p','mm','a4');
   const pdfWidth = pdf.internal.pageSize.getWidth();
   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-  pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  pdf.addImage(imgData,'PNG',0,0,pdfWidth,pdfHeight);
   pdf.save(filename);
 }
-</script>
-
-</body>
+</script></body>
 </html>
