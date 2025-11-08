@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resume with Left-Aligned Titles and Indented Details</title>
+<title>Professional Resume</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -17,46 +17,49 @@
   }
   .form-container, .cv-container {
     background: white;
-    padding: 20px;
+    padding: 25px;
     width: 100%;
     max-width: 800px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     margin-bottom: 20px;
   }
   input, textarea {
     width: 100%;
-    margin: 5px 0 10px;
+    margin: 5px 0 12px;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 5px;
+    font-size: 14px;
   }
   button {
     background: #007bff;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 25px;
+    border-radius: 6px;
     cursor: pointer;
     margin-top: 10px;
+    font-size: 14px;
   }
   button:hover { background: #0056b3; }
 
   .cv {
     font-family: 'Helvetica', Arial, sans-serif;
     color: #000;
-    line-height: 1.5;
+    line-height: 1.6;
     text-align: left;
     max-width: 750px;
   }
+
   /* العناوين الرئيسية */
   .cv h2 {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: bold;          
     text-transform: uppercase;
     padding-bottom: 5px;
-    margin-top: 20px;
-    margin-bottom: 5px;
+    margin-top: 25px;
+    margin-bottom: 6px;
     letter-spacing: 1px;
     text-align: left;           
     border-bottom: 1px dotted #000;  
@@ -64,27 +67,32 @@
     margin-left: 5%;            
     direction: rtl;             
   }
+
   .cv h1 {
-    font-size: 26px;
+    font-size: 28px;
     text-transform: uppercase;
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
+
   .cv .contact {
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
   }
+
   .cv .contact span {
-    margin: 0 10px;
+    margin: 0 12px;
   }
-  .section-item { margin-bottom: 15px; }
-  /* التفاصيل بخط رقيق ومتقدمة قليلاً */
+
+  .section-item { margin-bottom: 18px; }
+
+  /* التفاصيل بخط رقيق ومتقدمة قليلاً لليمين */
   .section-title {
     font-weight: normal;         
     font-size: 14px;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
   }
   .section-details {
     font-size: 13px;
