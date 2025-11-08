@@ -44,41 +44,61 @@ button {
 }
 button:hover { background: #0056b3; }.cv, .letter { font-family: 'Roboto', sans-serif; color: #000; line-height: 1.6; text-align: left; max-width: 750px; }
 
-/* CV Styles */ .cv h2 { font-size: 17px; font-weight: bold; text-transform: uppercase; margin-top: 25px; margin-bottom: 8px; padding-bottom: 4px; text-align: left; border-bottom: 1px dotted #000; width: 95%; margin-left: 5%; direction: rtl; } .section-title { font-weight: bold; font-size: 14px; margin-left: 5%; margin-bottom: 2px; } .section-details { font-weight: normal; font-size: 13px; margin-left: 5%; margin-bottom: 8px; white-space: pre-line; } .cv h1 { font-size: 28px; text-transform: uppercase; text-align: center; margin-bottom: 8px; } .cv .contact { text-align: center; font-size: 13px; color: #333; margin-bottom: 22px; } .cv .contact span { margin: 0 12px; } .section-item { margin-bottom: 18px; }
+.cv h2 { font-size: 17px; font-weight: bold; text-transform: uppercase; margin-top: 25px; margin-bottom: 8px; padding-bottom: 4px; text-align: left; border-bottom: 1px dotted #000; width: 95%; margin-left: 5%; direction: rtl; } .section-title { font-weight: bold; font-size: 14px; margin-left: 5%; margin-bottom: 2px; } .section-details { font-weight: normal; font-size: 13px; margin-left: 5%; margin-bottom: 8px; white-space: pre-line; } .cv h1 { font-size: 28px; text-transform: uppercase; text-align: center; margin-bottom: 8px; } .cv .contact { text-align: center; font-size: 13px; color: #333; margin-bottom: 22px; } .cv .contact span { margin: 0 12px; } .section-item { margin-bottom: 18px; }
 
-/* Cover Letter Styles */ .letter-header { display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 13px; line-height: 1.4; padding-top: 20px; padding-left: 20px; padding-right: 20px; } .letter-left { font-size: 22px; font-weight: bold; display: flex; align-items: center; } .letter-right { display: flex; flex-direction: column; align-items: flex-end; } .letter-right span { margin-bottom: 5px; } .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 20px; text-align: left; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
+.letter-header { display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 13px; line-height: 1.4; padding-top: 20px; padding-left: 20px; padding-right: 20px; } .letter-left { font-size: 22px; font-weight: bold; display: flex; align-items: center; } .letter-right { display: flex; flex-direction: column; align-items: flex-end; } .letter-right span { margin-bottom: 5px; } .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 20px; text-align: left; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
 
 </head>
 <body><h1 style="text-align:center;">Professional Resume & Cover Letter</h1><div class="form-container">
   <h2>CV Information</h2>
   <label>Full Name:</label>
-  <input id="name" placeholder="John Smith">
+  <input id="name" value="John Smith">
   <label>Phone:</label>
-  <input id="phone" placeholder="1 800 433 7300">
+  <input id="phone" value="1 800 433 7300">
   <label>Email:</label>
-  <input id="email" placeholder="john.smith@gmail.com">
+  <input id="email" value="john.smith@gmail.com">
   <label>Location:</label>
-  <input id="location" placeholder="New York, USA"><label>Job Experience:</label>
+  <input id="location" value="New York, USA"><label>Job Experience:</label>
 
-  <textarea id="experience" rows="6" placeholder="Digital Marketing Specialist, XYZ Company
-..."></textarea><label>Education:</label>
+  <textarea id="experience" rows="6">Digital Marketing Specialist, XYZ Company
+Managed social media accounts and increased engagement by 35%
+Created Google Ads campaigns and optimized SEO content
 
-  <textarea id="education" rows="4" placeholder="Bachelor’s Degree in ..."></textarea><label>Languages:</label>
+Software Developer, ABC Tech
+Developed internal tools using Python and JavaScript
+Collaborated with the design team to improve UX</textarea><label>Education:</label>
 
-  <textarea id="languages" rows="2" placeholder="English - Advanced
-Spanish - Native"></textarea><label>Software:</label>
+  <textarea id="education" rows="4">Bachelor’s Degree in Business Administration, New York University
+Graduated: 2022
 
-  <textarea id="software" rows="2" placeholder="Microsoft Office, Adobe Creative Suite"></textarea><label>Hobbies:</label>
+Master’s Degree in Marketing, Columbia University
+Graduated: 2024</textarea><label>Languages:</label>
 
-  <textarea id="hobbies" rows="2" placeholder="Reading, Sports"></textarea>  <h2>Cover Letter</h2>
+  <textarea id="languages" rows="2">English
+Advanced (fluent speaking and writing)
+
+Spanish
+Native</textarea><label>Software:</label>
+
+  <textarea id="software" rows="2">Microsoft Office
+Word, Excel, PowerPoint
+
+Adobe Creative Suite
+Photoshop, Illustrator, InDesign</textarea><label>Hobbies:</label>
+
+  <textarea id="hobbies" rows="2">Reading
+Business and personal development books
+
+Sports
+Swimming, Football</textarea>  <h2>Cover Letter</h2>
   <label>Company Name:</label>
-  <input id="letter-company" placeholder="XYZ Company">
+  <input id="letter-company" value="XYZ Company">
   <label>Position:</label>
-  <input id="letter-position" placeholder="Marketing Assistant">
+  <input id="letter-position" value="Marketing Assistant">
   <label>Your Motivation:</label>
-  <textarea id="letter-text" rows="12" placeholder="Write your motivation here..."></textarea>
-  <label>Closing Remark (Your Name):</label>
-  <input id="letter-name" placeholder="John Smith"><button onclick="generateCV()">Create CV</button> <button onclick="generateLetter()">Create Cover Letter</button>
+  <textarea id="letter-text" rows="12">I am writing to express my strong interest in the Marketing Assistant position at XYZ Company. Over the past several years, I have developed a deep passion for digital marketing and brand strategy, working on multiple campaigns that have significantly increased engagement and conversions for my previous employers. My experience spans social media management, SEO optimization, and content creation. I am highly proficient in creating marketing plans, analyzing performance metrics, and adjusting strategies to meet business objectives.Beyond technical skills, I bring creativity, dedication, and a strong sense of teamwork. I thrive in collaborative environments where I can contribute innovative ideas while learning from colleagues. Joining XYZ Company represents an exciting opportunity to apply my expertise, support your marketing goals, and grow within a forward-thinking organization. I am confident that my experience and enthusiasm make me a strong candidate, and I am eager to bring value to your team through strategic and innovative contributions.</textarea> <label>Closing Remark (Your Name):</label> <input id="letter-name" value="John Smith">
+
+<button onclick="generateCV()">Create CV</button> <button onclick="generateLetter()">Create Cover Letter</button>
 
 </div><div class="cv-container" id="cv-container" style="display:none;">...</div>
 <div class="letter-container" id="letter-container" style="display:none;">...</div>
