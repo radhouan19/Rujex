@@ -3,28 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create Professional Resume</title>
+<title>Printable Resume</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
+  /* إعدادات الصفحة للطباعة */
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
   body {
     font-family: Arial, sans-serif;
     background: #f3f4f6;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 0;
   }
+
   .form-container, .cv-container {
     background: white;
     padding: 20px;
     width: 100%;
-    max-width: 750px;
+    max-width: 800px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     margin-bottom: 20px;
+    page-break-inside: avoid;
   }
-  h1 { text-align: center; }
+
   input, textarea {
     width: 100%;
     margin: 5px 0 10px;
@@ -32,6 +40,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
+
   button {
     background: #007bff;
     color: white;
@@ -39,60 +48,67 @@
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 10px;
   }
   button:hover { background: #0056b3; }
 
   /* Resume Style */
   .cv {
     font-family: 'Helvetica', Arial, sans-serif;
-    color: #222;
+    color: #000;
     line-height: 1.5;
+    text-align: left;
+    background: #fff;
+    padding: 15px;
   }
   .cv h2 {
     font-size: 14px;
     text-transform: uppercase;
-    border-bottom: 1px solid #000;
-    padding-bottom: 3px;
-    margin-top: 25px;
+    padding-bottom: 5px;
+    margin-top: 20px;
     margin-bottom: 10px;
     letter-spacing: 1px;
+    border-bottom: 1px dotted #000; /* النقاط المتقطعة أسفل العنوان */
   }
   .cv h1 {
-    font-size: 28px;
+    font-size: 26px;
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 5px;
   }
   .cv .contact {
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
     color: #333;
     margin-bottom: 20px;
   }
   .cv .contact span {
     margin: 0 10px;
   }
-  .job, .edu { margin-bottom: 15px; }
-  .job-date, .edu-date {
-    font-style: italic;
-    color: #555;
-    font-size: 13px;
+
+  .cv-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
   }
-  .job-company, .edu-diploma {
-    font-weight: bold;
-    font-size: 14px;
+  .cv-column {
+    flex: 1 1 48%;
+    background: #ffffff;
+    padding: 10px 15px;
+    border-radius: 5px;
   }
-  .job-position {
-    font-weight: bold;
-    text-decoration: underline;
-  }
+
   ul { margin: 5px 0 10px 20px; }
-  li { font-size: 13px; }
+  li { font-size: 12px; margin-bottom: 3px; }
+
+  @media (max-width: 700px) {
+    .cv-column { flex: 1 1 100%; }
+  }
 </style>
 </head>
 <body>
 
-<h1>Create Your Resume</h1>
+<h1 style="text-align:center;">Create Your Printable Resume</h1>
 
 <div class="form-container">
   <label>Full Name:</label>
@@ -105,30 +121,19 @@
   <input id="location" placeholder="New York, USA">
 
   <label>Job Experience:</label>
-  <textarea id="experience" rows="4" placeholder="Example:
-Oct. 2022 – June 2024 | New York, USA
-XYZ Company, Marketing Department
-Position: Digital Marketing Specialist
-Missions:
-- Managed social media accounts and increased engagement by 35%.
-- Created Google Ads campaigns and optimized SEO content.
-- Collaborated with the design team to produce promotional materials.
-- Analyzed campaign performance and reported KPIs monthly."></textarea>
+  <textarea id="experience" rows="6" placeholder="Each line will become a bullet point"></textarea>
 
   <label>Education:</label>
-  <textarea id="education" rows="3" placeholder="Example:
-2018 – 2022 | New York, USA
-Bachelor’s Degree in Business Administration
-New York University"></textarea>
+  <textarea id="education" rows="4" placeholder="Each line will become a bullet point"></textarea>
 
   <label>Languages:</label>
-  <input id="languages" placeholder="English: Advanced, Spanish: Native, French: Moderate">
+  <textarea id="languages" rows="2" placeholder="Each line will become a bullet point"></textarea>
 
   <label>Software:</label>
-  <input id="software" placeholder="Word, Excel, PowerPoint, etc.">
+  <textarea id="software" rows="2" placeholder="Each line will become a bullet point"></textarea>
 
   <label>Hobbies:</label>
-  <input id="hobbies" placeholder="Sports, Training, Reading, etc.">
+  <textarea id="hobbies" rows="2" placeholder="Each line will become a bullet point"></textarea>
 
   <button onclick="generateResume()">Create Resume</button>
 </div>
@@ -138,26 +143,36 @@ New York University"></textarea>
     <h1 id="cv-name"></h1>
     <div class="contact" id="cv-contact"></div>
 
-    <h2>Job Experience</h2>
-    <div id="cv-experience"></div>
+    <div class="cv-columns">
+      <div class="cv-column">
+        <h2>Job Experience</h2>
+        <ul id="cv-experience"></ul>
 
-    <h2>Education</h2>
-    <div id="cv-education"></div>
+        <h2>Education</h2>
+        <ul id="cv-education"></ul>
+      </div>
 
-    <h2>Languages</h2>
-    <div id="cv-languages"></div>
+      <div class="cv-column">
+        <h2>Languages</h2>
+        <ul id="cv-languages"></ul>
 
-    <h2>Software</h2>
-    <div id="cv-software"></div>
+        <h2>Software</h2>
+        <ul id="cv-software"></ul>
 
-    <h2>Hobbies</h2>
-    <div id="cv-hobbies"></div>
+        <h2>Hobbies</h2>
+        <ul id="cv-hobbies"></ul>
+      </div>
+    </div>
   </div>
   <br>
   <button onclick="downloadPDF()">⬇️ Download PDF</button>
 </div>
 
 <script>
+function textToList(text) {
+  return text.split('\n').filter(line => line.trim() !== '');
+}
+
 function generateResume() {
   const name = document.getElementById('name').value;
   const phone = document.getElementById('phone').value;
@@ -172,11 +187,22 @@ function generateResume() {
   document.getElementById('cv-name').textContent = name;
   document.getElementById('cv-contact').innerHTML = 
     `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
-  document.getElementById('cv-experience').innerText = experience;
-  document.getElementById('cv-education').innerText = education;
-  document.getElementById('cv-languages').innerText = languages;
-  document.getElementById('cv-software').innerText = software;
-  document.getElementById('cv-hobbies').innerText = hobbies;
+
+  function fillList(id, text) {
+    const list = document.getElementById(id);
+    list.innerHTML = '';
+    textToList(text).forEach(line => {
+      const li = document.createElement('li');
+      li.textContent = line;
+      list.appendChild(li);
+    });
+  }
+
+  fillList('cv-experience', experience);
+  fillList('cv-education', education);
+  fillList('cv-languages', languages);
+  fillList('cv-software', software);
+  fillList('cv-hobbies', hobbies);
 
   document.getElementById('cv-container').style.display = 'block';
   window.scrollTo(0, document.getElementById('cv-container').offsetTop);
@@ -186,11 +212,9 @@ async function downloadPDF() {
   const { jsPDF } = window.jspdf;
   const cvElement = document.getElementById("cv-content");
 
-  // تحويل السيرة إلى صورة باستخدام html2canvas
   const canvas = await html2canvas(cvElement, { scale: 2 });
   const imgData = canvas.toDataURL("image/png");
 
-  // إنشاء ملف PDF
   const pdf = new jsPDF("p", "mm", "a4");
   const pdfWidth = pdf.internal.pageSize.getWidth();
   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
