@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Numbered Resume with RTL Dotted Lines</title>
+<title>Resume with Left-Aligned Titles and RTL Dotted Lines</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -49,19 +49,19 @@
     text-align: left;
     max-width: 750px;
   }
+  /* العناوين الخشنة */
   .cv h2 {
     font-size: 16px;
+    font-weight: bold;          /* خط خشين */
     text-transform: uppercase;
     padding-bottom: 5px;
     margin-top: 20px;
     margin-bottom: 10px;
     letter-spacing: 1px;
-    text-align: center;           /* تبقى في المنتصف */
-    border-bottom: 1px dotted #000;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    direction: rtl;               /* النقاط تبدأ من اليمين */
+    text-align: left;           /* العنوان على اليسار */
+    border-bottom: 1px dotted #000;  
+    width: 100%;                /* النقاط ممتدة بعرض العنصر */
+    direction: rtl;             /* النقاط من اليمين لليسار */
   }
   .cv h1 {
     font-size: 26px;
@@ -79,13 +79,23 @@
     margin: 0 10px;
   }
   .section-item { margin-bottom: 15px; }
-  .section-title { font-weight: bold; font-size: 14px; margin-bottom: 3px; }
-  .section-details { font-size: 13px; margin-left: 30px; margin-right: 30px; white-space: pre-line; }
+  /* التفاصيل بخط رقيق */
+  .section-title {
+    font-weight: normal;         /* خط رقيق */
+    font-size: 14px;
+    margin-bottom: 3px;
+  }
+  .section-details {
+    font-size: 13px;
+    margin-left: 30px;
+    margin-right: 30px;
+    white-space: pre-line;
+  }
 </style>
 </head>
 <body>
 
-<h1 style="text-align:center;">Numbered Resume</h1>
+<h1 style="text-align:center;">Professional Resume</h1>
 
 <div class="form-container">
   <label>Full Name:</label>
@@ -174,12 +184,12 @@ function generateSection(containerId, text) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
   const sections = text.split(/\n\s*\n/);
-  sections.forEach((section, index) => {
+  sections.forEach((section) => {
     const lines = section.split('\n').filter(line => line.trim() !== '');
     if (lines.length === 0) return;
     const titleDiv = document.createElement('div');
     titleDiv.className = 'section-title';
-    titleDiv.textContent = (index + 1) + ". " + lines[0];
+    titleDiv.textContent = lines[0];   // العنوان بدون رقم
     container.appendChild(titleDiv);
     if (lines.length > 1) {
       const detailsDiv = document.createElement('div');
