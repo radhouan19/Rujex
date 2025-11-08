@@ -42,7 +42,7 @@ button {
   margin-top: 10px;
   font-size: 14px;
 }
-button:hover { background: #0056b3; }.letter-header { display: flex; justify-content: space-between; font-size: 13px; line-height: 1.4; padding: 40px 20px 20px 20px; /* اسمح له أن يكون بعيد عن الأعلى قليلاً */ } .letter-left { font-size: 22px; font-weight: bold; display: flex; align-items: center; } .letter-right { display: flex; flex-direction: column; align-items: flex-end; } .letter-right span { margin-bottom: 5px; } .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 20px; text-align: left; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
+button:hover { background: #0056b3; }.letter-header { display: flex; justify-content: space-between; font-size: 13px; line-height: 1.4; padding: 40px 20px 20px 20px; } .letter-left { font-size: 22px; font-weight: bold; display: flex; align-items: center; } .letter-right { display: flex; flex-direction: column; align-items: flex-end; } .letter-right span { margin-bottom: 5px; } .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 20px; text-align: left; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
 
 </head>
 <body><h1 style="text-align:center;">Professional Resume & Cover Letter</h1><div class="form-container">
@@ -106,12 +106,40 @@ Swimming, Football</textarea>  <h2>Cover Letter</h2>
         <span id="letter-location">📍 New York, USA</span>
       </div>
     </div>
-    <p id="letter-body">I am writing to express my strong interest in the Marketing Assistant position at XYZ Company. Over the past several years, I have developed a deep passion for digital marketing and brand strategy, working on multiple campaigns that have significantly increased engagement and conversions for my previous employers. My experience spans social media management, SEO optimization, and content creation. I am highly proficient in creating marketing plans, analyzing performance metrics, and adjusting strategies to meet business objectives.Beyond technical skills, I bring creativity, dedication, and a strong sense of teamwork. I thrive in collaborative environments where I can contribute innovative ideas while learning from colleagues. Joining XYZ Company represents an exciting opportunity to apply my expertise, support your marketing goals, and grow within a forward-thinking organization. I am confident that my experience and enthusiasm make me a strong candidate, and I am eager to bring value to your team through strategic and innovative contributions.</p> <p id="letter-footer">John Smith</p>
-
+    <p id="letter-body"></p>
+    <p id="letter-footer"></p>
   </div>
   <br>
   <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
 </div><script>
-/* JS unchanged */
+function generateLetter() {
+  const name = document.getElementById('letter-name').value;
+  const phone = document.getElementById('phone').value;
+  const email = document.getElementById('email').value;
+  const location = document.getElementById('location').value;
+  const text = document.getElementById('letter-text').value;
+
+  document.getElementById('letter-name-display').textContent = name;
+  document.getElementById('letter-phone').textContent = `📞 ${phone}`;
+  document.getElementById('letter-email').textContent = `✉️ ${email}`;
+  document.getElementById('letter-location').textContent = `📍 ${location}`;
+  document.getElementById('letter-body').textContent = text;
+  document.getElementById('letter-footer').textContent = name;
+
+  document.getElementById('letter-container').style.display = 'block';
+  window.scrollTo(0, document.getElementById('letter-container').offsetTop);
+}
+
+async function downloadPDF(elementId, filename) {
+  const { jsPDF } = window.jspdf;
+  const element = document.getElementById(elementId);
+  const canvas = await html2canvas(element, { scale: 2 });
+  const imgData = canvas.toDataURL('image/png');
+  const pdf = new jsPDF('p', 'mm', 'a4');
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  pdf.save(filename);
+}
 </script></body>
 </html>
