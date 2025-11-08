@@ -46,7 +46,7 @@ button:hover { background: #0056b3; }.cv, .letter { font-family: 'Roboto', sans-
 
 /* CV Styles (unchanged) */ .cv h2 { font-size: 17px; font-weight: bold; text-transform: uppercase; margin-top: 25px; margin-bottom: 8px; padding-bottom: 4px; text-align: left; border-bottom: 1px dotted #000; width: 95%; margin-left: 5%; direction: rtl; } .section-title { font-weight: bold; font-size: 14px; margin-left: 5%; margin-bottom: 2px; } .section-details { font-weight: normal; font-size: 13px; margin-left: 5%; margin-bottom: 8px; white-space: pre-line; } .cv h1 { font-size: 28px; text-transform: uppercase; text-align: center; margin-bottom: 8px; } .cv .contact { text-align: center; font-size: 13px; color: #333; margin-bottom: 22px; } .cv .contact span { margin: 0 12px; } .section-item { margin-bottom: 18px; }
 
-/* Cover Letter Styles - Professional American */ .letter-header { text-align: left; margin-bottom: 25px; font-size: 13px; line-height: 1.4; padding-left: 20px; } .letter-header p { margin: 2px 0; } .letter-header span.icon { margin-right: 5px; } .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 20px; text-align: left; padding-left: 20px; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
+/* Cover Letter Styles - Professional American */ .letter-header { text-align: left; margin-bottom: 25px; font-size: 13px; line-height: 1.4; padding-left: 20px; } .letter-header p { margin: 2px 0; } .letter-header span.icon { margin-right: 5px; } .letter h1 { text-align: right; font-size: 24pt; font-weight: 700; margin-bottom: 15px; } .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 20px; text-align: left; padding-left: 20px; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
 
 </head>
 <body><h1 style="text-align:center;">Professional Resume & Cover Letter</h1><div class="form-container">
@@ -125,6 +125,7 @@ Swimming, Football</textarea>  <h2>Cover Letter</h2>
   <button onclick="downloadPDF('cv-content','Resume.pdf')">⬇️ Download CV PDF</button>
 </div><div class="letter-container" id="letter-container" style="display:none;">
   <div class="letter" id="letter-content">
+    <h1 id="letter-name-display"></h1>
     <div class="letter-header" id="letter-header"></div>
     <p id="letter-body"></p>
     <p id="letter-footer"></p>
@@ -181,7 +182,8 @@ function generateLetter() {
   const location = document.getElementById('location').value;
   const bodyText = document.getElementById('letter-text').value;
 
-  document.getElementById('letter-header').innerHTML = `<p>📞 ${phone}</p><p>✉️ ${email}</p><p>${location}</p><p>${name}</p>`;
+  document.getElementById('letter-name-display').textContent = name;
+  document.getElementById('letter-header').innerHTML = `<p>📞 ${phone}</p><p>✉️ ${email}</p><p>📍 ${location}</p>`;
   document.getElementById('letter-body').textContent = bodyText;
   document.getElementById('letter-footer').textContent = `Sincerely,\n${name}`;
 
