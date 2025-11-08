@@ -3,57 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>American Resume Template</title>
+<title>Create Professional Resume</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   body {
     font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
+    background: #f3f4f6;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
   }
-  h1 { color: #333; margin-bottom: 20px; }
-  .form-container, .resume-container {
-    background: #fff;
+  .form-container, .cv-container {
+    background: white;
     padding: 20px;
-    margin: 10px 0;
     width: 100%;
-    max-width: 700px;
+    max-width: 750px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
   }
-  input, textarea, select {
+  h1 { text-align: center; }
+  input, textarea {
     width: 100%;
+    margin: 5px 0 10px;
     padding: 10px;
-    margin: 8px 0;
-    border-radius: 4px;
     border: 1px solid #ccc;
+    border-radius: 4px;
   }
   button {
-    background-color: #007bff;
+    background: #007bff;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
   }
-  button:hover { background-color: #0056b3; }
-  .resume-container h2 {
+  button:hover { background: #0056b3; }
+
+  /* Resume Style */
+  .cv {
+    font-family: 'Helvetica', Arial, sans-serif;
+    color: #222;
+    line-height: 1.5;
+  }
+  .cv h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #000;
+    padding-bottom: 3px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+  .cv h1 {
+    font-size: 28px;
+    text-transform: uppercase;
     text-align: center;
-    font-size: 24px;
     margin-bottom: 5px;
   }
-  .resume-container p { margin: 4px 0; }
-  .section-title {
-    font-weight: bold;
-    margin-top: 15px;
-    border-bottom: 1px solid #333;
-    padding-bottom: 3px;
+  .cv .contact {
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
   }
-  hr { border: 1px solid #007bff; margin: 10px 0; }
+  .cv .contact span {
+    margin: 0 10px;
+  }
+  .job, .edu { margin-bottom: 15px; }
+  .job-date, .edu-date {
+    font-style: italic;
+    color: #555;
+    font-size: 13px;
+  }
+  .job-company, .edu-diploma {
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .job-position {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  ul { margin: 5px 0 10px 20px; }
+  li { font-size: 13px; }
 </style>
 </head>
 <body>
@@ -62,119 +95,102 @@
 
 <div class="form-container">
   <label>Full Name:</label>
-  <input type="text" id="name" placeholder="John Doe">
-  <label>Email:</label>
-  <input type="email" id="email" placeholder="johndoe@example.com">
+  <input id="name" placeholder="John Smith">
   <label>Phone:</label>
-  <input type="text" id="phone" placeholder="+1 234 567 890">
-  <label>Address:</label>
-  <input type="text" id="address" placeholder="123 Main St, City, USA">
-  
-  <label>Languages (Select proficiency):</label>
-  <select id="language">
-    <option value="Beginner">English - Beginner</option>
-    <option value="Intermediate">English - Intermediate</option>
-    <option value="Advanced">English - Advanced</option>
-    <option value="Fluent">English - Fluent</option>
-    <option value="Native">English - Native</option>
-  </select>
+  <input id="phone" placeholder="1 800 433 7300">
+  <label>Email:</label>
+  <input id="email" placeholder="john.smith@gmail.com">
+  <label>Location:</label>
+  <input id="location" placeholder="New York, USA">
 
-  <label>Professional Summary:</label>
-  <textarea id="summary" rows="3" placeholder="Professional summary here..."></textarea>
-  <label>Work Experience:</label>
-  <textarea id="experience" rows="4" placeholder="Work experience here..."></textarea>
+  <label>Job Experience (HTML format or plain text):</label>
+  <textarea id="experience" rows="4" placeholder="Example:
+Oct. – June 20XX | City, Country
+NAME OF THE COMPANY, Sector
+Job occupied xxxxxxxxxxx
+Missions:
+- Xxxxx
+- Xxxxx
+- Xxxxx"></textarea>
+
   <label>Education:</label>
-  <textarea id="education" rows="3" placeholder="Education here..."></textarea>
+  <textarea id="education" rows="3" placeholder="Example:
+Years | City, Country
+Diploma xxxxxxxxxxxxxxxxx
+University or school"></textarea>
+
+  <label>Languages:</label>
+  <input id="languages" placeholder="English: Advanced, Spanish: Native, French: Moderate">
+
+  <label>Software:</label>
+  <input id="software" placeholder="Word, Excel, PowerPoint, etc.">
+
+  <label>Hobbies:</label>
+  <input id="hobbies" placeholder="Sports, Training, Reading, etc.">
+
   <button onclick="generateResume()">Create Resume</button>
 </div>
 
-<div class="resume-container" id="resume" style="display:none;">
-  <h2 id="res-name"></h2>
-  <p id="res-contact"></p>
-  <p id="res-languages"></p>
-  <hr>
-  <div>
-    <div class="section-title">Professional Summary</div>
-    <p id="res-summary"></p>
+<div class="cv-container" id="cv-container" style="display:none;">
+  <div class="cv" id="cv-content">
+    <h1 id="cv-name"></h1>
+    <div class="contact" id="cv-contact"></div>
+
+    <h2>Job Experience</h2>
+    <div id="cv-experience"></div>
+
+    <h2>Education</h2>
+    <div id="cv-education"></div>
+
+    <h2>Languages</h2>
+    <div id="cv-languages"></div>
+
+    <h2>Software</h2>
+    <div id="cv-software"></div>
+
+    <h2>Hobbies</h2>
+    <div id="cv-hobbies"></div>
   </div>
-  <div>
-    <div class="section-title">Work Experience</div>
-    <p id="res-experience"></p>
-  </div>
-  <div>
-    <div class="section-title">Education</div>
-    <p id="res-education"></p>
-  </div>
+  <br>
   <button onclick="downloadPDF()">Download PDF</button>
 </div>
 
 <script>
 function generateResume() {
   const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
   const phone = document.getElementById('phone').value;
-  const address = document.getElementById('address').value;
-  const language = document.getElementById('language').value;
-  const summary = document.getElementById('summary').value;
+  const email = document.getElementById('email').value;
+  const location = document.getElementById('location').value;
   const experience = document.getElementById('experience').value;
   const education = document.getElementById('education').value;
+  const languages = document.getElementById('languages').value;
+  const software = document.getElementById('software').value;
+  const hobbies = document.getElementById('hobbies').value;
 
-  document.getElementById('res-name').textContent = name;
-  document.getElementById('res-contact').textContent = `${email} | ${phone} | ${address}`;
-  document.getElementById('res-languages').textContent = `Languages: ${language}`;
-  document.getElementById('res-summary').textContent = summary;
-  document.getElementById('res-experience').textContent = experience;
-  document.getElementById('res-education').textContent = education;
+  document.getElementById('cv-name').textContent = name;
+  document.getElementById('cv-contact').innerHTML = 
+    `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
+  document.getElementById('cv-experience').innerText = experience;
+  document.getElementById('cv-education').innerText = education;
+  document.getElementById('cv-languages').innerText = languages;
+  document.getElementById('cv-software').innerText = software;
+  document.getElementById('cv-hobbies').innerText = hobbies;
 
-  document.getElementById('resume').style.display = 'block';
-  window.scrollTo(0, document.getElementById('resume').offsetTop);
+  document.getElementById('cv-container').style.display = 'block';
+  window.scrollTo(0, document.getElementById('cv-container').offsetTop);
 }
 
 function downloadPDF() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  const name = document.getElementById('res-name').textContent;
-  const contact = document.getElementById('res-contact').textContent;
-  const languages = document.getElementById('res-languages').textContent;
-  const summary = document.getElementById('res-summary').textContent;
-  const experience = document.getElementById('res-experience').textContent;
-  const education = document.getElementById('res-education').textContent;
-
-  let y = 20;
-  doc.setFontSize(20);
-  doc.text(name, 105, y, {align: 'center'});
-  y += 10;
-  doc.setFontSize(12);
-  doc.text(contact, 105, y, {align: 'center'});
-  y += 7;
-  doc.text(languages, 105, y, {align: 'center'});
-  y += 10;
-  doc.setLineWidth(0.8);
-  doc.line(20, y, 190, y); // horizontal line
-  y += 10;
-
-  doc.setFontSize(14);
-  doc.text('Professional Summary', 20, y);
-  y += 7;
-  doc.setFontSize(12);
-  doc.text(summary, 20, y);
-  y += 20;
-
-  doc.setFontSize(14);
-  doc.text('Work Experience', 20, y);
-  y += 7;
-  doc.setFontSize(12);
-  doc.text(experience, 20, y);
-  y += 20;
-
-  doc.setFontSize(14);
-  doc.text('Education', 20, y);
-  y += 7;
-  doc.setFontSize(12);
-  doc.text(education, 20, y);
-
-  doc.save('Resume.pdf');
+  const doc = new jsPDF('p', 'mm', 'a4');
+  doc.html(document.querySelector("#cv-content"), {
+    callback: function (pdf) {
+      pdf.save("Resume.pdf");
+    },
+    margin: [10, 10, 10, 10],
+    autoPaging: 'text',
+    html2canvas: { scale: 0.25 }
+  });
 }
 </script>
 
