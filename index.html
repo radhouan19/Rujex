@@ -6,7 +6,6 @@
 <title>Professional Resume & Cover Letter</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
 <style>
 body {
   font-family: Arial, sans-serif;
@@ -69,26 +68,23 @@ button:hover { background: #555; }
   flex-direction: column;
 }
 
-.cv-section h3 {
+.cv-section h2 {
   font-size: 14pt;
   font-weight: bold;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   border-bottom: 1px dashed #aaa;
   padding-bottom: 4px;
-  display: flex;
-  align-items: center;
 }
 
-.cv-section h3 span {
-  margin-right: 8px; /* المسافة بين الرمز والعنوان */
-}
-
-.cv-section p {
-  margin-left: 0;
-  margin-bottom: 10px;
-  white-space: pre-line;
-  text-align: left;
+.cv-section .editable {
+  min-height: 80px; /* مساحة الكتابة */
+  border: 1px solid #eee;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12pt;
+  background-color: #fafafa;
+  white-space: pre-wrap;
 }
 
 .letter-header {
@@ -110,57 +106,52 @@ button:hover { background: #555; }
 <h1>Professional Resume & Cover Letter</h1>
 
 <div class="form-container">
-  <h2>Resume Information</h2>
+  <h2>CV Information</h2>
   <label>Full Name:</label><input id="name" value="John Smith">
   <label>Phone:</label><input id="phone" value="+1 (800) 433-7300">
   <label>Email:</label><input id="email" value="john.smith@gmail.com">
   <label>Location:</label><input id="location" value="New York, NY, USA">
 
-  <label>Professional Summary:</label>
-  <textarea id="summary" rows="4">Highly motivated marketing professional with over 5 years of experience in digital marketing, brand strategy, and content creation.</textarea>
-
-  <label>Experience:</label>
-  <textarea id="experience" rows="6">Digital Marketing Specialist – XYZ Company (2021–Present)
-• Increased social media engagement by 35%
-• Managed Google Ads campaigns and optimized SEO
-
-Marketing Assistant – ABC Corp (2018–2021)
-• Developed promotional materials
-• Supported cross-channel marketing strategies</textarea>
+  <label>Job Experience:</label>
+  <textarea id="experience" rows="6">Digital Marketing Specialist – XYZ Company
+Managed social media campaigns and SEO
+Software Developer – ABC Tech
+Developed internal tools</textarea>
 
   <label>Education:</label>
-  <textarea id="education" rows="4">Master’s Degree in Marketing – Columbia University (2024)
-Bachelor’s Degree in Business Administration – NYU (2022)</textarea>
-
-  <label>Skills:</label>
-  <textarea id="skills" rows="3">Digital Strategy, SEO/SEM, Google Analytics, Social Media Management, Adobe Suite</textarea>
+  <textarea id="education" rows="4">Master’s in Marketing – Columbia University
+Bachelor’s in Business Administration – NYU</textarea>
 
   <label>Languages:</label>
   <textarea id="languages" rows="2">English – Fluent
 Spanish – Native</textarea>
 
+  <label>Software:</label>
+  <textarea id="software" rows="2">Microsoft Office, Adobe Suite</textarea>
+
+  <label>Hobbies:</label>
+  <textarea id="hobbies" rows="2">Reading, Sports</textarea>
+
   <h2>Cover Letter</h2>
   <label>Company Name:</label><input id="letter-company" value="XYZ Company">
   <label>Position:</label><input id="letter-position" value="Marketing Assistant">
-  <label>Letter Text:</label>
+  <label>Your Motivation:</label>
   <textarea id="letter-text" rows="10">Dear Hiring Manager,
 
-I am writing to express my strong interest in the Marketing Assistant position at XYZ Company. With a Master’s in Marketing and 5+ years of hands-on experience in digital strategy, I am confident in my ability to contribute effectively to your team.
-
-Throughout my career, I have developed and executed campaigns that improved engagement and ROI while aligning with brand objectives. I thrive in fast-paced, creative environments where teamwork and innovation drive success.
-
-I would be honored to bring my skills and passion for marketing to your organization.
+I am writing to express my interest in the Marketing Assistant position at XYZ Company.
 
 Sincerely,
 John Smith</textarea>
+  <label>Closing Remark (Your Name):</label>
+  <input id="letter-name" value="John Smith">
 
   <button onclick="generateCV()">Create CV</button>
-  <button onclick="generateLetter()">Create Letter</button>
+  <button onclick="generateLetter()">Create Cover Letter</button>
 </div>
 
 <div class="cv-container" id="cv-container">
   <div id="cv-content">
-    <h2 style="text-align:center; margin-bottom:20px;" id="cv-name">John Smith</h2>
+    <h2 style="text-align:center;" id="cv-name">John Smith</h2>
     <p style="text-align:center; margin-bottom:20px;">
       <span id="cv-phone">📞 +1 (800) 433-7300</span> | 
       <span id="cv-email">✉️ john.smith@gmail.com</span> | 
@@ -168,28 +159,28 @@ John Smith</textarea>
     </p>
 
     <div class="cv-section">
-      <h3><span>✨</span>Professional Summary</h3>
-      <p id="cv-summary"></p>
+      <h2>Job Experience</h2>
+      <div class="editable" id="cv-experience"></div>
     </div>
 
     <div class="cv-section">
-      <h3><span>🏢</span>Experience</h3>
-      <p id="cv-experience"></p>
+      <h2>Education</h2>
+      <div class="editable" id="cv-education"></div>
     </div>
 
     <div class="cv-section">
-      <h3><span>🎓</span>Education</h3>
-      <p id="cv-education"></p>
+      <h2>Languages</h2>
+      <div class="editable" id="cv-languages"></div>
     </div>
 
     <div class="cv-section">
-      <h3><span>💡</span>Skills</h3>
-      <p id="cv-skills"></p>
+      <h2>Software</h2>
+      <div class="editable" id="cv-software"></div>
     </div>
 
     <div class="cv-section">
-      <h3><span>🌐</span>Languages</h3>
-      <p id="cv-languages"></p>
+      <h2>Hobbies</h2>
+      <div class="editable" id="cv-hobbies"></div>
     </div>
   </div>
   <button onclick="downloadPDF('cv-content','Resume.pdf')">⬇️ Download Resume PDF</button>
@@ -209,7 +200,7 @@ John Smith</textarea>
       <p id="letter-body"></p>
     </div>
   </div>
-  <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Letter PDF</button>
+  <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
 </div>
 
 <script>
@@ -218,21 +209,24 @@ function generateCV() {
   document.getElementById("cv-phone").textContent = "📞 " + document.getElementById("phone").value;
   document.getElementById("cv-email").textContent = "✉️ " + document.getElementById("email").value;
   document.getElementById("cv-location").textContent = "📍 " + document.getElementById("location").value;
-  document.getElementById("cv-summary").textContent = document.getElementById("summary").value;
+
   document.getElementById("cv-experience").textContent = document.getElementById("experience").value;
   document.getElementById("cv-education").textContent = document.getElementById("education").value;
-  document.getElementById("cv-skills").textContent = document.getElementById("skills").value;
   document.getElementById("cv-languages").textContent = document.getElementById("languages").value;
+  document.getElementById("cv-software").textContent = document.getElementById("software").value;
+  document.getElementById("cv-hobbies").textContent = document.getElementById("hobbies").value;
+
   document.getElementById("cv-container").style.display = "block";
   window.scrollTo(0, document.getElementById("cv-container").offsetTop);
 }
 
 function generateLetter() {
-  document.getElementById("letter-name-display").textContent = document.getElementById("name").value;
+  document.getElementById("letter-name-display").textContent = document.getElementById("letter-name").value;
   document.getElementById("letter-phone").textContent = "📞 " + document.getElementById("phone").value;
   document.getElementById("letter-email").textContent = "✉️ " + document.getElementById("email").value;
   document.getElementById("letter-location").textContent = "📍 " + document.getElementById("location").value;
   document.getElementById("letter-body").textContent = document.getElementById("letter-text").value;
+
   document.getElementById("letter-container").style.display = "block";
   window.scrollTo(0, document.getElementById("letter-container").offsetTop);
 }
