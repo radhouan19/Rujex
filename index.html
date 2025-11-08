@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resume with Photo</title>
+<title>Resume Original + With Photo</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -16,6 +16,7 @@ body {
   padding: 20px;
 }
 h1 { text-align: center; margin-bottom: 20px; }
+
 .form-container, .cv-container {
   background: white;
   padding: 25px;
@@ -25,6 +26,7 @@ h1 { text-align: center; margin-bottom: 20px; }
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   margin-bottom: 20px;
 }
+
 input, textarea {
   width: 100%;
   margin: 5px 0 12px;
@@ -33,6 +35,7 @@ input, textarea {
   border-radius: 5px;
   font-size: 14px;
 }
+
 button {
   background: #007bff;
   color: white;
@@ -45,64 +48,77 @@ button {
 }
 button:hover { background: #0056b3; }
 
-/* النسخ المشتركة */
+/* Resume Styling */
 .cv {
   font-family: 'Helvetica', Arial, sans-serif;
   color: #000;
-  line-height: 1.6;
-  text-align: left;
+  line-height: 1.5;
   max-width: 800px;
   margin-bottom: 30px;
 }
-.cv h2 {
-  font-size: 17px;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-top: 25px;
-  margin-bottom: 8px;
-  padding-bottom: 4px;
-  text-align: left;
-  border-bottom: 1px dotted #000;
-  width: 95%;
-  margin-left: 5%;
-}
-.section-title {
-  font-weight: bold;
-  font-size: 14px;
-  margin-left: 5%;      
-  margin-bottom: 2px;
-}
-.section-details {
-  font-weight: normal;
-  font-size: 13px;
-  margin-left: 5%;
-  margin-bottom: 8px;
-  white-space: pre-line;
-}
-.cv h1 {
+
+/* Header for Original (No Photo) */
+.cv-original h1 {
   font-size: 28px;
   text-transform: uppercase;
   text-align: center;
   margin-bottom: 8px;
 }
-.cv .contact {
+.cv-original .contact {
   text-align: center;
   font-size: 13px;
   color: #333;
   margin-bottom: 22px;
 }
-.cv .contact span {
-  margin: 0 12px;
+
+/* Header with Photo */
+.cv-photo-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }
-.section-item { margin-bottom: 18px; }
-/* الصورة الشخصية */
-.profile-pic {
+.cv-photo-header .profile-pic {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  display: block;
-  margin: 0 auto 12px auto;
+  margin-left: 20px;
+}
+.cv-photo-header .header-info {
+  flex: 1;
+}
+.cv-photo-header .header-info h1 {
+  font-size: 28px;
+  margin: 0;
+  text-transform: uppercase;
+}
+.cv-photo-header .header-info .contact {
+  font-size: 13px;
+  color: #333;
+  margin-top: 5px;
+}
+
+/* Section Titles */
+.cv h2 {
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 1px dotted #000;
+  padding-bottom: 4px;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+.section-details {
+  font-weight: normal;
+  font-size: 13px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  white-space: pre-line;
 }
 </style>
 </head>
@@ -160,22 +176,27 @@ Swimming, Football</textarea>
   <label>Upload Photo (for 2nd resume):</label>
   <input type="file" id="photo" accept="image/*">
 
-  <button onclick="generateResumes()">Generate Resumes</button>
+  <button onclick="generateResumes()">Generate Both Resumes</button>
 </div>
 
 <!-- Original Resume -->
 <div class="cv-container" id="cv-container-original" style="display:none;">
-  <div class="cv cv1" id="cv-original">
+  <div class="cv cv-original" id="cv-original">
     <h1 id="cv1-name"></h1>
     <div class="contact" id="cv1-contact"></div>
+
     <h2>Job Experience</h2>
     <div id="cv1-experience"></div>
+
     <h2>Education</h2>
     <div id="cv1-education"></div>
+
     <h2>Languages</h2>
     <div id="cv1-languages"></div>
+
     <h2>Software</h2>
     <div id="cv1-software"></div>
+
     <h2>Hobbies</h2>
     <div id="cv1-hobbies"></div>
   </div>
@@ -186,17 +207,26 @@ Swimming, Football</textarea>
 <!-- Resume with Photo -->
 <div class="cv-container" id="cv-container-photo" style="display:none;">
   <div class="cv cv-photo" id="cv-photo-content">
-    <img id="cv-photo-img" class="profile-pic" src="" style="display:none;">
-    <h1 id="cv-photo-name"></h1>
-    <div class="contact" id="cv-photo-contact"></div>
+    <div class="cv-photo-header">
+      <div class="header-info">
+        <h1 id="cv-photo-name"></h1>
+        <div class="contact" id="cv-photo-contact"></div>
+      </div>
+      <img id="cv-photo-img" class="profile-pic" style="display:none;">
+    </div>
+
     <h2>Job Experience</h2>
     <div id="cv-photo-experience"></div>
+
     <h2>Education</h2>
     <div id="cv-photo-education"></div>
+
     <h2>Languages</h2>
     <div id="cv-photo-languages"></div>
+
     <h2>Software</h2>
     <div id="cv-photo-software"></div>
+
     <h2>Hobbies</h2>
     <div id="cv-photo-hobbies"></div>
   </div>
@@ -204,83 +234,74 @@ Swimming, Football</textarea>
 </div>
 
 <script>
-// توليد النسختين
 function generateSection(containerId, text) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
-  const sections = text.split(/\n\s*\n/);
-  sections.forEach(section => {
-    const lines = section.split('\n').filter(l => l.trim() !== '');
-    if (lines.length === 0) return;
-    const titleDiv = document.createElement('div');
-    titleDiv.className = 'section-title';
-    titleDiv.textContent = lines[0];
+  const container=document.getElementById(containerId);
+  container.innerHTML='';
+  const sections=text.split(/\n\s*\n/);
+  sections.forEach(section=>{
+    const lines=section.split('\n').filter(l=>l.trim()!=='');
+    if(lines.length===0) return;
+    const titleDiv=document.createElement('div');
+    titleDiv.className='section-title';
+    titleDiv.textContent=lines[0];
     container.appendChild(titleDiv);
-    if (lines.length > 1) {
-      const detailsDiv = document.createElement('div');
-      detailsDiv.className = 'section-details';
-      detailsDiv.textContent = lines.slice(1).join('\n');
+    if(lines.length>1){
+      const detailsDiv=document.createElement('div');
+      detailsDiv.className='section-details';
+      detailsDiv.textContent=lines.slice(1).join('\n');
       container.appendChild(detailsDiv);
     }
-    const wrapper = document.createElement('div');
-    wrapper.className = 'section-item';
-    container.appendChild(wrapper);
   });
 }
 
-function generateResumes() {
-  const name = document.getElementById('name').value;
-  const phone = document.getElementById('phone').value;
-  const email = document.getElementById('email').value;
-  const location = document.getElementById('location').value;
+function generateResumes(){
+  const name=document.getElementById('name').value;
+  const phone=document.getElementById('phone').value;
+  const email=document.getElementById('email').value;
+  const location=document.getElementById('location').value;
+  const photoInput=document.getElementById('photo');
+  const photoImg=document.getElementById('cv-photo-img');
 
   // Original
-  document.getElementById('cv1-name').textContent = name;
-  document.getElementById('cv1-contact').innerHTML =
-    `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
+  document.getElementById('cv1-name').textContent=name;
+  document.getElementById('cv1-contact').innerHTML=`📞 ${phone} | ✉️ ${email} | 📍 ${location}`;
   generateSection('cv1-experience', document.getElementById('experience').value);
   generateSection('cv1-education', document.getElementById('education').value);
   generateSection('cv1-languages', document.getElementById('languages').value);
   generateSection('cv1-software', document.getElementById('software').value);
   generateSection('cv1-hobbies', document.getElementById('hobbies').value);
-  document.getElementById('cv-container-original').style.display = 'block';
+  document.getElementById('cv-container-original').style.display='block';
 
   // With Photo
-  const photoInput = document.getElementById('photo');
-  const photoImg = document.getElementById('cv-photo-img');
-  if (photoInput.files && photoInput.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      photoImg.src = e.target.result;
-      photoImg.style.display = 'block';
+  if(photoInput.files && photoInput.files[0]){
+    const reader=new FileReader();
+    reader.onload=function(e){
+      photoImg.src=e.target.result;
+      photoImg.style.display='block';
     }
     reader.readAsDataURL(photoInput.files[0]);
-  } else {
-    photoImg.style.display = 'none';
-  }
+  } else photoImg.style.display='none';
 
-  document.getElementById('cv-photo-name').textContent = name;
-  document.getElementById('cv-photo-contact').innerHTML =
-    `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
+  document.getElementById('cv-photo-name').textContent=name;
+  document.getElementById('cv-photo-contact').innerHTML=`📞 ${phone} | ✉️ ${email} | 📍 ${location}`;
   generateSection('cv-photo-experience', document.getElementById('experience').value);
   generateSection('cv-photo-education', document.getElementById('education').value);
   generateSection('cv-photo-languages', document.getElementById('languages').value);
   generateSection('cv-photo-software', document.getElementById('software').value);
   generateSection('cv-photo-hobbies', document.getElementById('hobbies').value);
-  document.getElementById('cv-container-photo').style.display = 'block';
+  document.getElementById('cv-container-photo').style.display='block';
   window.scrollTo(0, document.getElementById('cv-container-original').offsetTop);
 }
 
-// تحميل PDF
-async function downloadPDF(cvId) {
+async function downloadPDF(cvId){
   const { jsPDF } = window.jspdf;
-  const cvElement = document.getElementById(cvId);
-  const canvas = await html2canvas(cvElement, { scale: 2 });
-  const imgData = canvas.toDataURL("image/png");
-  const pdf = new jsPDF("p", "mm", "a4");
-  const pdfWidth = pdf.internal.pageSize.getWidth();
-  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+  const cvElement=document.getElementById(cvId);
+  const canvas=await html2canvas(cvElement,{scale:2});
+  const imgData=canvas.toDataURL("image/png");
+  const pdf=new jsPDF("p","mm","a4");
+  const pdfWidth=pdf.internal.pageSize.getWidth();
+  const pdfHeight=(canvas.height*pdfWidth)/canvas.width;
+  pdf.addImage(imgData,"PNG",0,0,pdfWidth,pdfHeight);
   pdf.save(`${cvId}.pdf`);
 }
 </script>
