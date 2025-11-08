@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Resume & Cover Letter</title>
+<title>CV & Cover Letter</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -15,6 +15,7 @@ body {
   align-items: center;
   padding: 20px;
 }
+
 .form-container, .cv-container, .letter-container {
   background: white;
   padding: 25px;
@@ -24,6 +25,7 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   margin-bottom: 20px;
 }
+
 input, textarea {
   width: 100%;
   margin: 5px 0 12px;
@@ -32,6 +34,7 @@ input, textarea {
   border-radius: 5px;
   font-size: 14px;
 }
+
 button {
   background: #007bff;
   color: white;
@@ -42,9 +45,10 @@ button {
   margin-top: 10px;
   font-size: 14px;
 }
+
 button:hover { background: #0056b3; }
 
-/* CV Styles (Same as صمبل) */
+/* CV Styles - EXACTLY AS SAMPLE */
 .cv {
   font-family: 'Helvetica', Arial, sans-serif;
   color: #000;
@@ -52,40 +56,59 @@ button:hover { background: #0056b3; }
   text-align: left;
   max-width: 750px;
 }
+
 .cv h1 { font-size: 28px; text-transform: uppercase; text-align: center; margin-bottom: 8px; }
+
 .cv .contact { text-align: center; font-size: 13px; color: #333; margin-bottom: 22px; }
+
 .cv .contact span { margin: 0 12px; }
+
 .section-title { font-weight: bold; font-size: 14px; margin-left: 5%; margin-bottom: 2px; }
+
 .section-details { font-weight: normal; font-size: 13px; margin-left: 5%; margin-bottom: 8px; white-space: pre-line; }
+
 .section-item { margin-bottom: 18px; }
 
 /* Cover Letter Styles */
+.letter-container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 30px;
+  display: none;
+}
+
 .letter-header {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
-  line-height: 1.4;
   padding: 40px 20px 20px 20px;
 }
+
 .letter-left {
   font-size: 22px;
   font-weight: bold;
-  display: flex;
-  align-items: center;
 }
+
 .letter-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  font-size: 13px;
 }
+
 .letter-right span { margin-bottom: 5px; }
-.letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; }
-.letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; display: none; }
+
+.letter p {
+  margin-bottom: 18px;
+  text-align: justify;
+  font-size: 12.5pt;
+  padding-left: 20px;
+  padding-right: 20px;
+}
 </style>
 </head>
 <body>
 
-<h1 style="text-align:center;">Professional Resume & Cover Letter</h1>
+<h1 style="text-align:center;">CV & Cover Letter</h1>
 
 <div class="form-container">
   <h2>CV Information</h2>
@@ -151,7 +174,7 @@ Beyond technical skills, I bring creativity, dedication, and a strong sense of t
   <button onclick="generateLetter()">Create Cover Letter</button>
 </div>
 
-<!-- CV Container (Same as صمبل) -->
+<!-- CV Container - EXACTLY AS SAMPLE -->
 <div class="cv-container" id="cv-container" style="display:none;">
   <div class="cv" id="cv-content">
     <h1 id="cv-name"></h1>
@@ -197,56 +220,45 @@ Beyond technical skills, I bring creativity, dedication, and a strong sense of t
 </div>
 
 <script>
-// CV Generate Function (Same as صمبل)
 function generateCV() {
   const name = document.getElementById('name').value;
   const phone = document.getElementById('phone').value;
   const email = document.getElementById('email').value;
   const location = document.getElementById('location').value;
 
-  const experience = document.getElementById('experience').value;
-  const education = document.getElementById('education').value;
-  const languages = document.getElementById('languages').value;
-  const software = document.getElementById('software').value;
-  const hobbies = document.getElementById('hobbies').value;
-
   document.getElementById('cv-name').textContent = name;
   document.getElementById('cv-contact').innerHTML = `<span>📞 ${phone}</span> | <span>✉️ ${email}</span> | <span>📍 ${location}</span>`;
 
-  function fillSection(id, text) {
-    const container = document.getElementById(id);
+  const sections = ['experience','education','languages','software','hobbies'];
+
+  sections.forEach(id => {
+    const container = document.getElementById('cv-' + id);
     container.innerHTML = '';
-    const sections = text.split(/\n\s*\n/);
-    sections.forEach(section => {
-      const lines = section.split('\n').filter(line => line.trim() !== '');
-      if (lines.length === 0) return;
-      const titleDiv = document.createElement('div');
-      titleDiv.className = 'section-title';
-      titleDiv.textContent = lines[0];
-      container.appendChild(titleDiv);
-      if (lines.length > 1) {
-        const detailsDiv = document.createElement('div');
-        detailsDiv.className = 'section-details';
-        detailsDiv.textContent = lines.slice(1).join('\n');
-        container.appendChild(detailsDiv);
+    const text = document.getElementById(id).value;
+    const blocks = text.split(/\n\s*\n/);
+    blocks.forEach(block => {
+      const lines = block.split('\n').filter(l => l.trim() !== '');
+      if(lines.length === 0) return;
+      const title = document.createElement('div');
+      title.className = 'section-title';
+      title.textContent = lines[0];
+      container.appendChild(title);
+      if(lines.length>1){
+        const details = document.createElement('div');
+        details.className = 'section-details';
+        details.textContent = lines.slice(1).join('\n');
+        container.appendChild(details);
       }
       const wrapper = document.createElement('div');
       wrapper.className = 'section-item';
       container.appendChild(wrapper);
     });
-  }
+  });
 
-  fillSection('cv-experience', experience);
-  fillSection('cv-education', education);
-  fillSection('cv-languages', languages);
-  fillSection('cv-software', software);
-  fillSection('cv-hobbies', hobbies);
-
-  document.getElementById('cv-container').style.display = 'block';
-  window.scrollTo(0, document.getElementById('cv-container').offsetTop);
+  document.getElementById('cv-container').style.display='block';
+  window.scrollTo(0,document.getElementById('cv-container').offsetTop);
 }
 
-// Cover Letter Generate Function
 function generateLetter() {
   const name = document.getElementById('letter-name').value;
   const phone = document.getElementById('phone').value;
@@ -261,20 +273,19 @@ function generateLetter() {
   document.getElementById('letter-body').textContent = text;
   document.getElementById('letter-footer').textContent = name;
 
-  document.getElementById('letter-container').style.display = 'block';
-  window.scrollTo(0, document.getElementById('letter-container').offsetTop);
+  document.getElementById('letter-container').style.display='block';
+  window.scrollTo(0,document.getElementById('letter-container').offsetTop);
 }
 
-// Download PDF Function
-async function downloadPDF(elementId, filename) {
+async function downloadPDF(elementId, filename){
   const { jsPDF } = window.jspdf;
   const element = document.getElementById(elementId);
-  const canvas = await html2canvas(element, { scale: 2 });
+  const canvas = await html2canvas(element,{scale:2});
   const imgData = canvas.toDataURL('image/png');
-  const pdf = new jsPDF('p', 'mm', 'a4');
+  const pdf = new jsPDF('p','mm','a4');
   const pdfWidth = pdf.internal.pageSize.getWidth();
-  const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-  pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  const pdfHeight = (canvas.height * pdfWidth)/canvas.width;
+  pdf.addImage(imgData,'PNG',0,0,pdfWidth,pdfHeight);
   pdf.save(filename);
 }
 </script>
