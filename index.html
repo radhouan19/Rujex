@@ -64,23 +64,24 @@ button:hover { background: #555; }
   color: #000;
 }
 
-.cv-section {
-  margin-bottom: 20px;
+.cv-section, .letter-section {
+  margin-bottom: 18px;
 }
 
-.cv-section h2 {
+.cv-section h2, .letter-section h2 {
   font-size: 14pt;
   font-weight: bold;
   text-transform: uppercase;
   color: #444;
-  margin-bottom: 8px;
+  margin-top: 12px;
+  margin-bottom: 6px;
   border-bottom: 1px dashed #aaa;
   padding-bottom: 4px;
 }
 
-.cv-section .editable {
+.editable {
   min-height: 60px; 
-  padding: 8px;
+  padding: 5px;
   border-radius: 4px;
   font-size: 12pt;
   background-color: #fafafa;
@@ -163,27 +164,27 @@ John Smith</textarea>
 
     <div class="cv-section">
       <h2>Job Experience</h2>
-      <div class="editable" id="cv-experience"></div>
+      <div class="editable" contenteditable="true" id="cv-experience"></div>
     </div>
 
     <div class="cv-section">
       <h2>Education</h2>
-      <div class="editable" id="cv-education"></div>
+      <div class="editable" contenteditable="true" id="cv-education"></div>
     </div>
 
     <div class="cv-section">
       <h2>Languages</h2>
-      <div class="editable" id="cv-languages"></div>
+      <div class="editable" contenteditable="true" id="cv-languages"></div>
     </div>
 
     <div class="cv-section">
       <h2>Software</h2>
-      <div class="editable" id="cv-software"></div>
+      <div class="editable" contenteditable="true" id="cv-software"></div>
     </div>
 
     <div class="cv-section">
       <h2>Hobbies</h2>
-      <div class="editable" id="cv-hobbies"></div>
+      <div class="editable" contenteditable="true" id="cv-hobbies"></div>
     </div>
   </div>
   <button onclick="downloadPDF('cv-content','Resume.pdf')">⬇️ Download Resume PDF</button>
@@ -201,7 +202,10 @@ John Smith</textarea>
       </div>
     </div>
     <div class="letter">
-      <p id="letter-body"></p>
+      <div class="letter-section">
+        <h2>Motivation</h2>
+        <div class="editable" contenteditable="true" id="letter-body"></div>
+      </div>
     </div>
   </div>
   <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
