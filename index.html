@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Resume & Cover Letter</title>
+<title>Professional American Resume & Cover Letter</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -49,6 +49,7 @@ button {
 }
 button:hover { background: #555; }
 
+/* CV Styles */
 .cv-container, .letter-container {
   background: white;
   width: 210mm; /* A4 width */
@@ -60,26 +61,25 @@ button:hover { background: #555; }
   line-height: 1.6;
   display: none;
   box-sizing: border-box;
+  color: #000;
 }
 
 .cv-section {
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 25px;
 }
 
 .cv-section h2 {
   font-size: 14pt;
   font-weight: bold;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  color: #444;
+  margin-bottom: 8px;
   border-bottom: 1px dashed #aaa;
   padding-bottom: 4px;
 }
 
 .cv-section .editable {
-  min-height: 80px; /* مساحة الكتابة */
-  border: 1px solid #eee;
+  min-height: 80px; 
   padding: 8px;
   border-radius: 4px;
   font-size: 12pt;
@@ -87,23 +87,25 @@ button:hover { background: #555; }
   white-space: pre-wrap;
 }
 
+/* Cover Letter Styles */
 .letter-header {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: 13pt;
   line-height: 1.5;
   padding-bottom: 15px;
   border-bottom: 1px dashed #aaa;
+  margin-bottom: 20px;
 }
 
-.letter-left { font-size: 20px; font-weight: bold; text-transform: uppercase; }
-.letter-right { text-align: right; }
+.letter-left { font-size: 18pt; font-weight: bold; text-transform: uppercase; }
+.letter-right { text-align: right; font-size: 12pt; color: #555; }
 .letter p { margin: 15px 0; text-align: justify; font-size: 12pt; }
 </style>
 </head>
 <body>
 
-<h1>Professional Resume & Cover Letter</h1>
+<h1>Professional American Resume & Cover Letter</h1>
 
 <div class="form-container">
   <h2>CV Information</h2>
@@ -145,10 +147,11 @@ John Smith</textarea>
   <label>Closing Remark (Your Name):</label>
   <input id="letter-name" value="John Smith">
 
-  <button onclick="generateCV()">Create CV</button>
+  <button onclick="generateCV()">Create Resume</button>
   <button onclick="generateLetter()">Create Cover Letter</button>
 </div>
 
+<!-- CV Preview -->
 <div class="cv-container" id="cv-container">
   <div id="cv-content">
     <h2 style="text-align:center;" id="cv-name">John Smith</h2>
@@ -186,6 +189,7 @@ John Smith</textarea>
   <button onclick="downloadPDF('cv-content','Resume.pdf')">⬇️ Download Resume PDF</button>
 </div>
 
+<!-- Cover Letter Preview -->
 <div class="letter-container" id="letter-container">
   <div id="letter-content">
     <div class="letter-header">
