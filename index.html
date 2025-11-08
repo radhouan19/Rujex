@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
   background: #f3f4f6;
   display: flex;
   flex-direction: column;
@@ -45,14 +45,14 @@ button {
 }
 button:hover { background: #0056b3; }
 
-.bold-black { font-weight: 700; color:#000; margin-bottom:3px; }
-.cv-inner, .letter-inner { padding: 10mm; }
-.cv-section, .letter-section { margin-bottom: 15px; }
-.editable { outline:none; margin-left:10px; }
-hr { border-top:1px dashed #aaa; margin:8px 0; }
-h2 { font-size: 16pt; margin-bottom:5px; }
+.bold-black { font-weight: 700; color:#000; margin-bottom:5px; }
+.cv-inner, .letter-inner { padding:10mm; }
+.cv-section, .letter-section { margin-bottom:20px; }
+.editable { outline:none; margin-left:5px; white-space: pre-line; }
+hr { border-top:1px dashed #aaa; margin:10px 0; }
+h2 { font-size: 16pt; margin-bottom:8px; }
 
-.letter-header { display:flex; justify-content:space-between; font-size:13px; line-height:1.4; margin-bottom:15px; }
+.letter-header { display:flex; justify-content:space-between; font-size:13px; line-height:1.4; margin-bottom:20px; }
 .letter-left { font-size:22px; font-weight:bold; }
 .letter-right { display:flex; flex-direction:column; align-items:flex-end; }
 .letter-right span { margin-bottom:5px; }
@@ -75,7 +75,7 @@ h2 { font-size: 16pt; margin-bottom:5px; }
   <input id="location" value="New York, NY, USA">
 
   <label>Job Experience:</label>
-  <textarea id="experience" rows="6">Digital Marketing Specialist
+  <textarea id="experience" rows="10">Digital Marketing Specialist
 From: Jan 2022 To: Dec 2023
 XYZ Company – New York, NY, USA
 Managed social media campaigns and increased engagement by 35%
@@ -94,7 +94,7 @@ Led a team of 8 in developing new product features
 Analyzed market trends and customer feedback to guide roadmap</textarea>
 
   <label>Education:</label>
-  <textarea id="education" rows="4">Master’s Degree
+  <textarea id="education" rows="6">Master’s Degree
 Marketing
 Graduated: 2024 – Columbia University, New York, NY, USA
 
