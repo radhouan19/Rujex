@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Resume & Letter of Motivation</title>
+<title>Professional Resume & Cover Letter</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -44,12 +44,12 @@ button {
 }
 button:hover { background: #0056b3; }.cv, .letter { font-family: 'Roboto', sans-serif; color: #000; line-height: 1.6; text-align: left; max-width: 750px; }
 
-/* CV Styles */ .cv h2 { font-size: 17px; font-weight: bold; text-transform: uppercase; margin-top: 25px; margin-bottom: 8px; padding-bottom: 4px; text-align: left; border-bottom: 1px dotted #000; width: 95%; margin-left: 5%; direction: rtl; } .section-title { font-weight: bold; font-size: 14px; margin-left: 5%; margin-bottom: 2px; } .section-details { font-weight: normal; font-size: 13px; margin-left: 5%; margin-bottom: 8px; white-space: pre-line; } .cv h1 { font-size: 28px; text-transform: uppercase; text-align: center; margin-bottom: 8px; } .cv .contact { text-align: center; font-size: 13px; color: #333; margin-bottom: 22px; } .cv .contact span { margin: 0 12px; } .section-item { margin-bottom: 18px; }
+/* CV Styles (unchanged) */ .cv h2 { font-size: 17px; font-weight: bold; text-transform: uppercase; margin-top: 25px; margin-bottom: 8px; padding-bottom: 4px; text-align: left; border-bottom: 1px dotted #000; width: 95%; margin-left: 5%; direction: rtl; } .section-title { font-weight: bold; font-size: 14px; margin-left: 5%; margin-bottom: 2px; } .section-details { font-weight: normal; font-size: 13px; margin-left: 5%; margin-bottom: 8px; white-space: pre-line; } .cv h1 { font-size: 28px; text-transform: uppercase; text-align: center; margin-bottom: 8px; } .cv .contact { text-align: center; font-size: 13px; color: #333; margin-bottom: 22px; } .cv .contact span { margin: 0 12px; } .section-item { margin-bottom: 18px; }
 
-/* Letter Styles */ .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 15px; } .letter p { margin-bottom: 15px; text-align: justify; } </style>
+/* Cover Letter Styles - Professional American */ .letter-header { text-align: right; margin-bottom: 25px; font-size: 13px; line-height: 1.4; } .letter-header p { margin: 2px 0; } .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 20px; text-align: left; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
 
 </head>
-<body><h1 style="text-align:center;">Professional Resume & Letter of Motivation</h1><div class="form-container">
+<body><h1 style="text-align:center;">Professional Resume & Cover Letter</h1><div class="form-container">
   <h2>CV Information</h2>
   <label>Full Name:</label>
   <input id="name" value="John Smith">
@@ -90,15 +90,15 @@ Photoshop, Illustrator, InDesign</textarea><label>Hobbies:</label>
 Business and personal development books
 
 Sports
-Swimming, Football</textarea>  <h2>Letter of Motivation</h2>
+Swimming, Football</textarea>  <h2>Cover Letter</h2>
   <label>Company Name:</label>
   <input id="letter-company" value="XYZ Company">
   <label>Position:</label>
   <input id="letter-position" value="Marketing Assistant">
   <label>Your Motivation:</label>
-  <textarea id="letter-text" rows="6">I am writing to express my interest in the Marketing Assistant position at XYZ Company. With a strong background in digital marketing and a passion for creative campaigns, I am excited about the opportunity to contribute to your team.</textarea>
-  <label>Closing Remark:</label>
-  <input id="letter-name" value="John Smith"><button onclick="generateCV()">Create CV</button> <button onclick="generateLetter()">Create Letter of Motivation</button>
+  <textarea id="letter-text" rows="12">I am writing to express my strong interest in the Marketing Assistant position at XYZ Company. Over the past several years, I have developed a deep passion for digital marketing and brand strategy, working on multiple campaigns that have significantly increased engagement and conversions for my previous employers. My experience spans social media management, SEO optimization, and content creation. I am highly proficient in creating marketing plans, analyzing performance metrics, and adjusting strategies to meet business objectives.Beyond technical skills, I bring creativity, dedication, and a strong sense of teamwork. I thrive in collaborative environments where I can contribute innovative ideas while learning from colleagues. Joining XYZ Company represents an exciting opportunity to apply my expertise, support your marketing goals, and grow within a forward-thinking organization. I am confident that my experience and enthusiasm make me a strong candidate, and I am eager to bring value to your team through strategic and innovative contributions.</textarea> <label>Closing Remark (Your Name):</label> <input id="letter-name" value="John Smith">
+
+<button onclick="generateCV()">Create CV</button> <button onclick="generateLetter()">Create Cover Letter</button>
 
 </div><div class="cv-container" id="cv-container" style="display:none;">
   <div class="cv" id="cv-content">
@@ -125,12 +125,12 @@ Swimming, Football</textarea>  <h2>Letter of Motivation</h2>
   <button onclick="downloadPDF('cv-content','Resume.pdf')">⬇️ Download CV PDF</button>
 </div><div class="letter-container" id="letter-container" style="display:none;">
   <div class="letter" id="letter-content">
-    <p id="letter-header"></p>
+    <div class="letter-header" id="letter-header"></div>
     <p id="letter-body"></p>
     <p id="letter-footer"></p>
   </div>
   <br>
-  <button onclick="downloadPDF('letter-content','Letter_of_Motivation.pdf')">⬇️ Download Letter PDF</button>
+  <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
 </div><script>
 function generateSection(containerId, text) {
   const container = document.getElementById(containerId);
@@ -175,12 +175,12 @@ function generateCV() {
 }
 
 function generateLetter() {
-  const company = document.getElementById('letter-company').value;
-  const position = document.getElementById('letter-position').value;
-  const bodyText = document.getElementById('letter-text').value;
   const name = document.getElementById('letter-name').value;
+  const email = document.getElementById('email').value;
+  const location = document.getElementById('location').value;
+  const bodyText = document.getElementById('letter-text').value;
 
-  document.getElementById('letter-header').textContent = `Dear Hiring Manager at ${company},`;
+  document.getElementById('letter-header').innerHTML = `<p>${name}</p><p>${email}</p><p>${location}</p>`;
   document.getElementById('letter-body').textContent = bodyText;
   document.getElementById('letter-footer').textContent = `Sincerely,\n${name}`;
 
