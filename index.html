@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resume Original + With Photo</title>
+<title>Professional Resume - Enhanced</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   background: #f3f4f6;
   display: flex;
   flex-direction: column;
@@ -48,33 +48,23 @@ button {
 }
 button:hover { background: #0056b3; }
 
-/* Resume Styling */
+/* CV Styling */
 .cv {
   font-family: 'Helvetica', Arial, sans-serif;
-  color: #000;
+  color: #222;
   line-height: 1.5;
   max-width: 800px;
   margin-bottom: 30px;
+  padding: 20px;
+  border-radius: 8px;
+  background: #fff;
 }
 
-/* Header for Original (No Photo) */
-.cv-original h1 {
-  font-size: 28px;
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 8px;
-}
-.cv-original .contact {
-  text-align: center;
-  font-size: 13px;
-  color: #333;
-  margin-bottom: 22px;
-}
-
-/* Header with Photo */
+/* Header with Photo on Right */
 .cv-photo-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 20px;
 }
 .cv-photo-header .profile-pic {
@@ -86,6 +76,7 @@ button:hover { background: #0056b3; }
 }
 .cv-photo-header .header-info {
   flex: 1;
+  margin-right: 20px;
 }
 .cv-photo-header .header-info h1 {
   font-size: 28px;
@@ -94,7 +85,7 @@ button:hover { background: #0056b3; }
 }
 .cv-photo-header .header-info .contact {
   font-size: 13px;
-  color: #333;
+  color: #555;
   margin-top: 5px;
 }
 
@@ -103,10 +94,12 @@ button:hover { background: #0056b3; }
   font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
-  border-bottom: 1px dotted #000;
+  border-bottom: 2px solid #007bff;
   padding-bottom: 4px;
   margin-top: 20px;
   margin-bottom: 8px;
+  background: #f0f4ff;
+  padding-left: 5px;
 }
 .section-title {
   font-weight: bold;
@@ -116,7 +109,7 @@ button:hover { background: #0056b3; }
 .section-details {
   font-weight: normal;
   font-size: 13px;
-  margin-left: 10px;
+  margin-left: 15px;
   margin-bottom: 10px;
   white-space: pre-line;
 }
@@ -124,7 +117,7 @@ button:hover { background: #0056b3; }
 </head>
 <body>
 
-<h1>Resume Generator</h1>
+<h1>Professional Resume - Enhanced</h1>
 
 <div class="form-container">
   <label>Full Name:</label>
@@ -173,68 +166,42 @@ Business and personal development books
 Sports
 Swimming, Football</textarea>
 
-  <label>Upload Photo (for 2nd resume):</label>
+  <label>Upload Photo:</label>
   <input type="file" id="photo" accept="image/*">
 
-  <button onclick="generateResumes()">Generate Both Resumes</button>
+  <button onclick="generateResumeEnhanced()">Generate Enhanced Resume</button>
 </div>
 
-<!-- Original Resume -->
-<div class="cv-container" id="cv-container-original" style="display:none;">
-  <div class="cv cv-original" id="cv-original">
-    <h1 id="cv1-name"></h1>
-    <div class="contact" id="cv1-contact"></div>
-
-    <h2>Job Experience</h2>
-    <div id="cv1-experience"></div>
-
-    <h2>Education</h2>
-    <div id="cv1-education"></div>
-
-    <h2>Languages</h2>
-    <div id="cv1-languages"></div>
-
-    <h2>Software</h2>
-    <div id="cv1-software"></div>
-
-    <h2>Hobbies</h2>
-    <div id="cv1-hobbies"></div>
-  </div>
-  <br>
-  <button onclick="downloadPDF('cv-original')">⬇️ Download Original PDF</button>
-</div>
-
-<!-- Resume with Photo -->
-<div class="cv-container" id="cv-container-photo" style="display:none;">
-  <div class="cv cv-photo" id="cv-photo-content">
+<div class="cv-container" id="cv-container-enhanced" style="display:none;">
+  <div class="cv cv-photo" id="cv-enhanced">
     <div class="cv-photo-header">
       <div class="header-info">
-        <h1 id="cv-photo-name"></h1>
-        <div class="contact" id="cv-photo-contact"></div>
+        <h1 id="cv-enhanced-name"></h1>
+        <div class="contact" id="cv-enhanced-contact"></div>
       </div>
-      <img id="cv-photo-img" class="profile-pic" style="display:none;">
+      <img id="cv-enhanced-img" class="profile-pic" style="display:none;">
     </div>
 
     <h2>Job Experience</h2>
-    <div id="cv-photo-experience"></div>
+    <div id="cv-enhanced-experience"></div>
 
     <h2>Education</h2>
-    <div id="cv-photo-education"></div>
+    <div id="cv-enhanced-education"></div>
 
     <h2>Languages</h2>
-    <div id="cv-photo-languages"></div>
+    <div id="cv-enhanced-languages"></div>
 
     <h2>Software</h2>
-    <div id="cv-photo-software"></div>
+    <div id="cv-enhanced-software"></div>
 
     <h2>Hobbies</h2>
-    <div id="cv-photo-hobbies"></div>
+    <div id="cv-enhanced-hobbies"></div>
   </div>
-  <button onclick="downloadPDF('cv-photo-content')">⬇️ Download PDF with Photo</button>
+  <button onclick="downloadPDF('cv-enhanced')">⬇️ Download Enhanced PDF</button>
 </div>
 
 <script>
-function generateSection(containerId, text) {
+function generateSection(containerId, text){
   const container=document.getElementById(containerId);
   container.innerHTML='';
   const sections=text.split(/\n\s*\n/);
@@ -254,25 +221,23 @@ function generateSection(containerId, text) {
   });
 }
 
-function generateResumes(){
+function generateResumeEnhanced(){
   const name=document.getElementById('name').value;
   const phone=document.getElementById('phone').value;
   const email=document.getElementById('email').value;
   const location=document.getElementById('location').value;
   const photoInput=document.getElementById('photo');
-  const photoImg=document.getElementById('cv-photo-img');
+  const photoImg=document.getElementById('cv-enhanced-img');
 
-  // Original
-  document.getElementById('cv1-name').textContent=name;
-  document.getElementById('cv1-contact').innerHTML=`📞 ${phone} | ✉️ ${email} | 📍 ${location}`;
-  generateSection('cv1-experience', document.getElementById('experience').value);
-  generateSection('cv1-education', document.getElementById('education').value);
-  generateSection('cv1-languages', document.getElementById('languages').value);
-  generateSection('cv1-software', document.getElementById('software').value);
-  generateSection('cv1-hobbies', document.getElementById('hobbies').value);
-  document.getElementById('cv-container-original').style.display='block';
+  document.getElementById('cv-enhanced-name').textContent=name;
+  document.getElementById('cv-enhanced-contact').innerHTML=`📞 ${phone} | ✉️ ${email} | 📍 ${location}`;
 
-  // With Photo
+  generateSection('cv-enhanced-experience', document.getElementById('experience').value);
+  generateSection('cv-enhanced-education', document.getElementById('education').value);
+  generateSection('cv-enhanced-languages', document.getElementById('languages').value);
+  generateSection('cv-enhanced-software', document.getElementById('software').value);
+  generateSection('cv-enhanced-hobbies', document.getElementById('hobbies').value);
+
   if(photoInput.files && photoInput.files[0]){
     const reader=new FileReader();
     reader.onload=function(e){
@@ -282,15 +247,8 @@ function generateResumes(){
     reader.readAsDataURL(photoInput.files[0]);
   } else photoImg.style.display='none';
 
-  document.getElementById('cv-photo-name').textContent=name;
-  document.getElementById('cv-photo-contact').innerHTML=`📞 ${phone} | ✉️ ${email} | 📍 ${location}`;
-  generateSection('cv-photo-experience', document.getElementById('experience').value);
-  generateSection('cv-photo-education', document.getElementById('education').value);
-  generateSection('cv-photo-languages', document.getElementById('languages').value);
-  generateSection('cv-photo-software', document.getElementById('software').value);
-  generateSection('cv-photo-hobbies', document.getElementById('hobbies').value);
-  document.getElementById('cv-container-photo').style.display='block';
-  window.scrollTo(0, document.getElementById('cv-container-original').offsetTop);
+  document.getElementById('cv-container-enhanced').style.display='block';
+  window.scrollTo(0, document.getElementById('cv-container-enhanced').offsetTop);
 }
 
 async function downloadPDF(cvId){
