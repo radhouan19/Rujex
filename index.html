@@ -16,7 +16,6 @@ body {
   align-items: center;
   padding: 20px;
 }
-
 .form-container, .cv-container, .letter-container {
   background: white;
   padding: 30px;
@@ -26,7 +25,6 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   margin-bottom: 20px;
 }
-
 input, textarea {
   width: 100%;
   margin: 5px 0 12px;
@@ -35,7 +33,6 @@ input, textarea {
   border-radius: 5px;
   font-size: 14px;
 }
-
 button {
   background: #007bff;
   color: white;
@@ -48,10 +45,10 @@ button {
 }
 button:hover { background: #0056b3; }
 
-.bold-black { font-weight: 700; color:#000; }
+.bold-black { font-weight: 700; color:#000; margin-bottom:3px; }
 .cv-inner, .letter-inner { padding: 10mm; }
 .cv-section, .letter-section { margin-bottom: 15px; }
-.editable { outline:none; }
+.editable { outline:none; margin-left:10px; }
 hr { border-top:1px dashed #aaa; margin:8px 0; }
 h2 { font-size: 16pt; margin-bottom:5px; }
 
@@ -212,6 +209,7 @@ function populateSection(id, text) {
     container.appendChild(title);
     if(lines.length>1){
       const detail = document.createElement('div');
+      detail.className='editable';
       detail.textContent = lines.slice(1).join('\n');
       container.appendChild(detail);
     }
