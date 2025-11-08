@@ -17,11 +17,7 @@ body {
   align-items: center;
 }
 
-h1 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 30px;
-}
+h1 { text-align:center; margin-bottom:30px; }
 
 .form-container {
   background: white;
@@ -56,30 +52,40 @@ button:hover { background: #555; }
 
 .cv-container, .letter-container {
   background: white;
-  width: 100%;
-  max-width: 800px;
-  padding: 40px 60px;
-  border-radius: 10px;
+  width: 210mm; /* A4 width */
+  min-height: 297mm; /* A4 height */
+  padding: 25mm;   /* A4 margins */
+  border-radius: 0;
   border: 1px solid #ddd;
   font-size: 12pt;
   line-height: 1.6;
   display: none;
+  box-sizing: border-box;
 }
 
 .cv-section {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .cv-section h3 {
-  font-size: 13pt;
+  font-size: 14pt;
   font-weight: bold;
-  margin-bottom: 10px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
   border-bottom: 1px dashed #aaa;
   padding-bottom: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.cv-section h3 span {
+  margin-right: 8px; /* المسافة بين الرمز والعنوان */
 }
 
 .cv-section p {
-  margin-left: 10px;
+  margin-left: 0;
   margin-bottom: 10px;
   white-space: pre-line;
   text-align: left;
@@ -90,10 +96,11 @@ button:hover { background: #555; }
   justify-content: space-between;
   font-size: 13px;
   line-height: 1.5;
-  padding-bottom: 20px;
+  padding-bottom: 15px;
   border-bottom: 1px dashed #aaa;
 }
-.letter-left { font-size: 20px; font-weight: bold; }
+
+.letter-left { font-size: 20px; font-weight: bold; text-transform: uppercase; }
 .letter-right { text-align: right; }
 .letter p { margin: 15px 0; text-align: justify; font-size: 12pt; }
 </style>
@@ -104,14 +111,10 @@ button:hover { background: #555; }
 
 <div class="form-container">
   <h2>Resume Information</h2>
-  <label>Full Name:</label>
-  <input id="name" value="John Smith">
-  <label>Phone:</label>
-  <input id="phone" value="+1 (800) 433-7300">
-  <label>Email:</label>
-  <input id="email" value="john.smith@gmail.com">
-  <label>Location:</label>
-  <input id="location" value="New York, NY, USA">
+  <label>Full Name:</label><input id="name" value="John Smith">
+  <label>Phone:</label><input id="phone" value="+1 (800) 433-7300">
+  <label>Email:</label><input id="email" value="john.smith@gmail.com">
+  <label>Location:</label><input id="location" value="New York, NY, USA">
 
   <label>Professional Summary:</label>
   <textarea id="summary" rows="4">Highly motivated marketing professional with over 5 years of experience in digital marketing, brand strategy, and content creation.</textarea>
@@ -137,10 +140,8 @@ Bachelor’s Degree in Business Administration – NYU (2022)</textarea>
 Spanish – Native</textarea>
 
   <h2>Cover Letter</h2>
-  <label>Company Name:</label>
-  <input id="letter-company" value="XYZ Company">
-  <label>Position:</label>
-  <input id="letter-position" value="Marketing Assistant">
+  <label>Company Name:</label><input id="letter-company" value="XYZ Company">
+  <label>Position:</label><input id="letter-position" value="Marketing Assistant">
   <label>Letter Text:</label>
   <textarea id="letter-text" rows="10">Dear Hiring Manager,
 
@@ -167,27 +168,27 @@ John Smith</textarea>
     </p>
 
     <div class="cv-section">
-      <h3>Professional Summary</h3>
+      <h3><span>✨</span>Professional Summary</h3>
       <p id="cv-summary"></p>
     </div>
 
     <div class="cv-section">
-      <h3>Experience</h3>
+      <h3><span>🏢</span>Experience</h3>
       <p id="cv-experience"></p>
     </div>
 
     <div class="cv-section">
-      <h3>Education</h3>
+      <h3><span>🎓</span>Education</h3>
       <p id="cv-education"></p>
     </div>
 
     <div class="cv-section">
-      <h3>Skills</h3>
+      <h3><span>💡</span>Skills</h3>
       <p id="cv-skills"></p>
     </div>
 
     <div class="cv-section">
-      <h3>Languages</h3>
+      <h3><span>🌐</span>Languages</h3>
       <p id="cv-languages"></p>
     </div>
   </div>
