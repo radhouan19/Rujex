@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simple Numbered Resume</title>
+<title>Numbered Resume with Centered Dotted Lines</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -42,7 +42,6 @@
   }
   button:hover { background: #0056b3; }
 
-  /* Resume Style */
   .cv {
     font-family: 'Helvetica', Arial, sans-serif;
     color: #000;
@@ -57,8 +56,11 @@
     margin-top: 20px;
     margin-bottom: 10px;
     letter-spacing: 1px;
-    border-bottom: 1px dotted #000; /* النقاط القصيرة */
-    width: fit-content;
+    text-align: center;
+    border-bottom: 1px dotted #000;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
   }
   .cv h1 {
     font-size: 26px;
@@ -75,20 +77,9 @@
   .cv .contact span {
     margin: 0 10px;
   }
-  .section-item {
-    margin-bottom: 15px;
-  }
-  .section-title {
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 3px;
-  }
-  .section-details {
-    font-size: 13px;
-    margin-left: 15px; /* مسافة بسيطة من اليسار */
-    margin-right: 15px; /* لا نحشر الكتابة لليمين */
-    white-space: pre-line;
-  }
+  .section-item { margin-bottom: 15px; }
+  .section-title { font-weight: bold; font-size: 14px; margin-bottom: 3px; }
+  .section-details { font-size: 13px; margin-left: 30px; margin-right: 30px; white-space: pre-line; }
 </style>
 </head>
 <body>
@@ -97,13 +88,13 @@
 
 <div class="form-container">
   <label>Full Name:</label>
-  <input id="name" placeholder="John Smith">
+  <input id="name" value="John Smith">
   <label>Phone:</label>
-  <input id="phone" placeholder="1 800 433 7300">
+  <input id="phone" value="1 800 433 7300">
   <label>Email:</label>
-  <input id="email" placeholder="john.smith@gmail.com">
+  <input id="email" value="john.smith@gmail.com">
   <label>Location:</label>
-  <input id="location" placeholder="New York, USA">
+  <input id="location" value="New York, USA">
 
   <label>Job Experience:</label>
   <textarea id="experience" rows="6">Digital Marketing Specialist, XYZ Company
@@ -181,26 +172,20 @@ Swimming, Football</textarea>
 function generateSection(containerId, text) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
-
-  const sections = text.split(/\n\s*\n/); // فصل كل عنصر بسطر فارغ
+  const sections = text.split(/\n\s*\n/);
   sections.forEach((section, index) => {
     const lines = section.split('\n').filter(line => line.trim() !== '');
     if (lines.length === 0) return;
-
-    // الرقم + العنوان (السطر الأول)
     const titleDiv = document.createElement('div');
     titleDiv.className = 'section-title';
     titleDiv.textContent = (index + 1) + ". " + lines[0];
     container.appendChild(titleDiv);
-
-    // باقي التفاصيل
     if (lines.length > 1) {
       const detailsDiv = document.createElement('div');
       detailsDiv.className = 'section-details';
       detailsDiv.textContent = lines.slice(1).join('\n');
       container.appendChild(detailsDiv);
     }
-
     const wrapper = document.createElement('div');
     wrapper.className = 'section-item';
     container.appendChild(wrapper);
@@ -230,10 +215,8 @@ function generateResume() {
 async function downloadPDF() {
   const { jsPDF } = window.jspdf;
   const cvElement = document.getElementById("cv-content");
-
   const canvas = await html2canvas(cvElement, { scale: 2 });
   const imgData = canvas.toDataURL("image/png");
-
   const pdf = new jsPDF("p", "mm", "a4");
   const pdfWidth = pdf.internal.pageSize.getWidth();
   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
