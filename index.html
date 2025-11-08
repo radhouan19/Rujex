@@ -48,6 +48,7 @@
     color: #000;
     line-height: 1.5;
     text-align: left;
+    max-width: 750px;
   }
   .cv h2 {
     font-size: 16px;
@@ -56,7 +57,8 @@
     margin-top: 20px;
     margin-bottom: 10px;
     letter-spacing: 1px;
-    border-bottom: 1px dotted #000;
+    border-bottom: 1px dotted #000; /* النقاط القصيرة */
+    width: fit-content;
   }
   .cv h1 {
     font-size: 26px;
@@ -83,8 +85,9 @@
   }
   .section-details {
     font-size: 13px;
-    margin-left: 10px;
-    white-space: pre-line; /* يحافظ على السطور الجديدة */
+    margin-left: 15px; /* مسافة بسيطة من اليسار */
+    margin-right: 15px; /* لا نحشر الكتابة لليمين */
+    white-space: pre-line;
   }
 </style>
 </head>
@@ -103,24 +106,47 @@
   <input id="location" placeholder="New York, USA">
 
   <label>Job Experience:</label>
-  <textarea id="experience" rows="6" placeholder="Write each job as a block separated by a blank line
-Each line inside the block is a detail"></textarea>
+  <textarea id="experience" rows="6">Digital Marketing Specialist, XYZ Company
+Managed social media accounts and increased engagement by 35%
+Created Google Ads campaigns and optimized SEO content
+Collaborated with the design team to produce promotional materials
+Analyzed campaign performance and reported KPIs monthly
+
+Software Developer, ABC Tech
+Developed internal tools using Python and JavaScript
+Collaborated with the design team to improve UX
+Fixed bugs and optimized application performance
+Participated in code reviews and team meetings</textarea>
 
   <label>Education:</label>
-  <textarea id="education" rows="4" placeholder="Write each degree as a block separated by a blank line
-Each line inside the block is a detail"></textarea>
+  <textarea id="education" rows="4">Bachelor’s Degree in Business Administration, New York University
+Graduated: 2022
+GPA: 3.8/4.0
+
+Master’s Degree in Marketing, Columbia University
+Graduated: 2024
+Thesis: Digital Marketing Strategies</textarea>
 
   <label>Languages:</label>
-  <textarea id="languages" rows="2" placeholder="Write each language as a block separated by a blank line
-Each line inside the block is a detail"></textarea>
+  <textarea id="languages" rows="2">English
+Advanced (fluent speaking and writing)
+
+Spanish
+Native</textarea>
 
   <label>Software:</label>
-  <textarea id="software" rows="2" placeholder="Write each software as a block separated by a blank line
-Each line inside the block is a detail"></textarea>
+  <textarea id="software" rows="2">Microsoft Office
+Word, Excel, PowerPoint
+
+Adobe Creative Suite
+Photoshop, Illustrator, InDesign</textarea>
 
   <label>Hobbies:</label>
-  <textarea id="hobbies" rows="2" placeholder="Write each hobby as a block separated by a blank line
-Each line inside the block is a detail"></textarea>
+  <textarea id="hobbies" rows="2">Reading
+Business and personal development books
+
+Sports
+Swimming, Football</textarea>
 
   <button onclick="generateResume()">Create Resume</button>
 </div>
