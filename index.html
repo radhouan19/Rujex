@@ -50,51 +50,39 @@ button:hover { background: #0056b3; }.cv, .letter { font-family: 'Roboto', sans-
 
 </head>
 <body><h1 style="text-align:center;">Professional Resume & Cover Letter</h1><div class="form-container">
-  <!-- Form inputs unchanged -->
   <h2>CV Information</h2>
   <label>Full Name:</label>
-  <input id="name" value="John Smith">
+  <input id="name" placeholder="John Smith">
   <label>Phone:</label>
-  <input id="phone" value="1 800 433 7300">
+  <input id="phone" placeholder="1 800 433 7300">
   <label>Email:</label>
-  <input id="email" value="john.smith@gmail.com">
+  <input id="email" placeholder="john.smith@gmail.com">
   <label>Location:</label>
-  <input id="location" value="New York, USA">
-  <label>Job Experience:</label>
-  <textarea id="experience" rows="6">...</textarea>
-  <label>Education:</label>
-  <textarea id="education" rows="4">...</textarea>
-  <label>Languages:</label>
-  <textarea id="languages" rows="2">...</textarea>
-  <label>Software:</label>
-  <textarea id="software" rows="2">...</textarea>
-  <label>Hobbies:</label>
-  <textarea id="hobbies" rows="2">...</textarea>  <h2>Cover Letter</h2>
-  <label>Company Name:</label>
-  <input id="letter-company" value="XYZ Company">
-  <label>Position:</label>
-  <input id="letter-position" value="Marketing Assistant">
-  <label>Your Motivation:</label>
-  <textarea id="letter-text" rows="12">...</textarea>
-  <label>Closing Remark (Your Name):</label>
-  <input id="letter-name" value="John Smith"><button onclick="generateCV()">Create CV</button> <button onclick="generateLetter()">Create Cover Letter</button>
+  <input id="location" placeholder="New York, USA"><label>Job Experience:</label>
 
-</div><div class="cv-container" id="cv-container" style="display:none;">...</div><div class="letter-container" id="letter-container" style="display:none;">
-  <div class="letter" id="letter-content">
-    <div class="letter-header">
-      <div class="letter-left" id="letter-name-display">John Smith</div>
-      <div class="letter-right">
-        <span id="letter-phone">📞 1 800 433 7300</span>
-        <span id="letter-email">✉️ john.smith@gmail.com</span>
-        <span id="letter-location">📍 New York, USA</span>
-      </div>
-    </div>
-    <p id="letter-body"></p>
-    <p id="letter-footer"></p>
-  </div>
-  <br>
-  <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
-</div><script>
+  <textarea id="experience" rows="6" placeholder="Digital Marketing Specialist, XYZ Company
+..."></textarea><label>Education:</label>
+
+  <textarea id="education" rows="4" placeholder="Bachelor’s Degree in ..."></textarea><label>Languages:</label>
+
+  <textarea id="languages" rows="2" placeholder="English - Advanced
+Spanish - Native"></textarea><label>Software:</label>
+
+  <textarea id="software" rows="2" placeholder="Microsoft Office, Adobe Creative Suite"></textarea><label>Hobbies:</label>
+
+  <textarea id="hobbies" rows="2" placeholder="Reading, Sports"></textarea>  <h2>Cover Letter</h2>
+  <label>Company Name:</label>
+  <input id="letter-company" placeholder="XYZ Company">
+  <label>Position:</label>
+  <input id="letter-position" placeholder="Marketing Assistant">
+  <label>Your Motivation:</label>
+  <textarea id="letter-text" rows="12" placeholder="Write your motivation here..."></textarea>
+  <label>Closing Remark (Your Name):</label>
+  <input id="letter-name" placeholder="John Smith"><button onclick="generateCV()">Create CV</button> <button onclick="generateLetter()">Create Cover Letter</button>
+
+</div><div class="cv-container" id="cv-container" style="display:none;">...</div>
+<div class="letter-container" id="letter-container" style="display:none;">...</div>
+<script>
 /* JS unchanged */
 </script></body>
 </html>
