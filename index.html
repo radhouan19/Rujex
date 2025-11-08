@@ -42,11 +42,7 @@ button {
   margin-top: 10px;
   font-size: 14px;
 }
-button:hover { background: #0056b3; }.cv, .letter { font-family: 'Roboto', sans-serif; color: #000; line-height: 1.6; text-align: left; max-width: 750px; }
-
-.cv h2 { font-size: 17px; font-weight: bold; text-transform: uppercase; margin-top: 25px; margin-bottom: 8px; padding-bottom: 4px; text-align: left; border-bottom: 1px dotted #000; width: 95%; margin-left: 5%; direction: rtl; } .section-title { font-weight: bold; font-size: 14px; margin-left: 5%; margin-bottom: 2px; } .section-details { font-weight: normal; font-size: 13px; margin-left: 5%; margin-bottom: 8px; white-space: pre-line; } .cv h1 { font-size: 28px; text-transform: uppercase; text-align: center; margin-bottom: 8px; } .cv .contact { text-align: center; font-size: 13px; color: #333; margin-bottom: 22px; } .cv .contact span { margin: 0 12px; } .section-item { margin-bottom: 18px; }
-
-.letter-header { display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 13px; line-height: 1.4; padding-top: 20px; padding-left: 20px; padding-right: 20px; } .letter-left { font-size: 22px; font-weight: bold; display: flex; align-items: center; } .letter-right { display: flex; flex-direction: column; align-items: flex-end; } .letter-right span { margin-bottom: 5px; } .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 20px; text-align: left; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
+button:hover { background: #0056b3; }.letter-header { display: flex; justify-content: space-between; font-size: 13px; line-height: 1.4; padding: 40px 20px 20px 20px; /* اسمح له أن يكون بعيد عن الأعلى قليلاً */ } .letter-left { font-size: 22px; font-weight: bold; display: flex; align-items: center; } .letter-right { display: flex; flex-direction: column; align-items: flex-end; } .letter-right span { margin-bottom: 5px; } .letter h2 { font-size: 16pt; font-weight: 700; color: #2c3e50; margin-bottom: 20px; text-align: left; } .letter p { margin-bottom: 18px; text-align: justify; font-size: 12.5pt; padding-left: 20px; padding-right: 20px; } .letter-container { border: 1px solid #ddd; padding: 30px; border-radius: 8px; } </style>
 
 </head>
 <body><h1 style="text-align:center;">Professional Resume & Cover Letter</h1><div class="form-container">
@@ -100,9 +96,22 @@ Swimming, Football</textarea>  <h2>Cover Letter</h2>
 
 <button onclick="generateCV()">Create CV</button> <button onclick="generateLetter()">Create Cover Letter</button>
 
-</div><div class="cv-container" id="cv-container" style="display:none;">...</div>
-<div class="letter-container" id="letter-container" style="display:none;">...</div>
-<script>
+</div><div class="letter-container" id="letter-container" style="display:none;">
+  <div class="letter" id="letter-content">
+    <div class="letter-header">
+      <div class="letter-left" id="letter-name-display">John Smith</div>
+      <div class="letter-right">
+        <span id="letter-phone">📞 1 800 433 7300</span>
+        <span id="letter-email">✉️ john.smith@gmail.com</span>
+        <span id="letter-location">📍 New York, USA</span>
+      </div>
+    </div>
+    <p id="letter-body">I am writing to express my strong interest in the Marketing Assistant position at XYZ Company. Over the past several years, I have developed a deep passion for digital marketing and brand strategy, working on multiple campaigns that have significantly increased engagement and conversions for my previous employers. My experience spans social media management, SEO optimization, and content creation. I am highly proficient in creating marketing plans, analyzing performance metrics, and adjusting strategies to meet business objectives.Beyond technical skills, I bring creativity, dedication, and a strong sense of teamwork. I thrive in collaborative environments where I can contribute innovative ideas while learning from colleagues. Joining XYZ Company represents an exciting opportunity to apply my expertise, support your marketing goals, and grow within a forward-thinking organization. I am confident that my experience and enthusiasm make me a strong candidate, and I am eager to bring value to your team through strategic and innovative contributions.</p> <p id="letter-footer">John Smith</p>
+
+  </div>
+  <br>
+  <button onclick="downloadPDF('letter-content','Cover_Letter.pdf')">⬇️ Download Cover Letter PDF</button>
+</div><script>
 /* JS unchanged */
 </script></body>
 </html>
