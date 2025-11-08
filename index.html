@@ -3,265 +3,171 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Resume - Enhanced</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<title>CV Templates</title>
 <style>
-body {
-  font-family: 'Arial', sans-serif;
-  background: #f3f4f6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-h1 { text-align: center; margin-bottom: 20px; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    margin: 0;
+    padding: 40px;
+    direction: ltr;
+  }
+  .cv-container {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+    margin: 20px auto;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+  }
+  h1 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 26px;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+    color: #222;
+  }
+  p {
+    margin: 6px 0 12px 0;
+    color: #333;
+    line-height: 1.5;
+  }
+  .divider {
+    border-bottom: 1px dashed #aaa;
+    margin: 20px 0;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-.form-container, .cv-container {
-  background: white;
-  padding: 25px;
-  width: 100%;
-  max-width: 900px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-}
+  /* النسخة الثانية */
+  .cv-container.second {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .cv-container.second img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 100%;
+    border: 3px solid #0077b6;
+  }
+  .cv-content {
+    flex: 1;
+  }
 
-input, textarea {
-  width: 100%;
-  margin: 5px 0 12px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-}
+  /* الأزرار */
+  .buttons {
+    text-align: center;
+    margin-top: 30px;
+  }
+  button {
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 15px;
+    color: white;
+    margin: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .btn-blue { background: #007bff; }
+  .btn-blue:hover { background: #0056b3; }
+  .btn-gray { background: #444; }
+  .btn-gray:hover { background: #222; }
 
-button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 10px;
-  font-size: 14px;
-}
-button:hover { background: #0056b3; }
-
-/* CV Styling */
-.cv {
-  font-family: 'Helvetica', Arial, sans-serif;
-  color: #222;
-  line-height: 1.5;
-  max-width: 800px;
-  margin-bottom: 30px;
-  padding: 20px;
-  border-radius: 8px;
-  background: #fff;
-}
-
-/* Header with Photo on Right */
-.cv-photo-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-.cv-photo-header .profile-pic {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-left: 20px;
-}
-.cv-photo-header .header-info {
-  flex: 1;
-  margin-right: 20px;
-}
-.cv-photo-header .header-info h1 {
-  font-size: 28px;
-  margin: 0;
-  text-transform: uppercase;
-}
-.cv-photo-header .header-info .contact {
-  font-size: 13px;
-  color: #555;
-  margin-top: 5px;
-}
-
-/* Section Titles */
-.cv h2 {
-  font-size: 16px;
-  font-weight: bold;
-  text-transform: uppercase;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 4px;
-  margin-top: 20px;
-  margin-bottom: 8px;
-  background: #f0f4ff;
-  padding-left: 5px;
-}
-.section-title {
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 2px;
-}
-.section-details {
-  font-weight: normal;
-  font-size: 13px;
-  margin-left: 15px;
-  margin-bottom: 10px;
-  white-space: pre-line;
-}
 </style>
 </head>
 <body>
 
-<h1>Professional Resume - Enhanced</h1>
+<!-- النسخة الأصلية -->
+<div class="cv-container" id="cv1">
+  <h1>John Doe</h1>
+  <p>Phone: +1 555 123 4567 | Email: john.doe@email.com</p>
 
-<div class="form-container">
-  <label>Full Name:</label>
-  <input id="name" value="John Smith">
-  <label>Phone:</label>
-  <input id="phone" value="1 800 433 7300">
-  <label>Email:</label>
-  <input id="email" value="john.smith@gmail.com">
-  <label>Location:</label>
-  <input id="location" value="New York, USA">
+  <div class="divider"></div>
 
-  <label>Job Experience:</label>
-  <textarea id="experience" rows="6">Digital Marketing Specialist, XYZ Company
-Managed social media accounts and increased engagement by 35%
-Created Google Ads campaigns and optimized SEO content
+  <h2>Experience</h2>
+  <p><strong>Digital Marketing Specialist</strong><br>Developed and managed campaigns that increased web traffic by 40%.</p>
+  <p><strong>Content Manager</strong><br>Created engaging content strategies for multiple clients.</p>
 
-Software Developer, ABC Tech
-Developed internal tools using Python and JavaScript
-Collaborated with the design team to improve UX</textarea>
+  <div class="divider"></div>
 
-  <label>Education:</label>
-  <textarea id="education" rows="4">Bachelor’s Degree in Business Administration, New York University
-Graduated: 2022
+  <h2>Education</h2>
+  <p><strong>Bachelor of Business Administration</strong><br>University of Toronto, 2018</p>
+  <p><strong>Marketing Diploma</strong><br>Centennial College, 2016</p>
 
-Master’s Degree in Marketing, Columbia University
-Graduated: 2024</textarea>
+  <div class="divider"></div>
 
-  <label>Languages:</label>
-  <textarea id="languages" rows="2">English
-Advanced (fluent speaking and writing)
-
-Spanish
-Native</textarea>
-
-  <label>Software:</label>
-  <textarea id="software" rows="2">Microsoft Office
-Word, Excel, PowerPoint
-
-Adobe Creative Suite
-Photoshop, Illustrator, InDesign</textarea>
-
-  <label>Hobbies:</label>
-  <textarea id="hobbies" rows="2">Reading
-Business and personal development books
-
-Sports
-Swimming, Football</textarea>
-
-  <label>Upload Photo:</label>
-  <input type="file" id="photo" accept="image/*">
-
-  <button onclick="generateResumeEnhanced()">Generate Enhanced Resume</button>
+  <h2>Skills</h2>
+  <p>SEO Optimization, Social Media Strategy, Branding, Communication, Analytics</p>
 </div>
 
-<div class="cv-container" id="cv-container-enhanced" style="display:none;">
-  <div class="cv cv-photo" id="cv-enhanced">
-    <div class="cv-photo-header">
-      <div class="header-info">
-        <h1 id="cv-enhanced-name"></h1>
-        <div class="contact" id="cv-enhanced-contact"></div>
-      </div>
-      <img id="cv-enhanced-img" class="profile-pic" style="display:none;">
-    </div>
+<div class="buttons">
+  <button class="btn-blue" onclick="printSection('cv1')">🖨️ Print Original</button>
+  <button class="btn-gray" onclick="downloadPDF('cv1', 'CV_Original.pdf')">⬇️ Download PDF</button>
+</div>
 
-    <h2>Job Experience</h2>
-    <div id="cv-enhanced-experience"></div>
+<!-- النسخة الثانية (بصورة) -->
+<div class="cv-container second" id="cv2">
+  <img src="https://i.ibb.co/3v6c8jV/profile-pic.jpg" alt="Profile">
+  <div class="cv-content">
+    <h1>John Doe</h1>
+    <p>Phone: +1 555 123 4567 | Email: john.doe@email.com</p>
+
+    <div class="divider"></div>
+
+    <h2>Experience</h2>
+    <p><strong>Project Coordinator</strong><br>Led a cross-functional team to deliver projects on time.</p>
+    <p><strong>Marketing Associate</strong><br>Supported campaign execution across digital platforms.</p>
+
+    <div class="divider"></div>
 
     <h2>Education</h2>
-    <div id="cv-enhanced-education"></div>
+    <p><strong>Master in Business Management</strong><br>University of British Columbia, 2019</p>
+    <p><strong>Bachelor in Economics</strong><br>York University, 2016</p>
 
-    <h2>Languages</h2>
-    <div id="cv-enhanced-languages"></div>
+    <div class="divider"></div>
 
-    <h2>Software</h2>
-    <div id="cv-enhanced-software"></div>
-
-    <h2>Hobbies</h2>
-    <div id="cv-enhanced-hobbies"></div>
+    <h2>Skills</h2>
+    <p>Leadership, Communication, Data Analysis, Problem Solving</p>
   </div>
-  <button onclick="downloadPDF('cv-enhanced')">⬇️ Download Enhanced PDF</button>
 </div>
 
+<div class="buttons">
+  <button class="btn-gray" onclick="printSection('cv2')">🖨️ Print Version 2</button>
+  <button class="btn-blue" onclick="downloadPDF('cv2', 'CV_Version2.pdf')">⬇️ Download PDF</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script>
-function generateSection(containerId, text){
-  const container=document.getElementById(containerId);
-  container.innerHTML='';
-  const sections=text.split(/\n\s*\n/);
-  sections.forEach(section=>{
-    const lines=section.split('\n').filter(l=>l.trim()!=='');
-    if(lines.length===0) return;
-    const titleDiv=document.createElement('div');
-    titleDiv.className='section-title';
-    titleDiv.textContent=lines[0];
-    container.appendChild(titleDiv);
-    if(lines.length>1){
-      const detailsDiv=document.createElement('div');
-      detailsDiv.className='section-details';
-      detailsDiv.textContent=lines.slice(1).join('\n');
-      container.appendChild(detailsDiv);
-    }
-  });
-}
+  function downloadPDF(elementId, filename) {
+    const element = document.getElementById(elementId);
+    const opt = {
+      margin:       0.5,
+      filename:     filename,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().from(element).set(opt).save();
+  }
 
-function generateResumeEnhanced(){
-  const name=document.getElementById('name').value;
-  const phone=document.getElementById('phone').value;
-  const email=document.getElementById('email').value;
-  const location=document.getElementById('location').value;
-  const photoInput=document.getElementById('photo');
-  const photoImg=document.getElementById('cv-enhanced-img');
-
-  document.getElementById('cv-enhanced-name').textContent=name;
-  document.getElementById('cv-enhanced-contact').innerHTML=`📞 ${phone} | ✉️ ${email} | 📍 ${location}`;
-
-  generateSection('cv-enhanced-experience', document.getElementById('experience').value);
-  generateSection('cv-enhanced-education', document.getElementById('education').value);
-  generateSection('cv-enhanced-languages', document.getElementById('languages').value);
-  generateSection('cv-enhanced-software', document.getElementById('software').value);
-  generateSection('cv-enhanced-hobbies', document.getElementById('hobbies').value);
-
-  if(photoInput.files && photoInput.files[0]){
-    const reader=new FileReader();
-    reader.onload=function(e){
-      photoImg.src=e.target.result;
-      photoImg.style.display='block';
-    }
-    reader.readAsDataURL(photoInput.files[0]);
-  } else photoImg.style.display='none';
-
-  document.getElementById('cv-container-enhanced').style.display='block';
-  window.scrollTo(0, document.getElementById('cv-container-enhanced').offsetTop);
-}
-
-async function downloadPDF(cvId){
-  const { jsPDF } = window.jspdf;
-  const cvElement=document.getElementById(cvId);
-  const canvas=await html2canvas(cvElement,{scale:2});
-  const imgData=canvas.toDataURL("image/png");
-  const pdf=new jsPDF("p","mm","a4");
-  const pdfWidth=pdf.internal.pageSize.getWidth();
-  const pdfHeight=(canvas.height*pdfWidth)/canvas.width;
-  pdf.addImage(imgData,"PNG",0,0,pdfWidth,pdfHeight);
-  pdf.save(`${cvId}.pdf`);
-}
+  function printSection(id) {
+    const printContent = document.getElementById(id).outerHTML;
+    const WinPrint = window.open('', '', 'width=900,height=900');
+    WinPrint.document.write('<html><head><title>Print CV</title></head><body>');
+    WinPrint.document.write(printContent);
+    WinPrint.document.write('</body></html>');
+    WinPrint.document.close();
+    WinPrint.print();
+  }
 </script>
 
 </body>
