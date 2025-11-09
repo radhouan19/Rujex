@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advanced Interactive CV</title>
+<title>Elegant CV & Cover Letter</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background: #f0f0f0;
+    background: #f3f3f3;
     color: #333;
 }
 .container {
@@ -20,7 +20,7 @@ body {
     background: #fff;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     padding: 0;
 }
 .cv {
@@ -29,7 +29,7 @@ body {
 }
 .left-column {
     width: 35%;
-    background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+    background: #e8eaf6;
     padding: 30px 25px;
     box-sizing: border-box;
     text-align: center;
@@ -42,121 +42,50 @@ body {
     margin-bottom: 10px;
     border: 3px solid #ccc;
 }
-.upload-btn {
-    margin-bottom: 15px;
-}
+.upload-btn { margin-bottom: 15px; }
 .right-column {
     width: 65%;
-    background: #fff;
+    background: #ffffff;
     padding: 30px 25px;
     box-sizing: border-box;
 }
-h1 {
-    font-size: 32px;
-    margin-top: 0;
-    font-weight: 700;
-}
-h2 {
-    font-size: 18px;
-    margin: 15px 0 10px;
-    color: #444;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 5px;
-    text-align: left;
-}
-h3 {
-    font-size: 15px;
-    margin: 10px 0 5px;
-    font-weight: 500;
-    color: #555;
-}
-p, li {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #333;
-}
-ul {
-    padding-left: 20px;
-    text-align: left;
-}
-.contact-item {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-    font-weight: 500;
-    justify-content: flex-start;
-}
-.contact-item i {
-    margin-right: 10px;
-    color: #666;
-    min-width: 20px;
-    text-align: center;
-}
-.section {
-    margin-bottom: 25px;
-    text-align: left;
-}
-.section i {
-    margin-right: 8px;
-    color: #444;
-}
-.cover-letter {
-    margin-top: 40px;
-    padding: 30px;
-    background: #f9f9f9;
-}
-.btn-container {
-    margin-top: 30px;
-    display: flex;
-    gap: 15px;
-    padding: 0 25px 30px 25px;
-}
-.btn {
-    background: #4a4a4a;
-    color: #fff;
-    border: none;
-    padding: 12px 20px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: all 0.3s;
-    text-decoration: none;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-.btn:hover {
-    background: #6a6a6a;
-}
-input[type=file] {
-    display: block;
-    margin: 10px auto;
-}
+h1 { font-size: 32px; margin-top: 0; font-weight: 700; }
+h2 { font-size: 18px; margin: 15px 0 10px; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 5px; text-align: left; }
+h3 { font-size: 15px; margin: 10px 0 5px; font-weight: 500; color: #555; }
+p, li { font-size: 14px; line-height: 1.6; color: #333; }
+ul { padding-left: 20px; text-align: left; }
+.contact-item { display: flex; align-items: center; margin: 10px 0; font-weight: 500; justify-content: flex-start; }
+.contact-item i { margin-right: 10px; color: #555; min-width: 20px; text-align: center; }
+.section { margin-bottom: 25px; text-align: left; }
+.section i { margin-right: 8px; color: #444; }
+.cover-letter { margin-top: 40px; padding: 30px; background: #f9f9f9; }
+.btn-container { margin-top: 30px; display: flex; gap: 15px; padding: 0 25px 30px 25px; }
+.btn { background: #3f51b5; color: #fff; border: none; padding: 12px 20px; font-size: 14px; cursor: pointer; border-radius: 6px; transition: all 0.3s; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 5px; }
+.btn:hover { background: #5c6bc0; }
+input[type=file] { display: block; margin: 10px auto; }
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- CV Section -->
+<div class="container" id="cvContainer">
     <div class="cv">
-        <!-- Left Column -->
         <div class="left-column">
             <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic" id="profilePic">
             <input type="file" id="uploadImage" accept="image/*" class="upload-btn">
             <h1 id="fullName" contenteditable="true">John Doe</h1>
 
             <div class="section">
-                <h2><i class="fas fa-phone"></i>Contact</h2>
+                <h2><i class="fas fa-address-book"></i> Contact</h2>
                 <div class="contact-item"><i class="fas fa-phone"></i> <span id="phone" contenteditable="true">+123 456 7890</span></div>
                 <div class="contact-item"><i class="fas fa-envelope"></i> <span id="email" contenteditable="true">john@example.com</span></div>
                 <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span id="address" contenteditable="true">123 Main St, City</span></div>
+                <div class="contact-item"><i class="fas fa-globe"></i> <span id="website" contenteditable="true">www.johndoe.com</span></div>
                 <div class="contact-item"><i class="fab fa-linkedin"></i> <span id="linkedin" contenteditable="true">linkedin.com/in/johndoe</span></div>
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-language"></i>Languages</h2>
+                <h2><i class="fas fa-language"></i> Languages</h2>
                 <ul id="languages" contenteditable="true">
                     <li>English (Fluent)</li>
                     <li>French (Intermediate)</li>
@@ -164,7 +93,7 @@ input[type=file] {
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-laptop-code"></i>Software</h2>
+                <h2><i class="fas fa-laptop-code"></i> Software</h2>
                 <ul id="software" contenteditable="true">
                     <li>Photoshop</li>
                     <li>Illustrator</li>
@@ -173,7 +102,7 @@ input[type=file] {
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-heart"></i>Hobbies</h2>
+                <h2><i class="fas fa-heart"></i> Hobbies</h2>
                 <ul id="hobbies" contenteditable="true">
                     <li>Photography</li>
                     <li>Traveling</li>
@@ -182,15 +111,14 @@ input[type=file] {
             </div>
         </div>
 
-        <!-- Right Column -->
         <div class="right-column">
             <div class="section">
-                <h2><i class="fas fa-user"></i>Profile</h2>
-                <p id="profileText" contenteditable="true">Creative web developer with 5+ years of experience designing and developing user-centered digital solutions from concept to execution.</p>
+                <h2><i class="fas fa-user"></i> Profile</h2>
+                <p id="profileText" contenteditable="true">Creative web developer with 5+ years of experience designing and developing user-centered digital solutions.</p>
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-briefcase"></i>Job Experience</h2>
+                <h2><i class="fas fa-briefcase"></i> Job Experience</h2>
                 <div id="experience" contenteditable="true">
                     <h3>Front-End Developer</h3>
                     <p>XYZ Company | 2020 - Present</p>
@@ -209,45 +137,28 @@ input[type=file] {
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-graduation-cap"></i>Education</h2>
+                <h2><i class="fas fa-graduation-cap"></i> Education</h2>
                 <p id="education" contenteditable="true">BSc in Computer Science, University of Tech, 2018</p>
             </div>
         </div>
     </div>
 
-    <!-- Cover Letter Section -->
     <div class="cover-letter" id="coverLetter" contenteditable="true">
-        <h2><i class="fas fa-envelope"></i>Cover Letter</h2>
+        <h2><i class="fas fa-envelope"></i> Cover Letter</h2>
         <p>Dear Hiring Manager,</p>
-        <p>I am excited to apply for the Front-End Developer position at your esteemed company. With over five years of experience in web development and a keen eye for design, I am confident in delivering solutions that meet your needs and exceed expectations.</p>
-        <p>Throughout my career, I have worked closely with teams to develop responsive and user-friendly websites, always emphasizing performance and accessibility. I am passionate about creating seamless digital experiences and continuously learning new technologies.</p>
-        <p>I would welcome the opportunity to discuss how my skills and experience can contribute to your projects. Thank you for considering my application.</p>
+        <p>I am excited to apply for the Front-End Developer position at your esteemed company...</p>
         <p>Sincerely,<br><span id="coverName" contenteditable="true">John Doe</span></p>
     </div>
 
-    <!-- Buttons -->
     <div class="btn-container">
-        <a href="#" class="btn" onclick="downloadPDF('cv')"><i class="fas fa-file-pdf"></i> Download CV as PDF</a>
-        <a href="#" class="btn" onclick="downloadPDF('cover')"><i class="fas fa-envelope"></i> Download Cover Letter as PDF</a>
+        <button class="btn" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download CV & Cover Letter as PDF</button>
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-async function downloadPDF(type) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ format: 'a4' });
-
-    let content = '';
-    if(type === 'cv') content = document.querySelector('.cv').innerText;
-    else content = document.querySelector('#coverLetter').innerText;
-
-    const lines = doc.splitTextToSize(content, 180);
-    doc.text(lines, 15, 20);
-    doc.save(type === 'cv' ? 'CV.pdf' : 'CoverLetter.pdf');
-}
-
-// رفع صورة شخصية من الجهاز
+// رفع صورة شخصية
 document.getElementById('uploadImage').addEventListener('change', function(event){
     const file = event.target.files[0];
     if(file){
@@ -258,7 +169,24 @@ document.getElementById('uploadImage').addEventListener('change', function(event
         reader.readAsDataURL(file);
     }
 });
-</script>
 
+// PDF مع هوامش آمنة
+function downloadPDF(){
+    const cv = document.getElementById('cvContainer');
+    html2canvas(cv, {scale:2}).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const margin = 10; // هوامش 10 مم
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pageWidth - 2 * margin;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, 'PNG', margin, margin, pdfWidth, pdfHeight);
+        pdf.save('CV_CoverLetter.pdf');
+    });
+}
+</script>
 </body>
 </html>
