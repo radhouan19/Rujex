@@ -1,193 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Elegant CV & Cover Letter</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CV + Cover Letter — Final</title>
+
+<!-- Fonts and icons -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<!-- رابط Font Awesome الصحيح -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p1+J/3xH+sXKfUOvD0B+9XxA0V6WQZrsX2Uwt2F+VwZbW5U0ZfLfL3uG1Hb+O73NnD6KjEc8bBxj0GfXJ5ZfMw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+ integrity="sha512-p1+J/3xH+sXKfUOvD0B+9XxA0V6WQZrsX2Uwt2F+VwZbW5U0ZfLfL3uG1Hb+O73NnD6KjEc8bBxj0GfXJ5ZfMw=="
+ crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f3f3f3;
-    color: #333;
+:root{
+  --page-width-mm:210mm;
+  --page-height-mm:297mm;
+  --safe-margin-mm:10mm;
+  --left-bg:#e8eaf6;
+  --accent:#3f51b5;
+  --text:#222;
 }
-.container {
-    width: 210mm;
-    min-height: 297mm;
-    margin: 20px auto;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    padding: 0;
+*{box-sizing:border-box}
+body{
+  font-family:'Poppins',sans-serif;
+  margin:0;
+  background:#f3f3f3;
+  color:var(--text);
+  padding:18px;
 }
-.cv {
-    display: flex;
-    flex-direction: row;
+.preview-frame{
+  width:calc( var(--page-width-mm) );
+  min-height:calc( var(--page-height-mm) );
+  margin:0 auto 18px;
+  background:#fff;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  overflow:hidden;
+  display:block;
 }
-.left-column {
-    width: 35%;
-    background: #e8eaf6;
-    padding: 30px 25px;
-    box-sizing: border-box;
-    text-align: center;
+.page-inner{
+  display:flex;
+  gap:0;
+  align-items:flex-start;
 }
-.profile-pic {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-    border: 3px solid #ccc;
+.left-column{
+  width:35%;
+  background:var(--left-bg);
+  padding:36px 28px;
+  box-sizing:border-box;
+  text-align:center;
+  min-height:100%;
 }
-.upload-btn { margin-bottom: 15px; }
-.right-column {
-    width: 65%;
-    background: #ffffff;
-    padding: 30px 25px;
-    box-sizing: border-box;
+.right-column{
+  width:65%;
+  background:#fff;
+  padding:36px 28px;
+  box-sizing:border-box;
 }
-h1 { font-size: 32px; margin-top: 0; font-weight: 700; }
-h2 { font-size: 18px; margin: 15px 0 10px; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 5px; text-align: left; }
-h3 { font-size: 15px; margin: 10px 0 5px; font-weight: 500; color: #555; }
-p, li { font-size: 14px; line-height: 1.6; color: #333; }
-ul { padding-left: 20px; text-align: left; }
-.contact-item { display: flex; align-items: center; margin: 10px 0; font-weight: 500; justify-content: flex-start; }
-.contact-item i { margin-right: 10px; color: #555; min-width: 20px; text-align: center; }
-.section { margin-bottom: 25px; text-align: left; }
-.section i { margin-right: 8px; color: #444; }
-.cover-letter { margin-top: 40px; padding: 30px; background: #f9f9f9; }
-.btn-container { margin-top: 30px; display: flex; gap: 15px; padding: 0 25px 30px 25px; }
-.btn { background: #3f51b5; color: #fff; border: none; padding: 12px 20px; font-size: 14px; cursor: pointer; border-radius: 6px; transition: all 0.3s; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 5px; }
-.btn:hover { background: #5c6bc0; }
-input[type=file] { display: block; margin: 10px auto; }
+.profile-pic{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid rgba(0,0,0,0.08);
+  display:block;
+  margin:0 auto 12px;
+}
+h1{font-size:28px;margin:8px 0 6px;font-weight:700}
+h2{font-size:16px;margin:8px 0 10px;color:#444;border-bottom:1px solid #e6e6e6;padding-bottom:6px;display:flex;align-items:center;gap:8px}
+h3{font-size:14px;margin:8px 0 4px;font-weight:600}
+p,li,span{font-size:13px;line-height:1.55;color:var(--text)}
+ul{padding-left:18px;margin:6px 0}
+.contact-item{display:flex;align-items:center;gap:10px;margin:8px 0;font-weight:500;justify-content:flex-start}
+.contact-item i{min-width:22px;text-align:center;color:#555}
+.section{margin-bottom:20px;text-align:left}
+.section i{color:#444;margin-right:6px}
+.controls{
+  max-width:980px;margin:12px auto;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+}
+.btn{
+  background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:6px;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+}
+.btn.secondary{background:#607d8b}
+.btn.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.small{padding:8px 10px;font-size:13px}
+.upload-wrap{display:flex;justify-content:center;margin-bottom:6px}
+input[type=file]{font-size:13px}
+.modal {
+  position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:9999;padding:20px;
+}
+.modal.open{display:flex}
+.modal-content{background:#fff;border-radius:8px;max-width:100%;max-height:100%;overflow:auto;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,0.25)}
+.modal img{max-width:100%;height:auto;display:block}
+.note{max-width:980px;margin:8px auto;color:#555;font-size:13px;text-align:center}
+[contenteditable="true"]:focus{
+  outline:2px dashed rgba(63,81,181,0.18);
+  outline-offset:3px;
+  border-radius:4px;
+  background:rgba(63,81,181,0.02);
+}
+@media(max-width:1100px){
+  .preview-frame{width:95%}
+  .left-column{padding:22px}
+  .right-column{padding:22px}
+}
 </style>
 </head>
 <body>
 
-<div class="container" id="cvContainer">
-    <div class="cv">
-        <div class="left-column">
-            <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic" id="profilePic">
-            <input type="file" id="uploadImage" accept="image/*" class="upload-btn">
-            <h1 id="fullName" contenteditable="true">John Doe</h1>
+<div class="controls">
+  <label class="btn ghost small" title="Upload CV Picture">
+    <i class="fas fa-upload"></i> Upload Picture
+    <input id="uploadImage" type="file" accept="image/*" style="display:none">
+  </label>
 
-            <div class="section">
-                <h2><i class="fas fa-address-book"></i> Contact</h2>
-                <div class="contact-item"><i class="fas fa-phone"></i> <span id="phone" contenteditable="true">+123 456 7890</span></div>
-                <div class="contact-item"><i class="fas fa-envelope"></i> <span id="email" contenteditable="true">john@example.com</span></div>
-                <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span id="address" contenteditable="true">123 Main St, City</span></div>
-                <div class="contact-item"><i class="fas fa-globe"></i> <span id="website" contenteditable="true">www.johndoe.com</span></div>
-                <div class="contact-item"><i class="fab fa-linkedin"></i> <span id="linkedin" contenteditable="true">linkedin.com/in/johndoe</span></div>
-            </div>
+  <button class="btn" id="previewCvBtn"><i class="fas fa-eye"></i> Preview CV</button>
+  <button class="btn" id="downloadCvBtn"><i class="fas fa-file-pdf"></i> Download CV (PDF)</button>
 
-            <div class="section">
-                <h2><i class="fas fa-language"></i> Languages</h2>
-                <ul id="languages" contenteditable="true">
-                    <li>English (Fluent)</li>
-                    <li>French (Intermediate)</li>
-                </ul>
-            </div>
+  <button class="btn" id="previewCoverBtn"><i class="fas fa-eye"></i> Preview Cover Letter</button>
+  <button class="btn" id="downloadCoverBtn"><i class="fas fa-file-pdf"></i> Download Cover Letter (PDF)</button>
+</div>
 
-            <div class="section">
-                <h2><i class="fas fa-laptop-code"></i> Software</h2>
-                <ul id="software" contenteditable="true">
-                    <li>Photoshop</li>
-                    <li>Illustrator</li>
-                    <li>VS Code</li>
-                </ul>
-            </div>
+<p class="note">Click any field to edit. Use Preview before downloading PDF.</p>
 
-            <div class="section">
-                <h2><i class="fas fa-heart"></i> Hobbies</h2>
-                <ul id="hobbies" contenteditable="true">
-                    <li>Photography</li>
-                    <li>Traveling</li>
-                    <li>Reading</li>
-                </ul>
-            </div>
+<div class="preview-frame" id="pageVisual">
+  <div class="page-inner" id="cvVisual">
+    <div class="left-column" id="cvLeft">
+      <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/120" alt="profile">
+      <h1 id="fullName" contenteditable="true">John Doe</h1>
+
+      <div class="section">
+        <h2><i class="fas fa-address-book"></i> Contact</h2>
+        <div class="contact-item"><i class="fas fa-phone"></i><span id="phone" contenteditable="true">+123 456 7890</span></div>
+        <div class="contact-item"><i class="fas fa-envelope"></i><span id="email" contenteditable="true">john@example.com</span></div>
+        <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span id="address" contenteditable="true">123 Main St, City</span></div>
+        <div class="contact-item"><i class="fas fa-globe"></i><span id="website" contenteditable="true">www.johndoe.com</span></div>
+        <div class="contact-item"><i class="fab fa-linkedin"></i><span id="linkedin" contenteditable="true">linkedin.com/in/johndoe</span></div>
+      </div>
+
+      <div class="section">
+        <h2><i class="fas fa-language"></i> Languages</h2>
+        <ul id="languages" contenteditable="true">
+          <li>English (Fluent)</li>
+          <li>French (Intermediate)</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2><i class="fas fa-laptop-code"></i> Software</h2>
+        <ul id="software" contenteditable="true">
+          <li>Photoshop</li>
+          <li>Illustrator</li>
+          <li>VS Code</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2><i class="fas fa-heart"></i> Hobbies</h2>
+        <ul id="hobbies" contenteditable="true">
+          <li>Photography</li>
+          <li>Traveling</li>
+          <li>Reading</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="right-column" id="cvRight">
+      <div class="section">
+        <h2><i class="fas fa-user"></i> Profile</h2>
+        <p id="profileText" contenteditable="true">Creative front-end developer with 5+ years of experience designing user-centered websites.</p>
+      </div>
+
+      <div class="section">
+        <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
+        <div id="experience" contenteditable="true">
+          <h3>Front-End Developer</h3>
+          <p>XYZ Company | 2020 - Present</p>
+          <ul>
+            <li>Designed responsive websites and web applications</li>
+            <li>Collaborated with designers and back-end developers</li>
+          </ul>
+
+          <h3>Junior Developer</h3>
+          <p>ABC Studio | 2018 - 2020</p>
+          <ul>
+            <li>Assisted in website development projects</li>
+            <li>Maintained internal tools</li>
+          </ul>
         </div>
+      </div>
 
-        <div class="right-column">
-            <div class="section">
-                <h2><i class="fas fa-user"></i> Profile</h2>
-                <p id="profileText" contenteditable="true">Creative web developer with 5+ years of experience designing and developing user-centered digital solutions.</p>
-            </div>
-
-            <div class="section">
-                <h2><i class="fas fa-briefcase"></i> Job Experience</h2>
-                <div id="experience" contenteditable="true">
-                    <h3>Front-End Developer</h3>
-                    <p>XYZ Company | 2020 - Present</p>
-                    <ul>
-                        <li>Designed responsive websites and web applications</li>
-                        <li>Collaborated with designers and back-end developers</li>
-                    </ul>
-
-                    <h3>Junior Developer</h3>
-                    <p>ABC Studio | 2018 - 2020</p>
-                    <ul>
-                        <li>Assisted in website development projects</li>
-                        <li>Maintained internal tools</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2><i class="fas fa-graduation-cap"></i> Education</h2>
-                <p id="education" contenteditable="true">BSc in Computer Science, University of Tech, 2018</p>
-            </div>
-        </div>
+      <div class="section">
+        <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+        <p id="education" contenteditable="true">BSc in Computer Science, University of Tech, 2018</p>
+      </div>
     </div>
+  </div>
 
-    <div class="cover-letter" id="coverLetter" contenteditable="true">
-        <h2><i class="fas fa-envelope"></i> Cover Letter</h2>
-        <p>Dear Hiring Manager,</p>
-        <p>I am excited to apply for the Front-End Developer position at your esteemed company...</p>
-        <p>Sincerely,<br><span id="coverName" contenteditable="true">John Doe</span></p>
+  <div id="coverVisual" style="padding:28px;border-top:1px solid rgba(0,0,0,0.03)">
+    <div class="cover-letter" id="coverLetter" contenteditable="true" style="background:#fafafa;padding:18px;border-radius:6px">
+      <h2 style="display:flex;align-items:center;gap:8px"><i class="fas fa-envelope"></i> Cover Letter</h2>
+      <p>To: <span contenteditable="true">Hiring Manager</span></p>
+      <p>Dear Hiring Manager,</p>
+      <p id="coverBody" contenteditable="true">I am excited to apply for the Front-End Developer position at your esteemed company. I have over 5 years of experience designing and developing user-centered websites...</p>
+      <p>Sincerely,<br><span id="coverName" contenteditable="true">John Doe</span></p>
     </div>
+  </div>
+</div>
 
-    <div class="btn-container">
-        <button class="btn" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download CV & Cover Letter as PDF</button>
+<div id="modal" class="modal" role="dialog" aria-hidden="true">
+  <div class="modal-content">
+    <div style="display:flex;justify-content:flex-end">
+      <button id="closeModal" class="btn secondary small"><i class="fas fa-times"></i> Close</button>
     </div>
+    <div id="modalBody" style="padding:6px"></div>
+  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script>
-// رفع صورة شخصية
-document.getElementById('uploadImage').addEventListener('change', function(event){
-    const file = event.target.files[0];
-    if(file){
-        const reader = new FileReader();
-        reader.onload = function(e){
-            document.getElementById('profilePic').src = e.target.result;
-        }
-        reader.readAsDataURL(file);
-    }
+function renderElementToImage(el, scale=2){
+  return html2canvas(el,{scale:scale,useCORS:true,backgroundColor:'#ffffff',scrollY:-window.scrollY});
+}
+function showModalWithImage(imgDataUrl){
+  const modal=document.getElementById('modal');
+  document.getElementById('modalBody').innerHTML='<img src="'+imgDataUrl+'" alt="preview">';
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+}
+document.getElementById('closeModal').addEventListener('click',function(){
+  const modal=document.getElementById('modal');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  document.getElementById('modalBody').innerHTML='';
+});
+document.getElementById('uploadImage').addEventListener('change',function(e){
+  const file=e.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(ev){document.getElementById('profilePic').src=ev.target.result;}
+  reader.readAsDataURL(file);
 });
 
-// PDF مع هوامش آمنة
-function downloadPDF(){
-    const cv = document.getElementById('cvContainer');
-    html2canvas(cv, {scale:2}).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const margin = 10; // هوامش 10 مم
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfWidth = pageWidth - 2 * margin;
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-        pdf.addImage(imgData, 'PNG', margin, margin, pdfWidth, pdfHeight);
-        pdf.save('CV_CoverLetter.pdf');
-    });
+async function previewAndDownload(element, saveAs=false, filename='document.pdf'){
+  const wrapper=document.createElement('div');
+  wrapper.style.width=getComputedStyle(document.querySelector('.preview-frame')).width;
+  wrapper.style.background='#fff';
+  wrapper.appendChild(element.cloneNode(true));
+  document.body.appendChild(wrapper);
+  try{
+    const canvas=await renderElementToImage(wrapper,2);
+    const imgData=canvas.toDataURL('image/png');
+    if(saveAs){
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p','mm','a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const margin=10;
+      const imgProps=pdf.getImageProperties(imgData);
+      const pdfWidth=pageWidth-margin*2;
+      const pdfHeight=(imgProps.height*pdfWidth)/imgProps.width;
+      pdf.addImage(imgData,'PNG',margin,margin,pdfWidth,pdfHeight);
+      pdf.save(filename);
+    }else{
+      showModalWithImage(imgData);
+    }
+  }catch(err){console.error(err);alert('Error generating image/PDF');}
+  finally{document.body.removeChild(wrapper);}
 }
+
+document.getElementById('previewCvBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('cvVisual')));
+document.getElementById('downloadCvBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('cvVisual'),true,'CV.pdf'));
+document.getElementById('previewCoverBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('coverLetter')));
+document.getElementById('downloadCoverBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('coverLetter'),true,'CoverLetter.pdf'));
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)document.getElementById('closeModal').click();});
 </script>
+
 </body>
 </html>
