@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>CV + Cover Letter — Final</title>
 
-<!-- Fonts and icons -->
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
- integrity="sha512-p1+J/3xH+sXKfUOvD0B+9XxA0V6WQZrsX2Uwt2F+VwZbW5U0ZfLfL3uG1Hb+O73NnD6KjEc8bBxj0GfXJ5ZfMw=="
- crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- Font Awesome (JS kit ensures all icons load) -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 <style>
 :root{
   --page-width-mm:210mm;
   --page-height-mm:297mm;
-  --safe-margin-mm:10mm;
   --left-bg:#e8eaf6;
   --accent:#3f51b5;
   --text:#222;
@@ -29,42 +28,27 @@ body{
   padding:18px;
 }
 .preview-frame{
-  width:calc( var(--page-width-mm) );
-  min-height:calc( var(--page-height-mm) );
+  width:210mm;
+  min-height:297mm;
   margin:0 auto 18px;
   background:#fff;
   box-shadow:0 6px 18px rgba(0,0,0,0.08);
   overflow:hidden;
   display:block;
 }
-.page-inner{
-  display:flex;
-  gap:0;
-  align-items:flex-start;
-}
+.page-inner{display:flex;gap:0;align-items:flex-start;}
 .left-column{
   width:35%;
   background:var(--left-bg);
   padding:36px 28px;
-  box-sizing:border-box;
   text-align:center;
-  min-height:100%;
 }
 .right-column{
   width:65%;
   background:#fff;
   padding:36px 28px;
-  box-sizing:border-box;
 }
-.profile-pic{
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  object-fit:cover;
-  border:3px solid rgba(0,0,0,0.08);
-  display:block;
-  margin:0 auto 12px;
-}
+.profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid rgba(0,0,0,0.08);display:block;margin:0 auto 12px;}
 h1{font-size:28px;margin:8px 0 6px;font-weight:700}
 h2{font-size:16px;margin:8px 0 10px;color:#444;border-bottom:1px solid #e6e6e6;padding-bottom:6px;display:flex;align-items:center;gap:8px}
 h3{font-size:14px;margin:8px 0 4px;font-weight:600}
@@ -74,49 +58,30 @@ ul{padding-left:18px;margin:6px 0}
 .contact-item i{min-width:22px;text-align:center;color:#555}
 .section{margin-bottom:20px;text-align:left}
 .section i{color:#444;margin-right:6px}
-.controls{
-  max-width:980px;margin:12px auto;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
-}
-.btn{
-  background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:6px;font-weight:600;cursor:pointer;
-  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
-}
+.controls{max-width:980px;margin:12px auto;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.btn{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:6px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
 .btn.secondary{background:#607d8b}
 .btn.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
 .small{padding:8px 10px;font-size:13px}
 .upload-wrap{display:flex;justify-content:center;margin-bottom:6px}
 input[type=file]{font-size:13px}
-.modal {
-  position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:9999;padding:20px;
-}
+.modal {position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:9999;padding:20px;}
 .modal.open{display:flex}
-.modal-content{background:#fff;border-radius:8px;max-width:100%;max-height:100%;overflow:auto;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,0.25)}
+.modal-content{background:#fff;border-radius:8px;max-width:100%;max-height:100%;overflow:auto;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,0.25);}
 .modal img{max-width:100%;height:auto;display:block}
 .note{max-width:980px;margin:8px auto;color:#555;font-size:13px;text-align:center}
-[contenteditable="true"]:focus{
-  outline:2px dashed rgba(63,81,181,0.18);
-  outline-offset:3px;
-  border-radius:4px;
-  background:rgba(63,81,181,0.02);
-}
-@media(max-width:1100px){
-  .preview-frame{width:95%}
-  .left-column{padding:22px}
-  .right-column{padding:22px}
-}
+[contenteditable="true"]:focus{outline:2px dashed rgba(63,81,181,0.18);outline-offset:3px;border-radius:4px;background:rgba(63,81,181,0.02);}
+@media(max-width:1100px){.preview-frame{width:95%}.left-column{padding:22px}.right-column{padding:22px}}
 </style>
 </head>
 <body>
 
 <div class="controls">
-  <label class="btn ghost small" title="Upload CV Picture">
-    <i class="fas fa-upload"></i> Upload Picture
+  <label class="btn ghost small"><i class="fas fa-upload"></i> Upload Picture
     <input id="uploadImage" type="file" accept="image/*" style="display:none">
   </label>
-
   <button class="btn" id="previewCvBtn"><i class="fas fa-eye"></i> Preview CV</button>
   <button class="btn" id="downloadCvBtn"><i class="fas fa-file-pdf"></i> Download CV (PDF)</button>
-
   <button class="btn" id="previewCoverBtn"><i class="fas fa-eye"></i> Preview Cover Letter</button>
   <button class="btn" id="downloadCoverBtn"><i class="fas fa-file-pdf"></i> Download Cover Letter (PDF)</button>
 </div>
@@ -125,8 +90,8 @@ input[type=file]{font-size:13px}
 
 <div class="preview-frame" id="pageVisual">
   <div class="page-inner" id="cvVisual">
-    <div class="left-column" id="cvLeft">
-      <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/120" alt="profile">
+    <div class="left-column">
+      <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/120">
       <h1 id="fullName" contenteditable="true">John Doe</h1>
 
       <div class="section">
@@ -165,12 +130,11 @@ input[type=file]{font-size:13px}
       </div>
     </div>
 
-    <div class="right-column" id="cvRight">
+    <div class="right-column">
       <div class="section">
         <h2><i class="fas fa-user"></i> Profile</h2>
         <p id="profileText" contenteditable="true">Creative front-end developer with 5+ years of experience designing user-centered websites.</p>
       </div>
-
       <div class="section">
         <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
         <div id="experience" contenteditable="true">
@@ -189,7 +153,6 @@ input[type=file]{font-size:13px}
           </ul>
         </div>
       </div>
-
       <div class="section">
         <h2><i class="fas fa-graduation-cap"></i> Education</h2>
         <p id="education" contenteditable="true">BSc in Computer Science, University of Tech, 2018</p>
@@ -208,7 +171,7 @@ input[type=file]{font-size:13px}
   </div>
 </div>
 
-<div id="modal" class="modal" role="dialog" aria-hidden="true">
+<div id="modal" class="modal">
   <div class="modal-content">
     <div style="display:flex;justify-content:flex-end">
       <button id="closeModal" class="btn secondary small"><i class="fas fa-times"></i> Close</button>
@@ -219,63 +182,16 @@ input[type=file]{font-size:13px}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <script>
-function renderElementToImage(el, scale=2){
-  return html2canvas(el,{scale:scale,useCORS:true,backgroundColor:'#ffffff',scrollY:-window.scrollY});
-}
-function showModalWithImage(imgDataUrl){
-  const modal=document.getElementById('modal');
-  document.getElementById('modalBody').innerHTML='<img src="'+imgDataUrl+'" alt="preview">';
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden','false');
-}
-document.getElementById('closeModal').addEventListener('click',function(){
-  const modal=document.getElementById('modal');
-  modal.classList.remove('open');
-  modal.setAttribute('aria-hidden','true');
-  document.getElementById('modalBody').innerHTML='';
-});
-document.getElementById('uploadImage').addEventListener('change',function(e){
-  const file=e.target.files[0];
-  if(!file) return;
-  const reader=new FileReader();
-  reader.onload=function(ev){document.getElementById('profilePic').src=ev.target.result;}
-  reader.readAsDataURL(file);
-});
-
-async function previewAndDownload(element, saveAs=false, filename='document.pdf'){
-  const wrapper=document.createElement('div');
-  wrapper.style.width=getComputedStyle(document.querySelector('.preview-frame')).width;
-  wrapper.style.background='#fff';
-  wrapper.appendChild(element.cloneNode(true));
-  document.body.appendChild(wrapper);
-  try{
-    const canvas=await renderElementToImage(wrapper,2);
-    const imgData=canvas.toDataURL('image/png');
-    if(saveAs){
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF('p','mm','a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const margin=10;
-      const imgProps=pdf.getImageProperties(imgData);
-      const pdfWidth=pageWidth-margin*2;
-      const pdfHeight=(imgProps.height*pdfWidth)/imgProps.width;
-      pdf.addImage(imgData,'PNG',margin,margin,pdfWidth,pdfHeight);
-      pdf.save(filename);
-    }else{
-      showModalWithImage(imgData);
-    }
-  }catch(err){console.error(err);alert('Error generating image/PDF');}
-  finally{document.body.removeChild(wrapper);}
-}
-
-document.getElementById('previewCvBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('cvVisual')));
-document.getElementById('downloadCvBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('cvVisual'),true,'CV.pdf'));
-document.getElementById('previewCoverBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('coverLetter')));
-document.getElementById('downloadCoverBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('coverLetter'),true,'CoverLetter.pdf'));
-document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)document.getElementById('closeModal').click();});
+function renderElementToImage(el, scale=2){return html2canvas(el,{scale:scale,useCORS:true,backgroundColor:'#ffffff',scrollY:-window.scrollY});}
+function showModalWithImage(img){document.getElementById('modalBody').innerHTML='<img src="'+img+'">';document.getElementById('modal').classList.add('open');}
+document.getElementById('closeModal').onclick=function(){document.getElementById('modal').classList.remove('open');document.getElementById('modalBody').innerHTML='';}
+document.getElementById('uploadImage').addEventListener('change',function(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(ev){document.getElementById('profilePic').src=ev.target.result};reader.readAsDataURL(file);});
+async function previewAndDownload(el,save=false,name='document.pdf'){const wrapper=document.createElement('div');wrapper.style.width=getComputedStyle(document.querySelector('.preview-frame')).width;wrapper.style.background='#fff';wrapper.appendChild(el.cloneNode(true));document.body.appendChild(wrapper);try{const canvas=await renderElementToImage(wrapper,2);const img=canvas.toDataURL('image/png');if(save){const { jsPDF }=window.jspdf;const pdf=new jsPDF('p','mm','a4');const pw=pdf.internal.pageSize.getWidth();const margin=10;const props=pdf.getImageProperties(img);const w=pw-margin*2;const h=(props.height*w)/props.width;pdf.addImage(img,'PNG',margin,margin,w,h);pdf.save(name);}else{showModalWithImage(img);} }catch(e){console.error(e);alert('Error generating image/PDF');}finally{document.body.removeChild(wrapper);}}
+document.getElementById('previewCvBtn').onclick=()=>previewAndDownload(document.getElementById('cvVisual'));
+document.getElementById('downloadCvBtn').onclick=()=>previewAndDownload(document.getElementById('cvVisual'),true,'CV.pdf');
+document.getElementById('previewCoverBtn').onclick=()=>previewAndDownload(document.getElementById('coverLetter'));
+document.getElementById('downloadCoverBtn').onclick=()=>previewAndDownload(document.getElementById('coverLetter'),true,'CoverLetter.pdf');
 </script>
-
 </body>
 </html>
