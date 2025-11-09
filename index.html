@@ -1,96 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>CV + Cover Letter — SVG Icons</title>
+<title>CV + Cover Letter — Final</title>
 
+<!-- Fonts and icons -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+ integrity="sha512-p1+J/3xH+sXKfUOvD0B+9XxA0V6WQZrsX2Uwt2F+VwZbW5U0ZfLfL3uG1Hb+O73NnD6KjEc8bBxj0GfXJ5ZfMw=="
+ crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
 :root{
   --page-width-mm:210mm;
   --page-height-mm:297mm;
+  --safe-margin-mm:10mm;
   --left-bg:#e8eaf6;
   --accent:#3f51b5;
   --text:#222;
 }
-body{font-family:'Poppins',sans-serif;margin:0;background:#f3f3f3;color:var(--text);padding:18px;}
-.preview-frame{width:210mm;min-height:297mm;margin:0 auto 18px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.08);overflow:hidden;display:block;}
-.page-inner{display:flex;align-items:flex-start;}
-.left-column{width:35%;background:var(--left-bg);padding:36px 28px;text-align:center;}
-.right-column{width:65%;background:#fff;padding:36px 28px;}
-.profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid rgba(0,0,0,0.08);display:block;margin:0 auto 12px;}
+*{box-sizing:border-box}
+body{
+  font-family:'Poppins',sans-serif;
+  margin:0;
+  background:#f3f3f3;
+  color:var(--text);
+  padding:18px;
+}
+.preview-frame{
+  width:calc( var(--page-width-mm) );
+  min-height:calc( var(--page-height-mm) );
+  margin:0 auto 18px;
+  background:#fff;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  overflow:hidden;
+  display:block;
+}
+.page-inner{
+  display:flex;
+  gap:0;
+  align-items:flex-start;
+}
+.left-column{
+  width:35%;
+  background:var(--left-bg);
+  padding:36px 28px;
+  box-sizing:border-box;
+  text-align:center;
+  min-height:100%;
+}
+.right-column{
+  width:65%;
+  background:#fff;
+  padding:36px 28px;
+  box-sizing:border-box;
+}
+.profile-pic{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid rgba(0,0,0,0.08);
+  display:block;
+  margin:0 auto 12px;
+}
 h1{font-size:28px;margin:8px 0 6px;font-weight:700}
 h2{font-size:16px;margin:8px 0 10px;color:#444;border-bottom:1px solid #e6e6e6;padding-bottom:6px;display:flex;align-items:center;gap:8px}
+h3{font-size:14px;margin:8px 0 4px;font-weight:600}
 p,li,span{font-size:13px;line-height:1.55;color:var(--text)}
 ul{padding-left:18px;margin:6px 0}
 .contact-item{display:flex;align-items:center;gap:10px;margin:8px 0;font-weight:500;justify-content:flex-start}
-.contact-item svg{min-width:22px;height:16px;fill:#555}
+.contact-item i{min-width:22px;text-align:center;color:#555}
 .section{margin-bottom:20px;text-align:left}
-[contenteditable="true"]:focus{outline:2px dashed rgba(63,81,181,0.18);outline-offset:3px;border-radius:4px;background:rgba(63,81,181,0.02);}
+.section i{color:#444;margin-right:6px}
+.controls{
+  max-width:980px;margin:12px auto;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+}
+.btn{
+  background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:6px;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+}
+.btn.secondary{background:#607d8b}
+.btn.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.small{padding:8px 10px;font-size:13px}
+.upload-wrap{display:flex;justify-content:center;margin-bottom:6px}
+input[type=file]{font-size:13px}
+.modal {
+  position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:9999;padding:20px;
+}
+.modal.open{display:flex}
+.modal-content{background:#fff;border-radius:8px;max-width:100%;max-height:100%;overflow:auto;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,0.25)}
+.modal img{max-width:100%;height:auto;display:block}
+.note{max-width:980px;margin:8px auto;color:#555;font-size:13px;text-align:center}
+[contenteditable="true"]:focus{
+  outline:2px dashed rgba(63,81,181,0.18);
+  outline-offset:3px;
+  border-radius:4px;
+  background:rgba(63,81,181,0.02);
+}
+@media(max-width:1100px){
+  .preview-frame{width:95%}
+  .left-column{padding:22px}
+  .right-column{padding:22px}
+}
 </style>
 </head>
 <body>
 
-<div class="preview-frame">
-  <div class="page-inner">
-    <div class="left-column">
-      <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/120">
+<div class="controls">
+  <label class="btn ghost small" title="Upload CV Picture">
+    <i class="fas fa-upload"></i> Upload Picture
+    <input id="uploadImage" type="file" accept="image/*" style="display:none">
+  </label>
+
+  <button class="btn" id="previewCvBtn"><i class="fas fa-eye"></i> Preview CV</button>
+  <button class="btn" id="downloadCvBtn"><i class="fas fa-file-pdf"></i> Download CV (PDF)</button>
+
+  <button class="btn" id="previewCoverBtn"><i class="fas fa-eye"></i> Preview Cover Letter</button>
+  <button class="btn" id="downloadCoverBtn"><i class="fas fa-file-pdf"></i> Download Cover Letter (PDF)</button>
+</div>
+
+<p class="note">Click any field to edit. Use Preview before downloading PDF.</p>
+
+<div class="preview-frame" id="pageVisual">
+  <div class="page-inner" id="cvVisual">
+    <div class="left-column" id="cvLeft">
+      <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/120" alt="profile">
       <h1 id="fullName" contenteditable="true">John Doe</h1>
 
       <div class="section">
-        <h2>Contact</h2>
+        <h2><i class="fas fa-address-book"></i> Contact</h2>
+        <div class="contact-item"><i class="fas fa-phone-alt"></i><span id="phone" contenteditable="true">+123 456 7890</span></div>
+        <div class="contact-item"><i class="fas fa-envelope"></i><span id="email" contenteditable="true">john@example.com</span></div>
+        <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span id="address" contenteditable="true">123 Main St, City</span></div>
+        <div class="contact-item"><i class="fas fa-globe"></i><span id="website" contenteditable="true">www.johndoe.com</span></div>
+        <div class="contact-item"><i class="fab fa-linkedin"></i><span id="linkedin" contenteditable="true">linkedin.com/in/johndoe</span></div>
+      </div>
 
-        <div class="contact-item">
-          <!-- Phone Icon SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M511.7 387.1c-1.8-14.3-11.3-26.4-25.4-31.8l-104-39.5c-12.5-4.7-26.6-2.2-36.6 6.6l-46 39.1c-72-38.6-131-97.6-169.6-169.6l39.1-46c8.8-10 11.3-24.1 6.6-36.6l-39.5-104c-5.4-14.1-17.5-23.6-31.8-25.4-14.2-1.8-28.5 4.7-37.3 16.4l-48 64C2.1 91.7-2.4 115.8 5.7 138.4c64.5 146 184.7 266.2 330.7 330.7 22.6 8.1 46.7 3.6 60.5-8.7l64-48c11.7-8.8 18.2-23.1 16.4-37.3z"/></svg>
-          <span id="phone" contenteditable="true">+123 456 7890</span>
-        </div>
+      <div class="section">
+        <h2><i class="fas fa-language"></i> Languages</h2>
+        <ul id="languages" contenteditable="true">
+          <li>English (Fluent)</li>
+          <li>French (Intermediate)</li>
+        </ul>
+      </div>
 
-        <div class="contact-item">
-          <!-- Email Icon SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M502.3 190.8l-192-160c-17-14.2-42.1-14.2-59.1 0l-192 160C9.4 196.1 0 208.2 0 222.3V464c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V222.3c0-14.1-9.4-26.2-23.7-31.5zM256 288l-192-160h384L256 288z"/></svg>
-          <span id="email" contenteditable="true">john@example.com</span>
-        </div>
+      <div class="section">
+        <h2><i class="fas fa-laptop-code"></i> Software</h2>
+        <ul id="software" contenteditable="true">
+          <li>Photoshop</li>
+          <li>Illustrator</li>
+          <li>VS Code</li>
+        </ul>
+      </div>
 
-        <div class="contact-item">
-          <!-- Address Icon SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M168 0C75.2 0 0 75.2 0 168c0 87.3 123.5 224.7 168 320 44.5-95.3 168-232.7 168-320C336 75.2 260.8 0 168 0zm0 256c-48.6 0-88-39.4-88-88s39.4-88 88-88 88 39.4 88 88-39.4 88-88 88z"/></svg>
-          <span id="address" contenteditable="true">123 Main St, City</span>
-        </div>
-
-        <div class="contact-item">
-          <!-- Website Icon SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 0C114.836 0 0 114.836 0 256s114.836 256 256 256 256-114.836 256-256S397.164 0 256 0zm106.8 387.2c-32 32-78.1 44.8-127.6 44.8s-95.6-12.8-127.6-44.8c-32-32-44.8-78.1-44.8-127.6s12.8-95.6 44.8-127.6c32-32 78.1-44.8 127.6-44.8s95.6 12.8 127.6 44.8c32 32 44.8 78.1 44.8 127.6s-12.8 95.6-44.8 127.6z"/></svg>
-          <span id="website" contenteditable="true">www.johndoe.com</span>
-        </div>
-
-        <div class="contact-item">
-          <!-- LinkedIn Icon SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M100.28 448H7.4V148.9h92.88zm-46.44-341c-29.77 0-53.88-24.11-53.88-53.88S24.07 0 53.84 0 107.72 24.11 107.72 53.88s-24.11 53.12-53.88 53.12zm394.42 341h-92.68V302.4c0-34.7-12.44-58.3-43.44-58.3-23.7 0-37.8 16-44 31.4-2.28 5.5-2.85 13.2-2.85 20.9V448h-92.6s1.25-236.7 0-261.1h92.6v37c-.2.3-.5.6-.7.9h.7v-.9c12.3-19 34.4-46.1 83.7-46.1 61.1 0 106.9 39.8 106.9 125.3V448z"/></svg>
-          <span id="linkedin" contenteditable="true">linkedin.com/in/johndoe</span>
-        </div>
+      <div class="section">
+        <h2><i class="fas fa-heart"></i> Hobbies</h2>
+        <ul id="hobbies" contenteditable="true">
+          <li>Photography</li>
+          <li>Traveling</li>
+          <li>Reading</li>
+        </ul>
       </div>
     </div>
 
-    <div class="right-column">
+    <div class="right-column" id="cvRight">
       <div class="section">
-        <h2>Profile</h2>
+        <h2><i class="fas fa-user"></i> Profile</h2>
         <p id="profileText" contenteditable="true">Creative front-end developer with 5+ years of experience designing user-centered websites.</p>
       </div>
+
+      <div class="section">
+        <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
+        <div id="experience" contenteditable="true">
+          <h3>Front-End Developer</h3>
+          <p>XYZ Company | 2020 - Present</p>
+          <ul>
+            <li>Designed responsive websites and web applications</li>
+            <li>Collaborated with designers and back-end developers</li>
+          </ul>
+
+          <h3>Junior Developer</h3>
+          <p>ABC Studio | 2018 - 2020</p>
+          <ul>
+            <li>Assisted in website development projects</li>
+            <li>Maintained internal tools</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+        <p id="education" contenteditable="true">BSc in Computer Science, University of Tech, 2018</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="coverVisual" style="padding:28px;border-top:1px solid rgba(0,0,0,0.03)">
+    <div class="cover-letter" id="coverLetter" contenteditable="true" style="background:#fafafa;padding:18px;border-radius:6px">
+      <h2 style="display:flex;align-items:center;gap:8px"><i class="fas fa-envelope"></i> Cover Letter</h2>
+      <p>To: <span contenteditable="true">Hiring Manager</span></p>
+      <p>Dear Hiring Manager,</p>
+      <p id="coverBody" contenteditable="true">I am excited to apply for the Front-End Developer position at your esteemed company. I have over 5 years of experience designing and developing user-centered websites...</p>
+      <p>Sincerely,<br><span id="coverName" contenteditable="true">John Doe</span></p>
     </div>
   </div>
 </div>
 
+<div id="modal" class="modal" role="dialog" aria-hidden="true">
+  <div class="modal-content">
+    <div style="display:flex;justify-content:flex-end">
+      <button id="closeModal" class="btn secondary small"><i class="fas fa-times"></i> Close</button>
+    </div>
+    <div id="modalBody" style="padding:6px"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script>
 document.getElementById('uploadImage').addEventListener('change',function(e){
   const file=e.target.files[0];
-  if(!file) return;
+  if(!file)return;
   const reader=new FileReader();
-  reader.onload=function(ev){document.getElementById('profilePic').src=ev.target.result};
+  reader.onload=function(ev){document.getElementById('profilePic').src=ev.target.result;}
   reader.readAsDataURL(file);
 });
+
+async function renderElementToImage(el, scale=2){
+  return html2canvas(el,{scale:scale,useCORS:true,backgroundColor:'#ffffff',scrollY:-window.scrollY});
+}
+function showModalWithImage(imgDataUrl){
+  const modal=document.getElementById('modal');
+  document.getElementById('modalBody').innerHTML='<img src="'+imgDataUrl+'" alt="preview">';
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+}
+document.getElementById('closeModal').addEventListener('click',function(){
+  const modal=document.getElementById('modal');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  document.getElementById('modalBody').innerHTML='';
+});
+
+async function previewAndDownload(element, saveAs=false, filename='document.pdf'){
+  const wrapper=document.createElement('div');
+  wrapper.style.width=getComputedStyle(document.querySelector('.preview-frame')).width;
+  wrapper.style.background='#fff';
+  wrapper.appendChild(element.cloneNode(true));
+  document.body.appendChild(wrapper);
+  try{
+    const canvas=await renderElementToImage(wrapper,2);
+    const imgData=canvas.toDataURL('image/png');
+    if(saveAs){
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p','mm','a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const margin=10;
+      const imgProps=pdf.getImageProperties(imgData);
+      const pdfWidth=pageWidth-margin*2;
+      const pdfHeight=(imgProps.height*pdfWidth)/imgProps.width;
+      pdf.addImage(imgData,'PNG',margin,margin,pdfWidth,pdfHeight);
+      pdf.save(filename);
+    }else{
+      showModalWithImage(imgData);
+    }
+  }catch(err){console.error(err);alert('Error generating image/PDF');}
+  finally{document.body.removeChild(wrapper);}
+}
+
+document.getElementById('previewCvBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('cvVisual')));
+document.getElementById('downloadCvBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('cvVisual'),true,'CV.pdf'));
+document.getElementById('previewCoverBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('coverLetter')));
+document.getElementById('downloadCoverBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('coverLetter'),true,'CoverLetter.pdf'));
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)document.getElementById('closeModal').click();});
 </script>
 
 </body>
