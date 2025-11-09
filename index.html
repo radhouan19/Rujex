@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>CV + Cover Letter — Final SVG & PDF</title>
+<title>CV + Cover Letter — Separated Pages</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -28,17 +28,21 @@ body{
   color:var(--text);
   padding:18px;
 }
+/* A4 visual */
 .preview-frame{
   width:calc(var(--page-width-mm));
-  min-height:calc(var(--page-height-mm));
+  height:calc(var(--page-height-mm));
   margin:0 auto 18px;
   background:#fff;
   box-shadow:0 6px 18px rgba(0,0,0,0.08);
   overflow:hidden;
+  display:block;
 }
+/* inner layout */
 .page-inner{
   display:flex;
   align-items:flex-start;
+  height:100%;
 }
 .left-column{
   width:35%;
@@ -106,16 +110,19 @@ ul{padding-left:18px;margin:6px 0}
     <input id="uploadImage" type="file" accept="image/*" style="display:none">
   </label>
 
+  <!-- CV controls -->
   <button class="btn" id="previewCvBtn">Preview CV</button>
   <button class="btn" id="downloadCvBtn">Download CV (PDF)</button>
 
+  <!-- Cover controls -->
   <button class="btn" id="previewCoverBtn">Preview Cover Letter</button>
   <button class="btn" id="downloadCoverBtn">Download Cover Letter (PDF)</button>
 </div>
 
 <p class="note">Click any field to edit. Use Preview before downloading PDF.</p>
 
-<div class="preview-frame" id="pageVisual">
+<!-- ========== CV PAGE (first A4) ========== -->
+<div class="preview-frame" id="pageVisualCV" aria-label="CV page">
   <div class="page-inner" id="cvVisual">
     <div class="left-column" id="cvLeft">
       <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/120" alt="profile">
@@ -125,26 +132,31 @@ ul{padding-left:18px;margin:6px 0}
         <h2>Contact</h2>
 
         <div class="contact-item">
+          <!-- Phone SVG -->
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M511.7 387.1c-1.8-14.3-11.3-26.4-25.4-31.8l-104-39.5c-12.5-4.7-26.6-2.2-36.6 6.6l-46 39.1c-72-38.6-131-97.6-169.6-169.6l39.1-46c8.8-10 11.3-24.1 6.6-36.6l-39.5-104c-5.4-14.1-17.5-23.6-31.8-25.4-14.2-1.8-28.5 4.7-37.3 16.4l-48 64C2.1 91.7-2.4 115.8 5.7 138.4c64.5 146 184.7 266.2 330.7 330.7 22.6 8.1 46.7 3.6 60.5-8.7l64-48c11.7-8.8 18.2-23.1 16.4-37.3z"/></svg>
           <span id="phone" contenteditable="true">+123 456 7890</span>
         </div>
 
         <div class="contact-item">
+          <!-- Email SVG -->
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M502.3 190.8l-192-160c-17-14.2-42.1-14.2-59.1 0l-192 160C9.4 196.1 0 208.2 0 222.3V464c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V222.3c0-14.1-9.4-26.2-23.7-31.5zM256 288l-192-160h384L256 288z"/></svg>
           <span id="email" contenteditable="true">john@example.com</span>
         </div>
 
         <div class="contact-item">
+          <!-- Address SVG -->
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M168 0C75.2 0 0 75.2 0 168c0 87.3 123.5 224.7 168 320 44.5-95.3 168-232.7 168-320C336 75.2 260.8 0 168 0zm0 256c-48.6 0-88-39.4-88-88s39.4-88 88-88 88 39.4 88 88-39.4 88-88 88z"/></svg>
           <span id="address" contenteditable="true">123 Main St, City</span>
         </div>
 
         <div class="contact-item">
+          <!-- Website SVG -->
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 0C114.836 0 0 114.836 0 256s114.836 256 256 256 256-114.836 256-256S397.164 0 256 0zm106.8 387.2c-32 32-78.1 44.8-127.6 44.8s-95.6-12.8-127.6-44.8c-32-32-44.8-78.1-44.8-127.6s12.8-95.6 44.8-127.6c32-32 78.1-44.8 127.6-44.8s95.6 12.8 127.6 44.8c32 32 44.8 78.1 44.8 127.6s-12.8 95.6-44.8 127.6z"/></svg>
           <span id="website" contenteditable="true">www.johndoe.com</span>
         </div>
 
         <div class="contact-item">
+          <!-- LinkedIn SVG -->
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M100.28 448H7.4V148.9h92.88zm-46.44-341c-29.77 0-53.88-24.11-53.88-53.88S24.07 0 53.84 0 107.72 24.11 107.72 53.88s-24.11 53.12-53.88 53.12zm394.42 341h-92.68V302.4c0-34.7-12.44-58.3-43.44-58.3-23.7 0-37.8 16-44 31.4-2.28 5.5-2.85 13.2-2.85 20.9V448h-92.6s1.25-236.7 0-261.1h92.6v37c-.2.3-.5.6-.7.9h.7v-.9c12.3-19 34.4-46.1 83.7-46.1 61.1 0 106.9 39.8 106.9 125.3V448z"/></svg>
           <span id="linkedin" contenteditable="true">linkedin.com/in/johndoe</span>
         </div>
@@ -206,16 +218,20 @@ ul{padding-left:18px;margin:6px 0}
         <h2>Education</h2>
         <p id="education" contenteditable="true">BSc in Computer Science, University of Tech, 2018</p>
       </div>
+    </div>
+  </div>
+</div>
 
-      <div class="section">
-        <h2>Cover Letter</h2>
-        <div id="coverLetter" contenteditable="true" style="background:#fafafa;padding:18px;border-radius:6px">
-          <p>To: <span contenteditable="true">Hiring Manager</span></p>
-          <p>Dear Hiring Manager,</p>
-          <p id="coverBody">I am excited to apply for the Front-End Developer position at your esteemed company. I have over 5 years of experience designing and developing user-centered websites...</p>
-          <p>Sincerely,<br><span id="coverName" contenteditable="true">John Doe</span></p>
-        </div>
-      </div>
+<!-- ========== COVER LETTER PAGE (second A4) ========== -->
+<div class="preview-frame" id="pageVisualCover" aria-label="Cover Letter page" style="margin-top:12px;">
+  <!-- Make cover fill the A4, simple centered container -->
+  <div style="padding:36px 28px; box-sizing:border-box; height:100%;">
+    <div id="coverLetter" contenteditable="true" style="background:#fafafa;padding:18px;border-radius:6px; height:100%; box-sizing:border-box;">
+      <h2 style="margin-top:0;">Cover Letter</h2>
+      <p>To: <span contenteditable="true">Hiring Manager</span></p>
+      <p>Dear Hiring Manager,</p>
+      <p id="coverBody" contenteditable="true">I am excited to apply for the Front-End Developer position at your esteemed company. I have over 5 years of experience designing and developing user-centered websites...</p>
+      <p>Sincerely,<br><span id="coverName" contenteditable="true">John Doe</span></p>
     </div>
   </div>
 </div>
@@ -231,18 +247,21 @@ ul{padding-left:18px;margin:6px 0}
 </div>
 
 <script>
+/* Upload image affects CV only */
 document.getElementById('uploadImage').addEventListener('change',function(e){
   const file=e.target.files[0];
-  if(!file) return;
+  if(!file)return;
   const reader=new FileReader();
-  reader.onload=function(ev){document.getElementById('profilePic').src=ev.target.result};
+  reader.onload=function(ev){document.getElementById('profilePic').src=ev.target.result;}
   reader.readAsDataURL(file);
 });
 
+/* render element to image (html2canvas) */
 function renderElementToImage(el, scale=2){
   return html2canvas(el,{scale:scale,useCORS:true,backgroundColor:'#ffffff',scrollY:-window.scrollY});
 }
 
+/* show modal with preview image */
 function showModalWithImage(imgDataUrl){
   const modal=document.getElementById('modal');
   document.getElementById('modalBody').innerHTML='<img src="'+imgDataUrl+'" alt="preview">';
@@ -250,6 +269,7 @@ function showModalWithImage(imgDataUrl){
   modal.setAttribute('aria-hidden','false');
 }
 
+/* close modal */
 document.getElementById('closeModal').addEventListener('click',function(){
   const modal=document.getElementById('modal');
   modal.classList.remove('open');
@@ -257,8 +277,10 @@ document.getElementById('closeModal').addEventListener('click',function(){
   document.getElementById('modalBody').innerHTML='';
 });
 
+/* preview & download function (works for CV or Cover separately) */
 async function previewAndDownload(element, saveAs=false, filename='document.pdf'){
   const wrapper=document.createElement('div');
+  // use same visual width as preview-frame
   wrapper.style.width=getComputedStyle(document.querySelector('.preview-frame')).width;
   wrapper.style.background='#fff';
   wrapper.appendChild(element.cloneNode(true));
@@ -270,7 +292,7 @@ async function previewAndDownload(element, saveAs=false, filename='document.pdf'
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF('p','mm','a4');
       const pageWidth = pdf.internal.pageSize.getWidth();
-      const margin=10;
+      const margin=10; // safe margin mm
       const imgProps=pdf.getImageProperties(imgData);
       const pdfWidth=pageWidth-margin*2;
       const pdfHeight=(imgProps.height*pdfWidth)/imgProps.width;
@@ -279,15 +301,39 @@ async function previewAndDownload(element, saveAs=false, filename='document.pdf'
     }else{
       showModalWithImage(imgData);
     }
-  }catch(err){console.error(err);alert('Error generating image/PDF');}
-  finally{document.body.removeChild(wrapper);}
+  }catch(err){
+    console.error(err);
+    alert('Error generating image/PDF');
+  }finally{
+    document.body.removeChild(wrapper);
+  }
 }
 
-document.getElementById('previewCvBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('cvVisual')));
-document.getElementById('downloadCvBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('cvVisual'),true,'CV.pdf'));
-document.getElementById('previewCoverBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('coverLetter')));
-document.getElementById('downloadCoverBtn').addEventListener('click',()=>previewAndDownload(document.getElementById('coverLetter'),true,'CoverLetter.pdf'));
-document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)document.getElementById('closeModal').click();});
+/* Buttons wiring */
+/* CV: preview/download - uses #cvVisual (first preview-frame content) */
+document.getElementById('previewCvBtn').addEventListener('click',()=>{
+  const cvEl = document.getElementById('cvVisual');
+  previewAndDownload(cvEl, false, 'CV.pdf');
+});
+document.getElementById('downloadCvBtn').addEventListener('click',()=>{
+  const cvEl = document.getElementById('cvVisual');
+  previewAndDownload(cvEl, true, 'CV.pdf');
+});
+
+/* Cover: preview/download - uses #coverLetter inside second preview-frame */
+document.getElementById('previewCoverBtn').addEventListener('click',()=>{
+  const coverEl = document.getElementById('coverLetter');
+  previewAndDownload(coverEl, false, 'CoverLetter.pdf');
+});
+document.getElementById('downloadCoverBtn').addEventListener('click',()=>{
+  const coverEl = document.getElementById('coverLetter');
+  previewAndDownload(coverEl, true, 'CoverLetter.pdf');
+});
+
+/* modal click outside to close */
+document.getElementById('modal').addEventListener('click',function(e){
+  if(e.target===this) document.getElementById('closeModal').click();
+});
 </script>
 
 </body>
