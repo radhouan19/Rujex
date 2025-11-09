@@ -3,126 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Elegant Two-Column CV & Cover Letter</title>
+<title>Advanced Interactive CV</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        margin: 0;
-        padding: 0;
-        background: #f0f0f0;
-        color: #333;
-    }
-    .container {
-        width: 210mm; /* A4 */
-        min-height: 297mm; /* A4 */
-        margin: 20px auto;
-        background: #fff;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        padding: 0;
-    }
-    .cv {
-        display: flex;
-        flex-direction: row;
-    }
-    .left-column {
-        width: 35%;
-        background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
-        padding: 30px 20px;
-        box-sizing: border-box;
-        text-align: center;
-    }
-    .profile-pic {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-bottom: 15px;
-        border: 3px solid #ccc;
-    }
-    .right-column {
-        width: 65%;
-        background: #fff;
-        padding: 30px 25px;
-        box-sizing: border-box;
-    }
-    h1 {
-        font-size: 32px;
-        margin-top: 0;
-        font-weight: 700;
-    }
-    h2 {
-        font-size: 18px;
-        margin: 15px 0 10px;
-        color: #444;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 5px;
-        text-align: left;
-    }
-    h3 {
-        font-size: 15px;
-        margin: 10px 0 5px;
-        font-weight: 500;
-        color: #555;
-    }
-    p, li {
-        font-size: 14px;
-        line-height: 1.6;
-        color: #333;
-    }
-    ul {
-        padding-left: 20px;
-        text-align: left;
-    }
-    .contact-item {
-        display: flex;
-        align-items: center;
-        margin: 10px 0;
-        font-weight: 500;
-        justify-content: flex-start;
-    }
-    .contact-item i {
-        margin-right: 10px;
-        color: #666;
-        min-width: 20px;
-        text-align: center;
-    }
-    .section {
-        margin-bottom: 25px;
-        text-align: left;
-    }
-    .cover-letter {
-        margin-top: 40px;
-        padding: 30px;
-        background: #f9f9f9;
-    }
-    .btn-container {
-        margin-top: 30px;
-        display: flex;
-        gap: 15px;
-        padding: 0 25px 30px 25px;
-    }
-    .btn {
-        background: #4a4a4a;
-        color: #fff;
-        border: none;
-        padding: 12px 20px;
-        font-size: 14px;
-        cursor: pointer;
-        border-radius: 6px;
-        transition: all 0.3s;
-        text-decoration: none;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-    .btn:hover {
-        background: #6a6a6a;
-    }
-    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f0f0f0;
+    color: #333;
+}
+.container {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 20px auto;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 0;
+}
+.cv {
+    display: flex;
+    flex-direction: row;
+}
+.left-column {
+    width: 35%;
+    background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+    padding: 30px 25px;
+    box-sizing: border-box;
+    text-align: center;
+}
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 3px solid #ccc;
+}
+.upload-btn {
+    margin-bottom: 15px;
+}
+.right-column {
+    width: 65%;
+    background: #fff;
+    padding: 30px 25px;
+    box-sizing: border-box;
+}
+h1 {
+    font-size: 32px;
+    margin-top: 0;
+    font-weight: 700;
+}
+h2 {
+    font-size: 18px;
+    margin: 15px 0 10px;
+    color: #444;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    text-align: left;
+}
+h3 {
+    font-size: 15px;
+    margin: 10px 0 5px;
+    font-weight: 500;
+    color: #555;
+}
+p, li {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+}
+ul {
+    padding-left: 20px;
+    text-align: left;
+}
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    font-weight: 500;
+    justify-content: flex-start;
+}
+.contact-item i {
+    margin-right: 10px;
+    color: #666;
+    min-width: 20px;
+    text-align: center;
+}
+.section {
+    margin-bottom: 25px;
+    text-align: left;
+}
+.section i {
+    margin-right: 8px;
+    color: #444;
+}
+.cover-letter {
+    margin-top: 40px;
+    padding: 30px;
+    background: #f9f9f9;
+}
+.btn-container {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    padding: 0 25px 30px 25px;
+}
+.btn {
+    background: #4a4a4a;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.btn:hover {
+    background: #6a6a6a;
+}
+input[type=file] {
+    display: block;
+    margin: 10px auto;
+}
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 </style>
 </head>
 <body>
@@ -132,32 +143,41 @@
     <div class="cv">
         <!-- Left Column -->
         <div class="left-column">
-            <!-- صورة شخصية -->
             <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic" id="profilePic">
-            <h1 id="fullName">John Doe</h1>
+            <input type="file" id="uploadImage" accept="image/*" class="upload-btn">
+            <h1 id="fullName" contenteditable="true">John Doe</h1>
 
             <div class="section">
-                <h2>Contact</h2>
-                <div class="contact-item"><i class="fas fa-phone"></i> <span id="phone">+123 456 7890</span></div>
-                <div class="contact-item"><i class="fas fa-envelope"></i> <span id="email">john@example.com</span></div>
-                <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span id="address">123 Main St, City</span></div>
-                <div class="contact-item"><i class="fab fa-linkedin"></i> <span id="linkedin">linkedin.com/in/johndoe</span></div>
+                <h2><i class="fas fa-phone"></i>Contact</h2>
+                <div class="contact-item"><i class="fas fa-phone"></i> <span id="phone" contenteditable="true">+123 456 7890</span></div>
+                <div class="contact-item"><i class="fas fa-envelope"></i> <span id="email" contenteditable="true">john@example.com</span></div>
+                <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span id="address" contenteditable="true">123 Main St, City</span></div>
+                <div class="contact-item"><i class="fab fa-linkedin"></i> <span id="linkedin" contenteditable="true">linkedin.com/in/johndoe</span></div>
             </div>
 
             <div class="section">
-                <h2>Skills</h2>
-                <ul id="skills">
-                    <li>Web Development</li>
-                    <li>UI/UX Design</li>
-                    <li>Project Management</li>
+                <h2><i class="fas fa-language"></i>Languages</h2>
+                <ul id="languages" contenteditable="true">
+                    <li>English (Fluent)</li>
+                    <li>French (Intermediate)</li>
                 </ul>
             </div>
 
             <div class="section">
-                <h2>Languages</h2>
-                <ul id="languages">
-                    <li>English (Fluent)</li>
-                    <li>French (Intermediate)</li>
+                <h2><i class="fas fa-laptop-code"></i>Software</h2>
+                <ul id="software" contenteditable="true">
+                    <li>Photoshop</li>
+                    <li>Illustrator</li>
+                    <li>VS Code</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-heart"></i>Hobbies</h2>
+                <ul id="hobbies" contenteditable="true">
+                    <li>Photography</li>
+                    <li>Traveling</li>
+                    <li>Reading</li>
                 </ul>
             </div>
         </div>
@@ -165,12 +185,13 @@
         <!-- Right Column -->
         <div class="right-column">
             <div class="section">
-                <h2>Profile</h2>
-                <p id="profileText">Creative web developer with 5+ years of experience designing and developing user-centered digital solutions from concept to execution.</p>
+                <h2><i class="fas fa-user"></i>Profile</h2>
+                <p id="profileText" contenteditable="true">Creative web developer with 5+ years of experience designing and developing user-centered digital solutions from concept to execution.</p>
             </div>
+
             <div class="section">
-                <h2>Experience</h2>
-                <div id="experience">
+                <h2><i class="fas fa-briefcase"></i>Job Experience</h2>
+                <div id="experience" contenteditable="true">
                     <h3>Front-End Developer</h3>
                     <p>XYZ Company | 2020 - Present</p>
                     <ul>
@@ -186,21 +207,22 @@
                     </ul>
                 </div>
             </div>
+
             <div class="section">
-                <h2>Education</h2>
-                <p id="education">BSc in Computer Science, University of Tech, 2018</p>
+                <h2><i class="fas fa-graduation-cap"></i>Education</h2>
+                <p id="education" contenteditable="true">BSc in Computer Science, University of Tech, 2018</p>
             </div>
         </div>
     </div>
 
     <!-- Cover Letter Section -->
-    <div class="cover-letter" id="coverLetter">
-        <h2>Cover Letter</h2>
+    <div class="cover-letter" id="coverLetter" contenteditable="true">
+        <h2><i class="fas fa-envelope"></i>Cover Letter</h2>
         <p>Dear Hiring Manager,</p>
         <p>I am excited to apply for the Front-End Developer position at your esteemed company. With over five years of experience in web development and a keen eye for design, I am confident in delivering solutions that meet your needs and exceed expectations.</p>
         <p>Throughout my career, I have worked closely with teams to develop responsive and user-friendly websites, always emphasizing performance and accessibility. I am passionate about creating seamless digital experiences and continuously learning new technologies.</p>
         <p>I would welcome the opportunity to discuss how my skills and experience can contribute to your projects. Thank you for considering my application.</p>
-        <p>Sincerely,<br><span id="coverName">John Doe</span></p>
+        <p>Sincerely,<br><span id="coverName" contenteditable="true">John Doe</span></p>
     </div>
 
     <!-- Buttons -->
@@ -212,69 +234,30 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-    // وظيفة تنزيل PDF
-    async function downloadPDF(type) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ format: 'a4' });
+async function downloadPDF(type) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ format: 'a4' });
 
-        let content = '';
-        if(type === 'cv') content = document.querySelector('.cv').innerText;
-        else content = document.querySelector('#coverLetter').innerText;
+    let content = '';
+    if(type === 'cv') content = document.querySelector('.cv').innerText;
+    else content = document.querySelector('#coverLetter').innerText;
 
-        const lines = doc.splitTextToSize(content, 180);
-        doc.text(lines, 15, 20);
-        doc.save(type === 'cv' ? 'CV.pdf' : 'CoverLetter.pdf');
+    const lines = doc.splitTextToSize(content, 180);
+    doc.text(lines, 15, 20);
+    doc.save(type === 'cv' ? 'CV.pdf' : 'CoverLetter.pdf');
+}
+
+// رفع صورة شخصية من الجهاز
+document.getElementById('uploadImage').addEventListener('change', function(event){
+    const file = event.target.files[0];
+    if(file){
+        const reader = new FileReader();
+        reader.onload = function(e){
+            document.getElementById('profilePic').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
     }
-
-    // مثال: تحديث المعطيات بسهولة
-    function updateCV(data) {
-        document.getElementById('profilePic').src = data.photo;
-        document.getElementById('fullName').innerText = data.name;
-        document.getElementById('phone').innerText = data.phone;
-        document.getElementById('email').innerText = data.email;
-        document.getElementById('address').innerText = data.address;
-        document.getElementById('linkedin').innerText = data.linkedin;
-        document.getElementById('profileText').innerText = data.profile;
-        document.getElementById('education').innerText = data.education;
-        document.getElementById('coverName').innerText = data.name;
-
-        // تحديث المهارات
-        const skillsEl = document.getElementById('skills');
-        skillsEl.innerHTML = '';
-        data.skills.forEach(skill => {
-            const li = document.createElement('li');
-            li.textContent = skill;
-            skillsEl.appendChild(li);
-        });
-
-        // تحديث اللغات
-        const languagesEl = document.getElementById('languages');
-        languagesEl.innerHTML = '';
-        data.languages.forEach(lang => {
-            const li = document.createElement('li');
-            li.textContent = lang;
-            languagesEl.appendChild(li);
-        });
-
-        // يمكن تحديث الخبرات بنفس الطريقة إذا أردت
-    }
-
-    // مثال بيانات جديدة
-    const exampleData = {
-        photo: 'https://via.placeholder.com/120', 
-        name: 'Alice Smith',
-        phone: '+987 654 3210',
-        email: 'alice@example.com',
-        address: '456 Another St, City',
-        linkedin: 'linkedin.com/in/alicesmith',
-        profile: 'Innovative designer and developer with 6 years of experience creating responsive websites and apps.',
-        education: 'MSc in Computer Science, University of Tech, 2020',
-        skills: ['Web Design','HTML/CSS','JavaScript','React','Photoshop'],
-        languages: ['English (Fluent)','Spanish (Intermediate)']
-    };
-    // لتطبيق التحديث تلقائياً عند التحميل
-    // updateCV(exampleData);
-
+});
 </script>
 
 </body>
