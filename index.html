@@ -3,894 +3,808 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rujex.com - Create Time-Limited Offers & Boost Your Sales</title>
+    <title>Rujex.com - Create Time-Limited Offers & Boost Sales</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 50px -12px rgba(0, 0, 0, 0.15);
         }
 
         body {
-            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-            color: #333;
+            background: var(--background);
+            color: var(--text);
             min-height: 100vh;
-            font-size: 20px;
+            font-size: 16px;
             line-height: 1.6;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 30px;
+            padding: 0 20px;
         }
 
+        /* Header & Navigation */
         header {
-            text-align: center;
-            padding: 60px 0;
-            color: white;
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
         }
 
         .logo {
-            font-size: 4.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
         }
 
-        .tagline {
-            font-size: 2.2rem;
-            opacity: 0.95;
-            margin-bottom: 50px;
-            font-weight: 300;
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .btn-primary {
-            background: #ff4081;
+            background: var(--primary);
             color: white;
-            padding: 25px 50px;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin: 15px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
         .btn-primary:hover {
-            background: #e91e63;
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
-        .btn-success {
-            background: #4caf50;
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
             color: white;
-            padding: 25px 50px;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            margin: 15px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
-        .btn-success:hover {
-            background: #45a049;
+        /* Hero Section */
+        .hero {
+            padding: 6rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 0 0 2rem 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Cards & Sections */
+        .section {
+            margin-bottom: 6rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.125rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
             transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
 
-        .main-card {
-            background: white;
-            border-radius: 25px;
-            padding: 60px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            margin-bottom: 50px;
-            border: 3px solid #ff69b4;
-        }
-
-        .features {
+        /* Features Grid */
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            margin: 60px 0;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
         }
 
         .feature-card {
-            background: linear-gradient(135deg, #fff5f8 0%, #ffeef4 100%);
-            padding: 40px;
-            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(255,105,180,0.2);
-            border: 2px solid #ff69b4;
-            transition: transform 0.3s ease;
+            padding: 2.5rem 2rem;
         }
 
-        .feature-card:hover {
-            transform: translateY(-10px);
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
         }
 
         .feature-card h3 {
-            font-size: 2.2rem;
-            color: #ff4081;
-            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
         }
 
         .feature-card p {
-            font-size: 1.5rem;
-            color: #666;
+            color: var(--text-light);
+            line-height: 1.6;
         }
 
-        .pricing-cards {
+        /* Pricing */
+        .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 50px;
-            margin-top: 50px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
         }
 
         .pricing-card {
-            background: linear-gradient(135deg, #fff5f8 0%, #ffeef4 100%);
-            padding: 50px;
-            border-radius: 25px;
             text-align: center;
-            border: 3px solid #ff69b4;
-            transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
 
         .pricing-card.popular {
-            border-color: #e91e63;
+            border: 2px solid var(--primary);
             transform: scale(1.05);
-            box-shadow: 0 25px 50px rgba(233,30,99,0.3);
         }
 
         .popular-badge {
-            background: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
-            color: white;
-            padding: 15px 40px;
-            border-radius: 30px;
             position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.5rem;
-            font-weight: bold;
+            top: 1rem;
+            right: -2rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 3rem;
+            transform: rotate(45deg);
+            font-size: 0.875rem;
+            font-weight: 600;
         }
 
         .price {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #ff4081;
-            margin: 30px 0;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 1rem 0;
         }
 
+        .price-period {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .pricing-features li i {
+            color: var(--success);
+        }
+
+        /* Forms */
         .form-group {
-            margin-bottom: 30px;
+            margin-bottom: 1.5rem;
         }
 
-        label {
+        .form-label {
             display: block;
-            margin-bottom: 15px;
-            font-weight: bold;
-            font-size: 1.8rem;
-            color: #ff4081;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
         }
 
-        input, textarea, select {
+        .form-control {
             width: 100%;
-            padding: 20px;
-            border: 3px solid #ffb6c1;
-            border-radius: 15px;
-            font-size: 1.8rem;
-            background: #fff9fb;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: var(--surface);
         }
 
-        input:focus, textarea:focus, select:focus {
-            border-color: #ff4081;
+        .form-control:focus {
             outline: none;
-            background: white;
+            border-color: var(--primary);
         }
 
-        .offer-page {
-            display: none;
+        .file-upload {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 2rem;
             text-align: center;
-            padding: 50px;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+        }
+
+        .file-upload i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Offer Preview */
+        .offer-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .offer-header {
+            padding: 2rem;
+            text-align: center;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .offer-content {
+            padding: 2rem;
         }
 
         .offer-image {
-            max-width: 100%;
-            height: 400px;
+            width: 100%;
+            height: 200px;
             object-fit: cover;
-            border-radius: 20px;
-            margin: 30px 0;
-            border: 4px solid #ff4081;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
         }
 
         .countdown {
-            font-size: 2.5rem;
-            color: #e91e63;
-            margin: 30px 0;
-            padding: 25px;
-            background: #fff5f8;
-            border-radius: 20px;
-            border: 3px solid #ff4081;
-            font-weight: bold;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
         }
 
-        .original-price {
-            text-decoration: line-through;
-            color: #999;
-            font-size: 2.5rem;
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
         }
 
-        .discount-price {
-            color: #e91e63;
-            font-size: 4rem;
-            font-weight: bold;
-            margin-left: 25px;
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
         }
 
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        /* Modal */
         .modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.5);
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 1000;
+            justify-content: center;
+            z-index: 2000;
+            padding: 1rem;
         }
 
         .modal-content {
-            background: white;
-            padding: 60px;
-            border-radius: 25px;
-            width: 95%;
-            max-width: 800px;
-            border: 4px solid #ff4081;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        footer {
-            text-align: center;
-            padding: 60px 0;
-            color: white;
-            margin-top: 80px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 25px;
-        }
-
-        .payment-methods {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
-
-        .payment-btn {
-            background: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
-            color: white;
-            padding: 25px 50px;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 1.8rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-
-        .payment-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            color: #ff4081;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        h2 {
-            font-size: 3rem;
-            color: #ff4081;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        p {
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-        }
-
-        .price-section {
-            margin: 40px 0;
-            padding: 30px;
-            background: #fff5f8;
-            border-radius: 20px;
-            border: 3px solid #ffb6c1;
-        }
-
-        .nav-buttons {
-            text-align: center;
-            margin: 40px 0;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin: 50px 0;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
-            color: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-        }
-
-        .stat-number {
-            font-size: 4rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .stat-label {
-            font-size: 1.8rem;
-            opacity: 0.9;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .pricing-card.popular {
+                transform: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Navigation -->
-        <nav class="nav-buttons">
-            <a href="#home" class="btn-primary">🏠 Home</a>
-            <a href="#create" class="btn-primary">🚀 Create Offer</a>
-            <a href="#pricing" class="btn-primary">💰 Pricing</a>
-        </nav>
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">Rujex</a>
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#create-offer" class="btn btn-outline">Create Offer</a>
+            </nav>
+        </div>
+    </header>
 
-        <!-- Home Section -->
-        <section id="home">
-            <header>
-                <div class="logo">Rujex.com</div>
-                <div class="tagline">Create Time-Limited Offers That Boost Your Sales By 300%</div>
-                <a href="#create" class="btn-primary">🎯 Create Your Free Offer Now</a>
-            </header>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Create Time-Limited Offers That Drive Sales</h1>
+            <p>Boost your conversions with beautiful, urgency-creating offer pages. No coding required.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#create-offer" class="btn btn-primary">
+                    <i class="fas fa-bolt"></i>Create Free Offer
+                </a>
+                <a href="#pricing" class="btn" style="background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(10px);">
+                    <i class="fas fa-crown"></i>View Plans
+                </a>
+            </div>
+        </div>
+    </section>
 
-            <div class="main-card">
-                <h1>Transform Your Business With Time-Limited Offers</h1>
-                <p style="text-align: center; font-size: 2.2rem; color: #666;">Join thousands of successful businesses using Rujex to create urgency and drive sales</p>
-                
-                <div class="stats">
-                    <div class="stat-card">
-                        <div class="stat-number">300%</div>
-                        <div class="stat-label">Average Sales Increase</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">24H</div>
-                        <div class="stat-label">Quick Setup Time</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">$0</div>
-                        <div class="stat-label">Start Free</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">USA</div>
-                        <div class="stat-label">Trusted Nationwide</div>
-                    </div>
+    <!-- Stats Section -->
+    <section class="section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">300%</div>
+                    <div class="stat-label">Average Sales Increase</div>
                 </div>
-
-                <h2>How It Works In 3 Simple Steps</h2>
-                <div class="features">
-                    <div class="feature-card">
-                        <h3>1. Create Your Offer</h3>
-                        <p>Fill out our simple form in less than 5 minutes. No technical skills required!</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>2. Get Your Unique Link</h3>
-                        <p>Receive a beautiful, professional offer page with countdown timer</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>3. Share & Watch Sales Grow</h3>
-                        <p>Share your link and watch customers rush to buy before time runs out</p>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-number">24H</div>
+                    <div class="stat-label">Setup Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">10K+</div>
+                    <div class="stat-label">Businesses Trust Us</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">USA</div>
+                    <div class="stat-label">Serving Nationwide</div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Create Offer Section -->
-        <section id="create" style="display: none;">
-            <div class="main-card">
-                <h1>Create Your Time-Limited Offer</h1>
-                <p style="text-align: center; color: #666; font-size: 2rem;">Fill out the form below and get your offer live in minutes!</p>
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title">Everything You Need to Boost Sales</h2>
+            <p class="section-subtitle">Professional tools used by successful businesses worldwide</p>
+            
+            <div class="features-grid">
+                <div class="feature-card card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Countdown Timers</h3>
+                    <p>Create urgency with beautiful, customizable countdown timers that drive immediate action.</p>
+                </div>
                 
-                <div id="createForm">
+                <div class="feature-card card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Optimized</h3>
+                    <p>Perfect experience on all devices. Your offers look great everywhere.</p>
+                </div>
+                
+                <div class="feature-card card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Track performance with detailed analytics and conversion metrics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create Offer Section -->
+    <section id="create-offer" class="section">
+        <div class="container">
+            <h2 class="section-title">Create Your Offer in Minutes</h2>
+            <p class="section-subtitle">Fill out the form below and launch your time-limited offer</p>
+            
+            <div class="card">
+                <form id="offerForm">
                     <div class="form-group">
-                        <label>🎯 Offer Title</label>
-                        <input type="text" id="offerTitle" placeholder="Example: 50% OFF All Products - Limited Time!">
+                        <label class="form-label">Offer Title</label>
+                        <input type="text" class="form-control" placeholder="e.g., 50% OFF - Limited Time!" required>
                     </div>
                     
                     <div class="form-group">
-                        <label>📝 Offer Description</label>
-                        <textarea id="offerDesc" rows="4" placeholder="Describe your amazing offer in detail. Why should customers act now?"></textarea>
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="3" placeholder="Describe your amazing offer..." required></textarea>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Original Price ($)</label>
+                            <input type="number" class="form-control" placeholder="100" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Discount Price ($)</label>
+                            <input type="number" class="form-control" placeholder="50" required>
+                        </div>
                     </div>
                     
                     <div class="form-group">
-                        <label>💰 Original Price ($)</label>
-                        <input type="number" id="originalPrice" placeholder="100">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>💸 Discount Price ($)</label>
-                        <input type="number" id="discountPrice" placeholder="50">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>⏰ Offer Duration</label>
-                        <select id="expiryTime">
-                            <option value="24">24 Hours - Creates Urgency</option>
-                            <option value="48" selected>48 Hours - Best Results</option>
-                            <option value="72">72 Hours - Maximum Reach</option>
+                        <label class="form-label">Offer Duration</label>
+                        <select class="form-control" required>
+                            <option value="24">24 Hours</option>
+                            <option value="48" selected>48 Hours</option>
+                            <option value="72">72 Hours</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
-                        <label>🖼️ Image URL (Optional)</label>
-                        <input type="url" id="offerImage" placeholder="https://example.com/your-product-image.jpg">
-                        <p style="color: #666; font-size: 1.6rem;">Leave empty to use our beautiful default image</p>
+                        <label class="form-label">Offer Image</label>
+                        <div class="file-upload" onclick="document.getElementById('imageUpload').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload image from your device</p>
+                            <p style="font-size: 0.875rem; color: var(--text-light);">or drag and drop</p>
+                            <input type="file" id="imageUpload" class="file-input" accept="image/*">
+                        </div>
                     </div>
                     
-                    <div style="text-align: center; margin-top: 50px;">
-                        <button class="btn-primary" onclick="createOfferPage()">✨ Create My Offer Page</button>
-                        <button class="btn-primary" onclick="showSection('home')">🏠 Back to Home</button>
-                    </div>
-                </div>
-
-                <!-- Offer Result Page -->
-                <div class="offer-page" id="offerPage">
-                    <h1>🎉 Your Offer Is Ready!</h1>
-                    <h2 id="displayTitle"></h2>
-                    <img id="displayImage" class="offer-image" src="" alt="Offer Image">
-                    <p id="displayDesc" style="font-size: 2rem; color: #555; margin: 30px 0;"></p>
-                    
-                    <div class="price-section">
-                        <span class="original-price" id="displayOriginalPrice"></span>
-                        <span class="discount-price" id="displayDiscountPrice"></span>
-                    </div>
-                    
-                    <div class="countdown" id="countdown"></div>
-                    
-                    <button class="btn-success" style="font-size: 2.2rem; padding: 30px 60px;">🚀 Buy Now Before Offer Ends!</button>
-                    
-                    <div style="margin-top: 60px; background: #fff5f8; padding: 40px; border-radius: 20px; border: 3px solid #ffb6c1;">
-                        <h3>📤 Share Your Offer</h3>
-                        <p style="color: #666; margin: 20px 0; font-size: 1.8rem;">Copy this link and share it with your customers:</p>
-                        <input type="text" id="shareUrl" style="width: 100%; padding: 20px; border: 3px dashed #ff4081; border-radius: 15px; background: #fff; text-align: center; font-size: 1.8rem;" readonly>
-                        <button class="btn-primary" onclick="copyShareUrl()" style="margin-top: 25px; font-size: 1.8rem;">📋 Copy Link to Clipboard</button>
-                    </div>
-
-                    <div style="margin-top: 50px;">
-                        <button class="btn-primary" onclick="createNewOffer()">🔄 Create Another Offer</button>
-                        <button class="btn-primary" onclick="showSection('home')">🏠 Home</button>
-                    </div>
-                </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-rocket"></i>Create Offer Page
+                    </button>
+                </form>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Pricing Section -->
-        <section id="pricing" style="display: none;">
-            <div class="main-card">
-                <h1>Choose Your Perfect Plan</h1>
-                <p style="text-align: center; color: #666; font-size: 2.2rem; margin-bottom: 50px;">Start with 3 days FREE, then only $7/month</p>
+    <!-- Pricing Section -->
+    <section id="pricing" class="section">
+        <div class="container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <p class="section-subtitle">Start free, upgrade as you grow. No hidden fees.</p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card card">
+                    <h3>Starter</h3>
+                    <div class="price">$0<span class="price-period">/month</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 3 offers per month</li>
+                        <li><i class="fas fa-check"></i> Basic countdown timer</li>
+                        <li><i class="fas fa-check"></i> Standard templates</li>
+                        <li><i class="fas fa-check"></i> Email support</li>
+                    </ul>
+                    <button class="btn btn-outline" style="width: 100%;" onclick="startFreeTrial('free')">
+                        Get Started Free
+                    </button>
+                </div>
                 
-                <div class="pricing-cards">
-                    <!-- Free Plan -->
-                    <div class="pricing-card">
-                        <h2>Free Plan</h2>
-                        <div class="price">$0 <span style="font-size: 2rem; color: #666;">/month</span></div>
-                        <ul style="list-style: none; text-align: left; margin: 40px 0; font-size: 1.8rem;">
-                            <li style="margin-bottom: 20px;">✅ 3 offers per month</li>
-                            <li style="margin-bottom: 20px;">✅ Basic countdown timer</li>
-                            <li style="margin-bottom: 20px;">✅ Standard templates</li>
-                            <li style="margin-bottom: 20px;">✅ Email support</li>
-                        </ul>
-                        <button class="btn-primary" onclick="startFreeTrial('free')">Start Free Plan</button>
-                    </div>
-                    
-                    <!-- Premium Plan -->
-                    <div class="pricing-card popular" style="position: relative;">
-                        <div class="popular-badge">MOST POPULAR</div>
-                        <h2>Premium Plan</h2>
-                        <div class="price">$7 <span style="font-size: 2rem; color: #666;">/month</span></div>
-                        <ul style="list-style: none; text-align: left; margin: 40px 0; font-size: 1.8rem;">
-                            <li style="margin-bottom: 20px;">✅ Unlimited offers</li>
-                            <li style="margin-bottom: 20px;">✅ No ads on your pages</li>
-                            <li style="margin-bottom: 20px;">✅ Advanced analytics</li>
-                            <li style="margin-bottom: 20px;">✅ Custom branding</li>
-                            <li style="margin-bottom: 20px;">✅ Priority support</li>
-                            <li style="margin-bottom: 20px;">✅ 3-day FREE trial</li>
-                        </ul>
-                        <button class="btn-success" onclick="startFreeTrial('premium')">🚀 Try 3 Days FREE</button>
-                    </div>
-                    
-                    <!-- Business Plan -->
-                    <div class="pricing-card">
-                        <h2>Business Plan</h2>
-                        <div class="price">$29 <span style="font-size: 2rem; color: #666;">/month</span></div>
-                        <ul style="list-style: none; text-align: left; margin: 40px 0; font-size: 1.8rem;">
-                            <li style="margin-bottom: 20px;">✅ All premium features</li>
-                            <li style="margin-bottom: 20px;">✅ Custom domain</li>
-                            <li style="margin-bottom: 20px;">✅ Advanced reporting</li>
-                            <li style="margin-bottom: 20px;">✅ 24/7 phone support</li>
-                            <li style="margin-bottom: 20px;">✅ Team management</li>
-                            <li style="margin-bottom: 20px;">✅ 3-day FREE trial</li>
-                        </ul>
-                        <button class="btn-success" onclick="startFreeTrial('business')">🚀 Try 3 Days FREE</button>
-                    </div>
+                <div class="pricing-card card popular">
+                    <div class="popular-badge">POPULAR</div>
+                    <h3>Professional</h3>
+                    <div class="price">$7<span class="price-period">/month</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Unlimited offers</li>
+                        <li><i class="fas fa-check"></i> Advanced analytics</li>
+                        <li><i class="fas fa-check"></i> Custom branding</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                        <li><i class="fas fa-check"></i> 3-day free trial</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="startFreeTrial('premium')">
+                        Start Free Trial
+                    </button>
                 </div>
-
-                <div style="text-align: center; margin-top: 60px; padding: 40px; background: #fff5f8; border-radius: 20px;">
-                    <h2>💳 All Major Payment Methods Accepted</h2>
-                    <p style="font-size: 1.8rem; color: #666;">PayPal, Credit Cards, Debit Cards, Bank Transfer</p>
+                
+                <div class="pricing-card card">
+                    <h3>Business</h3>
+                    <div class="price">$29<span class="price-period">/month</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> All Professional features</li>
+                        <li><i class="fas fa-check"></i> Custom domain</li>
+                        <li><i class="fas fa-check"></i> Advanced reporting</li>
+                        <li><i class="fas fa-check"></i> 24/7 phone support</li>
+                        <li><i class="fas fa-check"></i> Team management</li>
+                    </ul>
+                    <button class="btn btn-outline" style="width: 100%;" onclick="startFreeTrial('business')">
+                        Start Free Trial
+                    </button>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
+    <!-- Footer -->
     <footer>
-        <p style="font-size: 2.2rem; margin-bottom: 20px;">© 2024 Rujex.com - All Rights Reserved</p>
-        <p style="font-size: 1.8rem; opacity: 0.9;">Proudly Serving Businesses Across The United States 🇺🇸</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Rujex</h3>
+                    <p>Creating urgency, driving sales. Professional time-limited offer platform for modern businesses.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Product</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#create-offer">Create Offer</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Rujex. All rights reserved. Proudly serving businesses across the United States.</p>
+            </div>
+        </div>
     </footer>
 
-    <script>
-        // Navigation
-        function showSection(sectionId) {
-            document.querySelectorAll('section').forEach(section => {
-                section.style.display = 'none';
-            });
-            document.getElementById(sectionId).style.display = 'block';
-        }
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1rem;">Start Your Free Trial</h2>
+            <p style="color: var(--text-light); margin-bottom: 2rem;">3 days free, then $7/month. Cancel anytime.</p>
+            
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" placeholder="your@email.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Payment Method</label>
+                <div style="display: grid; gap: 0.5rem;">
+                    <button type="button" class="btn btn-outline" onclick="processPayment('paypal')" style="justify-content: center;">
+                        <i class="fab fa-paypal"></i>PayPal
+                    </button>
+                    <button type="button" class="btn btn-outline" onclick="showCardForm()" style="justify-content: center;">
+                        <i class="fas fa-credit-card"></i>Credit Card
+                    </button>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button class="btn btn-outline" onclick="closeModal()" style="flex: 1;">Cancel</button>
+            </div>
+        </div>
+    </div>
 
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const sectionId = this.getAttribute('href').substring(1);
-                showSection(sectionId);
-            });
+    <script>
+        // File upload handling
+        document.getElementById('imageUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // In a real app, you would upload this to your server
+                    console.log('Image loaded:', e.target.result);
+                    alert('Image uploaded successfully!');
+                };
+                reader.readAsDataURL(file);
+            }
         });
 
-        // Show home section by default
-        showSection('home');
+        // Form submission
+        document.getElementById('offerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically send the data to your backend
+            alert('Offer created successfully! You can now share your offer page.');
+        });
 
-        // Offer Creation System
-        function createOfferPage() {
-            const offerData = {
-                title: document.getElementById('offerTitle').value,
-                description: document.getElementById('offerDesc').value,
-                originalPrice: document.getElementById('originalPrice').value,
-                discountPrice: document.getElementById('discountPrice').value,
-                expiryHours: document.getElementById('expiryTime').value,
-                image: document.getElementById('offerImage').value || 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-            };
-
-            if (!offerData.title || !offerData.description) {
-                alert('Please fill all required fields');
-                return;
-            }
-
-            // Check user plan limitations
-            const userData = JSON.parse(localStorage.getItem('rujex_user') || '{}');
-            if (userData.plan === 'free') {
-                const userOffers = JSON.parse(localStorage.getItem('rujex_user_offers') || '[]');
-                if (userOffers.length >= 3) {
-                    showUpgradeMessage('free_limit');
-                    return;
-                }
-            }
-
-            const uniqueId = Math.random().toString(36).substring(2, 10);
-            const offerUrl = `${window.location.origin}?offer=${uniqueId}`;
-            
-            localStorage.setItem(`offer_${uniqueId}`, JSON.stringify(offerData));
-            
-            // Track user offers for free plan
-            if (userData.plan === 'free') {
-                const userOffers = JSON.parse(localStorage.getItem('rujex_user_offers') || '[]');
-                userOffers.push(uniqueId);
-                localStorage.setItem('rujex_user_offers', JSON.stringify(userOffers));
-            }
-            
-            displayOfferPage(offerData, offerUrl);
-        }
-
-        function displayOfferPage(offerData, offerUrl) {
-            document.getElementById('createForm').style.display = 'none';
-            document.getElementById('offerPage').style.display = 'block';
-            
-            document.getElementById('displayTitle').textContent = offerData.title;
-            document.getElementById('displayDesc').textContent = offerData.description;
-            document.getElementById('displayOriginalPrice').textContent = `$${offerData.originalPrice}`;
-            document.getElementById('displayDiscountPrice').textContent = `$${offerData.discountPrice}`;
-            document.getElementById('displayImage').src = offerData.image;
-            document.getElementById('shareUrl').value = offerUrl;
-            
-            startCountdown(offerData.expiryHours);
-        }
-
-        function startCountdown(hours) {
-            const endTime = new Date().getTime() + (hours * 60 * 60 * 1000);
-            
-            function updateCountdown() {
-                const now = new Date().getTime();
-                const distance = endTime - now;
-                
-                if (distance < 0) {
-                    document.getElementById('countdown').innerHTML = "⏰ OFFER EXPIRED!";
-                    document.querySelector('.btn-success').disabled = true;
-                    document.querySelector('.btn-success').style.background = '#6c757d';
-                    return;
-                }
-                
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
-                document.getElementById('countdown').innerHTML = 
-                    `⏰ OFFER ENDS IN: <strong style="color: #e91e63;">${hours}</strong>H <strong style="color: #e91e63;">${minutes}</strong>M <strong style="color: #e91e63;">${seconds}</strong>S`;
-            }
-            
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
-        }
-
-        function copyShareUrl() {
-            const shareUrl = document.getElementById('shareUrl');
-            shareUrl.select();
-            document.execCommand('copy');
-            alert('✅ Link copied to clipboard! You can now share it with your customers.');
-        }
-
-        function createNewOffer() {
-            document.getElementById('offerPage').style.display = 'none';
-            document.getElementById('createForm').style.display = 'block';
-            document.getElementById('createForm').reset();
-        }
-
-        // Check for offer in URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const offerId = urlParams.get('offer');
-        
-        if (offerId) {
-            const savedOffer = localStorage.getItem(`offer_${offerId}`);
-            if (savedOffer) {
-                showSection('create');
-                const offerData = JSON.parse(savedOffer);
-                const offerUrl = window.location.href;
-                displayOfferPage(offerData, offerUrl);
-            }
-        }
-
-        // Subscription System
+        // Trial and payment functions
         function startFreeTrial(plan) {
-            const trialEnd = new Date();
-            trialEnd.setDate(trialEnd.getDate() + 3);
-            
-            const userData = {
-                plan: plan,
-                trialStart: new Date().toISOString(),
-                trialEnd: trialEnd.toISOString(),
-                status: 'trial'
-            };
-            
-            localStorage.setItem('rujex_user', JSON.stringify(userData));
-            
             if (plan === 'free') {
-                showSection('create');
+                // Redirect to offer creation
+                document.getElementById('create-offer').scrollIntoView({ behavior: 'smooth' });
             } else {
-                showPaymentModal(plan);
+                // Show payment modal for premium plans
+                document.getElementById('paymentModal').style.display = 'flex';
             }
-        }
-
-        function showPaymentModal(plan) {
-            const modalHTML = `
-                <div class="modal">
-                    <div class="modal-content">
-                        <h1>Start Your 3-Day FREE Trial</h1>
-                        <p style="text-align: center; color: #666; font-size: 2rem; margin-bottom: 40px;">After trial: $${plan === 'premium' ? '7' : '29'}/month • Cancel anytime</p>
-                        
-                        <div class="form-group">
-                            <label>📧 Your Email Address</label>
-                            <input type="email" id="userEmail" placeholder="your.email@example.com" style="width: 100%; padding: 25px; font-size: 2rem;">
-                        </div>
-                        
-                        <h2 style="text-align: center; margin: 40px 0;">Choose Payment Method</h2>
-                        <div class="payment-methods">
-                            <button class="payment-btn" onclick="processPayment('${plan}', 'paypal')">💳 PayPal</button>
-                            <button class="payment-btn" onclick="processPayment('${plan}', 'card')">💳 Credit Card</button>
-                            <button class="payment-btn" onclick="showBankDetails('${plan}')">🏦 Bank Transfer</button>
-                        </div>
-                        
-                        <div style="text-align: center; margin-top: 40px;">
-                            <button class="btn-primary" onclick="closeModal()" style="font-size: 1.8rem;">Maybe Later</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
         }
 
         function closeModal() {
-            const modal = document.querySelector('.modal');
-            if (modal) modal.remove();
+            document.getElementById('paymentModal').style.display = 'none';
         }
 
-        function processPayment(plan, method) {
-            const email = document.getElementById('userEmail').value;
-            
-            if (!email) {
-                alert('Please enter your email address');
-                return;
-            }
-
-            // Update user data
-            const userData = JSON.parse(localStorage.getItem('rujex_user') || '{}');
-            userData.email = email;
-            userData.plan = plan;
-            userData.paymentMethod = method;
-            localStorage.setItem('rujex_user', JSON.stringify(userData));
-
+        function processPayment(method) {
             if (method === 'paypal') {
-                // Redirect to PayPal with your actual email
+                // Redirect to PayPal with your email
                 const paypalEmail = 'guettafradhouan1808@gmail.com';
-                const amount = plan === 'premium' ? '7' : '29';
-                window.open(`https://www.paypal.com/send?amount=${amount}&email=${paypalEmail}`, '_blank');
-            } else if (method === 'card') {
-                showCardPaymentForm(plan);
-                return;
+                window.open(`https://www.paypal.com/send?amount=7&email=${paypalEmail}`, '_blank');
             }
-
             closeModal();
-            showSection('create');
-            alert('🎉 Payment processed! You now have premium access for 3 days FREE.');
+            alert('Thank you! Your 3-day free trial has started.');
         }
 
-        function showCardPaymentForm(plan) {
-            const formHTML = `
-                <div class="modal">
-                    <div class="modal-content">
-                        <h1>Credit Card Payment</h1>
-                        <p style="text-align: center; color: #666; font-size: 2rem; margin-bottom: 40px;">Secure payment • $${plan === 'premium' ? '7' : '29'}/month after trial</p>
-                        
-                        <div class="form-group">
-                            <label>💳 Card Number</label>
-                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" style="font-size: 2rem;">
-                        </div>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
-                            <div class="form-group">
-                                <label>📅 Expiry Date</label>
-                                <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" style="font-size: 2rem;">
-                            </div>
-                            <div class="form-group">
-                                <label>🔒 CVV</label>
-                                <input type="text" id="cvv" placeholder="123" maxlength="3" style="font-size: 2rem;">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>👤 Cardholder Name</label>
-                            <input type="text" id="cardName" placeholder="John Doe" style="font-size: 2rem;">
-                        </div>
-                        
-                        <button class="btn-success" onclick="submitCardPayment('${plan}')" style="width: 100%; margin-top: 30px; font-size: 2rem;">
-                            💳 Pay $${plan === 'premium' ? '7' : '29'}/month (After Trial)
-                        </button>
-                        
-                        <button class="btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 20px; font-size: 1.8rem;">Cancel</button>
-                    </div>
-                </div>
-            `;
-            
-            closeModal();
-            document.body.insertAdjacentHTML('beforeend', formHTML);
+        function showCardForm() {
+            // In a real app, you would show Stripe elements here
+            alert('Credit card payment integration would be implemented with Stripe in production.');
         }
 
-        function showBankDetails(plan) {
-            const bankHTML = `
-                <div class="modal">
-                    <div class="modal-content">
-                        <h1>Bank Transfer</h1>
-                        <p style="text-align: center; color: #666; font-size: 2rem; margin-bottom: 40px;">Send $${plan === 'premium' ? '7' : '29'} monthly to:</p>
-                        
-                        <div style="background: #fff5f8; padding: 40px; border-radius: 20px; border: 3px solid #ffb6c1;">
-                            <p style="font-size: 2rem; margin-bottom: 20px;"><strong>Bank Name:</strong> Your Bank Name</p>
-                            <p style="font-size: 2rem; margin-bottom: 20px;"><strong>Account Name:</strong> Your Name</p>
-                            <p style="font-size: 2rem; margin-bottom: 20px;"><strong>Account Number:</strong> 123456789</p>
-                            <p style="font-size: 2rem; margin-bottom: 20px;"><strong>Routing Number:</strong> 021000021</p>
-                            <p style="font-size: 2rem;"><strong>Amount:</strong> $${plan === 'premium' ? '7' : '29'}/month</p>
-                        </div>
-                        
-                        <button class="btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 30px; font-size: 1.8rem;">Close</button>
-                    </div>
-                </div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', bankHTML);
-        }
-
-        function submitCardPayment(plan) {
-            const cardNumber = document.getElementById('cardNumber').value;
-            const expiryDate = document.getElementById('expiryDate').value;
-            const cvv = document.getElementById('cvv').value;
-            const cardName = document.getElementById('cardName').value;
-
-            if (!cardNumber || !expiryDate || !cvv || !cardName) {
-                alert('Please fill all card details');
-                return;
-            }
-
-            alert('💳 Card payment processed successfully! You now have 3 days FREE trial.');
-            closeModal();
-            showSection('create');
-        }
-
-        // Check trial status
-        function checkTrialStatus() {
-            const userData = JSON.parse(localStorage.getItem('rujex_user') || '{}');
-            
-            if (userData.trialEnd && userData.status === 'trial') {
-                const trialEnd = new Date(userData.trialEnd);
-                const now = new Date();
-                
-                if (now > trialEnd) {
-                    showUpgradeMessage('trial_ended');
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
                 }
-            }
-        }
-
-        function showUpgradeMessage(reason) {
-            let message = '';
-            
-            if (reason === 'trial_ended') {
-                message = 'Your FREE trial has ended. Upgrade to continue using premium features.';
-            } else if (reason === 'free_limit') {
-                message = 'Free plan limit reached (3 offers per month). Upgrade to create unlimited offers!';
-            }
-
-            const modalHTML = `
-                <div class="modal">
-                    <div class="modal-content">
-                        <h1>Upgrade Required</h1>
-                        <p style="text-align: center; color: #666; font-size: 2rem; margin-bottom: 40px;">${message}</p>
-                        
-                        <div style="font-size: 4rem; color: #ff4081; font-weight: bold; margin: 30px 0; text-align: center;">
-                            $7 <span style="font-size: 2rem; color: #666;">/month</span>
-                        </div>
-                        
-                        <button class="btn-success" onclick="showSection('pricing')" style="width: 100%; font-size: 2rem;">🚀 Upgrade Now</button>
-                        <button class="btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 20px; font-size: 1.8rem;">Maybe Later</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-        }
-
-        // Check trial status on page load
-        document.addEventListener('DOMContentLoaded', checkTrialStatus);
+            });
+        });
     </script>
 </body>
 </html>
