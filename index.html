@@ -3,199 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rujex.com - Create Time-Limited Offers</title>
+    <title>Rujex.com - Create Time-Limited Offers & Boost Your Sales</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
             color: #333;
             min-height: 100vh;
+            font-size: 20px;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 30px;
         }
 
         header {
             text-align: center;
-            padding: 40px 0;
+            padding: 60px 0;
             color: white;
         }
 
         .logo {
-            font-size: 3rem;
+            font-size: 4.5rem;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
         }
 
         .tagline {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 30px;
+            font-size: 2.2rem;
+            opacity: 0.95;
+            margin-bottom: 50px;
+            font-weight: 300;
         }
 
         .btn-primary {
-            background: #667eea;
+            background: #ff4081;
             color: white;
-            padding: 15px 30px;
+            padding: 25px 50px;
             border: none;
-            border-radius: 10px;
-            font-size: 18px;
+            border-radius: 15px;
+            font-size: 1.8rem;
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
-            margin: 10px;
+            margin: 15px;
             transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
         .btn-primary:hover {
-            background: #764ba2;
-            transform: translateY(-2px);
+            background: #e91e63;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.3);
         }
 
         .btn-success {
-            background: #28a745;
+            background: #4caf50;
             color: white;
-            padding: 15px 30px;
+            padding: 25px 50px;
             border: none;
-            border-radius: 10px;
-            font-size: 18px;
+            border-radius: 15px;
+            font-size: 1.8rem;
             cursor: pointer;
-            margin: 10px;
+            margin: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
         .btn-success:hover {
-            background: #218838;
+            background: #45a049;
+            transform: translateY(-5px);
         }
 
         .main-card {
             background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            border-radius: 25px;
+            padding: 60px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            margin-bottom: 50px;
+            border: 3px solid #ff69b4;
         }
 
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin: 60px 0;
         }
 
         .feature-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
+            background: linear-gradient(135deg, #fff5f8 0%, #ffeef4 100%);
+            padding: 40px;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(255,105,180,0.2);
+            border: 2px solid #ff69b4;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-card h3 {
+            font-size: 2.2rem;
+            color: #ff4081;
+            margin-bottom: 20px;
+        }
+
+        .feature-card p {
+            font-size: 1.5rem;
+            color: #666;
         }
 
         .pricing-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 50px;
+            margin-top: 50px;
         }
 
         .pricing-card {
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 15px;
+            background: linear-gradient(135deg, #fff5f8 0%, #ffeef4 100%);
+            padding: 50px;
+            border-radius: 25px;
             text-align: center;
-            border: 2px solid transparent;
+            border: 3px solid #ff69b4;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .pricing-card.popular {
-            border-color: #667eea;
+            border-color: #e91e63;
             transform: scale(1.05);
+            box-shadow: 0 25px 50px rgba(233,30,99,0.3);
         }
 
         .popular-badge {
-            background: #667eea;
+            background: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
             color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
+            padding: 15px 40px;
+            border-radius: 30px;
             position: absolute;
-            top: -15px;
+            top: -25px;
             left: 50%;
             transform: translateX(-50%);
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
         .price {
-            font-size: 2.5rem;
+            font-size: 4rem;
             font-weight: bold;
-            color: #667eea;
-            margin: 20px 0;
+            color: #ff4081;
+            margin: 30px 0;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 15px;
             font-weight: bold;
+            font-size: 1.8rem;
+            color: #ff4081;
         }
 
         input, textarea, select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 20px;
+            border: 3px solid #ffb6c1;
+            border-radius: 15px;
+            font-size: 1.8rem;
+            background: #fff9fb;
         }
 
         input:focus, textarea:focus, select:focus {
-            border-color: #667eea;
+            border-color: #ff4081;
             outline: none;
+            background: white;
         }
 
         .offer-page {
             display: none;
             text-align: center;
-            padding: 30px;
+            padding: 50px;
         }
 
         .offer-image {
             max-width: 100%;
-            height: 300px;
+            height: 400px;
             object-fit: cover;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 3px solid #667eea;
+            border-radius: 20px;
+            margin: 30px 0;
+            border: 4px solid #ff4081;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
 
         .countdown {
-            font-size: 24px;
-            color: #dc3545;
-            margin: 20px 0;
-            padding: 15px;
-            background: #fff3f3;
-            border-radius: 10px;
+            font-size: 2.5rem;
+            color: #e91e63;
+            margin: 30px 0;
+            padding: 25px;
+            background: #fff5f8;
+            border-radius: 20px;
+            border: 3px solid #ff4081;
+            font-weight: bold;
         }
 
         .original-price {
             text-decoration: line-through;
             color: #999;
-            font-size: 22px;
+            font-size: 2.5rem;
         }
 
         .discount-price {
-            color: #dc3545;
-            font-size: 32px;
+            color: #e91e63;
+            font-size: 4rem;
             font-weight: bold;
-            margin-left: 15px;
+            margin-left: 25px;
         }
 
         .modal {
@@ -204,7 +242,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.8);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -213,72 +251,161 @@
 
         .modal-content {
             background: white;
-            padding: 40px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
+            padding: 60px;
+            border-radius: 25px;
+            width: 95%;
+            max-width: 800px;
+            border: 4px solid #ff4081;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
 
         footer {
             text-align: center;
-            padding: 40px 0;
+            padding: 60px 0;
             color: white;
-            margin-top: 50px;
+            margin-top: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 25px;
         }
 
         .payment-methods {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
         }
 
         .payment-btn {
-            background: #0070ba;
+            background: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
             color: white;
-            padding: 15px 30px;
+            padding: 25px 50px;
             border: none;
-            border-radius: 8px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
         .payment-btn:hover {
-            background: #005ea6;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #ff4081;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 3rem;
+            color: #ff4081;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+        }
+
+        .price-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #fff5f8;
+            border-radius: 20px;
+            border: 3px solid #ffb6c1;
+        }
+
+        .nav-buttons {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .stat-label {
+            font-size: 1.8rem;
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Navigation -->
-        <nav style="text-align: center; margin-bottom: 30px;">
-            <a href="#home" class="btn-primary">Home</a>
-            <a href="#create" class="btn-primary">Create Offer</a>
-            <a href="#pricing" class="btn-primary">Pricing</a>
+        <nav class="nav-buttons">
+            <a href="#home" class="btn-primary">🏠 Home</a>
+            <a href="#create" class="btn-primary">🚀 Create Offer</a>
+            <a href="#pricing" class="btn-primary">💰 Pricing</a>
         </nav>
 
         <!-- Home Section -->
         <section id="home">
             <header>
                 <div class="logo">Rujex.com</div>
-                <div class="tagline">Create Time-Limited Offers - Boost Your Sales 300%</div>
-                <a href="#create" class="btn-primary">Create Your Free Offer Now</a>
+                <div class="tagline">Create Time-Limited Offers That Boost Your Sales By 300%</div>
+                <a href="#create" class="btn-primary">🎯 Create Your Free Offer Now</a>
             </header>
 
             <div class="main-card">
-                <h2 style="text-align: center; margin-bottom: 30px;">How It Works?</h2>
+                <h1>Transform Your Business With Time-Limited Offers</h1>
+                <p style="text-align: center; font-size: 2.2rem; color: #666;">Join thousands of successful businesses using Rujex to create urgency and drive sales</p>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number">300%</div>
+                        <div class="stat-label">Average Sales Increase</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24H</div>
+                        <div class="stat-label">Quick Setup Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$0</div>
+                        <div class="stat-label">Start Free</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">USA</div>
+                        <div class="stat-label">Trusted Nationwide</div>
+                    </div>
+                </div>
+
+                <h2>How It Works In 3 Simple Steps</h2>
                 <div class="features">
                     <div class="feature-card">
-                        <h3>1. Create Offer</h3>
-                        <p>Fill the form in 5 minutes</p>
+                        <h3>1. Create Your Offer</h3>
+                        <p>Fill out our simple form in less than 5 minutes. No technical skills required!</p>
                     </div>
                     <div class="feature-card">
-                        <h3>2. Get Link</h3>
-                        <p>Unique link for your offer</p>
+                        <h3>2. Get Your Unique Link</h3>
+                        <p>Receive a beautiful, professional offer page with countdown timer</p>
                     </div>
                     <div class="feature-card">
-                        <h3>3. Share & Profit</h3>
-                        <p>Share the link and watch sales grow</p>
+                        <h3>3. Share & Watch Sales Grow</h3>
+                        <p>Share your link and watch customers rush to buy before time runs out</p>
                     </div>
                 </div>
             </div>
@@ -287,75 +414,77 @@
         <!-- Create Offer Section -->
         <section id="create" style="display: none;">
             <div class="main-card">
-                <h2 style="text-align: center; margin-bottom: 30px;">Create Your Time-Limited Offer</h2>
+                <h1>Create Your Time-Limited Offer</h1>
+                <p style="text-align: center; color: #666; font-size: 2rem;">Fill out the form below and get your offer live in minutes!</p>
                 
                 <div id="createForm">
                     <div class="form-group">
-                        <label>Offer Title</label>
-                        <input type="text" id="offerTitle" placeholder="e.g., 50% Off All Products">
+                        <label>🎯 Offer Title</label>
+                        <input type="text" id="offerTitle" placeholder="Example: 50% OFF All Products - Limited Time!">
                     </div>
                     
                     <div class="form-group">
-                        <label>Offer Description</label>
-                        <textarea id="offerDesc" rows="3" placeholder="Describe your amazing offer..."></textarea>
+                        <label>📝 Offer Description</label>
+                        <textarea id="offerDesc" rows="4" placeholder="Describe your amazing offer in detail. Why should customers act now?"></textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label>Original Price ($)</label>
+                        <label>💰 Original Price ($)</label>
                         <input type="number" id="originalPrice" placeholder="100">
                     </div>
                     
                     <div class="form-group">
-                        <label>Discount Price ($)</label>
+                        <label>💸 Discount Price ($)</label>
                         <input type="number" id="discountPrice" placeholder="50">
                     </div>
                     
                     <div class="form-group">
-                        <label>Offer Duration</label>
+                        <label>⏰ Offer Duration</label>
                         <select id="expiryTime">
-                            <option value="24">24 Hours</option>
-                            <option value="48" selected>48 Hours</option>
-                            <option value="72">72 Hours</option>
+                            <option value="24">24 Hours - Creates Urgency</option>
+                            <option value="48" selected>48 Hours - Best Results</option>
+                            <option value="72">72 Hours - Maximum Reach</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
-                        <label>Image URL (optional)</label>
-                        <input type="url" id="offerImage" placeholder="https://example.com/image.jpg">
-                        <small style="color: #666;">Leave empty for default image</small>
+                        <label>🖼️ Image URL (Optional)</label>
+                        <input type="url" id="offerImage" placeholder="https://example.com/your-product-image.jpg">
+                        <p style="color: #666; font-size: 1.6rem;">Leave empty to use our beautiful default image</p>
                     </div>
                     
-                    <div style="text-align: center;">
-                        <button class="btn-primary" onclick="createOfferPage()">Create Offer Page</button>
-                        <button class="btn-primary" onclick="showSection('home')">Back to Home</button>
+                    <div style="text-align: center; margin-top: 50px;">
+                        <button class="btn-primary" onclick="createOfferPage()">✨ Create My Offer Page</button>
+                        <button class="btn-primary" onclick="showSection('home')">🏠 Back to Home</button>
                     </div>
                 </div>
 
                 <!-- Offer Result Page -->
                 <div class="offer-page" id="offerPage">
-                    <h1 id="displayTitle" style="color: #333; margin-bottom: 20px;"></h1>
+                    <h1>🎉 Your Offer Is Ready!</h1>
+                    <h2 id="displayTitle"></h2>
                     <img id="displayImage" class="offer-image" src="" alt="Offer Image">
-                    <p id="displayDesc" style="font-size: 18px; color: #555; margin: 20px 0;"></p>
+                    <p id="displayDesc" style="font-size: 2rem; color: #555; margin: 30px 0;"></p>
                     
-                    <div style="margin: 25px 0;">
+                    <div class="price-section">
                         <span class="original-price" id="displayOriginalPrice"></span>
                         <span class="discount-price" id="displayDiscountPrice"></span>
                     </div>
                     
                     <div class="countdown" id="countdown"></div>
                     
-                    <button class="btn-success">Buy Now Before Offer Ends!</button>
+                    <button class="btn-success" style="font-size: 2.2rem; padding: 30px 60px;">🚀 Buy Now Before Offer Ends!</button>
                     
-                    <div style="margin-top: 40px; background: #f8f9fa; padding: 20px; border-radius: 10px;">
-                        <h3 style="color: #333;">Share This Offer</h3>
-                        <p style="color: #666; margin: 10px 0;">Copy the link and share with your customers:</p>
-                        <input type="text" id="shareUrl" style="width: 100%; padding: 12px; border: 2px dashed #667eea; border-radius: 8px; background: #fff; text-align: center;" readonly>
-                        <button class="btn-primary" onclick="copyShareUrl()" style="margin-top: 15px;">Copy Link</button>
+                    <div style="margin-top: 60px; background: #fff5f8; padding: 40px; border-radius: 20px; border: 3px solid #ffb6c1;">
+                        <h3>📤 Share Your Offer</h3>
+                        <p style="color: #666; margin: 20px 0; font-size: 1.8rem;">Copy this link and share it with your customers:</p>
+                        <input type="text" id="shareUrl" style="width: 100%; padding: 20px; border: 3px dashed #ff4081; border-radius: 15px; background: #fff; text-align: center; font-size: 1.8rem;" readonly>
+                        <button class="btn-primary" onclick="copyShareUrl()" style="margin-top: 25px; font-size: 1.8rem;">📋 Copy Link to Clipboard</button>
                     </div>
 
-                    <div style="margin-top: 30px;">
-                        <button class="btn-primary" onclick="createNewOffer()">Create New Offer</button>
-                        <button class="btn-primary" onclick="showSection('home')">Home</button>
+                    <div style="margin-top: 50px;">
+                        <button class="btn-primary" onclick="createNewOffer()">🔄 Create Another Offer</button>
+                        <button class="btn-primary" onclick="showSection('home')">🏠 Home</button>
                     </div>
                 </div>
             </div>
@@ -364,61 +493,66 @@
         <!-- Pricing Section -->
         <section id="pricing" style="display: none;">
             <div class="main-card">
-                <h2 style="text-align: center; margin-bottom: 10px;">Choose Your Plan</h2>
-                <p style="text-align: center; color: #666; margin-bottom: 30px;">Try 3 days free, then only $7/month</p>
+                <h1>Choose Your Perfect Plan</h1>
+                <p style="text-align: center; color: #666; font-size: 2.2rem; margin-bottom: 50px;">Start with 3 days FREE, then only $7/month</p>
                 
                 <div class="pricing-cards">
                     <!-- Free Plan -->
                     <div class="pricing-card">
-                        <h3>Free Plan</h3>
-                        <div class="price">$0 <span style="font-size: 1rem; color: #666;">/month</span></div>
-                        <ul style="list-style: none; text-align: left; margin: 20px 0;">
-                            <li>✓ 3 offers per month</li>
-                            <li>✓ Ads on pages</li>
-                            <li>✓ Basic statistics</li>
-                            <li>✓ Email support</li>
+                        <h2>Free Plan</h2>
+                        <div class="price">$0 <span style="font-size: 2rem; color: #666;">/month</span></div>
+                        <ul style="list-style: none; text-align: left; margin: 40px 0; font-size: 1.8rem;">
+                            <li style="margin-bottom: 20px;">✅ 3 offers per month</li>
+                            <li style="margin-bottom: 20px;">✅ Basic countdown timer</li>
+                            <li style="margin-bottom: 20px;">✅ Standard templates</li>
+                            <li style="margin-bottom: 20px;">✅ Email support</li>
                         </ul>
-                        <button class="btn-primary" onclick="startFreeTrial('free')">Start Free</button>
+                        <button class="btn-primary" onclick="startFreeTrial('free')">Start Free Plan</button>
                     </div>
                     
                     <!-- Premium Plan -->
                     <div class="pricing-card popular" style="position: relative;">
-                        <div class="popular-badge">Most Popular</div>
-                        <h3>Premium Plan</h3>
-                        <div class="price">$7 <span style="font-size: 1rem; color: #666;">/month</span></div>
-                        <ul style="list-style: none; text-align: left; margin: 20px 0;">
-                            <li>✓ Unlimited offers</li>
-                            <li>✓ No ads</li>
-                            <li>✓ Advanced statistics</li>
-                            <li>✓ Custom links</li>
-                            <li>✓ Priority support</li>
-                            <li>✓ 3-day free trial</li>
+                        <div class="popular-badge">MOST POPULAR</div>
+                        <h2>Premium Plan</h2>
+                        <div class="price">$7 <span style="font-size: 2rem; color: #666;">/month</span></div>
+                        <ul style="list-style: none; text-align: left; margin: 40px 0; font-size: 1.8rem;">
+                            <li style="margin-bottom: 20px;">✅ Unlimited offers</li>
+                            <li style="margin-bottom: 20px;">✅ No ads on your pages</li>
+                            <li style="margin-bottom: 20px;">✅ Advanced analytics</li>
+                            <li style="margin-bottom: 20px;">✅ Custom branding</li>
+                            <li style="margin-bottom: 20px;">✅ Priority support</li>
+                            <li style="margin-bottom: 20px;">✅ 3-day FREE trial</li>
                         </ul>
-                        <button class="btn-success" onclick="startFreeTrial('premium')">Try 3 Days Free</button>
+                        <button class="btn-success" onclick="startFreeTrial('premium')">🚀 Try 3 Days FREE</button>
                     </div>
                     
                     <!-- Business Plan -->
                     <div class="pricing-card">
-                        <h3>Business Plan</h3>
-                        <div class="price">$29 <span style="font-size: 1rem; color: #666;">/month</span></div>
-                        <ul style="list-style: none; text-align: left; margin: 20px 0;">
-                            <li>✓ All premium features</li>
-                            <li>✓ Custom domain</li>
-                            <li>✓ Advanced reports</li>
-                            <li>✓ 24/7 support</li>
-                            <li>✓ Team management</li>
-                            <li>✓ 3-day free trial</li>
+                        <h2>Business Plan</h2>
+                        <div class="price">$29 <span style="font-size: 2rem; color: #666;">/month</span></div>
+                        <ul style="list-style: none; text-align: left; margin: 40px 0; font-size: 1.8rem;">
+                            <li style="margin-bottom: 20px;">✅ All premium features</li>
+                            <li style="margin-bottom: 20px;">✅ Custom domain</li>
+                            <li style="margin-bottom: 20px;">✅ Advanced reporting</li>
+                            <li style="margin-bottom: 20px;">✅ 24/7 phone support</li>
+                            <li style="margin-bottom: 20px;">✅ Team management</li>
+                            <li style="margin-bottom: 20px;">✅ 3-day FREE trial</li>
                         </ul>
-                        <button class="btn-success" onclick="startFreeTrial('business')">Try 3 Days Free</button>
+                        <button class="btn-success" onclick="startFreeTrial('business')">🚀 Try 3 Days FREE</button>
                     </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 60px; padding: 40px; background: #fff5f8; border-radius: 20px;">
+                    <h2>💳 All Major Payment Methods Accepted</h2>
+                    <p style="font-size: 1.8rem; color: #666;">PayPal, Credit Cards, Debit Cards, Bank Transfer</p>
                 </div>
             </div>
         </section>
     </div>
 
     <footer>
-        <p>© 2024 Rujex.com - All Rights Reserved</p>
-        <p style="margin-top: 10px; opacity: 0.8;">Algeria | 🇩🇿</p>
+        <p style="font-size: 2.2rem; margin-bottom: 20px;">© 2024 Rujex.com - All Rights Reserved</p>
+        <p style="font-size: 1.8rem; opacity: 0.9;">Proudly Serving Businesses Across The United States 🇺🇸</p>
     </footer>
 
     <script>
@@ -449,7 +583,7 @@
                 originalPrice: document.getElementById('originalPrice').value,
                 discountPrice: document.getElementById('discountPrice').value,
                 expiryHours: document.getElementById('expiryTime').value,
-                image: document.getElementById('offerImage').value || 'https://via.placeholder.com/800x400/667eea/ffffff?text=Special+Offer'
+                image: document.getElementById('offerImage').value || 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
             };
 
             if (!offerData.title || !offerData.description) {
@@ -504,7 +638,7 @@
                 const distance = endTime - now;
                 
                 if (distance < 0) {
-                    document.getElementById('countdown').innerHTML = "⏰ Offer Expired!";
+                    document.getElementById('countdown').innerHTML = "⏰ OFFER EXPIRED!";
                     document.querySelector('.btn-success').disabled = true;
                     document.querySelector('.btn-success').style.background = '#6c757d';
                     return;
@@ -515,7 +649,7 @@
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
                 
                 document.getElementById('countdown').innerHTML = 
-                    `⏰ Offer ends in: <strong>${hours}</strong>h <strong>${minutes}</strong>m <strong>${seconds}</strong>s`;
+                    `⏰ OFFER ENDS IN: <strong style="color: #e91e63;">${hours}</strong>H <strong style="color: #e91e63;">${minutes}</strong>M <strong style="color: #e91e63;">${seconds}</strong>S`;
             }
             
             updateCountdown();
@@ -526,7 +660,7 @@
             const shareUrl = document.getElementById('shareUrl');
             shareUrl.select();
             document.execCommand('copy');
-            alert('✅ Link copied! You can now share it with your customers.');
+            alert('✅ Link copied to clipboard! You can now share it with your customers.');
         }
 
         function createNewOffer() {
@@ -574,20 +708,23 @@
             const modalHTML = `
                 <div class="modal">
                     <div class="modal-content">
-                        <h2 style="text-align: center; margin-bottom: 20px;">Start Your Free Trial</h2>
-                        <p style="text-align: center; color: #666; margin-bottom: 30px;">3 days free then $${plan === 'premium' ? '7' : '29'}/month</p>
+                        <h1>Start Your 3-Day FREE Trial</h1>
+                        <p style="text-align: center; color: #666; font-size: 2rem; margin-bottom: 40px;">After trial: $${plan === 'premium' ? '7' : '29'}/month • Cancel anytime</p>
                         
                         <div class="form-group">
-                            <input type="email" id="userEmail" placeholder="Your Email" style="width: 100%; padding: 15px;">
+                            <label>📧 Your Email Address</label>
+                            <input type="email" id="userEmail" placeholder="your.email@example.com" style="width: 100%; padding: 25px; font-size: 2rem;">
                         </div>
                         
+                        <h2 style="text-align: center; margin: 40px 0;">Choose Payment Method</h2>
                         <div class="payment-methods">
-                            <button class="payment-btn" onclick="processPayment('${plan}', 'paypal')">PayPal</button>
-                            <button class="payment-btn" onclick="processPayment('${plan}', 'card')">Credit Card</button>
+                            <button class="payment-btn" onclick="processPayment('${plan}', 'paypal')">💳 PayPal</button>
+                            <button class="payment-btn" onclick="processPayment('${plan}', 'card')">💳 Credit Card</button>
+                            <button class="payment-btn" onclick="showBankDetails('${plan}')">🏦 Bank Transfer</button>
                         </div>
                         
-                        <div style="display: flex; gap: 10px; margin-top: 20px;">
-                            <button class="btn-primary" onclick="closeModal()" style="flex: 1;">Cancel</button>
+                        <div style="text-align: center; margin-top: 40px;">
+                            <button class="btn-primary" onclick="closeModal()" style="font-size: 1.8rem;">Maybe Later</button>
                         </div>
                     </div>
                 </div>
@@ -616,61 +753,82 @@
             userData.paymentMethod = method;
             localStorage.setItem('rujex_user', JSON.stringify(userData));
 
-            // Simulate payment processing
             if (method === 'paypal') {
-                // Redirect to PayPal (replace with your actual PayPal email)
-                const paypalEmail = 'your-email@domain.com'; // CHANGE THIS
+                // Redirect to PayPal with your actual email
+                const paypalEmail = 'guettafradhouan1808@gmail.com';
                 const amount = plan === 'premium' ? '7' : '29';
                 window.open(`https://www.paypal.com/send?amount=${amount}&email=${paypalEmail}`, '_blank');
             } else if (method === 'card') {
-                // Show card payment form (in real implementation, use Stripe)
                 showCardPaymentForm(plan);
                 return;
             }
 
             closeModal();
             showSection('create');
-            alert('🎉 Payment processed! You now have premium access.');
+            alert('🎉 Payment processed! You now have premium access for 3 days FREE.');
         }
 
         function showCardPaymentForm(plan) {
             const formHTML = `
                 <div class="modal">
                     <div class="modal-content">
-                        <h2 style="text-align: center; margin-bottom: 20px;">Credit Card Payment</h2>
+                        <h1>Credit Card Payment</h1>
+                        <p style="text-align: center; color: #666; font-size: 2rem; margin-bottom: 40px;">Secure payment • $${plan === 'premium' ? '7' : '29'}/month after trial</p>
                         
                         <div class="form-group">
-                            <label>Card Number</label>
-                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                            <label>💳 Card Number</label>
+                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" style="font-size: 2rem;">
                         </div>
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
                             <div class="form-group">
-                                <label>Expiry Date</label>
-                                <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5">
+                                <label>📅 Expiry Date</label>
+                                <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" style="font-size: 2rem;">
                             </div>
                             <div class="form-group">
-                                <label>CVV</label>
-                                <input type="text" id="cvv" placeholder="123" maxlength="3">
+                                <label>🔒 CVV</label>
+                                <input type="text" id="cvv" placeholder="123" maxlength="3" style="font-size: 2rem;">
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label>Cardholder Name</label>
-                            <input type="text" id="cardName" placeholder="John Doe">
+                            <label>👤 Cardholder Name</label>
+                            <input type="text" id="cardName" placeholder="John Doe" style="font-size: 2rem;">
                         </div>
                         
-                        <button class="btn-success" onclick="submitCardPayment('${plan}')" style="width: 100%; margin-top: 20px;">
-                            Pay $${plan === 'premium' ? '7' : '29'}/month
+                        <button class="btn-success" onclick="submitCardPayment('${plan}')" style="width: 100%; margin-top: 30px; font-size: 2rem;">
+                            💳 Pay $${plan === 'premium' ? '7' : '29'}/month (After Trial)
                         </button>
                         
-                        <button class="btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 10px;">Cancel</button>
+                        <button class="btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 20px; font-size: 1.8rem;">Cancel</button>
                     </div>
                 </div>
             `;
             
             closeModal();
             document.body.insertAdjacentHTML('beforeend', formHTML);
+        }
+
+        function showBankDetails(plan) {
+            const bankHTML = `
+                <div class="modal">
+                    <div class="modal-content">
+                        <h1>Bank Transfer</h1>
+                        <p style="text-align: center; color: #666; font-size: 2rem; margin-bottom: 40px;">Send $${plan === 'premium' ? '7' : '29'} monthly to:</p>
+                        
+                        <div style="background: #fff5f8; padding: 40px; border-radius: 20px; border: 3px solid #ffb6c1;">
+                            <p style="font-size: 2rem; margin-bottom: 20px;"><strong>Bank Name:</strong> Your Bank Name</p>
+                            <p style="font-size: 2rem; margin-bottom: 20px;"><strong>Account Name:</strong> Your Name</p>
+                            <p style="font-size: 2rem; margin-bottom: 20px;"><strong>Account Number:</strong> 123456789</p>
+                            <p style="font-size: 2rem; margin-bottom: 20px;"><strong>Routing Number:</strong> 021000021</p>
+                            <p style="font-size: 2rem;"><strong>Amount:</strong> $${plan === 'premium' ? '7' : '29'}/month</p>
+                        </div>
+                        
+                        <button class="btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 30px; font-size: 1.8rem;">Close</button>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', bankHTML);
         }
 
         function submitCardPayment(plan) {
@@ -684,8 +842,7 @@
                 return;
             }
 
-            // In real implementation, process with Stripe
-            alert('💳 Card payment processed successfully!');
+            alert('💳 Card payment processed successfully! You now have 3 days FREE trial.');
             closeModal();
             showSection('create');
         }
@@ -708,23 +865,23 @@
             let message = '';
             
             if (reason === 'trial_ended') {
-                message = 'Your free trial has ended. Upgrade to continue using premium features.';
+                message = 'Your FREE trial has ended. Upgrade to continue using premium features.';
             } else if (reason === 'free_limit') {
-                message = 'Free plan limit reached (3 offers). Upgrade to create unlimited offers.';
+                message = 'Free plan limit reached (3 offers per month). Upgrade to create unlimited offers!';
             }
 
             const modalHTML = `
                 <div class="modal">
                     <div class="modal-content">
-                        <h2 style="text-align: center; margin-bottom: 20px;">Upgrade Required</h2>
-                        <p style="text-align: center; color: #666; margin-bottom: 30px;">${message}</p>
+                        <h1>Upgrade Required</h1>
+                        <p style="text-align: center; color: #666; font-size: 2rem; margin-bottom: 40px;">${message}</p>
                         
-                        <div style="font-size: 2rem; color: #667eea; font-weight: bold; margin: 20px 0; text-align: center;">
-                            $7 <span style="font-size: 1rem; color: #666;">/month</span>
+                        <div style="font-size: 4rem; color: #ff4081; font-weight: bold; margin: 30px 0; text-align: center;">
+                            $7 <span style="font-size: 2rem; color: #666;">/month</span>
                         </div>
                         
-                        <button class="btn-success" onclick="showSection('pricing')" style="width: 100%;">Upgrade Now</button>
-                        <button class="btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 10px;">Later</button>
+                        <button class="btn-success" onclick="showSection('pricing')" style="width: 100%; font-size: 2rem;">🚀 Upgrade Now</button>
+                        <button class="btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 20px; font-size: 1.8rem;">Maybe Later</button>
                     </div>
                 </div>
             `;
