@@ -1,340 +1,739 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>CV + Cover Letter — Separated Pages</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rujex.com - Create Time-Limited Offers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
 
-<!-- html2canvas & jsPDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-<style>
-:root{
-  --page-width-mm:210mm;
-  --page-height-mm:297mm;
-  --left-bg:#e8eaf6;
-  --accent:#3f51b5;
-  --text:#222;
-}
-*{box-sizing:border-box}
-body{
-  font-family:'Poppins',sans-serif;
-  margin:0;
-  background:#f3f3f3;
-  color:var(--text);
-  padding:18px;
-}
-/* A4 visual */
-.preview-frame{
-  width:calc(var(--page-width-mm));
-  height:calc(var(--page-height-mm));
-  margin:0 auto 18px;
-  background:#fff;
-  box-shadow:0 6px 18px rgba(0,0,0,0.08);
-  overflow:hidden;
-  display:block;
-}
-/* inner layout */
-.page-inner{
-  display:flex;
-  align-items:flex-start;
-  height:100%;
-}
-.left-column{
-  width:35%;
-  background:var(--left-bg);
-  padding:36px 28px;
-  text-align:center;
-}
-.right-column{
-  width:65%;
-  background:#fff;
-  padding:36px 28px;
-}
-.profile-pic{
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  object-fit:cover;
-  border:3px solid rgba(0,0,0,0.08);
-  display:block;
-  margin:0 auto 12px;
-}
-h1{font-size:28px;margin:8px 0 6px;font-weight:700}
-h2{font-size:16px;margin:8px 0 10px;color:#444;border-bottom:1px solid #e6e6e6;padding-bottom:6px;display:flex;align-items:center;gap:8px}
-h3{font-size:14px;margin:8px 0 4px;font-weight:600}
-p,li,span{font-size:13px;line-height:1.55;color:var(--text)}
-ul{padding-left:18px;margin:6px 0}
-.contact-item{display:flex;align-items:center;gap:10px;margin:8px 0;font-weight:500;justify-content:flex-start}
-.contact-item svg{min-width:22px;height:16px;fill:#555}
-.section{margin-bottom:20px;text-align:left}
-[contenteditable="true"]:focus{
-  outline:2px dashed rgba(63,81,181,0.18);
-  outline-offset:3px;
-  border-radius:4px;
-  background:rgba(63,81,181,0.02);
-}
-.controls{
-  max-width:980px;
-  margin:12px auto;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-.btn{
-  background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:6px;font-weight:600;cursor:pointer;
-  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
-}
-.btn.secondary{background:#607d8b}
-.btn.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
-.small{padding:8px 10px;font-size:13px}
-.modal {
-  position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:9999;padding:20px;
-}
-.modal.open{display:flex}
-.modal-content{background:#fff;border-radius:8px;max-width:100%;max-height:100%;overflow:auto;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,0.25)}
-.modal img{max-width:100%;height:auto;display:block}
-.note{max-width:980px;margin:8px auto;color:#555;font-size:13px;text-align:center}
-</style>
+        header {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .pricing-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card.popular {
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .popular-badge {
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        .offer-page {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .offer-image {
+            max-width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 3px solid #667eea;
+        }
+
+        .countdown {
+            font-size: 24px;
+            color: #dc3545;
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff3f3;
+            border-radius: 10px;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 22px;
+        }
+
+        .discount-price {
+            color: #dc3545;
+            font-size: 32px;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            margin-top: 50px;
+        }
+
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .payment-btn {
+            background: #0070ba;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .payment-btn:hover {
+            background: #005ea6;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav style="text-align: center; margin-bottom: 30px;">
+            <a href="#home" class="btn-primary">Home</a>
+            <a href="#create" class="btn-primary">Create Offer</a>
+            <a href="#pricing" class="btn-primary">Pricing</a>
+        </nav>
 
-<div class="controls">
-  <label class="btn ghost small" title="Upload CV Picture">
-    Upload Picture
-    <input id="uploadImage" type="file" accept="image/*" style="display:none">
-  </label>
+        <!-- Home Section -->
+        <section id="home">
+            <header>
+                <div class="logo">Rujex.com</div>
+                <div class="tagline">Create Time-Limited Offers - Boost Your Sales 300%</div>
+                <a href="#create" class="btn-primary">Create Your Free Offer Now</a>
+            </header>
 
-  <!-- CV controls -->
-  <button class="btn" id="previewCvBtn">Preview CV</button>
-  <button class="btn" id="downloadCvBtn">Download CV (PDF)</button>
+            <div class="main-card">
+                <h2 style="text-align: center; margin-bottom: 30px;">How It Works?</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>1. Create Offer</h3>
+                        <p>Fill the form in 5 minutes</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>2. Get Link</h3>
+                        <p>Unique link for your offer</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>3. Share & Profit</h3>
+                        <p>Share the link and watch sales grow</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- Cover controls -->
-  <button class="btn" id="previewCoverBtn">Preview Cover Letter</button>
-  <button class="btn" id="downloadCoverBtn">Download Cover Letter (PDF)</button>
-</div>
+        <!-- Create Offer Section -->
+        <section id="create" style="display: none;">
+            <div class="main-card">
+                <h2 style="text-align: center; margin-bottom: 30px;">Create Your Time-Limited Offer</h2>
+                
+                <div id="createForm">
+                    <div class="form-group">
+                        <label>Offer Title</label>
+                        <input type="text" id="offerTitle" placeholder="e.g., 50% Off All Products">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Offer Description</label>
+                        <textarea id="offerDesc" rows="3" placeholder="Describe your amazing offer..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Original Price ($)</label>
+                        <input type="number" id="originalPrice" placeholder="100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Discount Price ($)</label>
+                        <input type="number" id="discountPrice" placeholder="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Offer Duration</label>
+                        <select id="expiryTime">
+                            <option value="24">24 Hours</option>
+                            <option value="48" selected>48 Hours</option>
+                            <option value="72">72 Hours</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Image URL (optional)</label>
+                        <input type="url" id="offerImage" placeholder="https://example.com/image.jpg">
+                        <small style="color: #666;">Leave empty for default image</small>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <button class="btn-primary" onclick="createOfferPage()">Create Offer Page</button>
+                        <button class="btn-primary" onclick="showSection('home')">Back to Home</button>
+                    </div>
+                </div>
 
-<p class="note">Click any field to edit. Use Preview before downloading PDF.</p>
+                <!-- Offer Result Page -->
+                <div class="offer-page" id="offerPage">
+                    <h1 id="displayTitle" style="color: #333; margin-bottom: 20px;"></h1>
+                    <img id="displayImage" class="offer-image" src="" alt="Offer Image">
+                    <p id="displayDesc" style="font-size: 18px; color: #555; margin: 20px 0;"></p>
+                    
+                    <div style="margin: 25px 0;">
+                        <span class="original-price" id="displayOriginalPrice"></span>
+                        <span class="discount-price" id="displayDiscountPrice"></span>
+                    </div>
+                    
+                    <div class="countdown" id="countdown"></div>
+                    
+                    <button class="btn-success">Buy Now Before Offer Ends!</button>
+                    
+                    <div style="margin-top: 40px; background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                        <h3 style="color: #333;">Share This Offer</h3>
+                        <p style="color: #666; margin: 10px 0;">Copy the link and share with your customers:</p>
+                        <input type="text" id="shareUrl" style="width: 100%; padding: 12px; border: 2px dashed #667eea; border-radius: 8px; background: #fff; text-align: center;" readonly>
+                        <button class="btn-primary" onclick="copyShareUrl()" style="margin-top: 15px;">Copy Link</button>
+                    </div>
 
-<!-- ========== CV PAGE (first A4) ========== -->
-<div class="preview-frame" id="pageVisualCV" aria-label="CV page">
-  <div class="page-inner" id="cvVisual">
-    <div class="left-column" id="cvLeft">
-      <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/120" alt="profile">
-      <h1 id="fullName" contenteditable="true">John Doe</h1>
+                    <div style="margin-top: 30px;">
+                        <button class="btn-primary" onclick="createNewOffer()">Create New Offer</button>
+                        <button class="btn-primary" onclick="showSection('home')">Home</button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-      <div class="section">
-        <h2>Contact</h2>
-
-        <div class="contact-item">
-          <!-- Phone SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M511.7 387.1c-1.8-14.3-11.3-26.4-25.4-31.8l-104-39.5c-12.5-4.7-26.6-2.2-36.6 6.6l-46 39.1c-72-38.6-131-97.6-169.6-169.6l39.1-46c8.8-10 11.3-24.1 6.6-36.6l-39.5-104c-5.4-14.1-17.5-23.6-31.8-25.4-14.2-1.8-28.5 4.7-37.3 16.4l-48 64C2.1 91.7-2.4 115.8 5.7 138.4c64.5 146 184.7 266.2 330.7 330.7 22.6 8.1 46.7 3.6 60.5-8.7l64-48c11.7-8.8 18.2-23.1 16.4-37.3z"/></svg>
-          <span id="phone" contenteditable="true">+123 456 7890</span>
-        </div>
-
-        <div class="contact-item">
-          <!-- Email SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M502.3 190.8l-192-160c-17-14.2-42.1-14.2-59.1 0l-192 160C9.4 196.1 0 208.2 0 222.3V464c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V222.3c0-14.1-9.4-26.2-23.7-31.5zM256 288l-192-160h384L256 288z"/></svg>
-          <span id="email" contenteditable="true">john@example.com</span>
-        </div>
-
-        <div class="contact-item">
-          <!-- Address SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M168 0C75.2 0 0 75.2 0 168c0 87.3 123.5 224.7 168 320 44.5-95.3 168-232.7 168-320C336 75.2 260.8 0 168 0zm0 256c-48.6 0-88-39.4-88-88s39.4-88 88-88 88 39.4 88 88-39.4 88-88 88z"/></svg>
-          <span id="address" contenteditable="true">123 Main St, City</span>
-        </div>
-
-        <div class="contact-item">
-          <!-- Website SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 0C114.836 0 0 114.836 0 256s114.836 256 256 256 256-114.836 256-256S397.164 0 256 0zm106.8 387.2c-32 32-78.1 44.8-127.6 44.8s-95.6-12.8-127.6-44.8c-32-32-44.8-78.1-44.8-127.6s12.8-95.6 44.8-127.6c32-32 78.1-44.8 127.6-44.8s95.6 12.8 127.6 44.8c32 32 44.8 78.1 44.8 127.6s-12.8 95.6-44.8 127.6z"/></svg>
-          <span id="website" contenteditable="true">www.johndoe.com</span>
-        </div>
-
-        <div class="contact-item">
-          <!-- LinkedIn SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M100.28 448H7.4V148.9h92.88zm-46.44-341c-29.77 0-53.88-24.11-53.88-53.88S24.07 0 53.84 0 107.72 24.11 107.72 53.88s-24.11 53.12-53.88 53.12zm394.42 341h-92.68V302.4c0-34.7-12.44-58.3-43.44-58.3-23.7 0-37.8 16-44 31.4-2.28 5.5-2.85 13.2-2.85 20.9V448h-92.6s1.25-236.7 0-261.1h92.6v37c-.2.3-.5.6-.7.9h.7v-.9c12.3-19 34.4-46.1 83.7-46.1 61.1 0 106.9 39.8 106.9 125.3V448z"/></svg>
-          <span id="linkedin" contenteditable="true">linkedin.com/in/johndoe</span>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2>Languages</h2>
-        <ul id="languages" contenteditable="true">
-          <li>English (Fluent)</li>
-          <li>French (Intermediate)</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <h2>Software</h2>
-        <ul id="software" contenteditable="true">
-          <li>Photoshop</li>
-          <li>Illustrator</li>
-          <li>VS Code</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <h2>Hobbies</h2>
-        <ul id="hobbies" contenteditable="true">
-          <li>Photography</li>
-          <li>Traveling</li>
-          <li>Reading</li>
-        </ul>
-      </div>
+        <!-- Pricing Section -->
+        <section id="pricing" style="display: none;">
+            <div class="main-card">
+                <h2 style="text-align: center; margin-bottom: 10px;">Choose Your Plan</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">Try 3 days free, then only $7/month</p>
+                
+                <div class="pricing-cards">
+                    <!-- Free Plan -->
+                    <div class="pricing-card">
+                        <h3>Free Plan</h3>
+                        <div class="price">$0 <span style="font-size: 1rem; color: #666;">/month</span></div>
+                        <ul style="list-style: none; text-align: left; margin: 20px 0;">
+                            <li>✓ 3 offers per month</li>
+                            <li>✓ Ads on pages</li>
+                            <li>✓ Basic statistics</li>
+                            <li>✓ Email support</li>
+                        </ul>
+                        <button class="btn-primary" onclick="startFreeTrial('free')">Start Free</button>
+                    </div>
+                    
+                    <!-- Premium Plan -->
+                    <div class="pricing-card popular" style="position: relative;">
+                        <div class="popular-badge">Most Popular</div>
+                        <h3>Premium Plan</h3>
+                        <div class="price">$7 <span style="font-size: 1rem; color: #666;">/month</span></div>
+                        <ul style="list-style: none; text-align: left; margin: 20px 0;">
+                            <li>✓ Unlimited offers</li>
+                            <li>✓ No ads</li>
+                            <li>✓ Advanced statistics</li>
+                            <li>✓ Custom links</li>
+                            <li>✓ Priority support</li>
+                            <li>✓ 3-day free trial</li>
+                        </ul>
+                        <button class="btn-success" onclick="startFreeTrial('premium')">Try 3 Days Free</button>
+                    </div>
+                    
+                    <!-- Business Plan -->
+                    <div class="pricing-card">
+                        <h3>Business Plan</h3>
+                        <div class="price">$29 <span style="font-size: 1rem; color: #666;">/month</span></div>
+                        <ul style="list-style: none; text-align: left; margin: 20px 0;">
+                            <li>✓ All premium features</li>
+                            <li>✓ Custom domain</li>
+                            <li>✓ Advanced reports</li>
+                            <li>✓ 24/7 support</li>
+                            <li>✓ Team management</li>
+                            <li>✓ 3-day free trial</li>
+                        </ul>
+                        <button class="btn-success" onclick="startFreeTrial('business')">Try 3 Days Free</button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <div class="right-column">
-      <div class="section">
-        <h2>Profile</h2>
-        <p id="profileText" contenteditable="true">Creative front-end developer with 5+ years of experience designing user-centered websites.</p>
-      </div>
+    <footer>
+        <p>© 2024 Rujex.com - All Rights Reserved</p>
+        <p style="margin-top: 10px; opacity: 0.8;">Algeria | 🇩🇿</p>
+    </footer>
 
-      <div class="section">
-        <h2>Work Experience</h2>
-        <div id="experience" contenteditable="true">
-          <h3>Front-End Developer</h3>
-          <p>XYZ Company | 2020 - Present</p>
-          <ul>
-            <li>Designed responsive websites and web applications</li>
-            <li>Collaborated with designers and back-end developers</li>
-          </ul>
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
 
-          <h3>Junior Developer</h3>
-          <p>ABC Studio | 2018 - 2020</p>
-          <ul>
-            <li>Assisted in website development projects</li>
-            <li>Maintained internal tools</li>
-          </ul>
-        </div>
-      </div>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('href').substring(1);
+                showSection(sectionId);
+            });
+        });
 
-      <div class="section">
-        <h2>Education</h2>
-        <p id="education" contenteditable="true">BSc in Computer Science, University of Tech, 2018</p>
-      </div>
-    </div>
-  </div>
-</div>
+        // Show home section by default
+        showSection('home');
 
-<!-- ========== COVER LETTER PAGE (second A4) ========== -->
-<div class="preview-frame" id="pageVisualCover" aria-label="Cover Letter page" style="margin-top:12px;">
-  <!-- Make cover fill the A4, simple centered container -->
-  <div style="padding:36px 28px; box-sizing:border-box; height:100%;">
-    <div id="coverLetter" contenteditable="true" style="background:#fafafa;padding:18px;border-radius:6px; height:100%; box-sizing:border-box;">
-      <h2 style="margin-top:0;">Cover Letter</h2>
-      <p>To: <span contenteditable="true">Hiring Manager</span></p>
-      <p>Dear Hiring Manager,</p>
-      <p id="coverBody" contenteditable="true">I am excited to apply for the Front-End Developer position at your esteemed company. I have over 5 years of experience designing and developing user-centered websites...</p>
-      <p>Sincerely,<br><span id="coverName" contenteditable="true">John Doe</span></p>
-    </div>
-  </div>
-</div>
+        // Offer Creation System
+        function createOfferPage() {
+            const offerData = {
+                title: document.getElementById('offerTitle').value,
+                description: document.getElementById('offerDesc').value,
+                originalPrice: document.getElementById('originalPrice').value,
+                discountPrice: document.getElementById('discountPrice').value,
+                expiryHours: document.getElementById('expiryTime').value,
+                image: document.getElementById('offerImage').value || 'https://via.placeholder.com/800x400/667eea/ffffff?text=Special+Offer'
+            };
 
-<!-- Modal for Preview -->
-<div id="modal" class="modal" role="dialog" aria-hidden="true">
-  <div class="modal-content">
-    <div style="display:flex;justify-content:flex-end">
-      <button id="closeModal" class="btn secondary small">Close</button>
-    </div>
-    <div id="modalBody" style="padding:6px"></div>
-  </div>
-</div>
+            if (!offerData.title || !offerData.description) {
+                alert('Please fill all required fields');
+                return;
+            }
 
-<script>
-/* Upload image affects CV only */
-document.getElementById('uploadImage').addEventListener('change',function(e){
-  const file=e.target.files[0];
-  if(!file)return;
-  const reader=new FileReader();
-  reader.onload=function(ev){document.getElementById('profilePic').src=ev.target.result;}
-  reader.readAsDataURL(file);
-});
+            // Check user plan limitations
+            const userData = JSON.parse(localStorage.getItem('rujex_user') || '{}');
+            if (userData.plan === 'free') {
+                const userOffers = JSON.parse(localStorage.getItem('rujex_user_offers') || '[]');
+                if (userOffers.length >= 3) {
+                    showUpgradeMessage('free_limit');
+                    return;
+                }
+            }
 
-/* render element to image (html2canvas) */
-function renderElementToImage(el, scale=2){
-  return html2canvas(el,{scale:scale,useCORS:true,backgroundColor:'#ffffff',scrollY:-window.scrollY});
-}
+            const uniqueId = Math.random().toString(36).substring(2, 10);
+            const offerUrl = `${window.location.origin}?offer=${uniqueId}`;
+            
+            localStorage.setItem(`offer_${uniqueId}`, JSON.stringify(offerData));
+            
+            // Track user offers for free plan
+            if (userData.plan === 'free') {
+                const userOffers = JSON.parse(localStorage.getItem('rujex_user_offers') || '[]');
+                userOffers.push(uniqueId);
+                localStorage.setItem('rujex_user_offers', JSON.stringify(userOffers));
+            }
+            
+            displayOfferPage(offerData, offerUrl);
+        }
 
-/* show modal with preview image */
-function showModalWithImage(imgDataUrl){
-  const modal=document.getElementById('modal');
-  document.getElementById('modalBody').innerHTML='<img src="'+imgDataUrl+'" alt="preview">';
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden','false');
-}
+        function displayOfferPage(offerData, offerUrl) {
+            document.getElementById('createForm').style.display = 'none';
+            document.getElementById('offerPage').style.display = 'block';
+            
+            document.getElementById('displayTitle').textContent = offerData.title;
+            document.getElementById('displayDesc').textContent = offerData.description;
+            document.getElementById('displayOriginalPrice').textContent = `$${offerData.originalPrice}`;
+            document.getElementById('displayDiscountPrice').textContent = `$${offerData.discountPrice}`;
+            document.getElementById('displayImage').src = offerData.image;
+            document.getElementById('shareUrl').value = offerUrl;
+            
+            startCountdown(offerData.expiryHours);
+        }
 
-/* close modal */
-document.getElementById('closeModal').addEventListener('click',function(){
-  const modal=document.getElementById('modal');
-  modal.classList.remove('open');
-  modal.setAttribute('aria-hidden','true');
-  document.getElementById('modalBody').innerHTML='';
-});
+        function startCountdown(hours) {
+            const endTime = new Date().getTime() + (hours * 60 * 60 * 1000);
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = endTime - now;
+                
+                if (distance < 0) {
+                    document.getElementById('countdown').innerHTML = "⏰ Offer Expired!";
+                    document.querySelector('.btn-success').disabled = true;
+                    document.querySelector('.btn-success').style.background = '#6c757d';
+                    return;
+                }
+                
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('countdown').innerHTML = 
+                    `⏰ Offer ends in: <strong>${hours}</strong>h <strong>${minutes}</strong>m <strong>${seconds}</strong>s`;
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
 
-/* preview & download function (works for CV or Cover separately) */
-async function previewAndDownload(element, saveAs=false, filename='document.pdf'){
-  const wrapper=document.createElement('div');
-  // use same visual width as preview-frame
-  wrapper.style.width=getComputedStyle(document.querySelector('.preview-frame')).width;
-  wrapper.style.background='#fff';
-  wrapper.appendChild(element.cloneNode(true));
-  document.body.appendChild(wrapper);
-  try{
-    const canvas=await renderElementToImage(wrapper,2);
-    const imgData=canvas.toDataURL('image/png');
-    if(saveAs){
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF('p','mm','a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const margin=10; // safe margin mm
-      const imgProps=pdf.getImageProperties(imgData);
-      const pdfWidth=pageWidth-margin*2;
-      const pdfHeight=(imgProps.height*pdfWidth)/imgProps.width;
-      pdf.addImage(imgData,'PNG',margin,margin,pdfWidth,pdfHeight);
-      pdf.save(filename);
-    }else{
-      showModalWithImage(imgData);
-    }
-  }catch(err){
-    console.error(err);
-    alert('Error generating image/PDF');
-  }finally{
-    document.body.removeChild(wrapper);
-  }
-}
+        function copyShareUrl() {
+            const shareUrl = document.getElementById('shareUrl');
+            shareUrl.select();
+            document.execCommand('copy');
+            alert('✅ Link copied! You can now share it with your customers.');
+        }
 
-/* Buttons wiring */
-/* CV: preview/download - uses #cvVisual (first preview-frame content) */
-document.getElementById('previewCvBtn').addEventListener('click',()=>{
-  const cvEl = document.getElementById('cvVisual');
-  previewAndDownload(cvEl, false, 'CV.pdf');
-});
-document.getElementById('downloadCvBtn').addEventListener('click',()=>{
-  const cvEl = document.getElementById('cvVisual');
-  previewAndDownload(cvEl, true, 'CV.pdf');
-});
+        function createNewOffer() {
+            document.getElementById('offerPage').style.display = 'none';
+            document.getElementById('createForm').style.display = 'block';
+            document.getElementById('createForm').reset();
+        }
 
-/* Cover: preview/download - uses #coverLetter inside second preview-frame */
-document.getElementById('previewCoverBtn').addEventListener('click',()=>{
-  const coverEl = document.getElementById('coverLetter');
-  previewAndDownload(coverEl, false, 'CoverLetter.pdf');
-});
-document.getElementById('downloadCoverBtn').addEventListener('click',()=>{
-  const coverEl = document.getElementById('coverLetter');
-  previewAndDownload(coverEl, true, 'CoverLetter.pdf');
-});
+        // Check for offer in URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const offerId = urlParams.get('offer');
+        
+        if (offerId) {
+            const savedOffer = localStorage.getItem(`offer_${offerId}`);
+            if (savedOffer) {
+                showSection('create');
+                const offerData = JSON.parse(savedOffer);
+                const offerUrl = window.location.href;
+                displayOfferPage(offerData, offerUrl);
+            }
+        }
 
-/* modal click outside to close */
-document.getElementById('modal').addEventListener('click',function(e){
-  if(e.target===this) document.getElementById('closeModal').click();
-});
-</script>
+        // Subscription System
+        function startFreeTrial(plan) {
+            const trialEnd = new Date();
+            trialEnd.setDate(trialEnd.getDate() + 3);
+            
+            const userData = {
+                plan: plan,
+                trialStart: new Date().toISOString(),
+                trialEnd: trialEnd.toISOString(),
+                status: 'trial'
+            };
+            
+            localStorage.setItem('rujex_user', JSON.stringify(userData));
+            
+            if (plan === 'free') {
+                showSection('create');
+            } else {
+                showPaymentModal(plan);
+            }
+        }
 
+        function showPaymentModal(plan) {
+            const modalHTML = `
+                <div class="modal">
+                    <div class="modal-content">
+                        <h2 style="text-align: center; margin-bottom: 20px;">Start Your Free Trial</h2>
+                        <p style="text-align: center; color: #666; margin-bottom: 30px;">3 days free then $${plan === 'premium' ? '7' : '29'}/month</p>
+                        
+                        <div class="form-group">
+                            <input type="email" id="userEmail" placeholder="Your Email" style="width: 100%; padding: 15px;">
+                        </div>
+                        
+                        <div class="payment-methods">
+                            <button class="payment-btn" onclick="processPayment('${plan}', 'paypal')">PayPal</button>
+                            <button class="payment-btn" onclick="processPayment('${plan}', 'card')">Credit Card</button>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button class="btn-primary" onclick="closeModal()" style="flex: 1;">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        function closeModal() {
+            const modal = document.querySelector('.modal');
+            if (modal) modal.remove();
+        }
+
+        function processPayment(plan, method) {
+            const email = document.getElementById('userEmail').value;
+            
+            if (!email) {
+                alert('Please enter your email address');
+                return;
+            }
+
+            // Update user data
+            const userData = JSON.parse(localStorage.getItem('rujex_user') || '{}');
+            userData.email = email;
+            userData.plan = plan;
+            userData.paymentMethod = method;
+            localStorage.setItem('rujex_user', JSON.stringify(userData));
+
+            // Simulate payment processing
+            if (method === 'paypal') {
+                // Redirect to PayPal (replace with your actual PayPal email)
+                const paypalEmail = 'your-email@domain.com'; // CHANGE THIS
+                const amount = plan === 'premium' ? '7' : '29';
+                window.open(`https://www.paypal.com/send?amount=${amount}&email=${paypalEmail}`, '_blank');
+            } else if (method === 'card') {
+                // Show card payment form (in real implementation, use Stripe)
+                showCardPaymentForm(plan);
+                return;
+            }
+
+            closeModal();
+            showSection('create');
+            alert('🎉 Payment processed! You now have premium access.');
+        }
+
+        function showCardPaymentForm(plan) {
+            const formHTML = `
+                <div class="modal">
+                    <div class="modal-content">
+                        <h2 style="text-align: center; margin-bottom: 20px;">Credit Card Payment</h2>
+                        
+                        <div class="form-group">
+                            <label>Card Number</label>
+                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label>Expiry Date</label>
+                                <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="text" id="cvv" placeholder="123" maxlength="3">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Cardholder Name</label>
+                            <input type="text" id="cardName" placeholder="John Doe">
+                        </div>
+                        
+                        <button class="btn-success" onclick="submitCardPayment('${plan}')" style="width: 100%; margin-top: 20px;">
+                            Pay $${plan === 'premium' ? '7' : '29'}/month
+                        </button>
+                        
+                        <button class="btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 10px;">Cancel</button>
+                    </div>
+                </div>
+            `;
+            
+            closeModal();
+            document.body.insertAdjacentHTML('beforeend', formHTML);
+        }
+
+        function submitCardPayment(plan) {
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            const cardName = document.getElementById('cardName').value;
+
+            if (!cardNumber || !expiryDate || !cvv || !cardName) {
+                alert('Please fill all card details');
+                return;
+            }
+
+            // In real implementation, process with Stripe
+            alert('💳 Card payment processed successfully!');
+            closeModal();
+            showSection('create');
+        }
+
+        // Check trial status
+        function checkTrialStatus() {
+            const userData = JSON.parse(localStorage.getItem('rujex_user') || '{}');
+            
+            if (userData.trialEnd && userData.status === 'trial') {
+                const trialEnd = new Date(userData.trialEnd);
+                const now = new Date();
+                
+                if (now > trialEnd) {
+                    showUpgradeMessage('trial_ended');
+                }
+            }
+        }
+
+        function showUpgradeMessage(reason) {
+            let message = '';
+            
+            if (reason === 'trial_ended') {
+                message = 'Your free trial has ended. Upgrade to continue using premium features.';
+            } else if (reason === 'free_limit') {
+                message = 'Free plan limit reached (3 offers). Upgrade to create unlimited offers.';
+            }
+
+            const modalHTML = `
+                <div class="modal">
+                    <div class="modal-content">
+                        <h2 style="text-align: center; margin-bottom: 20px;">Upgrade Required</h2>
+                        <p style="text-align: center; color: #666; margin-bottom: 30px;">${message}</p>
+                        
+                        <div style="font-size: 2rem; color: #667eea; font-weight: bold; margin: 20px 0; text-align: center;">
+                            $7 <span style="font-size: 1rem; color: #666;">/month</span>
+                        </div>
+                        
+                        <button class="btn-success" onclick="showSection('pricing')" style="width: 100%;">Upgrade Now</button>
+                        <button class="btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 10px;">Later</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        // Check trial status on page load
+        document.addEventListener('DOMContentLoaded', checkTrialStatus);
+    </script>
 </body>
 </html>
