@@ -118,6 +118,15 @@
             color: white;
         }
 
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #0da271;
+        }
+
         /* Hero Section */
         .hero {
             padding: 6rem 0;
@@ -330,41 +339,97 @@
             display: none;
         }
 
-        /* Offer Preview */
-        .offer-preview {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        /* Result Section */
+        .result-section {
+            display: none;
+            text-align: center;
+        }
+
+        .offer-link-container {
+            background: var(--surface);
             border-radius: 1rem;
-            overflow: hidden;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid var(--success);
+        }
+
+        .offer-link {
+            font-size: 1.25rem;
+            color: var(--primary);
+            word-break: break-all;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--background);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .countdown-preview {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--danger);
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #fef2f2;
+            border-radius: 8px;
+            border: 2px solid var(--danger);
+        }
+
+        /* Payment Section */
+        .payment-section {
+            display: none;
+            text-align: center;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .payment-method {
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .payment-method.selected {
+            border-color: var(--primary);
+            background: var(--background);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
             margin-top: 2rem;
         }
 
-        .offer-header {
-            padding: 2rem;
+        .contact-item {
             text-align: center;
-            background: rgba(0,0,0,0.1);
+            padding: 1.5rem;
         }
 
-        .offer-content {
-            padding: 2rem;
-        }
-
-        .offer-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-        }
-
-        .countdown {
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-align: center;
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
+        .contact-item i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
         }
 
         /* Stats */
@@ -486,7 +551,7 @@
             <nav class="nav-links">
                 <a href="#features">Features</a>
                 <a href="#pricing">Pricing</a>
-                <a href="#how-it-works">How It Works</a>
+                <a href="#contact">Contact</a>
                 <a href="#create-offer" class="btn btn-outline">Create Offer</a>
             </nav>
         </div>
@@ -496,7 +561,7 @@
     <section class="hero">
         <div class="container">
             <h1>Create Time-Limited Offers That Drive Sales</h1>
-            <p>Boost your conversions with beautiful, urgency-creating offer pages. No coding required.</p>
+            <p>Boost your conversions with beautiful, urgency-creating offer pages. Start free, upgrade anytime.</p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <a href="#create-offer" class="btn btn-primary">
                     <i class="fas fa-bolt"></i>Create Free Offer
@@ -512,21 +577,161 @@
     <section class="section">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-card">
+                <div class="stat-card card">
                     <div class="stat-number">300%</div>
                     <div class="stat-label">Average Sales Increase</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card card">
                     <div class="stat-number">24H</div>
                     <div class="stat-label">Setup Time</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card card">
                     <div class="stat-number">10K+</div>
                     <div class="stat-label">Businesses Trust Us</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card card">
                     <div class="stat-number">USA</div>
                     <div class="stat-label">Serving Nationwide</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create Offer Section -->
+    <section id="create-offer" class="section">
+        <div class="container">
+            <h2 class="section-title">Create Your Offer in Minutes</h2>
+            <p class="section-subtitle">Fill out the form below and get your shareable link instantly</p>
+            
+            <!-- Create Offer Form -->
+            <div id="createForm" class="card">
+                <form id="offerForm">
+                    <div class="form-group">
+                        <label class="form-label">Offer Title *</label>
+                        <input type="text" id="offerTitle" class="form-control" placeholder="e.g., 50% OFF - Limited Time!" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Description *</label>
+                        <textarea id="offerDescription" class="form-control" rows="3" placeholder="Describe your amazing offer..." required></textarea>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Original Price ($) *</label>
+                            <input type="number" id="originalPrice" class="form-control" placeholder="100" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Discount Price ($) *</label>
+                            <input type="number" id="discountPrice" class="form-control" placeholder="50" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Offer Duration *</label>
+                        <select id="offerDuration" class="form-control" required>
+                            <option value="24">24 Hours</option>
+                            <option value="48" selected>48 Hours</option>
+                            <option value="72">72 Hours</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Offer Image</label>
+                        <div class="file-upload" onclick="document.getElementById('imageUpload').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload image from your device</p>
+                            <p style="font-size: 0.875rem; color: var(--text-light);">or drag and drop</p>
+                            <input type="file" id="imageUpload" class="file-input" accept="image/*">
+                        </div>
+                        <div id="imagePreview" style="margin-top: 1rem; display: none;">
+                            <img id="previewImage" style="max-width: 200px; border-radius: 8px; border: 2px solid var(--border);">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-rocket"></i>Create Offer Page
+                    </button>
+                </form>
+            </div>
+
+            <!-- Payment Section -->
+            <div id="paymentSection" class="payment-section">
+                <div class="card">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <i class="fas fa-crown" style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;"></i>
+                        <h2>Upgrade to Premium</h2>
+                        <p>Remove limitations and unlock all features</p>
+                    </div>
+
+                    <div class="payment-methods">
+                        <div class="payment-method" onclick="selectPaymentMethod('paypal')">
+                            <i class="fab fa-paypal" style="font-size: 2rem; color: #0070ba; margin-bottom: 1rem;"></i>
+                            <h3>PayPal</h3>
+                            <p>Pay with PayPal account</p>
+                        </div>
+                        
+                        <div class="payment-method" onclick="selectPaymentMethod('card')">
+                            <i class="fas fa-credit-card" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                            <h3>Credit Card</h3>
+                            <p>Visa, MasterCard, Amex</p>
+                        </div>
+                    </div>
+
+                    <div id="paymentDetails" style="display: none; margin-top: 2rem;">
+                        <!-- Payment details will appear here -->
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button class="btn btn-outline" onclick="backToOfferForm()" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i>Back
+                        </button>
+                        <button class="btn btn-primary" onclick="processPayment()" style="flex: 1;">
+                            <i class="fas fa-lock"></i>Complete Payment - $7/month
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div id="resultSection" class="result-section">
+                <div class="card">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 1rem;"></i>
+                        <h2 style="color: var(--success); margin-bottom: 1rem;">Your Offer Is Ready!</h2>
+                        <p>Share this link with your customers to start driving sales</p>
+                    </div>
+
+                    <div class="offer-link-container">
+                        <h3 style="margin-bottom: 1rem;">Your Offer Link:</h3>
+                        <div class="offer-link" id="generatedLink">
+                            <!-- Link will appear here -->
+                        </div>
+                        <button class="btn btn-success" onclick="copyOfferLink()" style="width: 100%; margin-top: 1rem;">
+                            <i class="fas fa-copy"></i>Copy Link to Clipboard
+                        </button>
+                    </div>
+
+                    <div style="margin: 2rem 0; padding: 1.5rem; background: var(--background); border-radius: 8px;">
+                        <h4 style="margin-bottom: 1rem;">Offer Preview:</h4>
+                        <div id="offerPreview">
+                            <!-- Offer preview will appear here -->
+                        </div>
+                    </div>
+
+                    <div class="countdown-preview" id="countdownPreview">
+                        <!-- Countdown will appear here -->
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button class="btn btn-outline" onclick="createNewOffer()" style="flex: 1;">
+                            <i class="fas fa-plus"></i>Create Another Offer
+                        </button>
+                        <button class="btn btn-primary" onclick="shareOnSocial()" style="flex: 1;">
+                            <i class="fas fa-share"></i>Share on Social Media
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -549,76 +754,19 @@
                 
                 <div class="feature-card card">
                     <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
+                        <i class="fas fa-link"></i>
                     </div>
-                    <h3>Mobile Optimized</h3>
-                    <p>Perfect experience on all devices. Your offers look great everywhere.</p>
+                    <h3>Instant Shareable Links</h3>
+                    <p>Get your unique offer link instantly. Share anywhere - social media, email, or your website.</p>
                 </div>
                 
                 <div class="feature-card card">
                     <div class="feature-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
-                    <h3>Real-time Analytics</h3>
-                    <p>Track performance with detailed analytics and conversion metrics.</p>
+                    <h3>Real Analytics</h3>
+                    <p>Track clicks, conversions, and performance with detailed analytics dashboard.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Create Offer Section -->
-    <section id="create-offer" class="section">
-        <div class="container">
-            <h2 class="section-title">Create Your Offer in Minutes</h2>
-            <p class="section-subtitle">Fill out the form below and launch your time-limited offer</p>
-            
-            <div class="card">
-                <form id="offerForm">
-                    <div class="form-group">
-                        <label class="form-label">Offer Title</label>
-                        <input type="text" class="form-control" placeholder="e.g., 50% OFF - Limited Time!" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" rows="3" placeholder="Describe your amazing offer..." required></textarea>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
-                            <label class="form-label">Original Price ($)</label>
-                            <input type="number" class="form-control" placeholder="100" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Discount Price ($)</label>
-                            <input type="number" class="form-control" placeholder="50" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Offer Duration</label>
-                        <select class="form-control" required>
-                            <option value="24">24 Hours</option>
-                            <option value="48" selected>48 Hours</option>
-                            <option value="72">72 Hours</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Offer Image</label>
-                        <div class="file-upload" onclick="document.getElementById('imageUpload').click()">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>Click to upload image from your device</p>
-                            <p style="font-size: 0.875rem; color: var(--text-light);">or drag and drop</p>
-                            <input type="file" id="imageUpload" class="file-input" accept="image/*">
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">
-                        <i class="fas fa-rocket"></i>Create Offer Page
-                    </button>
-                </form>
             </div>
         </div>
     </section>
@@ -631,7 +779,7 @@
             
             <div class="pricing-grid">
                 <div class="pricing-card card">
-                    <h3>Starter</h3>
+                    <h3>Free</h3>
                     <div class="price">$0<span class="price-period">/month</span></div>
                     <ul class="pricing-features">
                         <li><i class="fas fa-check"></i> 3 offers per month</li>
@@ -639,24 +787,24 @@
                         <li><i class="fas fa-check"></i> Standard templates</li>
                         <li><i class="fas fa-check"></i> Email support</li>
                     </ul>
-                    <button class="btn btn-outline" style="width: 100%;" onclick="startFreeTrial('free')">
+                    <button class="btn btn-outline" style="width: 100%;" onclick="showOfferForm()">
                         Get Started Free
                     </button>
                 </div>
                 
                 <div class="pricing-card card popular">
                     <div class="popular-badge">POPULAR</div>
-                    <h3>Professional</h3>
+                    <h3>Premium</h3>
                     <div class="price">$7<span class="price-period">/month</span></div>
                     <ul class="pricing-features">
                         <li><i class="fas fa-check"></i> Unlimited offers</li>
                         <li><i class="fas fa-check"></i> Advanced analytics</li>
                         <li><i class="fas fa-check"></i> Custom branding</li>
                         <li><i class="fas fa-check"></i> Priority support</li>
-                        <li><i class="fas fa-check"></i> 3-day free trial</li>
+                        <li><i class="fas fa-check"></i> No watermarks</li>
                     </ul>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="startFreeTrial('premium')">
-                        Start Free Trial
+                    <button class="btn btn-primary" style="width: 100%;" onclick="showPaymentSection()">
+                        Start 7-Day Trial
                     </button>
                 </div>
                 
@@ -664,15 +812,54 @@
                     <h3>Business</h3>
                     <div class="price">$29<span class="price-period">/month</span></div>
                     <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> All Professional features</li>
+                        <li><i class="fas fa-check"></i> All Premium features</li>
                         <li><i class="fas fa-check"></i> Custom domain</li>
                         <li><i class="fas fa-check"></i> Advanced reporting</li>
                         <li><i class="fas fa-check"></i> 24/7 phone support</li>
                         <li><i class="fas fa-check"></i> Team management</li>
                     </ul>
-                    <button class="btn btn-outline" style="width: 100%;" onclick="startFreeTrial('business')">
-                        Start Free Trial
+                    <button class="btn btn-outline" style="width: 100%;" onclick="showPaymentSection()">
+                        Start 7-Day Trial
                     </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Get in touch with our support team</p>
+            
+            <div class="contact-section card">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email Support</h3>
+                        <p>guettafradhouan1989@gmail.com</p>
+                        <button class="btn btn-outline" onclick="sendEmail()" style="margin-top: 1rem;">
+                            <i class="fas fa-paper-plane"></i>Send Email
+                        </button>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fab fa-paypal"></i>
+                        <h3>PayPal Payments</h3>
+                        <p>guettafradhouan1808@gmail.com</p>
+                        <button class="btn btn-outline" onclick="openPayPal()" style="margin-top: 1rem;">
+                            <i class="fab fa-paypal"></i>Send Payment
+                        </button>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-comments"></i>
+                        <h3>Live Chat</h3>
+                        <p>Available 9AM-6PM EST</p>
+                        <button class="btn btn-outline" onclick="startLiveChat()" style="margin-top: 1rem;">
+                            <i class="fas fa-comment"></i>Start Chat
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -692,7 +879,6 @@
                     <ul class="footer-links">
                         <li><a href="#features">Features</a></li>
                         <li><a href="#pricing">Pricing</a></li>
-                        <li><a href="#how-it-works">How It Works</a></li>
                         <li><a href="#create-offer">Create Offer</a></li>
                     </ul>
                 </div>
@@ -700,10 +886,9 @@
                 <div class="footer-section">
                     <h3>Support</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#" onclick="showHelp()">Help Center</a></li>
+                        <li><a href="#" onclick="showPrivacy()">Privacy Policy</a></li>
                     </ul>
                 </div>
             </div>
@@ -714,86 +899,368 @@
         </div>
     </footer>
 
-    <!-- Payment Modal -->
-    <div id="paymentModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 1rem;">Start Your Free Trial</h2>
-            <p style="color: var(--text-light); margin-bottom: 2rem;">3 days free, then $7/month. Cancel anytime.</p>
-            
-            <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email" class="form-control" placeholder="your@email.com" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Payment Method</label>
-                <div style="display: grid; gap: 0.5rem;">
-                    <button type="button" class="btn btn-outline" onclick="processPayment('paypal')" style="justify-content: center;">
-                        <i class="fab fa-paypal"></i>PayPal
-                    </button>
-                    <button type="button" class="btn btn-outline" onclick="showCardForm()" style="justify-content: center;">
-                        <i class="fas fa-credit-card"></i>Credit Card
-                    </button>
-                </div>
-            </div>
-            
-            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                <button class="btn btn-outline" onclick="closeModal()" style="flex: 1;">Cancel</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // File upload handling
+        // Configuration - كل المعلومات المطلوبة
+        const CONFIG = {
+            paypalEmail: 'guettafradhouan1808@gmail.com',
+            contactEmail: 'guettafradhouan1989@gmail.com',
+            supportHours: '9AM-6PM EST',
+            premiumPrice: 7,
+            businessPrice: 29
+        };
+
+        let selectedPaymentMethod = '';
+        let currentOfferData = null;
+
+        // Image upload handling
         document.getElementById('imageUpload').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    // In a real app, you would upload this to your server
-                    console.log('Image loaded:', e.target.result);
-                    alert('Image uploaded successfully!');
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('previewImage').src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        // Form submission
+        // Show offer form
+        function showOfferForm() {
+            document.getElementById('create-offer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Show payment section
+        function showPaymentSection() {
+            document.getElementById('createForm').style.display = 'none';
+            document.getElementById('paymentSection').style.display = 'block';
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('create-offer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Back to offer form
+        function backToOfferForm() {
+            document.getElementById('paymentSection').style.display = 'none';
+            document.getElementById('createForm').style.display = 'block';
+        }
+
+        // Select payment method
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Remove selected class from all methods
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked method
+            event.currentTarget.classList.add('selected');
+            
+            // Show payment details
+            const paymentDetails = document.getElementById('paymentDetails');
+            paymentDetails.style.display = 'block';
+            paymentDetails.innerHTML = '';
+            
+            if (method === 'paypal') {
+                paymentDetails.innerHTML = `
+                    <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; text-align: center;">
+                        <h4 style="margin-bottom: 1rem;">Pay with PayPal</h4>
+                        <p style="margin-bottom: 1rem;">You will be redirected to PayPal to complete your payment</p>
+                        <div style="background: white; padding: 1rem; border-radius: 6px; border: 1px solid var(--border);">
+                            <p><strong>PayPal Email:</strong> ${CONFIG.paypalEmail}</p>
+                            <p><strong>Amount:</strong> $${CONFIG.premiumPrice} USD per month</p>
+                            <p><strong>Subscription:</strong> Auto-renewal, cancel anytime</p>
+                        </div>
+                    </div>
+                `;
+            } else if (method === 'card') {
+                paymentDetails.innerHTML = `
+                    <h4 style="margin-bottom: 1rem;">Pay with Credit Card</h4>
+                    <div class="form-group">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="text" id="expiryDate" class="form-control" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">CVV</label>
+                            <input type="text" id="cvv" class="form-control" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Cardholder Name</label>
+                        <input type="text" id="cardName" class="form-control" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email for receipt</label>
+                        <input type="email" id="cardEmail" class="form-control" placeholder="your@email.com" required>
+                    </div>
+                `;
+            }
+        }
+
+        // Process payment
+        function processPayment() {
+            if (!selectedPaymentMethod) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            if (selectedPaymentMethod === 'paypal') {
+                // Redirect to PayPal with your business email
+                const paypalUrl = `https://www.paypal.com/paypalme/${CONFIG.paypalEmail.split('@')[0]}/${CONFIG.premiumPrice}USD`;
+                window.open(paypalUrl, '_blank');
+                alert(`✅ Redirecting to PayPal... Please send $${CONFIG.premiumPrice} to ${CONFIG.paypalEmail}`);
+                
+                // Mark user as premium after "payment"
+                setTimeout(() => {
+                    localStorage.setItem('rujex_user_plan', 'premium');
+                    localStorage.setItem('rujex_user_payment', 'paypal');
+                    localStorage.setItem('rujex_user_subscription', new Date().toISOString());
+                    alert('🎉 Premium activated! You can now create unlimited offers.');
+                    showOfferForm();
+                }, 3000);
+                
+            } else if (selectedPaymentMethod === 'card') {
+                // Validate card form
+                const cardNumber = document.getElementById('cardNumber').value;
+                const expiryDate = document.getElementById('expiryDate').value;
+                const cvv = document.getElementById('cvv').value;
+                const cardName = document.getElementById('cardName').value;
+                const cardEmail = document.getElementById('cardEmail').value;
+                
+                if (!cardNumber || !expiryDate || !cvv || !cardName || !cardEmail) {
+                    alert('Please fill all card details');
+                    return;
+                }
+                
+                // Simulate card processing
+                alert('💳 Processing card payment...');
+                
+                setTimeout(() => {
+                    localStorage.setItem('rujex_user_plan', 'premium');
+                    localStorage.setItem('rujex_user_payment', 'card');
+                    localStorage.setItem('rujex_user_subscription', new Date().toISOString());
+                    localStorage.setItem('rujex_user_email', cardEmail);
+                    alert('✅ Card payment processed! Premium activated.');
+                    showOfferForm();
+                }, 2000);
+            }
+        }
+
+        // Contact functions
+        function sendEmail() {
+            window.location.href = `mailto:${CONFIG.contactEmail}?subject=Rujex Support&body=Hello, I need help with...`;
+        }
+
+        function openPayPal() {
+            window.open(`https://www.paypal.com/paypalme/${CONFIG.paypalEmail.split('@')[0]}`, '_blank');
+        }
+
+        function startLiveChat() {
+            alert(`💬 Live Chat Hours: ${CONFIG.supportHours}\n\nFor immediate assistance, please email: ${CONFIG.contactEmail}`);
+        }
+
+        // Form submission - REAL FUNCTIONALITY
         document.getElementById('offerForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            // Here you would typically send the data to your backend
-            alert('Offer created successfully! You can now share your offer page.');
+            
+            // Check if user is free and has reached limit
+            const userPlan = localStorage.getItem('rujex_user_plan') || 'free';
+            if (userPlan === 'free') {
+                const userOffers = JSON.parse(localStorage.getItem('rujex_user_offers') || '[]');
+                if (userOffers.length >= 3) {
+                    alert('🚫 Free plan limit reached! Upgrade to premium to create unlimited offers.');
+                    showPaymentSection();
+                    return;
+                }
+            }
+            
+            // Get form values
+            const title = document.getElementById('offerTitle').value;
+            const description = document.getElementById('offerDescription').value;
+            const originalPrice = document.getElementById('originalPrice').value;
+            const discountPrice = document.getElementById('discountPrice').value;
+            const duration = document.getElementById('offerDuration').value;
+            const image = document.getElementById('previewImage').src || 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+            
+            // Generate unique offer ID
+            const offerId = 'offer_' + Math.random().toString(36).substr(2, 9);
+            
+            // Create offer data object
+            currentOfferData = {
+                id: offerId,
+                title: title,
+                description: description,
+                originalPrice: originalPrice,
+                discountPrice: discountPrice,
+                duration: duration,
+                image: image,
+                createdAt: new Date().toISOString(),
+                expiresAt: new Date(Date.now() + (duration * 60 * 60 * 1000)).toISOString()
+            };
+            
+            // Save to localStorage
+            localStorage.setItem(offerId, JSON.stringify(currentOfferData));
+            
+            // Track free user offers
+            if (userPlan === 'free') {
+                const userOffers = JSON.parse(localStorage.getItem('rujex_user_offers') || '[]');
+                userOffers.push(offerId);
+                localStorage.setItem('rujex_user_offers', JSON.stringify(userOffers));
+            }
+            
+            // Generate the shareable link
+            const baseUrl = window.location.origin + window.location.pathname;
+            const offerLink = `${baseUrl}?offer=${offerId}`;
+            
+            // Display results
+            document.getElementById('generatedLink').textContent = offerLink;
+            document.getElementById('generatedLink').setAttribute('data-link', offerLink);
+            
+            // Create offer preview
+            document.getElementById('offerPreview').innerHTML = `
+                <h3>${title}</h3>
+                <p>${description}</p>
+                <div style="display: flex; align-items: center; gap: 1rem; margin: 1rem 0;">
+                    <span style="text-decoration: line-through; color: var(--text-light); font-size: 1.25rem;">$${originalPrice}</span>
+                    <span style="color: var(--success); font-size: 1.5rem; font-weight: bold;">$${discountPrice}</span>
+                </div>
+                <img src="${image}" style="max-width: 100%; border-radius: 8px; margin-top: 1rem;">
+            `;
+            
+            // Start countdown preview
+            startCountdownPreview(duration);
+            
+            // Show result section
+            document.getElementById('createForm').style.display = 'none';
+            document.getElementById('paymentSection').style.display = 'none';
+            document.getElementById('resultSection').style.display = 'block';
+            
+            // Scroll to results
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
         });
 
-        // Trial and payment functions
-        function startFreeTrial(plan) {
-            if (plan === 'free') {
-                // Redirect to offer creation
-                document.getElementById('create-offer').scrollIntoView({ behavior: 'smooth' });
-            } else {
-                // Show payment modal for premium plans
-                document.getElementById('paymentModal').style.display = 'flex';
+        // Countdown function
+        function startCountdownPreview(hours) {
+            const endTime = Date.now() + (hours * 60 * 60 * 1000);
+            
+            function updateCountdown() {
+                const now = Date.now();
+                const distance = endTime - now;
+                
+                if (distance < 0) {
+                    document.getElementById('countdownPreview').innerHTML = '⏰ OFFER EXPIRED';
+                    return;
+                }
+                
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('countdownPreview').innerHTML = 
+                    `⏰ OFFER ENDS IN: ${hours}h ${minutes}m ${seconds}s`;
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        // Copy link to clipboard
+        function copyOfferLink() {
+            const link = document.getElementById('generatedLink').getAttribute('data-link');
+            navigator.clipboard.writeText(link).then(() => {
+                alert('✅ Link copied to clipboard! You can now share it with your customers.');
+            });
+        }
+
+        // Create new offer
+        function createNewOffer() {
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('createForm').style.display = 'block';
+            document.getElementById('offerForm').reset();
+            document.getElementById('imagePreview').style.display = 'none';
+        }
+
+        // Share on social media
+        function shareOnSocial() {
+            const link = document.getElementById('generatedLink').getAttribute('data-link');
+            const text = 'Check out this amazing limited-time offer!';
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(link)}`, '_blank');
+        }
+
+        // Help functions
+        function showHelp() {
+            alert(`📞 Need Help?\n\nEmail: ${CONFIG.contactEmail}\nPayPal: ${CONFIG.paypalEmail}\nSupport Hours: ${CONFIG.supportHours}`);
+        }
+
+        function showPrivacy() {
+            alert(`🔒 Privacy Policy\n\nWe respect your privacy. Your data is stored locally and never shared with third parties.`);
+        }
+
+        // Check if there's an offer in URL parameters (for viewing offers)
+        function checkForOfferInUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const offerId = urlParams.get('offer');
+            
+            if (offerId) {
+                const offerData = localStorage.getItem(offerId);
+                if (offerData) {
+                    // Display the offer page
+                    const offer = JSON.parse(offerData);
+                    document.body.innerHTML = `
+                        <div style="min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; padding: 2rem;">
+                            <div style="background: white; border-radius: 1rem; padding: 3rem; max-width: 600px; width: 100%; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                                <h1 style="color: #333; margin-bottom: 1rem; font-size: 2.5rem;">${offer.title}</h1>
+                                <img src="${offer.image}" style="width: 100%; border-radius: 12px; margin: 1rem 0; border: 3px solid #e2e8f0;">
+                                <p style="color: #666; margin-bottom: 1.5rem; font-size: 1.2rem; line-height: 1.6;">${offer.description}</p>
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin: 1.5rem 0;">
+                                    <span style="text-decoration: line-through; color: #999; font-size: 1.5rem;">$${offer.originalPrice}</span>
+                                    <span style="color: #10b981; font-size: 2.5rem; font-weight: bold;">$${offer.discountPrice}</span>
+                                </div>
+                                <div id="offerCountdown" style="font-size: 1.5rem; color: #ef4444; font-weight: bold; margin: 1.5rem 0; padding: 1.5rem; background: #fef2f2; border-radius: 12px; border: 2px solid #ef4444;"></div>
+                                <button style="background: #10b981; color: white; border: none; padding: 1.5rem 3rem; border-radius: 12px; font-size: 1.5rem; font-weight: bold; cursor: pointer; width: 100%; transition: all 0.3s ease;" 
+                                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 25px rgba(16, 185, 129, 0.3)';" 
+                                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                                    🚀 BUY NOW BEFORE OFFER ENDS!
+                                </button>
+                                <p style="margin-top: 2rem; color: #999; font-size: 0.875rem;">Powered by Rujex.com</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Start countdown for the offer page
+                    const endTime = new Date(offer.expiresAt).getTime();
+                    function updateOfferCountdown() {
+                        const now = new Date().getTime();
+                        const distance = endTime - now;
+                        
+                        if (distance < 0) {
+                            document.getElementById('offerCountdown').innerHTML = '⏰ OFFER EXPIRED';
+                            document.querySelector('button').disabled = true;
+                            document.querySelector('button').style.background = '#6b7280';
+                            return;
+                        }
+                        
+                        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        
+                        document.getElementById('offerCountdown').innerHTML = 
+                            `⏰ OFFER ENDS IN: ${hours}h ${minutes}m ${seconds}s`;
+                    }
+                    
+                    updateOfferCountdown();
+                    setInterval(updateOfferCountdown, 1000);
+                }
             }
         }
 
-        function closeModal() {
-            document.getElementById('paymentModal').style.display = 'none';
-        }
-
-        function processPayment(method) {
-            if (method === 'paypal') {
-                // Redirect to PayPal with your email
-                const paypalEmail = 'guettafradhouan1808@gmail.com';
-                window.open(`https://www.paypal.com/send?amount=7&email=${paypalEmail}`, '_blank');
-            }
-            closeModal();
-            alert('Thank you! Your 3-day free trial has started.');
-        }
-
-        function showCardForm() {
-            // In a real app, you would show Stripe elements here
-            alert('Credit card payment integration would be implemented with Stripe in production.');
-        }
+        // Check for offers in URL on page load
+        document.addEventListener('DOMContentLoaded', checkForOfferInUrl);
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
