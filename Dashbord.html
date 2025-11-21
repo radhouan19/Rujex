@@ -1,174 +1,160 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Demo Booking Platform</title>
-<style>
-* { box-sizing:border-box; font-family:"Poppins",sans-serif; margin:0; padding:0; }
-body { background:#f3f4f6; color:#111; }
-section { display:none; min-height:100vh; padding:2rem; }
-.active { display:block; }
-header { background:#2563eb; color:white; text-align:center; padding:1.5rem; font-size:1.5rem; }
-.container { max-width:700px; margin:auto; background:white; padding:2rem; border-radius:12px; box-shadow:0 5px 15px rgba(0,0,0,0.1); margin-top:2rem; }
-h2 { margin-bottom:1rem; }
-.btn { padding:.8rem 1.5rem; border:none; border-radius:8px; cursor:pointer; transition:.3s; margin:.2rem; font-weight:600; }
-.btn-primary { background:#2563eb; color:white; }
-.btn-primary:hover { background:#1e40af; }
-.btn-copy { background:#22c55e; color:white; }
-.btn-copy:hover { background:#16a34a; }
-input, select { width:100%; padding:.8rem; margin:.5rem 0; border:1px solid #ccc; border-radius:8px; }
-table { width:100%; border-collapse:collapse; margin-top:1rem; }
-th, td { border:1px solid #ddd; padding:.8rem; text-align:left; }
-th { background:#2563eb; color:white; }
-tr:nth-child(even) { background:#f3f4f6; }
-.link-box { display:flex; align-items:center; justify-content:space-between; background:#eef2ff; padding:.8rem 1rem; border-radius:8px; margin-top:1rem; border:1px solid #c7d2fe; }
-.link-box input { width:80%; border:none; background:transparent; font-size:.95rem; color:#1e3a8a; }
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rujex.com - Premium Domain For Sale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4ff, #e0f7fa);
+            color: #222;
+        }
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: #0070ff;
+            color: #fff;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        header img {
+            width: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        h1 {
+            font-size: 48px;
+            margin: 0;
+        }
+        h2 {
+            font-size: 22px;
+            font-weight: 400;
+            margin-top: 10px;
+        }
+        .container {
+            max-width: 900px;
+            margin: -60px auto 60px;
+            background: #fff;
+            padding: 50px;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        .feature-box {
+            background: #f0f7ff;
+            padding: 25px;
+            border-radius: 18px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #0070ff;
+            transition: transform 0.3s;
+        }
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+        .price-box {
+            margin-top: 50px;
+            padding: 40px;
+            background: linear-gradient(135deg, #ffe0e0, #ffd6d6);
+            border-radius: 20px;
+            font-weight: 700;
+        }
+        .old-price { text-decoration: line-through; color: #888; font-size: 22px; }
+        .mid-price { text-decoration: line-through; color: #555; font-size: 28px; margin-top: 5px; }
+        .new-price { font-size: 42px; color: #c40000; margin-top: 10px; }
+        #countdown { margin-top: 15px; font-size: 22px; color: #c40000; font-weight: 600; }
+        .contact {
+            margin-top: 50px;
+            font-size: 18px;
+        }
+        .contact a { color: #0070ff; text-decoration: none; font-weight: 600; }
+        .traffic-box {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f7f9fc;
+            border-radius: 18px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+    </style>
 </head>
-<body>
+<body><header>
+    <img src="https://cdn-icons-png.flaticon.com/512/1026/1026120.png" alt="Rujex Logo" />
+    <h1>Rujex.com</h1>
+    <h2>Premium Short Domain • Perfect for SaaS & Startup Brands</h2>
+</header>
 
-<!-- Landing Page -->
-<section id="landing" class="active">
-  <div class="container" style="text-align:center;">
-    <h1>Demo Booking Platform</h1>
-    <p>Try the platform for free!</p>
-    <button class="btn btn-primary" onclick="startDemo()">7 Days Free</button>
-    <button class="btn btn-primary" onclick="alert('Sign Up Page Placeholder')">New User</button>
-    <button class="btn btn-primary" onclick="alert('Login Page Placeholder')">Existing User</button>
-  </div>
-</section>
-
-<!-- Dashboard Page -->
-<section id="dashboard">
-  <header>Demo Dashboard</header>
-  <div class="container">
-    <h2 id="businessName">Business Name</h2>
-    
-    <p>Share your booking link with customers:</p>
-    <div class="link-box">
-      <input id="shareLink" readonly>
-      <button class="btn btn-copy" onclick="copyLink()">Copy</button>
+<div class="container">
+    <div class="features">
+        <div class="feature-box">⚡ Short & Memorable</div>
+        <div class="feature-box">🚀 Ideal for SaaS Startups</div>
+        <div class="feature-box">⭐ Easy to Spell & Brand</div>
+        <div class="feature-box">🌐 Global Appeal</div>
     </div>
 
-    <h3 style="margin-top:2rem;">Your Services</h3>
-    <table>
-      <thead><tr><th>Service</th><th>Price ($)</th></tr></thead>
-      <tbody id="servicesTable"></tbody>
-    </table>
+    <div class="price-box">
+        <div class="old-price">$1200</div>
+        <div class="mid-price">$988</div>
+        <div class="new-price">$598</div>
+        <div id="countdown">Loading countdown...</div>
+    </div>
 
-    <h3 style="margin-top:2rem;">Customer Appointments</h3>
-    <table>
-      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Date</th><th>Service</th></tr></thead>
-      <tbody id="bookingsTable">
-        <tr><td colspan="5">No bookings yet (demo mode)</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+    <div class="contact">
+        <p>📩 Contact to purchase the domain:</p>
+        <p><b>Email:</b> <a href="mailto:guettafradhouan1989@gmail.com">guettafradhouan1989@gmail.com</a></p>
+        <p>Or buy directly via platforms: <b><a href="https://sedo.com">Sedo.com</a></b> — <b><a href="https://godaddy.com">GoDaddy.com</a></b></p>
+    </div>
 
-<!-- Customer Booking Page -->
-<section id="customerBooking">
-  <div class="container">
-    <h2 id="customerBusinessName">Book at Demo Salon</h2>
-    <p style="margin-bottom:1rem;">Select a service, pick a date and enter your info:</p>
+    <div class="traffic-box">
+        Visitors: <span id="visitor-count">0</span>
+    </div>
+</div>
 
-    <select id="cService"></select>
-    <input id="cName" placeholder="Your Name">
-    <input id="cEmail" placeholder="Your Email">
-    <input id="cPhone" placeholder="Phone Number">
-    <input id="cDate" type="datetime-local">
-    <button class="btn btn-primary" onclick="submitBooking()">Book Now</button>
-  </div>
-</section>
+<footer>© 2025 Rujex.com - All Rights Reserved</footer>
 
 <script>
-// ---------- Utility ----------
-function showSection(id) {
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-function copyLink() {
-  const link = document.getElementById("shareLink");
-  link.select();
-  document.execCommand("copy");
-  alert("Link copied!");
-}
+    // ---- COUNTDOWN 7 DAYS ----
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + 7);
 
-// ---------- Demo Data ----------
-let demoBusiness = {
-  name: "Demo Salon",
-  slug: "demo-salon",
-  services: [
-    {name:"Haircut", price:25},
-    {name:"Beard Trim", price:15},
-    {name:"Hair Coloring", price:40}
-  ],
-  bookings: []
-};
+    function updateCountdown() {
+        const now = new Date();
+        const diff = endDate - now;
+        if (diff <= 0) { document.getElementById("countdown").innerHTML = "Offer expired"; return; }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById("countdown").innerHTML = `${days}d : ${hours}h : ${minutes}m : ${seconds}s`;
+    }
+    setInterval(updateCountdown, 1000);
 
-// ---------- Start Demo ----------
-function startDemo() {
-  showSection("dashboard");
-  document.getElementById("businessName").textContent = demoBusiness.name;
-  document.getElementById("shareLink").value = window.location.origin + "/?demo=" + demoBusiness.slug;
-  renderServices();
-  renderBookings();
-}
-
-// ---------- Render Services ----------
-function renderServices() {
-  const tbody = document.getElementById("servicesTable");
-  tbody.innerHTML = "";
-  demoBusiness.services.forEach(s => {
-    tbody.innerHTML += `<tr><td>${s.name}</td><td>${s.price}</td></tr>`;
-  });
-
-  const sel = document.getElementById("cService");
-  sel.innerHTML = "";
-  demoBusiness.services.forEach((s,i)=>{
-    sel.innerHTML += `<option value="${i}">${s.name} - $${s.price}</option>`;
-  });
-}
-
-// ---------- Render Bookings ----------
-function renderBookings() {
-  const tbody = document.getElementById("bookingsTable");
-  if(demoBusiness.bookings.length===0) {
-    tbody.innerHTML = `<tr><td colspan="5">No bookings yet (demo mode)</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = "";
-  demoBusiness.bookings.forEach(b=>{
-    tbody.innerHTML += `<tr><td>${b.name}</td><td>${b.email}</td><td>${b.phone}</td><td>${b.date}</td><td>${b.service}</td></tr>`;
-  });
-}
-
-// ---------- Booking ----------
-function submitBooking() {
-  const name = document.getElementById("cName").value.trim();
-  const email = document.getElementById("cEmail").value.trim();
-  const phone = document.getElementById("cPhone").value.trim();
-  const date = document.getElementById("cDate").value;
-  const serviceIndex = document.getElementById("cService").value;
-
-  if(!name||!email||!phone||!date) return alert("Fill all fields");
-
-  const service = demoBusiness.services[serviceIndex];
-  demoBusiness.bookings.push({name,email,phone,date,service:service.name});
-  alert("Booking confirmed!");
-
-  renderBookings();
-  showSection("dashboard");
-}
-
-// ---------- Customer link ----------
-const params = new URLSearchParams(window.location.search);
-if(params.get("demo")==demoBusiness.slug){
-  showSection("customerBooking");
-  document.getElementById("customerBusinessName").textContent = "Book at " + demoBusiness.name;
-  renderServices();
-}
+    // ---- VISITOR COUNTER ----
+    let count = localStorage.getItem("visitorCount") || 0;
+    count++;
+    localStorage.setItem("visitorCount", count);
+    document.getElementById("visitor-count").textContent = count;
 </script>
+
 </body>
 </html>
